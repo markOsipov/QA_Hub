@@ -1,0 +1,71 @@
+buildscript {
+    group = "com.github.markOsipov"
+    version = "0.0.1-SNAPSHOT"
+
+    repositories {
+        mavenCentral()
+    }
+
+    ext {
+        spring_version = "2.7.5"
+        prometheus_version = "1.8.3"
+        kotlin_version = "1.6.21"
+        coroutine_version = "1.4.1"
+        kmongo_version = "4.2.0"
+        retrofit_ver = "2.9.0"
+        okhttp_ver = "4.8.1"
+        gson_ver = "2.8.6"
+    }
+}
+
+plugins {
+    id "org.springframework.boot" version "$spring_version"
+    id 'org.jetbrains.kotlin.jvm' version "$kotlin_version"
+    id 'java'
+    id 'application'
+}
+
+apply plugin: 'kotlin'
+apply plugin: 'java'
+
+java.sourceCompatibility = JavaVersion.VERSION_11
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutine_version")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
+    implementation("org.springframework.boot:spring-boot-starter-web:$spring_version")
+    implementation("org.springframework.boot:spring-boot-starter-actuator:$spring_version")
+
+    implementation "io.micrometer:micrometer-core:$prometheus_version"
+
+    implementation("org.litote.kmongo:kmongo-coroutine:$kmongo_version")
+
+    implementation("com.squareup.retrofit2:retrofit:$retrofit_ver") {
+        exclude group: "com.squareup.okhttp3", module: "okhttp"
+    }
+    implementation("com.squareup.retrofit2:converter-gson:$retrofit_ver")
+    implementation("com.squareup.retrofit2:converter-scalars:$retrofit_ver")
+    implementation("com.squareup.okhttp3:okhttp:$okhttp_ver")
+    implementation("com.squareup.okhttp3:logging-interceptor:$okhttp_ver")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test:$spring_version")
+}
+
+compileKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "11"
+        apiVersion = "1.6"
+        languageVersion = "1.6"
+    }
+}
+
+test {
+    useJUnitPlatform()
+}

@@ -1,4 +1,4 @@
-package com.example.qa_hub_backend
+package com.github.mosipov.qa_hub
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
