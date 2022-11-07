@@ -1,0 +1,3 @@
+rootProject.name = 'QA_Hub'
+include 'qa_hub_backend'
+
