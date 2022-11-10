@@ -37,7 +37,7 @@ class BlockedTestsService {
                 BlockedTest::fullName.eq(blockedTest.fullName)
             ),
             set(
-                *(blockedTest.setCurrentPropertyValues())
+                *(blockedTest.setCurrentPropertyValues(skipProperties = listOf("_id")))
             ),
             upsert()
         )
