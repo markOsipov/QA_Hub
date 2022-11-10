@@ -7,7 +7,6 @@ buildscript {
     }
 
     ext {
-        main_class_name = 'com.github.mosipov.qa_hub.QaHubBackendApplication'
         shadow_version = "7.1.2"
         spring_version = "2.7.5"
         prometheus_version = "1.8.3"
