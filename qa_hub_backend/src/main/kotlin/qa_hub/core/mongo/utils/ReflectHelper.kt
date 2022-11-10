@@ -1,4 +1,4 @@
-package com.github.mosipov.qa_hub.core.mongo.utils
+package qa_hub.core.mongo.utils
 
 import java.lang.reflect.Field
 import kotlin.reflect.KProperty1

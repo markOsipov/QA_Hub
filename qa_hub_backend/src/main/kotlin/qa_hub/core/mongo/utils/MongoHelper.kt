@@ -1,4 +1,4 @@
-package com.github.mosipov.qa_hub.core.mongo.utils
+package qa_hub.core.mongo.utils
 
 import org.litote.kmongo.SetTo
 import org.litote.kmongo.setTo

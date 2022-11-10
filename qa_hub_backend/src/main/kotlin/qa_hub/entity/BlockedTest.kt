@@ -1,6 +1,4 @@
-package com.github.mosipov.qa_hub.entity
-
-import org.bson.types.ObjectId
+package qa_hub.entity
 
 data class BlockedTest(
     var _id: String? = null,

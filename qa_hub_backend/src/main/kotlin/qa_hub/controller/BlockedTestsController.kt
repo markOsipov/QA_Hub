@@ -1,7 +1,7 @@
-package com.github.mosipov.qa_hub.controller
+package qa_hub.controller
 
-import com.github.mosipov.qa_hub.entity.BlockedTest
-import com.github.mosipov.qa_hub.service.BlockedTestsService
+import qa_hub.entity.BlockedTest
+import qa_hub.service.BlockedTestsService
 import com.mongodb.client.result.DeleteResult
 import com.mongodb.client.result.UpdateResult
 import org.springframework.beans.factory.annotation.Autowired

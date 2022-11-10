@@ -1,14 +1,13 @@
-package com.github.mosipov.qa_hub.service
+package qa_hub.service
 
-import com.github.mosipov.qa_hub.core.mongo.QaHubMongoClient
-import com.github.mosipov.qa_hub.core.mongo.utils.setCurrentPropertyValues
-import com.github.mosipov.qa_hub.entity.BlockedTest
+import qa_hub.core.mongo.QaHubMongoClient
+import qa_hub.core.mongo.utils.setCurrentPropertyValues
+import qa_hub.entity.BlockedTest
 import com.mongodb.client.result.UpdateResult
 import kotlinx.coroutines.runBlocking
 import org.bson.types.ObjectId
 import org.litote.kmongo.*
 import org.litote.kmongo.util.KMongoUtil.idFilterQuery
-import org.litote.kmongo.util.idValue
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
