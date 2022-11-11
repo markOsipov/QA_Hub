@@ -2,19 +2,15 @@ import {StyledTableCell} from "../primitives/Table/StyledTableCell";
 import {useState, useEffect} from "react";
 
 export default function FullNameTableCell({ showFullName, blockedTest }) {
-    function getContent() {
-        if (showFullName) {
-            return blockedTest.fullName
-        }
-        return blockedTest.shortName
-    }
+    const [content, setContent] = useState(null)
 
-    const [content, setContent] = useState(getContent())
     useEffect(() => {
-        setContent(getContent())
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [showFullName])
+        if (showFullName) {
+            setContent(blockedTest.fullName)
+        } else {
+            setContent(blockedTest.shortName)
+        }
+    }, [blockedTest.fullName, blockedTest.shortName, showFullName])
 
     return <StyledTableCell align="left">
         <label style={{padding: "5px 9px"}}>{content}</label>

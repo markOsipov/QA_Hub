@@ -3,24 +3,19 @@ import {Switch} from "@mui/material";
 import {useState, useEffect} from "react";
 
 export default function FullNameTableHeaderCell({ showFullName, setShowFullName }) {
-    const getTitle = () => {
+    const [title, setTitle] = useState(null)
+
+    useEffect(() => {
         if (showFullName) {
-            return "FullName"
+            setTitle ("FullName")
+        } else  {
+            setTitle ("ShortName")
         }
-        return "ShortName"
-    }
+    }, [showFullName])
 
     function handleSwitchShowFullName(event) {
         setShowFullName(event.target.checked)
     }
-
-    const [title, setTitle] = useState(getTitle())
-
-    useEffect(() => {
-        setTitle(getTitle())
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [showFullName])
 
     return <StyledTableCell align='left'>
         <Switch checked={showFullName}
