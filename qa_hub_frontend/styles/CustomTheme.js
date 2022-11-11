@@ -27,8 +27,8 @@ export var customTheme = createTheme({
             evenRow: '#00000022'
         },
         text: {
-            white: '#ffffff',
-            light: 'rgba(255,255,255,0.75)'
+            primary: 'rgba(255,255,255,0.75)',
+            white: '#ffffff'
         }
     },
 });

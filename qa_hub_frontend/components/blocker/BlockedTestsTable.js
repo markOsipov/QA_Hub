@@ -13,20 +13,17 @@ import {StyledTableCell} from "../primitives/Table/StyledTableCell";
 import {observer} from "mobx-react-lite";
 import projectState from "../../state/ProjectState";
 import useSWR from "swr";
-import {editBlockedTest, getBlockedTests, unblockTest} from "../../requests/QAHubBackend";
-import React, {useEffect} from "react";
-import LockOpenIcon from '@mui/icons-material/LockOpen';
-import IconButton from "@mui/material/IconButton";
-import {customTheme} from "../../styles/CustomTheme";
+import {getBlockedTests} from "../../requests/QAHubBackend";
+import {useState, useEffect} from "react";
 import FullNameTableHeaderCell from "./FullNameTableHeaderCell";
-import FullNameTableCell from "./FullNameTableCell";
+import BlockedTestTableRow from "./BlockedTestTableRow";
 
 
 const BlockedTestsTable = observer(() => {
     const { selectedProject } = projectState
 
-    const [blockedTests, setBlockedTests] = React.useState([])
-    const [showFullName, setShowFullName] = React.useState(true)
+    const [blockedTests, setBlockedTests] = useState([])
+    const [showFullName, setShowFullName] = useState(true)
 
     let { data, error } = useSWR(selectedProject, getBlockedTests, { refreshInterval: 15000 } )
     useEffect(() => {
@@ -34,30 +31,6 @@ const BlockedTestsTable = observer(() => {
             setBlockedTests(data.data)
         }
     }, [data])
-
-    function handleUnblockButtonClick(blockedTest) {
-        unblockTest(blockedTest).then( response => {
-            if (response.data.deletedCount > 0) {
-                getBlockedTests(selectedProject).then(blockedTestsResponse => {
-                    setBlockedTests(blockedTestsResponse.data)
-                })
-            }
-        })
-    }
-
-    function handleSwitchTrial(blockedTest, event) {
-        const editedTest = {
-            ...blockedTest,
-            allowTrialRuns: event.target.checked
-        }
-        editBlockedTest(editedTest).then(response => {
-            if (response.data.modifiedCount > 0) {
-                getBlockedTests(selectedProject).then(blockedTestsResponse => {
-                    setBlockedTests(blockedTestsResponse.data)
-                })
-            }
-        })
-    }
 
     if (error) return <div>Failed to receive blocked tests: { JSON.stringify(error, null, 2) }</div>
     if (!data) return <div>Blocked tests are loading </div>
@@ -68,7 +41,7 @@ const BlockedTestsTable = observer(() => {
                 <TableHead style={{ height: "60px" }}>
                     <StyledTableRow>
                         <StyledTableCell align='center' style={{width: "50px"}}>№</StyledTableCell>
-                        <StyledTableCell style={{width: "50px"}}></StyledTableCell>
+                        <StyledTableCell style={{width: "50px"}}/>
                         <StyledTableCell style={{width: "120px"}} align='center'>Trial</StyledTableCell>
                         <StyledTableCell style={{width: "100px"}} align='center'>TestcaseId</StyledTableCell>
                         <StyledTableCell align='center'>Teams</StyledTableCell>
@@ -81,41 +54,13 @@ const BlockedTestsTable = observer(() => {
                 <TableBody>
                     {
                         blockedTests.map((blockedTest, index) =>
-                            <StyledTableRow key={blockedTest._id}>
-                                <StyledTableCell align="left">
-                                    <label style={{ padding: "5px 9px"}}>{index + 1}</label>
-                                </StyledTableCell>
-
-                                <StyledTableCell align="left">
-                                    <IconButton className="hover-highlight"
-                                                style={{color: customTheme.palette.text.light, borderRadius: "2px"}}
-                                                onClick={() => { handleUnblockButtonClick(blockedTest) }}
-                                    >
-                                        <LockOpenIcon></LockOpenIcon>
-                                    </IconButton>
-                                </StyledTableCell>
-
-                                <StyledTableCell align="center">
-                                    <Switch
-                                        checked={blockedTest.allowTrialRuns}
-                                        onChange={ (event) => { handleSwitchTrial(blockedTest, event) } }
-                                    />
-                                </StyledTableCell>
-
-                                <StyledTableCell align="center">
-                                    <label style={{ padding: "5px 9px" }}>{blockedTest.testcaseId}</label>
-                                </StyledTableCell>
-
-                                <StyledTableCell align="center">Teams WIP</StyledTableCell>
-
-                                <FullNameTableCell blockedTest={blockedTest} showFullName={showFullName} />
-
-                                <StyledTableCell align="left">{blockedTest.comment}</StyledTableCell>
-
-                                <StyledTableCell align="center">{blockedTest.jiraIssue}</StyledTableCell>
-
-                                <StyledTableCell align="center">{blockedTest.blockDate}</StyledTableCell>
-                            </StyledTableRow>
+                            <BlockedTestTableRow
+                                key={blockedTest._id}
+                                index={index}
+                                blockedTestForRow={blockedTest}
+                                showFullName={showFullName}
+                                setBlockedTests={setBlockedTests}
+                            />
                         )
                     }
                 </TableBody>
