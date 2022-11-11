@@ -18,14 +18,17 @@ import React, {useEffect} from "react";
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import IconButton from "@mui/material/IconButton";
 import {customTheme} from "../../styles/CustomTheme";
+import FullNameTableHeaderCell from "./FullNameTableHeaderCell";
+import FullNameTableCell from "./FullNameTableCell";
 
 
 const BlockedTestsTable = observer(() => {
     const { selectedProject } = projectState
 
-    let { data, error } = useSWR(selectedProject, getBlockedTests, { refreshInterval: 15000 } )
-
     const [blockedTests, setBlockedTests] = React.useState([])
+    const [showFullName, setShowFullName] = React.useState(true)
+
+    let { data, error } = useSWR(selectedProject, getBlockedTests, { refreshInterval: 15000 } )
     useEffect(() => {
         if (data?.data?.length > 0) {
             setBlockedTests(data.data)
@@ -66,10 +69,10 @@ const BlockedTestsTable = observer(() => {
                     <StyledTableRow>
                         <StyledTableCell align='center' style={{width: "50px"}}>№</StyledTableCell>
                         <StyledTableCell style={{width: "50px"}}></StyledTableCell>
-                        <StyledTableCell align='center'>Trial</StyledTableCell>
+                        <StyledTableCell style={{width: "120px"}} align='center'>Trial</StyledTableCell>
                         <StyledTableCell style={{width: "100px"}} align='center'>TestcaseId</StyledTableCell>
                         <StyledTableCell align='center'>Teams</StyledTableCell>
-                        <StyledTableCell align='center'>FullName</StyledTableCell>
+                        <FullNameTableHeaderCell showFullName={showFullName} setShowFullName={setShowFullName}/>
                         <StyledTableCell align='center'>Comment</StyledTableCell>
                         <StyledTableCell align='center'>Issue</StyledTableCell>
                         <StyledTableCell style={{width: "200px"}} align='center'>Block date</StyledTableCell>
@@ -78,7 +81,7 @@ const BlockedTestsTable = observer(() => {
                 <TableBody>
                     {
                         blockedTests.map((blockedTest, index) =>
-                            <StyledTableRow key={blockedTest._id} style={{ height: "45px"}}>
+                            <StyledTableRow key={blockedTest._id}>
                                 <StyledTableCell align="left">
                                     <label style={{ padding: "5px 9px"}}>{index + 1}</label>
                                 </StyledTableCell>
@@ -105,9 +108,7 @@ const BlockedTestsTable = observer(() => {
 
                                 <StyledTableCell align="center">Teams WIP</StyledTableCell>
 
-                                <StyledTableCell align="left">
-                                    <label style={{padding: "5px 9px"}}>{blockedTest.fullName}</label>
-                                </StyledTableCell>
+                                <FullNameTableCell blockedTest={blockedTest} showFullName={showFullName} />
 
                                 <StyledTableCell align="left">{blockedTest.comment}</StyledTableCell>
 
