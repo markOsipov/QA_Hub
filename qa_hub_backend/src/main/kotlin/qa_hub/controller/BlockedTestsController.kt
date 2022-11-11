@@ -30,17 +30,17 @@ class BlockedTestsController {
         return blockedTestsService.getBlockedTestsForProject(project)
     }
 
-    @PostMapping("")
+    @PostMapping("/block")
     fun blockTest(@RequestBody body: BlockedTest): UpdateResult {
         return blockedTestsService.blockTest(body)
     }
 
-    @DeleteMapping("")
+    @PostMapping("/unblock")
     fun unblockTest(@RequestBody body: BlockedTest): DeleteResult {
         return blockedTestsService.unblockTest(body)
     }
 
-    @PutMapping("")
+    @PostMapping("/edit")
     fun editBlockedTest(@RequestBody body: BlockedTest): UpdateResult {
         return blockedTestsService.editBlockedTest(body)
     }

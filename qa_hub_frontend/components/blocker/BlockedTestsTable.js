@@ -1,5 +1,5 @@
 import {
-    Paper,
+    Paper, Switch,
     Table,
     TableBody,
     TableContainer,
@@ -13,7 +13,7 @@ import {StyledTableCell} from "../primitives/Table/StyledTableCell";
 import {observer} from "mobx-react-lite";
 import projectState from "../../state/ProjectState";
 import useSWR from "swr";
-import {getBlockedTests, unblockTest} from "../../requests/QAHubBackend";
+import {editBlockedTest, getBlockedTests, unblockTest} from "../../requests/QAHubBackend";
 import React, {useEffect} from "react";
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import IconButton from "@mui/material/IconButton";
@@ -34,7 +34,21 @@ const BlockedTestsTable = observer(() => {
 
     function handleUnblockButtonClick(blockedTest) {
         unblockTest(blockedTest).then( response => {
-            if (response.data.deletedCount === 1) {
+            if (response.data.deletedCount > 0) {
+                getBlockedTests(selectedProject).then(blockedTestsResponse => {
+                    setBlockedTests(blockedTestsResponse.data)
+                })
+            }
+        })
+    }
+
+    function handleSwitchTrial(blockedTest, event) {
+        const editedTest = {
+            ...blockedTest,
+            allowTrialRuns: event.target.checked
+        }
+        editBlockedTest(editedTest).then(response => {
+            if (response.data.modifiedCount > 0) {
                 getBlockedTests(selectedProject).then(blockedTestsResponse => {
                     setBlockedTests(blockedTestsResponse.data)
                 })
@@ -79,7 +93,10 @@ const BlockedTestsTable = observer(() => {
                                 </StyledTableCell>
 
                                 <StyledTableCell align="center">
-                                    <label style={{ padding: "5px 9px"}}>{ blockedTest.allowTrialRuns }</label>
+                                    <Switch
+                                        checked={blockedTest.allowTrialRuns}
+                                        onChange={ (event) => { handleSwitchTrial(blockedTest, event) } }
+                                    />
                                 </StyledTableCell>
 
                                 <StyledTableCell align="center">

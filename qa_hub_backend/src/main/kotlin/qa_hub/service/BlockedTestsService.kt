@@ -62,14 +62,17 @@ class BlockedTestsService {
     }
 
     fun editBlockedTest(blockedTest: BlockedTest) = runBlocking {
+        val updateBson = if (blockedTest._id != null) {
+            idFilterQuery(ObjectId(blockedTest._id ?: ""))
+        } else {
+            and(
+                BlockedTest::project.eq(blockedTest.project),
+                BlockedTest::fullName.eq(blockedTest.fullName)
+            )
+        }
+
         blockedTestsCollection.updateOne(
-            or(
-                idFilterQuery(ObjectId(blockedTest._id)),
-                and(
-                    BlockedTest::project.eq(blockedTest.project),
-                    BlockedTest::fullName.eq(blockedTest.fullName)
-                )
-            ),
+            updateBson,
             set(
                 *(blockedTest.setCurrentPropertyValues(skipProperties = listOf("_id")))
             )
