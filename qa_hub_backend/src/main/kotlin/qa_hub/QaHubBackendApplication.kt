@@ -21,6 +21,7 @@ open class ApplicationConfig: WebMvcConfigurer {
     override fun addCorsMappings(registry: CorsRegistry) {
         registry
             .addMapping("/**")
+            .allowedMethods("GET", "POST", "PUT", "DELETE")
             .maxAge(3600)
     }
 }

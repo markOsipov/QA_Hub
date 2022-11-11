@@ -12,7 +12,6 @@ export var customTheme = createTheme({
         background: {
             default: '#303030',
             paper: '#424242',
-
         },
         success: {
             main: '#419036',
@@ -26,6 +25,10 @@ export var customTheme = createTheme({
         table: {
             header: '#3b3b3b',
             evenRow: '#00000022'
+        },
+        text: {
+            white: '#ffffff',
+            light: 'rgba(255,255,255,0.75)'
         }
     },
 });
