@@ -9,6 +9,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import AdbIcon from '@mui/icons-material/Adb';
 import SettingsIcon from '@mui/icons-material/Settings';
+import ProjectSelector from "./ProjectSelector";
 
 const pages = ['Blocker', 'Statistics', 'Metrics'];
 
@@ -31,6 +32,8 @@ function QaHubAppBar() {
                     >
                         QA Hub
                     </Typography>
+
+                    <ProjectSelector style={{ marginLeft: "5px", marginRight: "20px" }}/>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page) => (

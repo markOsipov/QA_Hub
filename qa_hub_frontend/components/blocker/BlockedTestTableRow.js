@@ -8,18 +8,26 @@ import EditableTableCell from "../primitives/Table/EditableTableCell";
 import FullNameTableCell from "./FullNameTableCell";
 import {editBlockedTest, getBlockedTests, unblockTest} from "../../requests/QAHubBackend";
 import projectState from "../../state/ProjectState";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 
 export default function BlockedTestTableRow({ index, blockedTestForRow, showFullName, setBlockedTests }) {
     const { selectedProject } = projectState
     const [blockedTest, setBlockedTest] = useState(blockedTestForRow)
 
+    useEffect(() => {
+        updateBlockedTestsList()
+    }, [selectedProject])
+
+    function updateBlockedTestsList() {
+        getBlockedTests(selectedProject).then(blockedTestsResponse => {
+            setBlockedTests(blockedTestsResponse.data)
+        })
+    }
+
     function handleUnblockButtonClick(blockedTest) {
         unblockTest(blockedTest).then( response => {
             if (response.data.deletedCount > 0) {
-                getBlockedTests(selectedProject).then(blockedTestsResponse => {
-                    setBlockedTests(blockedTestsResponse.data)
-                })
+                updateBlockedTestsList()
             }
         })
     }
@@ -32,9 +40,7 @@ export default function BlockedTestTableRow({ index, blockedTestForRow, showFull
         setBlockedTest(editedTest)
         editBlockedTest(editedTest).then(response => {
             if (response.data.modifiedCount > 0) {
-                getBlockedTests(selectedProject).then(blockedTestsResponse => {
-                    setBlockedTests(blockedTestsResponse.data)
-                })
+                updateBlockedTestsList()
             }
         })
     }
@@ -51,9 +57,7 @@ export default function BlockedTestTableRow({ index, blockedTestForRow, showFull
     function handleTestcaseEditFinish() {
         editBlockedTest(blockedTest).then(response => {
             if (response.data.modifiedCount > 0) {
-                getBlockedTests(selectedProject).then(blockedTestsResponse => {
-                    setBlockedTests(blockedTestsResponse.data)
-                })
+                updateBlockedTestsList()
             }
         })
     }

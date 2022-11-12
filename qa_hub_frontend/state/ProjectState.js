@@ -4,7 +4,7 @@ class ProjectState {
     projects = ["wallet-client-ios", "wallet-client-android"]
     selectedProject = this.projects[0]
 
-    selectProject(newProject) {
+    setSelectedProject(newProject) {
         this.selectedProject = newProject
     }
 

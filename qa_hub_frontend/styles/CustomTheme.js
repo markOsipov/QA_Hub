@@ -4,7 +4,7 @@ export var customTheme = createTheme({
     palette: {
         type: 'dark',
         primary: {
-            main: '#8b8fde',
+            main: '#7479c7',
         },
         secondary: {
             main: '#5765b9',
