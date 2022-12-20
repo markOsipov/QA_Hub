@@ -8,7 +8,7 @@ import {loadProjects} from "../requests/QAHubBackend";
 import {useEffect} from "react";
 
 function MyApp({ Component, pageProps }) {
-  let { data, error } = useSWR(projectState.selectedProject, loadProjects, { refreshInterval: 60000 })
+  let { data, error } = useSWR(123, loadProjects, { refreshInterval: 60000 })
 
   useEffect(() => {
     if(data?.data?.config) {

@@ -24,12 +24,12 @@ const BlockedTestsTable = observer(() => {
     const [blockedTests, setBlockedTests] = useState([])
     const [showFullName, setShowFullName] = useState(true)
 
-    let { data, error } = useSWR(selectedProject, getBlockedTests, { refreshInterval: 15000 } )
-    useEffect(() => {
-        if (data?.data?.length > 0) {
-            setBlockedTests(data.data)
-        }
-    }, [data])
+    // let { data, error } = useSWR(selectedProject, getBlockedTests, { refreshInterval: 15000 } )
+    // useEffect(() => {
+    //     if (data?.data?.length > 0) {
+    //         setBlockedTests(data.data)
+    //     }
+    // }, [data])
 
     useEffect(() => {
         updateBlockedTestsList()
@@ -41,8 +41,8 @@ const BlockedTestsTable = observer(() => {
         })
     }
 
-    if (error) return <div>Failed to receive blocked tests: { JSON.stringify(error, null, 2) }</div>
-    if (!data) return <div>Blocked tests are loading </div>
+    // if (error) return <div>Failed to receive blocked tests: { JSON.stringify(error, null, 2) }</div>
+    // if (!data) return <div>Blocked tests are loading </div>
 
     return <Paper elevation={3} style={{margin: "15px", maxHeight: "calc(100vh - 165px)", overflowY: "auto", minWidth: "35vw" }}>
         <TableContainer>
