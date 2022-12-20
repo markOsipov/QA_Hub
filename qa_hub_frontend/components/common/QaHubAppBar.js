@@ -11,7 +11,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ProjectSelector from "./ProjectSelector";
 
-const pages = ['Blocker', 'Statistics', 'Metrics'];
+const pages = ['blocker', 'statistics', 'metrics'];
 
 function QaHubAppBar() {
     return (
@@ -40,6 +40,7 @@ function QaHubAppBar() {
                             <Button
                                 key={page}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
+                                href={`/${page}`}
                             >
                                 {page}
                             </Button>
@@ -48,7 +49,7 @@ function QaHubAppBar() {
 
                     <Box>
                         <Tooltip title="Open settings">
-                            <IconButton>
+                            <IconButton href="/settings">
                                 <SettingsIcon fontSize="large" style={{color: "white"}}/>
                             </IconButton>
                         </Tooltip>

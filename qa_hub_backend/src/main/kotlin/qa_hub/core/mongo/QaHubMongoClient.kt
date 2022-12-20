@@ -12,12 +12,9 @@ import org.springframework.stereotype.Repository
 class QaHubMongoClient {
     private val qaHubDb = "dbQaHub"
 
-//    private val mongoHost = System.getenv("ENV_MONGO_QA_HUB_HOST")
-//    private val userName = System.getenv("ENV_MONGO_QA_HUB_LOGIN")
-//    private val userPass = System.getenv("ENV_MONGO_QA_HUB_PASSWORD")
-      private val mongoHost = "mongodb://cm-angulardb.t01.cardsmobile.ru:27017"
-      private val userName = "administrator"
-      private val userPass = "ZdC*91eNi1L0ZrZ~"
+    private val mongoHost = System.getenv("ENV_MONGO_QA_HUB_HOST")
+    private val userName = System.getenv("ENV_MONGO_QA_HUB_LOGIN")
+    private val userPass = System.getenv("ENV_MONGO_QA_HUB_PASSWORD")
 
     val db: CoroutineDatabase = run {
         KMongo.createClient(
