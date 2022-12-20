@@ -10,19 +10,8 @@ import {editBlockedTest, getBlockedTests, unblockTest} from "../../requests/QAHu
 import projectState from "../../state/ProjectState";
 import {useState, useEffect} from "react";
 
-export default function BlockedTestTableRow({ index, blockedTestForRow, showFullName, setBlockedTests }) {
-    const { selectedProject } = projectState
+export default function BlockedTestTableRow({ index, blockedTestForRow, showFullName, updateBlockedTestsList }) {
     const [blockedTest, setBlockedTest] = useState(blockedTestForRow)
-
-    useEffect(() => {
-        updateBlockedTestsList()
-    }, [selectedProject])
-
-    function updateBlockedTestsList() {
-        getBlockedTests(selectedProject).then(blockedTestsResponse => {
-            setBlockedTests(blockedTestsResponse.data)
-        })
-    }
 
     function handleUnblockButtonClick(blockedTest) {
         unblockTest(blockedTest).then( response => {

@@ -20,15 +20,26 @@ import BlockedTestTableRow from "./BlockedTestTableRow";
 
 
 const BlockedTestsTable = observer(() => {
+    let {selectedProject} = projectState
     const [blockedTests, setBlockedTests] = useState([])
     const [showFullName, setShowFullName] = useState(true)
 
-    let { data, error } = useSWR(projectState.selectedProject, getBlockedTests, { refreshInterval: 15000 } )
+    let { data, error } = useSWR(selectedProject, getBlockedTests, { refreshInterval: 15000 } )
     useEffect(() => {
         if (data?.data?.length > 0) {
             setBlockedTests(data.data)
         }
     }, [data])
+
+    useEffect(() => {
+        updateBlockedTestsList()
+    }, [selectedProject])
+
+    function updateBlockedTestsList() {
+        getBlockedTests(selectedProject).then(blockedTestsResponse => {
+            setBlockedTests(blockedTestsResponse.data)
+        })
+    }
 
     if (error) return <div>Failed to receive blocked tests: { JSON.stringify(error, null, 2) }</div>
     if (!data) return <div>Blocked tests are loading </div>
@@ -57,7 +68,7 @@ const BlockedTestsTable = observer(() => {
                                 index={index}
                                 blockedTestForRow={blockedTest}
                                 showFullName={showFullName}
-                                setBlockedTests={setBlockedTests}
+                                updateBlockedTestsList={updateBlockedTestsList}
                             />
                         )
                     }

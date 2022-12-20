@@ -11,15 +11,15 @@ function MyApp({ Component, pageProps }) {
   let { data, error } = useSWR(projectState.selectedProject, loadProjects, { refreshInterval: 60000 })
 
   useEffect(() => {
-    if(data?.data) {
+    if(data?.data?.config) {
       const newProjects = data.data.config.map(project => {
         return project.name
       })
       projectState.setProjects(newProjects)
 
-      // if (!projectState.selectedProject) {
-      //   projectState.setSelectedProject(newProjects[0])
-      // }
+      if (!projectState.selectedProject) {
+        projectState.setSelectedProject(newProjects[0])
+      }
     }
   }, [data])
 
