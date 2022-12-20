@@ -38,11 +38,10 @@ export function editBlockedTest(blockedTest) {
     return axios(config)
 }
 
-export function loadProjects(stub) {
-    console.log("Loading projects")
+export function loadProjects() {
     const config = {
         method: 'get',
-        url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat("/api/config/projects/"),
+        url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat("/api/config/projects"),
         headers: {
             'Content-Type': 'application/json'
         }

@@ -7,6 +7,8 @@ const ProjectSelector = observer(({style}) => {
         projectState.setSelectedProject(event.target.value)
     }
 
+    if (!projectState.selectedProject) return null
+
     return(
         <FormControl style={{...style}}>
             <InputLabel id="project-selector-label">Project</InputLabel>

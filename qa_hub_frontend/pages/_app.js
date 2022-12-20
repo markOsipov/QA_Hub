@@ -8,10 +8,10 @@ import {loadProjects} from "../requests/QAHubBackend";
 import {useEffect} from "react";
 
 function MyApp({ Component, pageProps }) {
-  let { data, error } = useSWR(123, loadProjects, { refreshInterval: 60000 })
+  let { data, error } = useSWR("/api/config/projects", loadProjects, { refreshInterval: 60000 })
 
   useEffect(() => {
-    if(data?.data?.config) {
+    if(data?.data) {
       const newProjects = data.data.config.map(project => {
         return project.name
       })
@@ -25,6 +25,9 @@ function MyApp({ Component, pageProps }) {
 
   if (!data) {
     return <div>Loading projects</div>
+  }
+  if (error) {
+      return <div>Error: {error}</div>
   }
 
   return <div style={{ height: '100vh', overflow: 'hidden'}}>
