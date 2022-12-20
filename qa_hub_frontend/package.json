@@ -21,8 +21,10 @@
     "mobx-react-lite": "^3.4.0",
     "next": "13.0.2",
     "react": "18.2.0",
+    "react-cookie": "^4.1.1",
     "react-dom": "18.2.0",
     "react-router-dom": "^6.5.0",
-    "swr": "^1.1.2"
+    "swr": "^1.1.2",
+    "universal-cookie": "^4.0.4"
   }
 }

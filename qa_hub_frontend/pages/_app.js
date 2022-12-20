@@ -8,7 +8,7 @@ import {loadProjects} from "../requests/QAHubBackend";
 import {useEffect} from "react";
 
 function MyApp({ Component, pageProps }) {
-  let { data, error } = useSWR(0, loadProjects, { refreshInterval: 60000 })
+  let { data, error } = useSWR(projectState.selectedProject, loadProjects, { refreshInterval: 60000 })
 
   useEffect(() => {
     if(data?.data) {
@@ -16,6 +16,10 @@ function MyApp({ Component, pageProps }) {
         return project.name
       })
       projectState.setProjects(newProjects)
+
+      // if (!projectState.selectedProject) {
+      //   projectState.setSelectedProject(newProjects[0])
+      // }
     }
   }, [data])
 
@@ -24,13 +28,13 @@ function MyApp({ Component, pageProps }) {
   }
 
   return <div style={{ height: '100vh', overflow: 'hidden'}}>
-    <ThemeProvider theme={customTheme}>
-      <QaHubAppBar></QaHubAppBar>
+      <ThemeProvider theme={customTheme}>
+        <QaHubAppBar></QaHubAppBar>
 
-      <div style={{height: '91vh', minHeight: '91vh', overflowY: 'auto'}}>
-        <Component {...pageProps} />
-      </div>
-    </ThemeProvider>
+        <div style={{height: '91vh', minHeight: '91vh', overflowY: 'auto'}}>
+          <Component {...pageProps} />
+        </div>
+      </ThemeProvider>
   </div>
 }
 

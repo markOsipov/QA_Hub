@@ -20,12 +20,10 @@ import BlockedTestTableRow from "./BlockedTestTableRow";
 
 
 const BlockedTestsTable = observer(() => {
-    const { selectedProject } = projectState
-
     const [blockedTests, setBlockedTests] = useState([])
     const [showFullName, setShowFullName] = useState(true)
 
-    let { data, error } = useSWR(selectedProject, getBlockedTests, { refreshInterval: 15000 } )
+    let { data, error } = useSWR(projectState.selectedProject, getBlockedTests, { refreshInterval: 15000 } )
     useEffect(() => {
         if (data?.data?.length > 0) {
             setBlockedTests(data.data)
