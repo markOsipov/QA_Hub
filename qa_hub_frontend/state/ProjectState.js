@@ -1,8 +1,12 @@
 import {makeAutoObservable} from "mobx";
 
 class ProjectState {
-    projects = ["wallet-client-ios", "wallet-client-android"]
+    projects = []
     selectedProject = this.projects[0]
+
+    setProjects(projects) {
+        this.projects = projects
+    }
 
     setSelectedProject(newProject) {
         this.selectedProject = newProject

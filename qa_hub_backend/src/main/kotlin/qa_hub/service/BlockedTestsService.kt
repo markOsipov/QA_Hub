@@ -10,13 +10,14 @@ import org.litote.kmongo.*
 import org.litote.kmongo.util.KMongoUtil.idFilterQuery
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import qa_hub.core.utils.DateTimeUtils.formatDate
 
 @Service
 class BlockedTestsService {
     @Autowired
     lateinit var mongoClient: QaHubMongoClient
 
-    val blockedTestsCollection by lazy {
+    private val blockedTestsCollection by lazy {
         mongoClient.db.getCollection<BlockedTest>("blockedTests")
     }
 
@@ -31,6 +32,8 @@ class BlockedTestsService {
     }
 
     fun blockTest(blockedTest: BlockedTest): UpdateResult = runBlocking {
+        blockedTest.blockDate = formatDate()
+
         blockedTestsCollection.updateOne(
             and(
                 BlockedTest::project.eq(blockedTest.project),
@@ -59,6 +62,10 @@ class BlockedTestsService {
                 BlockedTest::fullName.eq(fullName)
             )
         )
+    }
+
+    fun unblockAll() = runBlocking {
+        blockedTestsCollection.deleteMany()
     }
 
     fun editBlockedTest(blockedTest: BlockedTest) = runBlocking {
