@@ -40,7 +40,7 @@ class QaHubConfigController {
     }
 
     @GetMapping("/{configName}")
-    fun getConfig(@PathVariable configName: String): QaHubConfig {
+    fun getConfig(@PathVariable configName: String): QaHubConfig? {
         return qaHubConfigService.getSpecificConfig(configName)
     }
 

@@ -27,9 +27,13 @@ a {
 }
 
 .hover-highlight:hover {
-  background-color: rgba(255, 255, 255, 0.1)
+  background-color: rgba(255, 255, 255, 0.1)!important;
 }
 
 .clickable {
   cursor: pointer;
+}
+
+button + button {
+  margin-left: 10px!important;
 }

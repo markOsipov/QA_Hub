@@ -26,11 +26,11 @@ class QaHubConfigService {
         qaHubConfigCollection.find().toList().sortedBy { it.isCoreConfig }
     }
 
-    fun getSpecificConfig(configName: String): QaHubConfig = runBlocking {
+    fun getSpecificConfig(configName: String): QaHubConfig? = runBlocking {
         qaHubConfigCollection
             .find(QaHubConfig::configName.eq(configName))
             .toList()
-            .first()
+            .firstOrNull()
     }
 
     fun upsertConfig(config: QaHubConfig) = runBlocking {

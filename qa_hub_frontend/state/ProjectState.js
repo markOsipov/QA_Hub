@@ -2,7 +2,7 @@ import {makeAutoObservable} from "mobx";
 import {getCookie, setCookie} from "../utils/CookieHelper";
 
 class ProjectState {
-    projects = getCookie("projects") ?? []
+    projects = getCookie("projects")
     selectedProject = getCookie("selected-project")
 
     setProjects(projects) {
