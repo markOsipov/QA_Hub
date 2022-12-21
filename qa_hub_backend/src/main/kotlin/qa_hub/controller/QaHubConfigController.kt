@@ -54,6 +54,14 @@ class QaHubConfigController {
         return qaHubConfigService.upsertConfig(body)
     }
 
+    //Очистка всех данных для проверки поведения приложения на пустых таблицах
+    @PostMapping("/clearData")
+    fun clearData() {
+        qaHubConfigService.deleteAllConfigs()
+        testcaseService.deleteAll()
+        blockedTestsService.unblockAll()
+    }
+
     //Сброс конфигов и заполнение тестовых данных
     @PostMapping("/hardReset")
     fun hardReset() {
