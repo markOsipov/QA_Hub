@@ -41,7 +41,7 @@ export function editBlockedTest(blockedTest) {
 export function loadProjects() {
     const config = {
         method: 'get',
-        url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat("/api/config/projects"),
+        url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat("/api/projects"),
         headers: {
             'Content-Type': 'application/json'
         }

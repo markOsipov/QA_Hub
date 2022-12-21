@@ -17,6 +17,7 @@ import qa_hub.entity.Project
 import qa_hub.entity.QaHubConfig
 import qa_hub.entity.QaHubTestcase
 import qa_hub.service.BlockedTestsService
+import qa_hub.service.ProjectService
 import qa_hub.service.QaHubConfigService
 import qa_hub.service.TestcaseService
 import kotlin.random.Random
@@ -33,6 +34,9 @@ class QaHubConfigController {
 
     @Autowired
     lateinit var testcaseService: TestcaseService
+
+    @Autowired
+    lateinit var projectService: ProjectService
 
     @GetMapping("")
     fun getConfigs(): List<QaHubConfig> {
@@ -60,6 +64,7 @@ class QaHubConfigController {
         qaHubConfigService.deleteAllConfigs()
         testcaseService.deleteAll()
         blockedTestsService.unblockAll()
+        projectService.deleteAllProjects()
     }
 
     //Сброс конфигов и заполнение тестовых данных
@@ -76,17 +81,16 @@ class QaHubConfigController {
         )
 
         qaHubConfigService.deleteAllConfigs()
+        projectService.deleteAllProjects()
         testcaseService.deleteAll()
         blockedTestsService.unblockAll()
 
-        qaHubConfigService.upsertConfig(
-            QaHubConfig(PROJECTS.configName, true, projects)
-        )
         qaHubConfigService.upsertConfig(
             QaHubConfig(TEAMS.configName, true, teams)
         )
 
         projects.forEach { project ->
+            projectService.upsertProject(project)
             repeat(10) {
                 val testcase = testcaseService.insertTestcase(
                     QaHubTestcase( project = project.name, description = "Sample testcase", team = teams.random())

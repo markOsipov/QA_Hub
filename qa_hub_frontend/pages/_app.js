@@ -7,8 +7,6 @@ import useSWR from "swr";
 import {loadProjects} from "../requests/QAHubBackend";
 import {useEffect} from "react";
 import { useRouter } from 'next/router'
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import GoToSettingsStub from "../components/stubs/GoToSettingsStub";
 
 function MyApp({ Component, pageProps }) {
@@ -17,7 +15,7 @@ function MyApp({ Component, pageProps }) {
 
     useEffect(() => {
         if(data?.data) {
-            const newProjects = data.data.config.map(project => {
+            const newProjects = data.data.map(project => {
                 return project.name
             })
             projectState.setProjects(newProjects)
@@ -37,13 +35,12 @@ function MyApp({ Component, pageProps }) {
     }
 
     function shouldNavigateToSettings() {
-        return !projectState.projects && !router.asPath.includes("/settings")
+        return (!projectState.projects || projectState.projects.length === 0) && !router.asPath.includes("/settings")
     }
 
     return <div style={{ height: '100vh', overflow: 'hidden'}}>
         <ThemeProvider theme={customTheme}>
-            <QaHubAppBar></QaHubAppBar>
-
+            <QaHubAppBar/>
             {
                 shouldNavigateToSettings() ? (
                     <GoToSettingsStub />
@@ -53,7 +50,6 @@ function MyApp({ Component, pageProps }) {
                     </div>
                 )
             }
-
         </ThemeProvider>
     </div>
 }

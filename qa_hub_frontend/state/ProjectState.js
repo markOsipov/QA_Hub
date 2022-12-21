@@ -12,7 +12,9 @@ class ProjectState {
 
     setSelectedProject(newProject) {
         this.selectedProject = newProject
-        setCookie("selected-project",newProject)
+        if (newProject) {
+            setCookie("selected-project", newProject)
+        }
     }
 
     constructor() {
