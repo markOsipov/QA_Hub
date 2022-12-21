@@ -91,6 +91,7 @@ export default function BlockedTestTableRow({ index, blockedTestForRow, showFull
         <EditableTableCell contentText={blockedTest.testcaseId}
                            onChangeCallback={ handleTestcaseIdChange }
                            onBlurCallback={(event) => { handleTestcaseEditFinish() }}
+                           textArea
         />
 
         <StyledTableCell>{blockedTest.team}</StyledTableCell>
@@ -101,18 +102,21 @@ export default function BlockedTestTableRow({ index, blockedTestForRow, showFull
                            showFullName={showFullName}
                            setShowFullName={setShowFullName}
                            handleTestcaseEditFinish={ handleTestcaseEditFinish }
+                           textArea
         />
 
         <EditableTableCell align="left"
                            contentText={blockedTest.comment}
                            onChangeCallback={ handleCommentChange }
                            onBlurCallback={handleTestcaseEditFinish}
+                           textArea
 
         />
 
         <EditableTableCell contentText={blockedTest.jiraIssue}
                            onChangeCallback={ handleJiraIssueChange }
                            onBlurCallback={handleTestcaseEditFinish}
+                           textArea
         />
 
         <StyledTableCell align="center">{blockedTest.blockDate}</StyledTableCell>

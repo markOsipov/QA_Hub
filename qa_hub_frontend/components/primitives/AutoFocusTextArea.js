@@ -1,7 +1,7 @@
 import {useEffect, useRef} from "react";
-import {TextField} from "@mui/material";
+import {TextareaAutosize, TextField} from "@mui/material";
 
-export default function AutoFocusTextField(props) {
+export default function AutoFocusTextArea(props) {
     const inputRef = useRef();
 
     function moveCaretAtEnd(e) {
@@ -9,6 +9,7 @@ export default function AutoFocusTextField(props) {
         e.target.value = ''
         e.target.value = temp_value
     }
+
     // useEffect(() => {
     //     const timeout = setTimeout(() => {
     //         inputRef.current.focus();
@@ -19,5 +20,5 @@ export default function AutoFocusTextField(props) {
     //     };
     // }, []);
 
-    return <TextField inputRef={inputRef} {...props} autoFocus onFocus={moveCaretAtEnd}/>;
+    return <TextareaAutosize style={{padding: "5px"}} inputRef={inputRef} {...props} autoFocus onFocus={moveCaretAtEnd}/>;
 }

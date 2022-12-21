@@ -5,6 +5,7 @@ import {customTheme} from "../../../styles/CustomTheme";
 import EditIcon from '@mui/icons-material/Edit';
 import * as PropTypes from "prop-types";
 import AutoFocusTextField from "../AutoFocusTextField";
+import AutoFocusTextArea from "../AutoFocusTextArea";
 
 
 AutoFocusTextField.propTypes = {
@@ -14,7 +15,7 @@ AutoFocusTextField.propTypes = {
     variant: PropTypes.string,
     onBlur: PropTypes.func
 };
-export default function EditableTableCell({ contentText, onChangeCallback, onBlurCallback, ...props }) {
+export default function EditableTableCell({ contentText, onChangeCallback, onBlurCallback, textArea, ...props }) {
     const [showEditIcon, setShowEditIcon] = useState(false)
     const [editStarted, setEditStarted] = useState(false)
 
@@ -34,16 +35,26 @@ export default function EditableTableCell({ contentText, onChangeCallback, onBlu
         }
     </div>
 
+    let editableContent
 
-    const editableContent = <AutoFocusTextField
-        id="standard-basic"
-        size="small"
-        variant="standard"
-        value={contentText}
-        style={{width: "100%"}}
-        onChange={onChangeCallback}
-        onBlur={() => { setEditStarted(false); onBlurCallback() }}
-    />
+    if (textArea) {
+        editableContent = <AutoFocusTextArea
+            style={{resize: "both", width: "100%", padding: "10px", font: "inherit" }}
+            value={contentText}
+            onChange={onChangeCallback}
+            onBlur={() => { setEditStarted(false); onBlurCallback()}}
+        />
+    } else {
+        editableContent = <AutoFocusTextField
+            id="standard-basic"
+            size="small"
+            variant="standard"
+            value={contentText}
+            style={{width: "100%"}}
+            onChange={onChangeCallback}
+            onBlur={() => { setEditStarted(false); onBlurCallback() }}
+        />
+    }
 
     return <StyledTableCell onMouseEnter={ () => { setShowEditIcon(true)} }
                             onMouseLeave={ () => { setShowEditIcon(false)} }
