@@ -10,28 +10,35 @@ import Tooltip from '@mui/material/Tooltip';
 import AdbIcon from '@mui/icons-material/Adb';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ProjectSelector from "./ProjectSelector";
+import {useRouter} from "next/router";
 
 const pages = ['blocker', 'statistics', 'metrics'];
 
 function QaHubAppBar() {
+    const router = useRouter()
+
     return (
         <AppBar position="static">
-            <Container style={{maxWidth: "100vw"}}>
+            <Container style={{maxWidth: "100vw", paddingLeft: "10px"}}>
                 <Toolbar disableGutters>
-                    <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="a"
-                        href="/"
-                        sx={{
-                            mr: 2,
-                            display: { xs: 'none', md: 'flex' },
-                            fontWeight: 700,
-                        }}
-                    >
-                        QA Hub
-                    </Typography>
+                    <AdbIcon sx={{ display: { xs: 'none', md: 'flex', fontSize: "45px" }, mr: 1 }} />
+                    <div>
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            component="a"
+                            href="/"
+                            sx={{
+                                mr: 2,
+                                display: { xs: 'none', md: 'flex' },
+                                fontWeight: 700,
+                            }}
+                        >
+                            QA Hub
+                        </Typography>
+                        <Typography>{router.asPath}</Typography>
+                    </div>
+
 
                     <ProjectSelector style={{ marginLeft: "5px", marginRight: "20px" }}/>
 

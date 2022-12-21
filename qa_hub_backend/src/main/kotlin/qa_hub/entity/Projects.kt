@@ -19,7 +19,6 @@ enum class Platforms(val platformName: String, val separator: String) {
 }
 
 data class Project(
-    val _id: String? = null,
     val name: String,                        //gitlab or other cicd project name
     val platform: String,                    //used to define separator and build full test name correctly
     val separator: String = Platforms.getSeparator(platform),

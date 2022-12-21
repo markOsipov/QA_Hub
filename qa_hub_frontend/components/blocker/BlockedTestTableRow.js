@@ -78,7 +78,7 @@ export default function BlockedTestTableRow({ index, blockedTestForRow, showFull
                            onBlurCallback={(event) => { handleTestcaseEditFinish() }}
         />
 
-        <StyledTableCell align="center">Teams WIP</StyledTableCell>
+        <StyledTableCell align="center">{blockedTest.team}</StyledTableCell>
 
         <FullNameTableCell blockedTest={blockedTest} showFullName={showFullName} />
 

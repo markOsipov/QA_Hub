@@ -72,7 +72,7 @@ class QaHubConfigController {
         )
 
         val teams = listOf(
-            "Sample_team_1", "Sample_team_1", "Sample_team_2"
+            "Sample_team_0", "Sample_team_1", "Sample_team_2", "Sample_team_3"
         )
 
         qaHubConfigService.deleteAllConfigs()

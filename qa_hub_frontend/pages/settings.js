@@ -18,9 +18,7 @@ function Settings() {
         }
     }
 
-    return <div style={{padding: "20px"}}>
-        <Typography variant="h4" gutterBottom>Settings page [WIP]</Typography>
-
+    return <div style={{padding: "15px"}}>
         <Paper style={{padding: "15px"}}>
             <Button variant="contained"
                     color="error"

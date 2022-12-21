@@ -33,7 +33,7 @@ class TestcaseService {
 
     fun insertTestcase(testcase: QaHubTestcase): QaHubTestcase = runBlocking {
         if (testcase.testcaseId == null) {
-            testcase.testcaseId = "${System.currentTimeMillis()}".drop(1).dropLast(3)
+            testcase.testcaseId = "${System.currentTimeMillis()}".drop(2).dropLast(2)
         }
 
         qaHubConfigCollection.insertOne(testcase)
