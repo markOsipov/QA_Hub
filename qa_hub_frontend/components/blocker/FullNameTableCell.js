@@ -38,8 +38,9 @@ export default function FullNameTableCell({ showFullName, setShowFullName, block
     }, [blockedTest.fullName, blockedTest.shortName, showFullName])
 
     return <EditableTableCell style={{padding: "5px 9px"}}
-                           contentText={content}
-                           onChangeCallback={handleFieldChange}
-                           onBlurCallback={handleTestcaseEditFinish}
+                              contentText={content}
+                              onChangeCallback={handleFieldChange}
+                              onBlurCallback={handleTestcaseEditFinish}
+                              {...props}
         />
 }

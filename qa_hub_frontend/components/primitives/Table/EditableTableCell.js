@@ -14,7 +14,7 @@ AutoFocusTextField.propTypes = {
     variant: PropTypes.string,
     onBlur: PropTypes.func
 };
-export default function EditableTableCell({ contentText, onChangeCallback, onBlurCallback }) {
+export default function EditableTableCell({ contentText, onChangeCallback, onBlurCallback, ...props }) {
     const [showEditIcon, setShowEditIcon] = useState(false)
     const [editStarted, setEditStarted] = useState(false)
 
@@ -47,6 +47,7 @@ export default function EditableTableCell({ contentText, onChangeCallback, onBlu
 
     return <StyledTableCell onMouseEnter={ () => { setShowEditIcon(true)} }
                             onMouseLeave={ () => { setShowEditIcon(false)} }
+                            {...props}
     >
         { editStarted ? editableContent : readOnlyContent }
     </StyledTableCell>

@@ -17,10 +17,14 @@ export default function FullNameTableHeaderCell({ showFullName, setShowFullName,
         setShowFullName(event.target.checked)
     }
 
-    return <StyledTableCell style={{ paddingLeft: "40px" }} {...props} align='left'>
-        <Switch checked={showFullName}
-                onChange={handleSwitchShowFullName}
-        />
-        { title }
+    return <StyledTableCell {...props}  align='left'>
+        <div style={{display: "flex", alignItems: "center"}}>
+            <div style={{width: "12px", minWidth: "12px"}}></div>
+            <Switch checked={showFullName}
+                    onChange={handleSwitchShowFullName}
+            /> { title }
+        </div>
+
+
     </StyledTableCell>
 }

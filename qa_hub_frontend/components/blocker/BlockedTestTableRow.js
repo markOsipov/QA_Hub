@@ -51,6 +51,14 @@ export default function BlockedTestTableRow({ index, blockedTestForRow, showFull
         handleTestcaseFieldChange("team", event)
     }
 
+    function handleCommentChange(event) {
+        handleTestcaseFieldChange("comment", event)
+    }
+
+    function handleJiraIssueChange(event) {
+        handleTestcaseFieldChange("jiraIssue", event)
+    }
+
     function handleTestcaseEditFinish() {
         editBlockedTest(blockedTest).then(response => {
             if (response.data.modifiedCount > 0) {
@@ -80,14 +88,12 @@ export default function BlockedTestTableRow({ index, blockedTestForRow, showFull
             />
         </StyledTableCell>
 
-        <EditableTableCell align="center"
-                           contentText={blockedTest.testcaseId}
+        <EditableTableCell contentText={blockedTest.testcaseId}
                            onChangeCallback={ handleTestcaseIdChange }
                            onBlurCallback={(event) => { handleTestcaseEditFinish() }}
         />
 
-        <EditableTableCell align="center"
-                           contentText={blockedTest.team}
+        <EditableTableCell contentText={blockedTest.team}
                            onChangeCallback={ handleTeamChange }
                            onBlurCallback={handleTestcaseEditFinish}
         />
@@ -100,9 +106,17 @@ export default function BlockedTestTableRow({ index, blockedTestForRow, showFull
                            handleTestcaseEditFinish={ handleTestcaseEditFinish }
         />
 
-        <StyledTableCell align="left">{blockedTest.comment}</StyledTableCell>
+        <EditableTableCell align="left"
+                           contentText={blockedTest.comment}
+                           onChangeCallback={ handleCommentChange }
+                           onBlurCallback={handleTestcaseEditFinish}
 
-        <StyledTableCell align="center">{blockedTest.jiraIssue}</StyledTableCell>
+        />
+
+        <EditableTableCell contentText={blockedTest.jiraIssue}
+                           onChangeCallback={ handleJiraIssueChange }
+                           onBlurCallback={handleTestcaseEditFinish}
+        />
 
         <StyledTableCell align="center">{blockedTest.blockDate}</StyledTableCell>
     </StyledTableRow>
