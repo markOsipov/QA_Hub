@@ -45,18 +45,18 @@ const BlockedTestsTable = observer(() => {
     // if (!data) return <div>Blocked tests are loading </div>
 
     return <Paper elevation={3} style={{margin: "15px", maxHeight: "calc(100vh - 165px)", overflowY: "auto", minWidth: "35vw" }}>
-        <TableContainer>
+        <TableContainer style={{minWidth: "max-content"}}>
             <Table size="small" stickyHeader >
                 <TableHead style={{ height: "60px" }}>
                     <StyledTableRow>
                         <StyledTableCell align='center' style={{width: "50px"}}>№</StyledTableCell>
                         <StyledTableCell style={{width: "50px"}}/>
                         <StyledTableCell style={{width: "120px"}} align='center'>Trial</StyledTableCell>
-                        <StyledTableCell style={{width: "100px"}} align='left'>TestcaseId</StyledTableCell>
-                        <StyledTableCell style={{width: "150px"}} align='center'>Team</StyledTableCell>
-                        <FullNameTableHeaderCell showFullName={showFullName} setShowFullName={setShowFullName}/>
-                        <StyledTableCell align='center'>Comment</StyledTableCell>
-                        <StyledTableCell align='center'>Issue</StyledTableCell>
+                        <StyledTableCell style={{width: "200px"}} align='left'>TestcaseId</StyledTableCell>
+                        <StyledTableCell style={{width: "200px"}} align='center'><label style={{position: "relative", left: "-25px"}}>Team</label></StyledTableCell>
+                        <FullNameTableHeaderCell style={{minWidth: "400px"}} showFullName={showFullName} setShowFullName={setShowFullName}/>
+                        <StyledTableCell style={{minWidth: "400px"}} align='center'>Comment</StyledTableCell>
+                        <StyledTableCell style={{width: "100px"}} align='center'>Issue</StyledTableCell>
                         <StyledTableCell style={{width: "200px"}} align='center'>Block date</StyledTableCell>
                     </StyledTableRow>
                 </TableHead>
@@ -68,6 +68,7 @@ const BlockedTestsTable = observer(() => {
                                 index={index}
                                 blockedTestForRow={blockedTest}
                                 showFullName={showFullName}
+                                setShowFullName={setShowFullName}
                                 updateBlockedTestsList={updateBlockedTestsList}
                             />
                         )

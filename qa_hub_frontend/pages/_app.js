@@ -19,6 +19,7 @@ function MyApp({ Component, pageProps }) {
                 return project.name
             })
             projectState.setProjects(newProjects)
+            projectState.setProjectsDetails(data.data)
 
             if (!projectState.selectedProject) {
                 projectState.setSelectedProject(newProjects[0])

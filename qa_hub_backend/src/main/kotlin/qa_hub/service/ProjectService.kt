@@ -26,6 +26,12 @@ class ProjectService {
         qaHubConfigCollection.find().toList()
     }
 
+    fun getProject(projectName: String): Project? = runBlocking {
+        qaHubConfigCollection.find(
+            Project::name.eq(projectName)
+        ).toList().firstOrNull()
+    }
+
     fun upsertProject(project: Project) = runBlocking {
         qaHubConfigCollection.updateOne(
             Project::name.eq(project.name),

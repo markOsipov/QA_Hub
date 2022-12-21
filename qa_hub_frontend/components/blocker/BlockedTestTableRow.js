@@ -10,7 +10,7 @@ import {editBlockedTest, getBlockedTests, unblockTest} from "../../requests/QAHu
 import projectState from "../../state/ProjectState";
 import {useState, useEffect} from "react";
 
-export default function BlockedTestTableRow({ index, blockedTestForRow, showFullName, updateBlockedTestsList }) {
+export default function BlockedTestTableRow({ index, blockedTestForRow, showFullName, setShowFullName, updateBlockedTestsList }) {
     const [blockedTest, setBlockedTest] = useState(blockedTestForRow)
 
     function handleUnblockButtonClick(blockedTest) {
@@ -34,13 +34,21 @@ export default function BlockedTestTableRow({ index, blockedTestForRow, showFull
         })
     }
 
-    function handleTestcaseIdChange(event) {
+    function handleTestcaseFieldChange(field, event) {
         setBlockedTest(
             {
                 ...blockedTest,
-                testcaseId: event.target.value
+                [field]: event.target.value
             }
         )
+    }
+
+    function handleTestcaseIdChange(event) {
+        handleTestcaseFieldChange("testcaseId", event)
+    }
+
+    function handleTeamChange(event) {
+        handleTestcaseFieldChange("team", event)
     }
 
     function handleTestcaseEditFinish() {
@@ -74,13 +82,23 @@ export default function BlockedTestTableRow({ index, blockedTestForRow, showFull
 
         <EditableTableCell align="center"
                            contentText={blockedTest.testcaseId}
-                           onChangeCallback={handleTestcaseIdChange}
+                           onChangeCallback={ handleTestcaseIdChange }
                            onBlurCallback={(event) => { handleTestcaseEditFinish() }}
         />
 
-        <StyledTableCell align="center">{blockedTest.team}</StyledTableCell>
+        <EditableTableCell align="center"
+                           contentText={blockedTest.team}
+                           onChangeCallback={ handleTeamChange }
+                           onBlurCallback={handleTestcaseEditFinish}
+        />
 
-        <FullNameTableCell blockedTest={blockedTest} showFullName={showFullName} />
+        <FullNameTableCell style={{paddingLeft: "40px"}}
+                           blockedTest={blockedTest}
+                           setBlockedTest={setBlockedTest}
+                           showFullName={showFullName}
+                           setShowFullName={setShowFullName}
+                           handleTestcaseEditFinish={ handleTestcaseEditFinish }
+        />
 
         <StyledTableCell align="left">{blockedTest.comment}</StyledTableCell>
 

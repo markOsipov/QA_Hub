@@ -40,6 +40,7 @@ export default function EditableTableCell({ contentText, onChangeCallback, onBlu
         size="small"
         variant="standard"
         value={contentText}
+        style={{width: "100%"}}
         onChange={onChangeCallback}
         onBlur={() => { setEditStarted(false); onBlurCallback() }}
     />

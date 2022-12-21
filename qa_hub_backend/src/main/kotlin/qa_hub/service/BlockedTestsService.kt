@@ -12,11 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import qa_hub.core.mongo.entity.Collections.BLOCKED_TESTS
 import qa_hub.core.utils.DateTimeUtils.formatDate
+import qa_hub.entity.Platforms
 
 @Service
 class BlockedTestsService {
     @Autowired
     lateinit var mongoClient: QaHubMongoClient
+
+    @Autowired
+    lateinit var projectService: ProjectService
 
     private val blockedTestsCollection by lazy {
         mongoClient.db.getCollection<BlockedTest>(BLOCKED_TESTS.collectionName)
@@ -70,6 +74,10 @@ class BlockedTestsService {
     }
 
     fun editBlockedTest(blockedTest: BlockedTest) = runBlocking {
+        val separator = projectService.getProject(blockedTest.project)?.separator ?: Platforms.DEFAULT.separator
+        val shortName = blockedTest.fullName.substringAfterLast(separator)
+        blockedTest.shortName = shortName
+
         val updateBson = if (blockedTest._id != null) {
             idFilterQuery(ObjectId(blockedTest._id ?: ""))
         } else {
