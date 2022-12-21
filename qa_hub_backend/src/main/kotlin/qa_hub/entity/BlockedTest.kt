@@ -9,5 +9,6 @@ data class BlockedTest(
     var comment: String? = null,
     var blockDate: String? = null,
     var project: String,
+    var team: String? = null,
     var allowTrialRuns: Boolean? = false
 )

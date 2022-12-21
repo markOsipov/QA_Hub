@@ -15,9 +15,10 @@ import qa_hub.entity.CoreConfigs.*
 import qa_hub.entity.Platforms.*
 import qa_hub.entity.Project
 import qa_hub.entity.QaHubConfig
-import qa_hub.entity.QaHubProjectsConfig
+import qa_hub.entity.QaHubTestcase
 import qa_hub.service.BlockedTestsService
 import qa_hub.service.QaHubConfigService
+import qa_hub.service.TestcaseService
 import kotlin.random.Random
 import kotlin.random.nextInt
 
@@ -29,6 +30,9 @@ class QaHubConfigController {
 
     @Autowired
     lateinit var blockedTestsService: BlockedTestsService
+
+    @Autowired
+    lateinit var testcaseService: TestcaseService
 
     @GetMapping("")
     fun getConfigs(): List<QaHubConfig> {
@@ -55,25 +59,39 @@ class QaHubConfigController {
     fun hardReset() {
         val projects = listOf(
             Project(name = "qahub_example_ios", platform = IOS.platformName),
-            Project(name= "qahub_example_android", platform = ANDROID.platformName),
-            Project(name= "qahub_example_backend", platform = "backend")
+            Project(name = "qahub_example_android", platform = ANDROID.platformName),
+            Project(name = "qahub_example_backend", platform = "backend")
+        )
+
+        val teams = listOf(
+            "Sample_team_1", "Sample_team_1", "Sample_team_2"
         )
 
         qaHubConfigService.deleteAllConfigs()
+        testcaseService.deleteAll()
+        blockedTestsService.unblockAll()
+
         qaHubConfigService.upsertConfig(
-            QaHubProjectsConfig(projects)
+            QaHubConfig(PROJECTS.configName, true, projects)
+        )
+        qaHubConfigService.upsertConfig(
+            QaHubConfig(TEAMS.configName, true, teams)
         )
 
-        blockedTestsService.unblockAll()
         projects.forEach { project ->
             repeat(10) {
+                val testcase = testcaseService.insertTestcase(
+                    QaHubTestcase( project = project.name, description = "Sample testcase", team = teams.random())
+                )
+
                 val shortName = "sampleTest${Random.nextInt(1..1000)}"
                 val blockedTest = BlockedTest(
                     shortName = shortName,
-                    fullName = "com.some.package.sample.test.suite${project.separator}$shortName",
-                    testcaseId = Random.nextInt(1000000..9999999).toString(),
+                    fullName = "${project.platform.uppercase()}.some.package.sample.test.suite${project.separator}$shortName",
+                    testcaseId = testcase.testcaseId,
                     jiraIssue = "INT-${Random.nextInt(1..1000)}",
-                    project = project.name
+                    project = testcase.project,
+                    team = testcase.team
                 )
                 blockedTestsService.blockTest(blockedTest)
             }
