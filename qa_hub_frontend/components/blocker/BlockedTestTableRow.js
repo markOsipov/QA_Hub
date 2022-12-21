@@ -93,10 +93,7 @@ export default function BlockedTestTableRow({ index, blockedTestForRow, showFull
                            onBlurCallback={(event) => { handleTestcaseEditFinish() }}
         />
 
-        <EditableTableCell contentText={blockedTest.team}
-                           onChangeCallback={ handleTeamChange }
-                           onBlurCallback={handleTestcaseEditFinish}
-        />
+        <StyledTableCell>{blockedTest.team}</StyledTableCell>
 
         <FullNameTableCell style={{paddingLeft: "40px"}}
                            blockedTest={blockedTest}
