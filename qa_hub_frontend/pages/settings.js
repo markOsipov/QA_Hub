@@ -32,6 +32,9 @@ function Settings() {
                     onClick={handleClearDataClick}
             >Clear data</Button>
 
+            <Button color="secondary"
+                    startIcon={<DeleteIcon />}
+            >Test button</Button>
         </Paper>
     </div>
 }

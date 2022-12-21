@@ -4,10 +4,10 @@ export var customTheme = createTheme({
     palette: {
         type: 'dark',
         primary: {
-            main: '#7479c7',
+            main: '#666bb3',
         },
         secondary: {
-            main: '#5765b9',
+            main: '#9ea9ee',
         },
         background: {
             default: '#303030',
