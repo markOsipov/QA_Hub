@@ -29,6 +29,6 @@ export var customTheme = createTheme({
         text: {
             primary: 'rgba(255,255,255,0.75)',
             white: '#ffffff'
-        }
+        },
     },
 });

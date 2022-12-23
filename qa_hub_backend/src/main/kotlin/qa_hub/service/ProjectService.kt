@@ -2,9 +2,12 @@ package qa_hub.service
 
 import com.mongodb.client.result.DeleteResult
 import kotlinx.coroutines.runBlocking
+import org.bson.types.ObjectId
 import org.litote.kmongo.eq
 import org.litote.kmongo.set
+import org.litote.kmongo.setTo
 import org.litote.kmongo.upsert
+import org.litote.kmongo.util.idValue
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import qa_hub.core.mongo.QaHubMongoClient
@@ -32,9 +35,9 @@ class ProjectService {
         ).toList().firstOrNull()
     }
 
-    fun upsertProject(project: Project) = runBlocking {
-        qaHubConfigCollection.updateOne(
-            Project::name.eq(project.name),
+    fun upsertConfig(project: Project) = runBlocking {
+        qaHubConfigCollection.updateOneById(
+            project._id!!,
             set(
                 *(project.setCurrentPropertyValues(skipProperties = listOf("_id")))
             ),
