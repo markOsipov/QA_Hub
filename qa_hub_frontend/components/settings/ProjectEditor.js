@@ -1,16 +1,37 @@
 import {Accordion, AccordionDetails, AccordionSummary, Card} from "@mui/material";
 import projectState from "../../state/ProjectState";
 import {observer} from "mobx-react-lite";
-import {useEffect, useState} from "react";
 import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import MuiAccordionSummary from '@mui/material/AccordionSummary';
+import {styled} from "@mui/material/styles";
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 const ProjectEditor = observer(() => {
+    const AccordionSummary = styled((props) => (
+        <MuiAccordionSummary
+
+            expandIcon={
+                <KeyboardArrowRightIcon style={{color: "rgba(255,255,255,0.75)", fontSize: "32px"}} />
+            }
+            {...props}
+        />
+    ))(({ theme }) => ({
+        '& .MuiAccordionSummary-expandIconWrapper': {
+            marginLeft: "2px", position: "relative", top: "1px"
+        },
+        '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+            transform: 'rotate(90deg) translate(6px)',
+        },
+        '& .MuiAccordionSummary-content.Mui-expanded': {
+            marginTop: '12px',
+            marginBottom: '0'
+        },
+    }));
+
     return <Card style={{marginTop: "15px", display: "grid"}}>
         <Accordion>
             <AccordionSummary
                 style={{maxWidth: "min-content"}}
-                expandIcon={<ExpandMoreIcon style={{color: "rgba(255,255,255,0.75)", marginLeft: "2px", fontSize: "30px"}} />}
                 aria-controls="panel1a-content"
             >
                 <Typography variant="h5" style={{marginBottom: "15px", marginLeft: "15px", marginTop: "15px"}}>Projects</Typography>
