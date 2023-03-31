@@ -1,12 +1,19 @@
-import {Accordion, AccordionDetails, AccordionSummary, Card} from "@mui/material";
+import {Accordion, AccordionDetails, AccordionSummary, Box, Card} from "@mui/material";
 import projectState from "../../state/ProjectState";
 import {observer} from "mobx-react-lite";
 import Typography from "@mui/material/Typography";
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import {styled} from "@mui/material/styles";
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import Button from "@mui/material/Button";
+import AddIcon from '@mui/icons-material/Add';
+import {useState} from "react";
+import NewProjectModal from "./NewProjectModal";
 
 const ProjectEditor = observer(() => {
+    const [isOpen, setIsOpen] = useState(false);
+    const handleOpen = () => setIsOpen(true);
+
     const AccordionSummary = styled((props) => (
         <MuiAccordionSummary
 
@@ -29,6 +36,7 @@ const ProjectEditor = observer(() => {
     }));
 
     return <Card style={{marginTop: "15px", display: "grid"}}>
+        <NewProjectModal isOpen={isOpen} setIsOpen={setIsOpen}/>
         <Accordion>
             <AccordionSummary
                 style={{maxWidth: "min-content"}}
@@ -67,6 +75,13 @@ const ProjectEditor = observer(() => {
                         </Card>
                     )
                 }
+                </div>
+                <div style={{display: "flex", margin: "15px 15px 0 15px"}}>
+                    <Button variant="contained"
+                            color="error"
+                            startIcon={<AddIcon />}
+                            onClick={handleOpen}
+                    >Add project</Button>
                 </div>
             </AccordionDetails>
         </Accordion>
