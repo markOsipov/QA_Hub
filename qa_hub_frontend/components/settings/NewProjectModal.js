@@ -2,7 +2,9 @@ import {Box, Modal} from "@mui/material";
 import Typography from "@mui/material/Typography";
 
 function NewProjectModal({isOpen, setIsOpen}) {
-    const handleClose = () => setIsOpen(false);
+    const handleClose = () => {
+        setIsOpen(!confirm("Close modal window?"));
+    }
 
     const style = {
         position: 'absolute',
