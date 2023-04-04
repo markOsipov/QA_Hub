@@ -34,8 +34,13 @@ class ProjectController {
         return projectService.deleteProject(projectName)
     }
 
-    @PostMapping("/upsert")
-    fun editProject(@RequestBody body: Project): UpdateResult {
-        return projectService.upsertConfig(body)
+    @PostMapping("/create")
+    fun createProject(@RequestBody body: Project): Project {
+        return projectService.insertProject(body)
+    }
+
+    @PostMapping("/update")
+    fun editProject(@RequestBody body: Project): Project {
+        return projectService.upsertProject(body)
     }
 }

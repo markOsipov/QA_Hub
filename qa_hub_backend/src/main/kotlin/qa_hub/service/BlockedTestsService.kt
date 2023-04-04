@@ -74,7 +74,7 @@ class BlockedTestsService {
     }
 
     fun editBlockedTest(blockedTest: BlockedTest) = runBlocking {
-        val separator = projectService.getProject(blockedTest.project)?.separator ?: Platforms.DEFAULT.separator
+        val separator = projectService.getProject(blockedTest.project)?.separator ?: Platforms.DEFAULT.platform.separator
         val shortName = blockedTest.fullName.substringAfterLast(separator)
         blockedTest.shortName = shortName
 

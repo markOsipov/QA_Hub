@@ -1,5 +1,6 @@
 import {makeAutoObservable} from "mobx";
 import {getCookie, setCookie} from "../utils/CookieHelper";
+import {loadProjects} from "../requests/QAHubBackend";
 
 class ProjectState {
     projects = getCookie("projects")                   //Project names only
@@ -9,6 +10,16 @@ class ProjectState {
     setProjects(projects) {
         this.projects = projects
         setCookie("projects", projects)
+    }
+
+    updateProjects() {
+        loadProjects().then((data) => {
+            const newProjects = data.data.map(project => {
+                return project.name
+            })
+            this.setProjects(newProjects)
+            this.setProjectsDetails(data.data)
+        })
     }
 
     setProjectsDetails(projects) {

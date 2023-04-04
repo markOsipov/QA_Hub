@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import qa_hub.core.utils.RandomUtils.getRandomString
 import qa_hub.entity.BlockedTest
 import qa_hub.entity.CoreConfigs.*
 import qa_hub.entity.Platforms.*
@@ -71,8 +70,8 @@ class QaHubConfigController {
     @PostMapping("/hardReset")
     fun hardReset() {
         val projects = listOf(
-            Project(name = "qahub_example_ios", platform = IOS.platformName),
-            Project(name = "qahub_example_android", platform = ANDROID.platformName),
+            Project(name = "qahub_example_ios", platform = IOS.platform.name),
+            Project(name = "qahub_example_android", platform = ANDROID.platform.name),
             Project(name = "qahub_example_backend", platform = "backend")
         )
 
@@ -90,7 +89,7 @@ class QaHubConfigController {
         )
 
         projects.forEach { project ->
-            projectService.upsertConfig(project)
+            projectService.upsertProject(project)
             repeat(10) {
                 val testcase = testcaseService.insertTestcase(
                     QaHubTestcase( project = project.name, description = "Sample testcase", team = teams.random())

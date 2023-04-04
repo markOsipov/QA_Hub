@@ -1,5 +1,5 @@
 import ResetPlate from "../components/settings/ResetPlate";
-import ProjectEditor from "../components/settings/ProjectEditor";
+import ProjectEditor from "../components/settings/projects/ProjectEditor";
 
 function Settings() {
 

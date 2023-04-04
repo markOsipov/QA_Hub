@@ -1,5 +1,5 @@
 import {Accordion, AccordionDetails, AccordionSummary, Box, Card} from "@mui/material";
-import projectState from "../../state/ProjectState";
+import projectState from "../../../state/ProjectState";
 import {observer} from "mobx-react-lite";
 import Typography from "@mui/material/Typography";
 import MuiAccordionSummary from '@mui/material/AccordionSummary';
@@ -46,7 +46,7 @@ const ProjectEditor = observer(() => {
             </AccordionSummary>
 
             <AccordionDetails>
-                <div style={{display: "flex"}}>
+                <div style={{display: "flex", flexWrap:"wrap"}}>
                 {
                     projectState.projectsDetails.map(project =>
                         <Card key={project._id} style={{padding: "15px", width: "300px", margin: "15px", backgroundColor: "rgba(255, 255, 255, 0.05)"}} elevation="5">

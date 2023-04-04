@@ -5,15 +5,18 @@ package qa_hub.entity
 // In android full test name is com.example.TestSuite#testMethod, separator is #
 // In IOS full test name is TargetName.SuiteName.testName, separator is .
 
+data class Platform(val name: String, val separator: String)
 
-enum class Platforms(val platformName: String, val separator: String) {
-    ANDROID("android", "#"),
-    IOS("ios", "."),
-    DEFAULT("unknown", ".");
+enum class Platforms(val platform: Platform) {
+    ANDROID(Platform("android", "#")),
+    IOS(Platform("ios", ".")),
+    DEFAULT(Platform("unknown", "."));
 
     companion object {
         fun getSeparator(platform: String): String {
-            return values().firstOrNull{ it.platformName == platform }?.separator ?: DEFAULT.separator
+            return values().firstOrNull{
+                it.platform.name == platform
+            }?.platform?.separator ?: DEFAULT.platform.separator
         }
     }
 }
