@@ -36,23 +36,23 @@ export default function ProjectCard({project, ...props}) {
         handleCloseMenu();
     }
 
-    return <Card style={{padding: "15px", width: "300px", margin: "15px", backgroundColor: "rgba(255, 255, 255, 0.05)"}} elevation={5}  {...props}
+    return <Card style={{padding: "15px", width: "300px", margin: "15px", backgroundColor: "rgba(255, 255, 255, 0.05)", position: "relative"}} elevation={5}  {...props}
         onMouseOver={() => {setShowMoreButton(true)}}
         onMouseLeave={() => {setShowMoreButton(false)}}
     >
+        {
+            showMoreButton && (
+                <IconButton style={{padding: "0", position: "absolute", right: "15px", top: "18px"}}
+                            onClick={handleOpenMenu}
+                >
+                    <MoreHorizIcon fontSize="medium" style={{color: "white"}}/>
+                </IconButton>
+            )
+        }
         <EditProjectModal isOpen={isEditProjectModalOpen} setIsOpen={setIsEditProjectModalOpen} project={project}/>
         <div style={{display: "flex", marginBottom: "10px"}}>
-            <Typography variant="h6">{project.name}</Typography>
+            <Typography variant="h6" style={{minWidth: "max-content"}}>{project.name}</Typography>
             <div style={{width: "100%", flexGrow: "2"}}></div>
-            {
-                showMoreButton && (
-                    <IconButton style={{padding: "0"}}
-                                onClick={handleOpenMenu}
-                    >
-                        <MoreHorizIcon fontSize="medium" style={{color: "white"}}/>
-                    </IconButton>
-                )
-            }
             <Menu
                 anchorEl={menuAnchor}
                 open={menuOpen}
