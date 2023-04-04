@@ -9,10 +9,11 @@ import Button from "@mui/material/Button";
 import AddIcon from '@mui/icons-material/Add';
 import {useState} from "react";
 import NewProjectModal from "./NewProjectModal";
+import ProjectCard from "./ProjectCard";
 
 const ProjectEditor = observer(() => {
-    const [isOpen, setIsOpen] = useState(false);
-    const handleOpen = () => setIsOpen(true);
+    const [isNewProjectModalOpen, setIsNewProjectModalOpen] = useState(false);
+    const handleOpen = () => setIsNewProjectModalOpen(true);
 
     const AccordionSummary = styled((props) => (
         <MuiAccordionSummary
@@ -36,7 +37,7 @@ const ProjectEditor = observer(() => {
     }));
 
     return <Card style={{marginTop: "15px", display: "grid"}}>
-        <NewProjectModal isOpen={isOpen} setIsOpen={setIsOpen}/>
+        <NewProjectModal isOpen={isNewProjectModalOpen} setIsOpen={setIsNewProjectModalOpen}/>
         <Accordion>
             <AccordionSummary
                 style={{maxWidth: "min-content"}}
@@ -49,30 +50,7 @@ const ProjectEditor = observer(() => {
                 <div style={{display: "flex", flexWrap:"wrap"}}>
                 {
                     projectState.projectsDetails.map(project =>
-                        <Card key={project._id} style={{padding: "15px", width: "300px", margin: "15px", backgroundColor: "rgba(255, 255, 255, 0.05)"}} elevation="5">
-
-                            <Typography variant="h6" style={{marginBottom: "10px"}}>{project.name}</Typography>
-
-                            <div style={{display: "flex", width: "100%"}}>
-                                <Typography style={{width: "50%"}}>Platform</Typography>
-                                <Typography>{project.platform}</Typography>
-                            </div>
-
-                            <div style={{display: "flex", width: "100%"}}>
-                                <Typography style={{width: "50%"}}>Cicd project</Typography>
-                                <Typography>{project.cicdProjectId}</Typography>
-                            </div>
-
-                            <div style={{display: "flex", width: "100%"}}>
-                                <Typography style={{width: "50%"}}>Cicd path</Typography>
-                                <Typography>{project.cicdPath}</Typography>
-                            </div>
-
-                            <div style={{display: "flex", width: "100%"}}>
-                                <Typography style={{width: "50%"}}>Tms project</Typography>
-                                <Typography>{project.tmsProjectId}</Typography>
-                            </div>
-                        </Card>
+                        <ProjectCard key={project._id} project={project} />
                     )
                 }
                 </div>

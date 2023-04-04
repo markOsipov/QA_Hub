@@ -2,21 +2,13 @@ import {Box, FormControl, InputLabel, MenuItem, Modal, Select, TextField} from "
 import Typography from "@mui/material/Typography";
 import {useEffect, useState} from "react";
 import useSWR from "swr";
-import {createProject, loadPlatforms, loadProjects} from "../../../requests/QAHubBackend";
+import {createProject, loadPlatforms, loadProjects, updateProject} from "../../../requests/QAHubBackend";
 import StyledTextField from "../../primitives/StyledTextField";
 import Button from "@mui/material/Button";
 import projectState from "../../../state/ProjectState";
 
-function NewProjectModal({isOpen, setIsOpen}) {
-    const defaultProjectValue = {
-        name: "",
-        platform: "",
-        cicdPath: "",
-        cicdProjectId: "",
-        tmsProjectId: ""
-    }
-
-    const [newProject, setNewProject] = useState(defaultProjectValue)
+function NewProjectModal({isOpen, setIsOpen, project}) {
+    const [currentProject, setCurrentProject] = useState(project)
     const [platforms, setPlatforms] = useState([])
 
     let {data, error} = useSWR('loadPlatforms', async () => {
@@ -27,7 +19,7 @@ function NewProjectModal({isOpen, setIsOpen}) {
 
     useEffect(() => {
         if (isOpen) {
-            setNewProject(defaultProjectValue)
+            setCurrentProject(project)
         }
     }, [isOpen])
 
@@ -42,17 +34,17 @@ function NewProjectModal({isOpen, setIsOpen}) {
     }
 
     const selectPlatform = (event) => {
-        setNewProject({
-            ...newProject,
+        setCurrentProject({
+            ...currentProject,
             platform: event.target.value
         })
     }
 
     const handleAddProjectButtonClick = () => {
-        if (projectState.projects.includes(newProject.name)) {
+        if (projectState.projects.includes(currentProject.name)) {
             alert("A project with the same name already exists")
         } else {
-            createProject(newProject).then(() => {
+            updateProject(currentProject).then(() => {
                 projectState.updateProjects()
                 setIsOpen(false)
             })
@@ -88,17 +80,17 @@ function NewProjectModal({isOpen, setIsOpen}) {
     >
         <Box sx={style}>
             <Typography id="modal-modal-title" variant="h6" component="h2" style={{marginBottom: "10px"}}>
-                Adding new project
+                Editing project
             </Typography>
 
-            <StyledTextField value={newProject.name}
+            <StyledTextField value={currentProject.name}
                              size="small"
                              label="Project name"
                              style={{minWidth: "300px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
-                                 setNewProject({
-                                    ...newProject,
+                                 setCurrentProject({
+                                    ...currentProject,
                                     name: event.target.value
                                  })
                              }}
@@ -107,7 +99,7 @@ function NewProjectModal({isOpen, setIsOpen}) {
             <FormControl sx={{ minWidth: 300, margin: "8px" }} size="small">
                 <InputLabel style={{ color: "var(--faded-text-color)" }}>Platform</InputLabel>
                 <Select
-                    value={newProject.platform || ''}
+                    value={currentProject.platform || ''}
                     label="Platform"
                     onChange={selectPlatform}
                 >
@@ -119,39 +111,39 @@ function NewProjectModal({isOpen, setIsOpen}) {
                 </Select>
             </FormControl>
 
-            <StyledTextField value={newProject.cicdPath}
+            <StyledTextField value={currentProject.cicdPath}
                              size="small"
                              label="CI\CD path"
                              style={{minWidth: "300px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange={(event) => {
-                                 setNewProject({
-                                     ...newProject,
+                                 setCurrentProject({
+                                     ...currentProject,
                                      cicdPath: event.target.value
                                  })
                              }}
             />
-            <StyledTextField value={newProject.cicdProjectId}
+            <StyledTextField value={currentProject.cicdProjectId}
                              size="small"
                              label="CI\CD project id"
                              style={{minWidth: "300px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange={(event) => {
-                                 setNewProject({
-                                     ...newProject,
+                                 setCurrentProject({
+                                     ...currentProject,
                                      cicdProjectId: event.target.value
                                  })
                              }}
             />
 
-            <StyledTextField value={newProject.tmsProjectId}
+            <StyledTextField value={currentProject.tmsProjectId}
                              size="small"
                              label="TMS project id"
                              style={{minWidth: "300px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange={(event) => {
-                                 setNewProject({
-                                     ...newProject,
+                                 setCurrentProject({
+                                     ...currentProject,
                                      tmsProjectId: event.target.value
                                  })
                              }}
@@ -161,7 +153,7 @@ function NewProjectModal({isOpen, setIsOpen}) {
                     color="error"
                     onClick={handleAddProjectButtonClick}
                     style={{margin: "12px 8px 0 8px"}}
-            >Add project</Button>
+            >Save changes</Button>
         </Box>
     </Modal>
 }

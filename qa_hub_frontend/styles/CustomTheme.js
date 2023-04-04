@@ -26,6 +26,7 @@ export var customTheme = createTheme({
             header: '#3b3b3b',
             evenRow: '#00000022'
         },
+
         text: {
             primary: 'rgba(255,255,255,0.75)',
             white: '#ffffff'
