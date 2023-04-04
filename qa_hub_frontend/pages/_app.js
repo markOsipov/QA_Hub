@@ -11,7 +11,7 @@ import GoToSettingsStub from "../components/stubs/GoToSettingsStub";
 
 function MyApp({ Component, pageProps }) {
     let router = useRouter()
-    let { data, error } = useSWR("/api/config/projects", loadProjects, { refreshInterval: 60000 })
+    let { data, error } = useSWR("loadProjects", loadProjects, { refreshInterval: 60000 })
 
     useEffect(() => {
         if(data?.data) {

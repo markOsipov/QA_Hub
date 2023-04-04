@@ -19,7 +19,7 @@ function NewProjectModal({isOpen, setIsOpen}) {
     const [newProject, setNewProject] = useState(defaultProjectValue)
     const [platforms, setPlatforms] = useState([])
 
-    let {data, error} = useSWR('getAssertsScreen', async () => {
+    let {data, error} = useSWR('loadPlatforms', async () => {
         return await loadPlatforms()
     }, {
         revalidateOnFocus: false,
