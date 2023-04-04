@@ -3,12 +3,13 @@ import AutorenewIcon from "@mui/icons-material/Autorenew";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {Paper} from "@mui/material";
 import {clearData, hardReset, loadProjects} from "../../requests/QAHubBackend";
+import projectState from "../../state/ProjectState";
 
 export default function ResetPlate() {
     function handleHardResetClick() {
         if (confirm("All current data will be erased.\nThen the default data set would be restored.\n\nContinue?")) {
             hardReset().then(() => {
-                loadProjects()
+                projectState.updateProjects()
             })
         }
     }
@@ -16,7 +17,7 @@ export default function ResetPlate() {
     function handleClearDataClick() {
         if (confirm("All current data will be erased.\n\nContinue?")) {
             clearData().then(() => {
-                loadProjects()
+                projectState.updateProjects()
             })
         }
     }

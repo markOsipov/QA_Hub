@@ -89,7 +89,7 @@ class QaHubConfigController {
         )
 
         projects.forEach { project ->
-            projectService.upsertProject(project)
+            projectService.insertProject(project)
             repeat(10) {
                 val testcase = testcaseService.insertTestcase(
                     QaHubTestcase( project = project.name, description = "Sample testcase", team = teams.random())
