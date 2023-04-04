@@ -1,0 +1,22 @@
+version: '3.3'
+services:
+  frontend:
+    image: qa_hub_frontend:latest
+    container_name: "qa_hub_frontend"
+    restart: always
+    build:
+      context: .
+    ports:
+      - '3000:3000'
+    environment:
+      - NEXT_PUBLIC_QA_HUB_BACKEND=http://127.0.0.1:8080
+    networks: # Networks to join (Services on the same network can communicate with each other using their name)
+      - qa_hub_network
+    volumes:
+      - qa_hub_frontend:/usr/src/app/qa_hub_frontend
+
+volumes:
+  qa_hub_frontend:
+
+networks:
+  qa_hub_network:

@@ -6,6 +6,7 @@
     "dev": "NEXT_PUBLIC_QA_HUB_BACKEND=http://127.0.0.1:8080 next dev",
     "build": "next build",
     "start": "next start",
+    "start_local": "NEXT_PUBLIC_QA_HUB_BACKEND=http://127.0.0.1:8080 next start",
     "lint": "next lint"
   },
   "dependencies": {
