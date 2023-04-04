@@ -5,9 +5,8 @@ import {Card, ListItemIcon, ListItemText, Menu, MenuItem} from "@mui/material";
 import {useState} from "react";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {deleteProject, updateProject} from "../../../requests/QAHubBackend";
+import {deleteProject} from "../../../requests/QAHubBackend";
 import projectState from "../../../state/ProjectState";
-import NewProjectModal from "./NewProjectModal";
 import EditProjectModal from "./EditProjectModal";
 
 export default function ProjectCard({project, ...props}) {
