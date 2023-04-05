@@ -10,6 +10,7 @@ data class Platform(val name: String, val separator: String)
 enum class Platforms(val platform: Platform) {
     ANDROID(Platform("android", "#")),
     IOS(Platform("ios", ".")),
+    BACKEND(Platform("backend", ".")),
     DEFAULT(Platform("unknown", "."));
 
     companion object {
