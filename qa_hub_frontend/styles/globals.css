@@ -7,6 +7,7 @@ body {
 
   --primary-text-color: rgba(255, 255, 255, 0.75);
   --faded-text-color: rgba(255, 255, 255, 0.6);
+  --disabled-text-color: rgba(255, 255, 255, 0.3);
   --white-text-color: #ffffff
 }
 
@@ -40,4 +41,12 @@ a {
 
 button + button {
   margin-left: 10px!important;
+}
+
+.MuiSvgIcon-root {
+  color: var(--primary-text-color)
+}
+
+.Mui-disabled .MuiSvgIcon-root {
+  color: var(--disabled-text-color)
 }

@@ -1,9 +1,9 @@
 import {
     Paper, Switch,
     Table,
-    TableBody,
-    TableContainer,
-    TableHead,
+    TableBody, TableCell,
+    TableContainer, TableFooter,
+    TableHead, TablePagination, TableRow,
 } from "@mui/material";
 import {StyledTableRow} from "../primitives/Table/StyledTableRow";
 import {StyledTableCell} from "../primitives/Table/StyledTableCell";
@@ -16,13 +16,18 @@ import BlockedTestTableRow from "./BlockedTestTableRow";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import AddBlockedTestModal from "./AddBlockedTestModal";
+import TablePaginationActions from "../primitives/Table/TablePaginationActions";
 
 
 const BlockedTestsTable = observer(() => {
     let {selectedProject} = projectState
+
     const [blockedTests, setBlockedTests] = useState([])
     const [showFullName, setShowFullName] = useState(true)
     const [addBlockedTestModalOpen, setAddBlockedTestModalOpen] = useState(false)
+
+    const [page, setPage] = useState(0)
+    const [rowsPerPage, setRowsPerPage] = useState(20)
 
     useEffect(() => {
         updateBlockedTestsList()
@@ -36,6 +41,15 @@ const BlockedTestsTable = observer(() => {
 
     function handleOpenAddBlockedTestModal() {
         setAddBlockedTestModalOpen(true)
+    }
+
+    function handleChangePage(event, newPage) {
+        setPage(newPage)
+    }
+
+    function handleChangeRowsPerPage(event) {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0)
     }
 
     return <div>
@@ -58,27 +72,53 @@ const BlockedTestsTable = observer(() => {
                     </TableHead>
                     <TableBody>
                         {
-                            blockedTests.map((blockedTest, index) =>
-                                <BlockedTestTableRow
-                                    key={blockedTest._id}
-                                    index={index}
-                                    blockedTestForRow={blockedTest}
-                                    showFullName={showFullName}
-                                    setShowFullName={setShowFullName}
-                                    updateBlockedTestsList={updateBlockedTestsList}
-                                />
+                            (rowsPerPage > 0
+                                ? blockedTests.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                : blockedTests
+                            ).map((blockedTest, index) => {
+                                    return blockedTest && <BlockedTestTableRow
+                                        key={blockedTest._id}
+                                        index={index}
+                                        blockedTestForRow={blockedTest}
+                                        showFullName={showFullName}
+                                        setShowFullName={setShowFullName}
+                                        updateBlockedTestsList={updateBlockedTestsList}
+                                    />
+                                }
                             )
                         }
                     </TableBody>
+                    <TableFooter>
+                        <TableRow>
+                            <StyledTableCell style={{borderBottom: "1px solid rgba(224, 224, 224, 1)"}}>
+                                <Button variant="contained"
+                                        color="error"
+                                        startIcon={<AddIcon />}
+                                        onClick={handleOpenAddBlockedTestModal}
+                                        style={{margin: "0 15px", width: "max-content"}}
+                                >Add blocked test</Button>
+                            </StyledTableCell>
+                            <TablePagination
+                                rowsPerPageOptions={[20, 50, 100, { label: 'All', value: -1 }]}
+
+                                count={blockedTests.length}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                SelectProps={{
+                                    inputProps: {
+                                        'aria-label': 'rows per page',
+                                    },
+                                    native: true,
+                                }}
+                                onPageChange={handleChangePage}
+                                onRowsPerPageChange={handleChangeRowsPerPage}
+                                ActionsComponent={TablePaginationActions}
+                            />
+                        </TableRow>
+                    </TableFooter>
                 </Table>
             </TableContainer>
         </Paper>
-        <Button variant="contained"
-                color="error"
-                startIcon={<AddIcon />}
-                onClick={handleOpenAddBlockedTestModal}
-                style={{margin: "0 15px"}}
-        >Add blocked test</Button>
     </div>
 })
 
