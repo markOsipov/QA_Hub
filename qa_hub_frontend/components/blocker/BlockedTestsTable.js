@@ -76,7 +76,7 @@ const BlockedTestsTable = observer(() => {
                                 ? blockedTests.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 : blockedTests
                             ).map((blockedTest, index) => {
-                                    return blockedTest && <BlockedTestTableRow
+                                    return <BlockedTestTableRow
                                         key={blockedTest._id}
                                         index={index}
                                         blockedTestForRow={blockedTest}
@@ -90,7 +90,7 @@ const BlockedTestsTable = observer(() => {
                     </TableBody>
                     <TableFooter>
                         <TableRow>
-                            <StyledTableCell style={{borderBottom: "1px solid rgba(224, 224, 224, 1)"}}>
+                            <StyledTableCell style={{borderBottom: "1px solid rgba(224, 224, 224, 1)", maxWidth: "50px"}} spanCol={3}>
                                 <Button variant="contained"
                                         color="error"
                                         startIcon={<AddIcon />}
