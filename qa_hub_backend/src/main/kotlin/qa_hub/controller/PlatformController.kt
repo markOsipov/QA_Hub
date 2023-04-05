@@ -11,7 +11,7 @@ import qa_hub.entity.Platforms
 class PlatformController {
 
     @GetMapping("")
-    fun getProjects(): List<Platform> {
+    fun getPlatforms(): List<Platform> {
         return Platforms.values().map{ it.platform }
     }
 }
