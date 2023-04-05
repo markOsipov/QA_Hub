@@ -39,6 +39,13 @@ class BlockedTestsService {
     fun blockTest(blockedTest: BlockedTest): UpdateResult = runBlocking {
         blockedTest.blockDate = formatDate()
 
+        try {
+            val separator = projectService.currentProjects.first { it.name == blockedTest.project }.separator
+            blockedTest.shortName = blockedTest.fullName.substringAfterLast(separator)
+        } catch (e: Exception) {
+            throw Exception("Blocked test has wrong project name: ${blockedTest.project}")
+        }
+
         blockedTestsCollection.updateOne(
             and(
                 BlockedTest::project.eq(blockedTest.project),

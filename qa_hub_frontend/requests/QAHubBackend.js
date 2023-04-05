@@ -25,6 +25,19 @@ export function unblockTest(blockedTest) {
     return axios(config)
 }
 
+export function blockTest(blockedTest) {
+    const config = {
+        method: 'post',
+        url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat("/api/blocker/block"),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data: blockedTest
+    }
+
+    return axios(config)
+}
+
 export function editBlockedTest(blockedTest) {
     const config = {
         method: 'post',

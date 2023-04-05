@@ -11,28 +11,41 @@ import qa_hub.core.mongo.QaHubMongoClient
 import qa_hub.core.mongo.entity.Collections.PROJECTS
 import qa_hub.core.mongo.utils.setCurrentPropertyValues
 import qa_hub.entity.Project
+import java.time.LocalDateTime
 
 @Service
 class ProjectService {
     @Autowired
     lateinit var mongoClient: QaHubMongoClient
 
-    private val projectsCollections by lazy {
+    private var lastProjectsUpdate: Long? = null
+    private var projectsValue = listOf<Project>()
+    val currentProjects: List<Project>
+        get() {
+            val currentTime = System.currentTimeMillis()
+            if (lastProjectsUpdate == null || currentTime - lastProjectsUpdate!! > 15000) {
+                projectsValue = getProjects()
+                lastProjectsUpdate = currentTime
+            }
+            return projectsValue
+        }
+
+    private val projectsCollection by lazy {
         mongoClient.db.getCollection<Project>(PROJECTS.collectionName)
     }
 
     fun getProjects(): List<Project> = runBlocking {
-        projectsCollections.find().toList()
+        projectsCollection.find().toList()
     }
 
     fun getProject(projectName: String): Project? = runBlocking {
-        projectsCollections.find(
+        projectsCollection.find(
             Project::name.eq(projectName)
         ).toList().firstOrNull()
     }
 
     fun upsertProject(project: Project) = runBlocking {
-        projectsCollections.updateOneById(
+        projectsCollection.updateOneById(
             project._id!!,
             set(
                 *(project.setCurrentPropertyValues(skipProperties = listOf("_id")))
@@ -40,7 +53,7 @@ class ProjectService {
             upsert()
         )
 
-        return@runBlocking  projectsCollections.findOne(
+        return@runBlocking  projectsCollection.findOne(
             Project::name.eq(project.name)
         )!!
     }
@@ -48,9 +61,9 @@ class ProjectService {
     fun insertProject(project: Project) = runBlocking {
         val projects = getProjects()
         if (projects.firstOrNull { it.name == project.name } == null) {
-            projectsCollections.insertOne(project)
+            projectsCollection.insertOne(project)
 
-            return@runBlocking projectsCollections.findOne(
+            return@runBlocking projectsCollection.findOne(
                 Project::name.eq(project.name)
             )!!
         } else {
@@ -59,12 +72,12 @@ class ProjectService {
     }
 
     fun deleteProject(projectName: String): DeleteResult = runBlocking {
-        projectsCollections.deleteOne(
+        projectsCollection.deleteOne(
             Project::name.eq(projectName)
         )
     }
 
     fun deleteAllProjects(): DeleteResult = runBlocking {
-        projectsCollections.deleteMany()
+        projectsCollection.deleteMany()
     }
 }
