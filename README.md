@@ -29,13 +29,18 @@ sudo docker-compose --env-file ../.config/env up -d \
 
 ## Frontend:
 ####
+###Preparation:
+brew install npm
+
 ###Local launch: 
 cd qa_hub_frontend \
+npm install \
 npm run build \
 npm run start_local
 
 ###Local launch in dev mode:
 cd qa_hub_frontend \
+npm install \
 npm run dev
 
 in dev mode all pages would rerender on each request, all static props also would be requested.
