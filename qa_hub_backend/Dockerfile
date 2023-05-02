@@ -12,7 +12,7 @@ COPY --from=builder /home/gradle/src/build/libs/*.jar /app/app.jar
 WORKDIR /app
 
 RUN mkdir /var/log/qa_hub
-RUN chmod -R g+rw /var/log/qa_hub
+RUN chmod -R 777 /var/log/qa_hub
 RUN env
 
 EXPOSE 8080
