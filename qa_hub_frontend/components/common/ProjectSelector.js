@@ -20,7 +20,7 @@ const ProjectSelector = observer(({style}) => {
                 size="small"
             >
                 {
-                    projectState.projects.map(project => (
+                    (projectState.projects || []).map(project => (
                         <MenuItem key={project} value={project}>{project}</MenuItem>
                     ))
                 }

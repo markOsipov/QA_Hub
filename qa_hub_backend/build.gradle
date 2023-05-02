@@ -16,6 +16,7 @@ buildscript {
         retrofit_ver = "2.9.0"
         okhttp_ver = "4.8.1"
         gson_ver = "2.8.6"
+        logback_json_ver = "0.1.2"
     }
 }
 
@@ -54,6 +55,8 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-scalars:$retrofit_ver")
     implementation("com.squareup.okhttp3:okhttp:$okhttp_ver")
     implementation("com.squareup.okhttp3:logging-interceptor:$okhttp_ver")
+    implementation("ch.qos.logback.contrib:logback-json-classic:$logback_json_ver")
+    implementation("ch.qos.logback.contrib:logback-jackson:$logback_json_ver")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test:$spring_version")
 }

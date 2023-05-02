@@ -40,7 +40,7 @@ function NewProjectModal({isOpen, setIsOpen, project}) {
         })
     }
 
-    const handleAddProjectButtonClick = () => {
+    const handleUpdateProjectButtonClick = () => {
         if (projectState.projects.includes(currentProject.name)) {
             alert("A project with the same name already exists")
         } else {
@@ -151,7 +151,7 @@ function NewProjectModal({isOpen, setIsOpen, project}) {
 
             <Button variant="contained"
                     color="error"
-                    onClick={handleAddProjectButtonClick}
+                    onClick={handleUpdateProjectButtonClick}
                     style={{margin: "12px 8px 0 8px"}}
             >Save changes</Button>
         </Box>
