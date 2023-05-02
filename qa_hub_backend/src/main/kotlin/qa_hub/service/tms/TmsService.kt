@@ -13,6 +13,7 @@ import qa_hub.core.mongo.entity.Collections.TMS_INTEGRATIONS
 import qa_hub.core.mongo.utils.setCurrentPropertyValues
 import qa_hub.entity.Project
 import qa_hub.service.tms.entity.TmsInfo
+import qa_hub.service.tms.entity.TmsType
 
 @Service
 class TmsService {
@@ -33,7 +34,7 @@ class TmsService {
             tmsIntegrationsCollection.insertOne(integration)
 
             return@runBlocking tmsIntegrationsCollection.findOne(
-                Project::name.eq(integration.tmsType)
+                TmsInfo::tmsType.eq(integration.tmsType)
             )!!
         } else {
             throw Exception("Integration type is not unique")

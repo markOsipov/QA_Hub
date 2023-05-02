@@ -6,6 +6,7 @@ import com.google.gson.JsonParser
 
 
 fun String.toPrettyJson(): String {
+    if (this.isEmpty()) return this
     try {
         val parser = JsonParser()
         val json: JsonElement = if (this.trim().first() == '[') {

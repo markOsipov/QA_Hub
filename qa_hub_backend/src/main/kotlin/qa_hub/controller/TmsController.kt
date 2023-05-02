@@ -37,7 +37,7 @@ class TmsController {
         return tmsService.updateTmsIntegration(body)
     }
 
-    @DeleteMapping("/integrations/delete/{id}")
+    @PostMapping("/integrations/delete/{id}")
     fun deleteTmsIntegration(@PathVariable("id") id: String): DeleteResult {
         return tmsService.deleteTmsIntegration(id)
     }
