@@ -1,6 +1,6 @@
 import {makeAutoObservable} from "mobx";
 import {getCookie, setCookie} from "../utils/CookieHelper";
-import {loadProjects} from "../requests/QAHubBackend";
+import {loadProjects} from "../requests/ProjectRequests";
 
 class ProjectState {
     projects = getCookie("projects")                   //Project names only

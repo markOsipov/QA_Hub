@@ -1,4 +1,4 @@
-FROM gradle:7.0 as builder
+FROM gradle:8.0 as builder
 
 COPY . /home/gradle/src
 WORKDIR /home/gradle/src

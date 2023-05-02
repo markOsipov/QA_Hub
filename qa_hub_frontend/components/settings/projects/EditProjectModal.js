@@ -2,7 +2,7 @@ import {Box, FormControl, InputLabel, MenuItem, Modal, Select, TextField} from "
 import Typography from "@mui/material/Typography";
 import {useEffect, useState} from "react";
 import useSWR from "swr";
-import {createProject, loadPlatforms, loadProjects, updateProject} from "../../../requests/QAHubBackend";
+import {createProject, loadPlatforms, loadProjects, updateProject} from "../../../requests/ProjectRequests";
 import StyledTextField from "../../primitives/StyledTextField";
 import Button from "@mui/material/Button";
 import projectState from "../../../state/ProjectState";

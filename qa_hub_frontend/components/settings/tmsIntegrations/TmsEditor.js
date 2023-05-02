@@ -11,7 +11,7 @@ import useSWR from "swr";
 import {getTmsIntegrations, getTmsTypes} from "../../../requests/TMSRequests";
 import TmsCard from "./TmsCard";
 import NewTmsModal from "./NewTmsModal";
-import {loadPlatforms} from "../../../requests/QAHubBackend";
+import {loadPlatforms} from "../../../requests/ProjectRequests";
 
 const TmsEditor = observer(() => {
     const [isNewTmsModalOpen, setIsNewTmsModalOpen] = useState(false)

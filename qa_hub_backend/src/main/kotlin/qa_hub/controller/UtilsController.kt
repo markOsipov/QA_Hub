@@ -1,0 +1,31 @@
+package qa_hub.controller
+
+import com.google.gson.Gson
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
+import java.io.File
+
+@RestController
+@RequestMapping("/api/utils")
+class UtilsController {
+    data class LogEntity(
+        val timestamp: String,
+        val level: String,
+        val thread: String,
+        val logger: String,
+        val message: String
+    )
+    @GetMapping("/logs")
+    fun getLogs(@RequestParam(required = false, defaultValue = "200") linesCount: Int): List<LogEntity> {
+
+        val logFile = File("/var/log/qa_hub/application_json.log")
+        if (logFile.exists()) {
+            return logFile.readText().lines().takeLast(linesCount).map {
+                Gson().fromJson(it, LogEntity::class.java)
+            }.dropLast(1)
+        }
+        return listOf()
+    }
+}

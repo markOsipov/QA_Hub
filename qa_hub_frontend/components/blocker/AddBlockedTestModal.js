@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import {useEffect, useState} from "react";
 import useSWR from "swr";
 import Button from "@mui/material/Button";
-import {blockTest} from "../../requests/QAHubBackend";
+import {blockTest} from "../../requests/BlockerRequests";
 import StyledTextField from "../primitives/StyledTextField";
 import projectState from "../../state/ProjectState";
 
