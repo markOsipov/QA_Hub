@@ -93,15 +93,17 @@ function Logs() {
                                             </div>
                                         </StyledTableCell>
 
-                                        <StyledTableCell style={{ height: "100%", width: "100%", overflowY: "scroll"}}>
-                                            <div style={{display: "flex", flexDirection: "column", whiteSpace: "pre-wrap"}}>
-                                                {
-                                                    logEntry.message
-                                                        .replace("\\", "")
-                                                        .split("\n").map((line, lineIndex) => {
-                                                        return <label key={index + "_" + lineIndex} style={{}}>{line}</label>
-                                                    })
-                                                }
+                                        <StyledTableCell style={{paddingTop: "10px", paddingBottom: "10px"}}>
+                                            <div style={{maxHeight: "300px", overflowY: "scroll"}}>
+                                                <div style={{display: "flex", flexDirection: "column", whiteSpace: "pre-wrap", maxHeight: "300px", overflowY: "visible"}}>
+                                                    {
+                                                        logEntry.message
+                                                            .replace("\\", "")
+                                                            .split("\n").map((line, lineIndex) => {
+                                                            return <label key={index + "_" + lineIndex} style={{}}>{line}</label>
+                                                        })
+                                                    }
+                                                </div>
                                             </div>
                                         </StyledTableCell>
                                     </StyledTableRow>
