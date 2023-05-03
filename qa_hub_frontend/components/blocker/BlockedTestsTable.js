@@ -9,7 +9,7 @@ import {StyledTableRow} from "../primitives/Table/StyledTableRow";
 import {StyledTableCell} from "../primitives/Table/StyledTableCell";
 import {observer} from "mobx-react-lite";
 import projectState from "../../state/ProjectState";
-import {getBlockedTests} from "../../requests/QAHubBackend";
+import {getBlockedTests} from "../../requests/BlockerRequests";
 import {useState, useEffect} from "react";
 import FullNameTableHeaderCell from "./FullNameTableHeaderCell";
 import BlockedTestTableRow from "./BlockedTestTableRow";

@@ -2,7 +2,7 @@ import Button from "@mui/material/Button";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {Paper} from "@mui/material";
-import {clearData, hardReset, loadProjects} from "../../requests/QAHubBackend";
+import {clearData, hardReset} from "../../requests/ResetRequests";
 import projectState from "../../state/ProjectState";
 
 export default function ResetPlate() {

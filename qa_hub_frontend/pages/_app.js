@@ -4,7 +4,7 @@ import {customTheme} from "../styles/CustomTheme";
 import {Card, ThemeProvider} from "@mui/material";
 import projectState from "../state/ProjectState";
 import useSWR from "swr";
-import {loadProjects} from "../requests/QAHubBackend";
+import {loadProjects} from "../requests/ProjectRequests";
 import {useEffect} from "react";
 import { useRouter } from 'next/router'
 import GoToSettingsStub from "../components/stubs/GoToSettingsStub";

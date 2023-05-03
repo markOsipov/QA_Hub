@@ -11,7 +11,7 @@ const ProjectSelector = observer(({style}) => {
 
     return(
         <FormControl style={{...style}}>
-            <InputLabel id="project-selector-label">Project</InputLabel>
+            <InputLabel id="project-selector-label" style={{color: "var(--faded-text-color)"}}>Project</InputLabel>
             <Select
                 id="project-selector"
                 value={projectState.selectedProject}

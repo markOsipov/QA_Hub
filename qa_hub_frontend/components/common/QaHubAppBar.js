@@ -11,6 +11,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ProjectSelector from "./ProjectSelector";
 import {useRouter} from "next/router";
+import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 
 const pages = ['blocker', 'statistics', 'metrics'];
 
@@ -52,6 +53,14 @@ function QaHubAppBar() {
                                 {page}
                             </Button>
                         ))}
+                    </Box>
+
+                    <Box>
+                        <Tooltip title="Open logs">
+                            <IconButton href="/logs">
+                                <TextSnippetIcon fontSize="large" style={{color: "white"}}/>
+                            </IconButton>
+                        </Tooltip>
                     </Box>
 
                     <Box>

@@ -6,7 +6,7 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import {Switch} from "@mui/material";
 import EditableTableCell from "../primitives/Table/EditableTableCell";
 import FullNameTableCell from "./FullNameTableCell";
-import {editBlockedTest, getBlockedTests, unblockTest} from "../../requests/QAHubBackend";
+import {editBlockedTest, getBlockedTests, unblockTest} from "../../requests/BlockerRequests";
 import projectState from "../../state/ProjectState";
 import {useState, useEffect} from "react";
 
