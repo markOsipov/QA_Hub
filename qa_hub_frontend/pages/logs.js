@@ -80,7 +80,6 @@ function Logs() {
             }
         }
     }
-
     function parseDate(timestamp) {
         let dateFormat = new Date(Number.parseInt(timestamp))
         let year = dateFormat.getFullYear()
@@ -154,8 +153,6 @@ function Logs() {
                                     <SearchIcon/>
                                 </InputAdornment>
                             }
-                            // value={searchFilterValue}
-                            // onChange={handleSearchStringChange}
                             onKeyDown={handleSearch}
                         />
                     </FormControl>
@@ -215,6 +212,21 @@ function Logs() {
                             filteredLogs.map((logEntry, index) => {
                                     const colors = getColors(logEntry.level)
                                     const {date, time} = parseDate(logEntry.timestamp)
+                                    const messageLines = logEntry.message
+                                        .replace("\\", "")
+                                        .split("\n")
+
+                                    function getStyle() {
+                                        if (messageLines.length > 15) {
+                                            return {
+                                                overflowY: "scroll",
+                                                resize: "vertical",
+                                                minHeight: "100px",
+                                                maxHeight: (20 * messageLines.length + 25) + "px"
+                                            }
+                                            return {}
+                                        }
+                                    }
 
                                     return <StyledTableRow key={index} style={colors}>
                                         <StyledTableCell align="left">
@@ -235,12 +247,10 @@ function Logs() {
                                         </StyledTableCell>
 
                                         <StyledTableCell style={{paddingTop: "10px", paddingBottom: "10px", width: "100%", paddingRight: "5px"}}>
-                                            <div style={{maxHeight: "300px", overflowY: "scroll"}}>
+                                            <div style={{maxHeight: "300px", ...getStyle()}}>
                                                 <div style={{display: "flex", flexDirection: "column", whiteSpace: "pre-wrap", maxHeight: "300px", overflowY: "visible"}}>
                                                     {
-                                                        logEntry.message
-                                                            .replace("\\", "")
-                                                            .split("\n").map((line, lineIndex) => {
+                                                        messageLines.map((line, lineIndex) => {
                                                             return <label key={index + "_" + lineIndex} style={{}}>{line}</label>
                                                         })
                                                     }
