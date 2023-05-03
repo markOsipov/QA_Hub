@@ -45,6 +45,27 @@ function Logs() {
         setFilteredLogs(filtered)
     }, [logFilter, logs])
 
+    function getColors(logLevel){
+        if (logLevel === "ERROR") {
+            return {
+                backgroundColor: "rgba(255, 0, 0, 0.03)",
+                borderColor: "#d44e4f",
+                color: "#d44e4f"
+            }
+        } else if (logLevel === "WARN") {
+            return {
+                backgroundColor: "rgba(255, 213, 0, 0.05)",
+                borderColor: "rgba(255, 213, 0, 1)",
+                color: "rgba(255, 213, 0, 1)"
+            }
+        } else if (logLevel === "DEBUG") {
+            return {
+                borderColor: "rgba(255, 255, 255, 0.4)",
+                color: "rgba(255, 255, 255, 0.4)"
+            }
+        }
+    }
+
     return <div style={{padding: "15px"}}>
         <Paper style={{padding: "15px", marginBottom: "15px"}}>Filters</Paper>
         <Paper>
@@ -60,13 +81,16 @@ function Logs() {
                     <TableBody>
                         {
                             filteredLogs.map((logEntry, index) => {
-                                    return <StyledTableRow key={index}>
+                                    let colors = getColors(logEntry.level)
+                                    return <StyledTableRow key={index} style={colors}>
                                         <StyledTableCell align="left">
                                             <label style={{ padding: "5px 9px"}}>{index + 1}</label>
                                         </StyledTableCell>
 
                                         <StyledTableCell align="center">
-                                            <label style={{border: "1px solid darkgray", borderRadius: "5px", padding: "5px"}}>{logEntry.level}</label>
+                                            <div style={{padding: "7px"}}>
+                                                <label style={{border: "1px solid darkgray", borderRadius: "5px", padding: "5px", ...colors}}>{logEntry.level}</label>
+                                            </div>
                                         </StyledTableCell>
 
                                         <StyledTableCell style={{ height: "100%", width: "100%", overflowY: "scroll"}}>
