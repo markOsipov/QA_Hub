@@ -28,7 +28,7 @@ class UtilsController {
 
         val logFile = File(logFilePath)
         if (logFile.exists()) {
-            val logs = logFile.readText().lines().takeLast(linesCount).map {
+            val logs = logFile.readText().lines().takeLast(linesCount + 1).map {
                 Gson().fromJson(it, LogEntity::class.java)
             }.dropLast(1)
 

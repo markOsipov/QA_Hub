@@ -66,6 +66,23 @@ function Logs() {
         }
     }
 
+    function parseDate(timestamp) {
+        let dateFormat = new Date(Number.parseInt(timestamp))
+        let year = dateFormat.getFullYear()
+        let month = dateFormat.getMonth()
+        let day = dateFormat.getDay()
+
+        let hours = dateFormat.getHours()
+        let minutes = dateFormat.getMinutes()
+        let seconds = dateFormat.getSeconds()
+        let millis = dateFormat.getMilliseconds()
+
+        let date = `${day}-${month}-${year}`
+        let time = `${hours}:${minutes}:${seconds}:${millis}`
+
+        return {date, time}
+    }
+
     return <div style={{padding: "15px"}}>
         <Paper style={{padding: "15px", marginBottom: "15px"}}>Filters</Paper>
         <Paper>
@@ -74,14 +91,17 @@ function Logs() {
                     <TableHead style={{ height: "60px" }}>
                         <StyledTableRow>
                             <StyledTableCell align='center' style={{maxWidth: "50px", width: "50px"}}>№</StyledTableCell>
-                            <StyledTableCell style={{minWidth: "150px"}} align='center'>Level</StyledTableCell>
+                            <StyledTableCell style={{minWidth: "100px"}} align='center'>Level</StyledTableCell>
+                            <StyledTableCell style={{minWidth: "150px"}} align='center'>Date</StyledTableCell>
                             <StyledTableCell align='left'>Message</StyledTableCell>
                         </StyledTableRow>
                     </TableHead>
                     <TableBody>
                         {
                             filteredLogs.map((logEntry, index) => {
-                                    let colors = getColors(logEntry.level)
+                                    const colors = getColors(logEntry.level)
+                                    const {date, time} = parseDate(logEntry.timestamp)
+
                                     return <StyledTableRow key={index} style={colors}>
                                         <StyledTableCell align="left">
                                             <label style={{ padding: "5px 9px"}}>{index + 1}</label>
@@ -90,6 +110,13 @@ function Logs() {
                                         <StyledTableCell align="center">
                                             <div style={{padding: "7px"}}>
                                                 <label style={{border: "1px solid darkgray", borderRadius: "5px", padding: "5px", ...colors}}>{logEntry.level}</label>
+                                            </div>
+                                        </StyledTableCell>
+
+                                        <StyledTableCell align="center">
+                                            <div style={{display: "flex", flexDirection:"column"}}>
+                                                <label>{date}</label>
+                                                <label>{time}</label>
                                             </div>
                                         </StyledTableCell>
 
