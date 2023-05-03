@@ -1,5 +1,7 @@
 import {
-    Paper,
+    Checkbox,
+    FormControl, InputLabel, ListItemText, MenuItem, OutlinedInput,
+    Paper, Select,
     Table,
     TableBody,
     TableContainer,
@@ -12,6 +14,13 @@ import {StyledTableRow} from "../components/primitives/Table/StyledTableRow";
 import {StyledTableCell} from "../components/primitives/Table/StyledTableCell";
 
 function Logs() {
+    const logLevels = [
+        "DEBUG",
+        "INFO",
+        "WARN",
+        "ERROR"
+    ]
+
     const [logs, setLogs] = useState([])
     const [filteredLogs, setFilteredLogs] = useState([])
 
@@ -83,8 +92,37 @@ function Logs() {
         return {date, time}
     }
 
+    const handleLogLevelChange = (event) => {
+        let value = event.target.value
+
+        setLogFilter({
+            ...logFilter,
+            level:  typeof value === 'string' ? value.split(',') : value
+        })
+    }
+
+
     return <div style={{padding: "15px"}}>
-        <Paper style={{padding: "15px", marginBottom: "15px"}}>Filters</Paper>
+        <Paper style={{padding: "15px", marginBottom: "15px"}}>
+            <FormControl sx={{ m: 1, width: 300 }}>
+                <InputLabel style={{color: "var(--faded-text-color)", position: "relative", top: "10px"}}>Log level</InputLabel>
+                <Select
+                    multiple
+                    value={logFilter.level}
+                    onChange={handleLogLevelChange}
+                    input={<OutlinedInput label="Log level"/>}
+                    renderValue={(selected) => selected.join(', ')}
+                    style={{backgroundColor: "rgba(255, 255, 255, 0.15)", paddingLeft: "8px"}}
+                >
+                    {logLevels.map((logLevel) => (
+                        <MenuItem key={logLevel} value={logLevel}>
+                            <Checkbox checked={logFilter.level.indexOf(logLevel) > -1} />
+                            <ListItemText primary={logLevel} />
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+        </Paper>
         <Paper>
             <TableContainer style={{}}>
                 <Table size="small" stickyHeader >
