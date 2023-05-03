@@ -173,12 +173,11 @@ function Logs() {
                                 onChange={handleLinesCountChange}
                                 size="small"
                             >
-                                <MenuItem value={10}>10</MenuItem>
-                                <MenuItem value={50}>50</MenuItem>
-                                <MenuItem value={100}>100</MenuItem>
-                                <MenuItem value={200}>200</MenuItem>
-                                <MenuItem value={500}>500</MenuItem>
-                                <MenuItem value={1000}>1000</MenuItem>
+                                {
+                                    [10, 50, 100, 200, 500, 1000, 2000].map(value => {
+                                        return  <MenuItem value={value}>{value}</MenuItem>
+                                    })
+                                }
                             </Select>
                         </FormControl>
 
