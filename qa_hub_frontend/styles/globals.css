@@ -8,7 +8,9 @@ body {
   --primary-text-color: rgba(255, 255, 255, 0.75);
   --faded-text-color: rgba(255, 255, 255, 0.6);
   --disabled-text-color: rgba(255, 255, 255, 0.3);
-  --white-text-color: #ffffff
+  --white-text-color: #ffffff;
+
+  --error-red-color: #c44849;
 }
 
 a {

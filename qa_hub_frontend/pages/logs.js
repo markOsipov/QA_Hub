@@ -1,6 +1,6 @@
 import {
     Checkbox,
-    FormControl, InputLabel, ListItemText, MenuItem, OutlinedInput,
+    FormControl, InputAdornment, InputLabel, Input, ListItemText, MenuItem, OutlinedInput,
     Paper, Select,
     Table,
     TableBody,
@@ -8,10 +8,12 @@ import {
     TableHead,
 } from "@mui/material";
 import {useEffect, useState} from "react";
-import useSWR from "swr";
 import {getLogs} from "../requests/UtilsRequests";
 import {StyledTableRow} from "../components/primitives/Table/StyledTableRow";
 import {StyledTableCell} from "../components/primitives/Table/StyledTableCell";
+import SearchIcon from '@mui/icons-material/Search';
+import IconButton from "@mui/material/IconButton";
+import SyncIcon from '@mui/icons-material/Sync';
 
 function Logs() {
     const logLevels = [
@@ -26,18 +28,10 @@ function Logs() {
 
     const [logFilter, setLogFilter] = useState({
         level: [],
-        search: null
+        search: ""
     })
 
     const [linesCount, setLinesCount] = useState(200)
-    const [refreshInterval, setRefreshInterval] = useState(null)
-
-    let { data, error } = useSWR(linesCount, getLogs, { refreshInterval: refreshInterval, revalidateOnFocus: false })
-    useEffect(() => {
-        if (data) {
-            setLogs(data.data)
-        }
-    }, [data])
 
     useEffect(() => {
         let filtered = logs
@@ -53,6 +47,18 @@ function Logs() {
 
         setFilteredLogs(filtered)
     }, [logFilter, logs])
+
+    function refreshLogs() {
+        getLogs(linesCount).then((data) => {
+            if (data.data) {
+                setLogs(data.data)
+            }
+        })
+    }
+
+    useEffect(() => {
+        refreshLogs()
+    }, [linesCount])
 
     function getColors(logLevel){
         if (logLevel === "ERROR") {
@@ -101,27 +107,97 @@ function Logs() {
         })
     }
 
+    const handleLinesCountChange = (event) => {
+        setLinesCount(event.target.value)
+    }
+
+    const handleSearch = (event) => {
+        if (event.key === 'Enter') {
+            setLogFilter({
+                ...logFilter,
+                search: event.target.value
+            })
+        }
+    }
 
     return <div style={{padding: "15px"}}>
-        <Paper style={{padding: "15px", marginBottom: "15px"}}>
-            <FormControl sx={{ m: 1, width: 300 }}>
-                <InputLabel style={{color: "var(--faded-text-color)", position: "relative", top: "10px"}}>Log level</InputLabel>
-                <Select
-                    multiple
-                    value={logFilter.level}
-                    onChange={handleLogLevelChange}
-                    input={<OutlinedInput label="Log level"/>}
-                    renderValue={(selected) => selected.join(', ')}
-                    style={{backgroundColor: "rgba(255, 255, 255, 0.15)", paddingLeft: "8px"}}
-                >
-                    {logLevels.map((logLevel) => (
-                        <MenuItem key={logLevel} value={logLevel}>
-                            <Checkbox checked={logFilter.level.indexOf(logLevel) > -1} />
-                            <ListItemText primary={logLevel} />
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
+        <Paper style={{padding: "15px", marginBottom: "15px", paddingTop: "0"}}>
+            <div style={{display: "flex"}}>
+                <FormControl sx={{ m: 1, width: 300 }}>
+                    <InputLabel style={{color: "var(--faded-text-color)", position: "relative", top: "10px"}}>Log level</InputLabel>
+                    <Select
+                        multiple
+                        value={logFilter.level}
+                        onChange={handleLogLevelChange}
+                        input={<OutlinedInput label="Log level"/>}
+                        renderValue={(selected) => selected.join(', ')}
+                        style={{backgroundColor: "rgba(255, 255, 255, 0.15)", paddingLeft: "8px"}}
+                        size="small"
+                    >
+                        {logLevels.map((logLevel) => (
+                            <MenuItem key={logLevel} value={logLevel}>
+                                <Checkbox checked={logFilter.level.indexOf(logLevel) > -1} />
+                                <ListItemText primary={logLevel} />
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+
+                <div style={{display: "grid", alignSelf: "end", padding: "10px"}}>
+                    <FormControl variant="standard" style={{width: "200px"}}>
+                        <InputLabel style={{color: "var(--faded-text-color)", paddingLeft: "8px"}}>
+                            Search
+                        </InputLabel>
+                        <Input style={{backgroundColor: "rgba(255, 255, 255, 0.15)", height: '33px', paddingLeft: "8px"}}
+                               endAdornment={
+                                <InputAdornment position="start">
+                                    <SearchIcon/>
+                                </InputAdornment>
+                            }
+                            // value={searchFilterValue}
+                            // onChange={handleSearchStringChange}
+                            onKeyDown={handleSearch}
+                        />
+                    </FormControl>
+                </div>
+
+                <div style={{flexGrow: "2"}}></div>
+
+
+                <div style={{display: "grid", alignSelf: "end", padding: "10px"}}>
+                    <div style={{display: "flex"}}>
+
+                        <FormControl style={{minWidth: "100px"}}>
+                            <InputLabel style={{color: "var(--faded-text-color)"}}>Lines count</InputLabel>
+                            <Select
+                                style={{backgroundColor: "rgba(255, 255, 255, 0.10)"}}
+                                value={linesCount}
+                                label="Age"
+                                onChange={handleLinesCountChange}
+                                size="small"
+                            >
+                                <MenuItem value={10}>10</MenuItem>
+                                <MenuItem value={50}>50</MenuItem>
+                                <MenuItem value={100}>100</MenuItem>
+                                <MenuItem value={200}>200</MenuItem>
+                                <MenuItem value={500}>500</MenuItem>
+                                <MenuItem value={1000}>1000</MenuItem>
+                            </Select>
+                        </FormControl>
+
+                        <IconButton style={{
+                                backgroundColor: "var(--error-red-color)",
+                                width: "35px", height: "35px",
+                                borderRadius: "14px",
+                                marginLeft: "10px"
+                            }}
+                                    onClick={refreshLogs}
+                        >
+                            <SyncIcon style={{fontSize: "27px", transform: "rotate(55deg)"}}/>
+                        </IconButton>
+                    </div>
+                </div>
+            </div>
         </Paper>
         <Paper>
             <TableContainer style={{}}>
@@ -129,8 +205,8 @@ function Logs() {
                     <TableHead style={{ height: "60px" }}>
                         <StyledTableRow>
                             <StyledTableCell align='center' style={{maxWidth: "50px", width: "50px"}}>№</StyledTableCell>
-                            <StyledTableCell style={{minWidth: "100px"}} align='center'>Level</StyledTableCell>
-                            <StyledTableCell style={{minWidth: "150px"}} align='center'>Date</StyledTableCell>
+                            <StyledTableCell style={{minWidth: "200px"}} align='center'>Level</StyledTableCell>
+                            <StyledTableCell style={{minWidth: "200px"}} align='center'>Date</StyledTableCell>
                             <StyledTableCell align='left'>Message</StyledTableCell>
                         </StyledTableRow>
                     </TableHead>
@@ -158,7 +234,7 @@ function Logs() {
                                             </div>
                                         </StyledTableCell>
 
-                                        <StyledTableCell style={{paddingTop: "10px", paddingBottom: "10px"}}>
+                                        <StyledTableCell style={{paddingTop: "10px", paddingBottom: "10px", width: "100%", paddingRight: "5px"}}>
                                             <div style={{maxHeight: "300px", overflowY: "scroll"}}>
                                                 <div style={{display: "flex", flexDirection: "column", whiteSpace: "pre-wrap", maxHeight: "300px", overflowY: "visible"}}>
                                                     {
