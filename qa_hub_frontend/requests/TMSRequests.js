@@ -1,4 +1,5 @@
 import axios from "axios";
+import process from "../next.config";
 
 export function getTmsTypes() {
     const config = {

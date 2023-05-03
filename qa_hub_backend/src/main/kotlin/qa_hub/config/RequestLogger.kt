@@ -25,31 +25,34 @@ class LoggingFilterBean : GenericFilterBean() {
     }
 
     private fun logRequest(request: ContentCachingRequestWrapper) {
-        val builder = StringBuilder()
-        val parameters = request.parameterMap.map{ "${it.key} = ${it.value.first()}"}
-        builder.append("")
-        builder.append("Parameters: $parameters")
-        //builder.append(headersToString(request.headerNames.toList(), request::getHeader))
-        builder.append("\nBody: ${String(request.contentAsByteArray)}")
+        if (!request.servletPath.contains("/api/utils/logs")) {
+            val builder = StringBuilder()
+            val parameters = request.parameterMap.map { "${it.key} = ${it.value.first()}" }
+            builder.append("")
+            builder.append("Parameters: $parameters")
+            //builder.append(headersToString(request.headerNames.toList(), request::getHeader))
+            builder.append("\nBody: ${String(request.contentAsByteArray)}")
 
-        log.info("Request ${request.method} ${request.servletPath}\n$builder")
+            log.info("Request ${request.method} ${request.servletPath}\n$builder")
+        }
     }
 
     private fun logResponse(response: ContentCachingResponseWrapper) {
-        val status = response.status
-        val body = String(response.contentAsByteArray).toPrettyJson()
+        if (response.getHeader("Skip-Logging") != "true") {
+            val status = response.status
+            val body = String(response.contentAsByteArray).toPrettyJson()
 
-        val builder = StringBuilder()
-        //builder.append(headersToString(response.headerNames, response::getHeader))
-        builder.append(body)
+            val builder = StringBuilder()
+            //builder.append(headersToString(response.headerNames, response::getHeader))
+            builder.append(body)
 
-        val result = "Response: ${response.status}\n$builder"
-        if (status >= 400) {
-            log.error(result)
-        } else {
-            log.info(result)
+            val result = "Response: ${response.status}\n$builder"
+            if (status >= 400) {
+                log.error(result)
+            } else {
+                log.info(result)
+            }
         }
-
         response.copyBodyToResponse()
     }
 

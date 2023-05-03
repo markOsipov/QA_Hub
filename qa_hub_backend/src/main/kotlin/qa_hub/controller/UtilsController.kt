@@ -1,6 +1,8 @@
 package qa_hub.controller
 
 import com.google.gson.Gson
+import org.springframework.http.HttpHeaders
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -18,14 +20,21 @@ class UtilsController {
         val message: String
     )
     @GetMapping("/logs")
-    fun getLogs(@RequestParam(required = false, defaultValue = "200") linesCount: Int): List<LogEntity> {
+    fun getLogs(@RequestParam(required = false, defaultValue = "200") linesCount: Int): ResponseEntity<List<LogEntity>> {
+        val responseHeaders = HttpHeaders()
+        responseHeaders.set("Skip-Logging", "true")
 
-        val logFile = File("/var/log/qa_hub/application_json.log")
+        val logFilePath = "/var/log/qa_hub/application_json.log"
+
+        val logFile = File(logFilePath)
         if (logFile.exists()) {
-            return logFile.readText().lines().takeLast(linesCount).map {
+            val logs = logFile.readText().lines().takeLast(linesCount).map {
                 Gson().fromJson(it, LogEntity::class.java)
             }.dropLast(1)
+
+            return ResponseEntity.ok().headers(responseHeaders).body(logs)
+        } else {
+            throw Exception("Logs file is not found on path: $logFilePath")
         }
-        return listOf()
     }
 }
