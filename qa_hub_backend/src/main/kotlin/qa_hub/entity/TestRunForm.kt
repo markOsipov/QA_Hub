@@ -7,7 +7,7 @@ data class StartTestRunForm(
 
 enum class TestRunFormParams(val value: String) {
     TEXT("text"),
-    // TEXT_AREA("textArea"),
+    TEXT_AREA("textArea"),
     SELECT("select"),
     // MULTI_SELECT("multiSelect"),
     BOOLEAN("boolean");

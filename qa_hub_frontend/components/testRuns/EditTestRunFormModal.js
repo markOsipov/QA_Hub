@@ -77,16 +77,18 @@ const EditTestRunFormModal = observer(({isOpen, setIsOpen, params, loadTestRunFo
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
     >
-        <Box sx={modalStyle}>
+        <Box sx={modalStyle} style={{paddingRight: "5px", top: "calc(50% - 40px)", minWidth: "70vw"}}>
             <Typography id="modal-modal-title" variant="h6" component="h2" style={{marginBottom: "10px"}}>
                 Editing test run form
             </Typography>
 
-            {
-                editedParams.map((param, index) => {
-                    return <ConfigureParamCard key={ "param_" + param.name } param={param} index={index} params={editedParams} setParams={setEditedParams} paramTypes={paramTypes}/>
-                })
-            }
+            <div style={{maxHeight: "82vh", overflowY: "scroll", paddingRight: "10px"}}>
+                {
+                    editedParams.map((param, index) => {
+                        return <ConfigureParamCard key={ "param_" + param.name } param={param} index={index} params={editedParams} setParams={setEditedParams} paramTypes={paramTypes}/>
+                    })
+                }
+            </div>
 
             <div style={{display: "flex", width: "max-content"}}>
                 <Button variant="contained"
@@ -101,6 +103,7 @@ const EditTestRunFormModal = observer(({isOpen, setIsOpen, params, loadTestRunFo
                         style={{margin: "12px 8px 0 8px"}}
                 >Save changes</Button>
             </div>
+
         </Box>
     </Modal>
 })

@@ -16,7 +16,7 @@ class TestRunFormsController {
 
     @GetMapping("/paramTypes")
     fun getParamTypes(): List<String> {
-        return TestRunFormParams.values().map { it.value }
+        return TestRunFormParams.stringValues
     }
 
     @GetMapping("/{project}")
