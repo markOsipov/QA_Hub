@@ -13,7 +13,7 @@ import ProjectSelector from "./ProjectSelector";
 import {useRouter} from "next/router";
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 
-const pages = ['blocker', 'statistics', 'metrics'];
+const pages = ['blocker', 'statistics', 'metrics', 'testRuns'];
 
 function QaHubAppBar() {
     const router = useRouter()

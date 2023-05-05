@@ -5,5 +5,6 @@ enum class Collections(val collectionName: String) {
     PROJECTS("projects"),
     QA_HUB_CONFIG("qaHubConfig"),
     TESTCASES("testcases"),
+    TEST_RUN_FORMS("testRunForms"),
     TMS_INTEGRATIONS("tmsIntegrations");
 }
