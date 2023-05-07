@@ -16,7 +16,7 @@ const EditTestRunFormModal = observer(({isOpen, setIsOpen, params, loadTestRunFo
     const defaultNewParam = {
         name: "",
         type: "text",
-        value: "",
+        value: '',
         options: [],
         description: "",
         readOnly: false,

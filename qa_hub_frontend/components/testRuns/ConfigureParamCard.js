@@ -7,11 +7,11 @@ import {
     InputLabel,
     MenuItem,
     Select,
-    TextareaAutosize
+    TextareaAutosize,
+    Radio
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
-import Button from "@mui/material/Button";
 import {customTheme} from "../../styles/CustomTheme";
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -19,7 +19,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
     const textAreaStyle = {
         padding: "10px",
-        resize: "vertical", width: "100%", height: "100px", maxHeight: "max-content", minHeight: "100px", overflowY: "scroll",
+        resize: "vertical", width: "100%", height: "100px", maxHeight: "max-content", minHeight: "100px",
         color: "var(--primary-text-color)",
         backgroundColor: "rgba(255, 255, 255, 0.07)",
         fontFamily:"sans-serif", fontSize: "15px", lineHeight: "1.6"
@@ -96,7 +96,6 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
                             style={textAreaStyle}
                             label={"Value"}
                             defaultValue={param.value}
-                            multiline
                             onBlur={(event) => {editParamField("value", event.target.value)}}
                         />
                     </div>
@@ -123,12 +122,16 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
                             <div style={{marginLeft: "20px"}}>
                                 {
                                     param.options.map((option, index) =>
-                                        <div style={{display: "flex", marginTop: "10px", alignItems: "center" }} key={`option_${index}_${option}`}>
+                                        <div style={{display: "flex", marginTop: "10px", alignItems: "center" }} key={"option_" + index}>
                                             <FormControl style={{width: "250px"}}>
                                                 <InputLabel style={{color: "var(--faded-text-color)", left: "-5px", top: "5px"}}>Option {index + 1}</InputLabel>
                                                 <Input style={{backgroundColor: "rgba(255, 255, 255, 0.10)", paddingLeft:"5px", height: "36px"}}
                                                        defaultValue={option}
-                                                       onBlur={(event) => {}}
+                                                       onBlur={(event) => {
+                                                           let optionsCopy = param.options.slice()
+                                                           optionsCopy[index] = event.target.value
+                                                           editParamField("options", optionsCopy)
+                                                       }}
                                                 />
                                             </FormControl>
 
@@ -149,7 +152,7 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
                                     backgroundColor: customTheme.palette.primary.main,
                                     width: "32px", height: "32px",
                                     borderRadius: "6px",
-                                    marginTop: "10px"
+                                    marginTop: "12px",
                                 }}
                                             onClick={(event)=> {editParamField("options", [...param.options, `Option ${param.options.length + 1}` ])}}
                                 >
@@ -162,7 +165,22 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
                     <div style={{marginTop: "25px"}}>
                     </div>
             : (param.type === "checkbox") ?
-                    <div style={{marginTop: "25px"}}>
+                    <div>
+                        <FormControl style={{width: "170px", marginTop: "15px"}}>
+                            <InputLabel style={{color: "var(--faded-text-color)", position: "relative", top: "10px"}}>Value</InputLabel>
+                            <Select
+                                value={param.value}
+                                style={{backgroundColor: "rgba(255, 255, 255, 0.10)"}}
+                                onChange={(event) => editParamField("value", event.target.value)}
+                                size="small"
+                            >
+                                {
+                                    (["true", "false"]).map(option => (
+                                        <MenuItem key={"option_" + option} value={option}>{option}</MenuItem>
+                                    ))
+                                }
+                            </Select>
+                        </FormControl>
                     </div>
             : null
         }
@@ -172,7 +190,6 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
                 style={{...textAreaStyle, height: "45px", minHeight: "45px"}}
                 label={"Value"}
                 defaultValue={param.description}
-                multiline
                 onBlur={(event) => {editParamField("description", event.target.value)}}
             />
         </div>
