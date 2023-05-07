@@ -10,7 +10,7 @@ enum class TestRunFormParams(val value: String) {
     TEXT_AREA("textArea"),
     SELECT("select"),
     // MULTI_SELECT("multiSelect"),
-    BOOLEAN("boolean");
+    CHECKBOX("checkbox");
     // JSON("json");
 
     companion object {
