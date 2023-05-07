@@ -7,22 +7,19 @@ import {
     InputLabel,
     MenuItem,
     Select,
-    TextareaAutosize,
-    TextField
+    TextareaAutosize
 } from "@mui/material";
-import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
-import SyncIcon from "@mui/icons-material/Sync";
 import IconButton from "@mui/material/IconButton";
 
 
 function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
     const textAreaStyle = {
         padding: "10px",
-        resize: "vertical", width: "100%", height: "100px", maxHeight: "max-content", minHeight: "100px", overflow: "hidden",
+        resize: "vertical", width: "100%", height: "100px", maxHeight: "max-content", minHeight: "100px", overflowY: "scroll",
         color: "var(--primary-text-color)",
         backgroundColor: "rgba(255, 255, 255, 0.07)",
-        fontFamily:"sans-serif", fontSize: "15px", lineHeight: "1.6",
+        fontFamily:"sans-serif", fontSize: "15px", lineHeight: "1.6"
     }
     const editParamField = (field, value) => {
         const newParams = params.slice()
@@ -70,7 +67,7 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
                 backgroundColor: "var(--error-red-color)",
                 width: "32px", height: "32px",
                 borderRadius: "6px",
-                marginLeft: "10px",
+                marginLeft: "13px",
                 top: "-2px"
             }}
                         onClick={handleRemoveParameterClick}
@@ -105,7 +102,7 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
         <div style={{marginTop: "25px"}}>
             <label style={{fontSize: "11px", position: "relative", left: "8px", top: "-6px", color: "var(--faded-text-color)"}}>Description</label>
             <TextareaAutosize
-                style={{...textAreaStyle, height: "50px", minHeight: "30px"}}
+                style={{...textAreaStyle, height: "45px", minHeight: "45px"}}
                 label={"Value"}
                 defaultValue={param.description}
                 multiline
@@ -114,10 +111,15 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
         </div>
 
         <FormControlLabel style={{marginTop: "10px"}}
-                          control={<Checkbox checked={param.readOnly}
-                                             onChange={(event) => {editParamField("readOnly", event.target.checked)}}
-                                    />}
-                          label={ <InputLabel style={{color: "var(--faded-text-color)", left: "-6px"}}>ReadOnly</InputLabel>} />
+                          control={
+                              <Checkbox checked={param.readOnly}
+                                        onChange={(event) => {editParamField("readOnly", event.target.checked)}}
+                              />
+                          }
+                          label={
+                              <InputLabel style={{color: "var(--faded-text-color)", left: "-6px"}}>ReadOnly</InputLabel>
+                          }
+        />
     </Card>
 }
 

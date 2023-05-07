@@ -77,12 +77,12 @@ const EditTestRunFormModal = observer(({isOpen, setIsOpen, params, loadTestRunFo
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
     >
-        <Box sx={modalStyle} style={{paddingRight: "5px", top: "calc(50% - 40px)", minWidth: "70vw"}}>
+        <Box sx={modalStyle} style={{paddingRight: "5px", top: "calc(50% - 30px)", minWidth: "70vw"}}>
             <Typography id="modal-modal-title" variant="h6" component="h2" style={{marginBottom: "10px"}}>
                 Editing test run form
             </Typography>
 
-            <div style={{maxHeight: "82vh", overflowY: "scroll", paddingRight: "10px"}}>
+            <div style={{maxHeight: "86vh", overflowY: "auto", paddingRight: "10px"}}>
                 {
                     editedParams.map((param, index) => {
                         return <ConfigureParamCard key={ "param_" + param.name } param={param} index={index} params={editedParams} setParams={setEditedParams} paramTypes={paramTypes}/>
@@ -90,18 +90,18 @@ const EditTestRunFormModal = observer(({isOpen, setIsOpen, params, loadTestRunFo
                 }
             </div>
 
-            <div style={{display: "flex", width: "max-content"}}>
-                <Button variant="contained"
-                        color="primary"
-                        onClick={handleAddNewParamClick}
-                        style={{margin: "12px 8px 0 8px"}}
-                >Add param</Button>
-
+            <div style={{display: "flex", width: "max-content", marginTop: "15px"}}>
                 <Button variant="contained"
                         color="error"
                         onClick={handleUpdateTestRunFormClick}
-                        style={{margin: "12px 8px 0 8px"}}
+                        style={{margin: "0"}}
                 >Save changes</Button>
+
+                <Button variant="contained"
+                        color="primary"
+                        onClick={handleAddNewParamClick}
+                        style={{margin: "0"}}
+                >Add param</Button>
             </div>
 
         </Box>
