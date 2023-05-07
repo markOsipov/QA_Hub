@@ -9,9 +9,9 @@ enum class TestRunFormParams(val value: String) {
     TEXT("text"),
     TEXT_AREA("textArea"),
     SELECT("select"),
-    // MULTI_SELECT("multiSelect"),
+    MULTI_SELECT("multiSelect"),
     CHECKBOX("checkbox");
-    // JSON("json");
+    //JSON("json");
 
     companion object {
         val stringValues: List<String>

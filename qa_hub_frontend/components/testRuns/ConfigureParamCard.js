@@ -11,7 +11,10 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
-
+import Button from "@mui/material/Button";
+import {customTheme} from "../../styles/CustomTheme";
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
     const textAreaStyle = {
@@ -77,26 +80,73 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
         </div>
 
         {
-            (param.type === "textArea") ?
-                <div style={{marginTop: "25px"}}>
-                    <label style={{fontSize: "11px", position: "relative", left: "8px", top: "-6px", color: "var(--faded-text-color)"}}>Value</label>
-
-                    <TextareaAutosize
-                        style={textAreaStyle}
-                        label={"Value"}
-                        defaultValue={param.value}
-                        multiline
-                        onBlur={(event) => {editParamField("value", event.target.value)}}
+            (param.type === "text") ?
+                <FormControl style={{width: "100%", marginTop: "10px"}}>
+                    <InputLabel style={{color: "var(--faded-text-color)", left: "-5px", top: "5px"}}>Value</InputLabel>
+                    <Input style={{backgroundColor: "rgba(255, 255, 255, 0.10)", paddingLeft:"5px", height: "36px"}}
+                           defaultValue={param.value}
+                           onBlur={(event) => {editParamField("value", event.target.value)}}
                     />
-                </div>
-            : (param.type === "text") ?
-                    <FormControl style={{width: "100%", marginTop: "10px"}}>
-                        <InputLabel style={{color: "var(--faded-text-color)", left: "-5px", top: "5px"}}>Value</InputLabel>
-                        <Input style={{backgroundColor: "rgba(255, 255, 255, 0.10)", paddingLeft:"5px", height: "36px"}}
-                               defaultValue={param.value}
-                               onBlur={(event) => {editParamField("value", event.target.value)}}
+                </FormControl>
+            : (param.type === "textArea") ?
+                    <div style={{marginTop: "25px"}}>
+                        <label style={{fontSize: "11px", position: "relative", left: "8px", top: "-6px", color: "var(--faded-text-color)"}}>Value</label>
+
+                        <TextareaAutosize
+                            style={textAreaStyle}
+                            label={"Value"}
+                            defaultValue={param.value}
+                            multiline
+                            onBlur={(event) => {editParamField("value", event.target.value)}}
                         />
-                    </FormControl>
+                    </div>
+            : (param.type === "select") ?
+                    <div style={{marginTop: "25px", display: "flex", flexDirection: "column", maxWidth: "250px"}}>
+                        <label>Options: </label>
+                        <div style={{marginLeft: "20px"}}>
+                            {
+                                param.options.map((option, index) =>
+                                    <div style={{display: "flex", marginTop: "10px", alignItems: "center" }} key={`option_${index}_${option}`}>
+                                        <FormControl style={{width: "250px"}}>
+                                            <InputLabel style={{color: "var(--faded-text-color)", left: "-5px", top: "5px"}}>Option {index + 1}</InputLabel>
+                                            <Input style={{backgroundColor: "rgba(255, 255, 255, 0.10)", paddingLeft:"5px", height: "36px"}}
+                                                   defaultValue={option}
+                                                   onBlur={(event) => {}}
+                                            />
+                                        </FormControl>
+
+                                        <IconButton style={{
+                                            width: "32px", height: "32px",
+                                            borderRadius: "6px",
+                                            marginTop: "10px",
+                                        }}
+                                                    onClick={(event)=> {editParamField("options", param.options.filter((option, optIndex) => optIndex != index))}}
+                                        >
+                                            <RemoveIcon style={{fontSize: "24px", color: customTheme.palette.error.main}}/>
+                                        </IconButton>
+                                    </div>
+                                )
+
+                            }
+
+                            <IconButton style={{
+                                backgroundColor: customTheme.palette.primary.main,
+                                width: "32px", height: "32px",
+                                borderRadius: "6px",
+                                marginTop: "10px"
+                            }}
+                                        onClick={(event)=> {editParamField("options", [...param.options, `Option ${param.options.length + 1}` ])}}
+                            >
+                                <AddIcon style={{fontSize: "24px"}}/>
+                            </IconButton>
+                        </div>
+                    </div>
+            : (param.type === "multiSelect") ?
+                    <div style={{marginTop: "25px"}}>
+                    </div>
+            : (param.type === "checkbox") ?
+                    <div style={{marginTop: "25px"}}>
+                    </div>
             : null
         }
         <div style={{marginTop: "25px"}}>
