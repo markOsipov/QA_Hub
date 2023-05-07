@@ -101,44 +101,61 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
                         />
                     </div>
             : (param.type === "select") ?
-                    <div style={{marginTop: "25px", display: "flex", flexDirection: "column", maxWidth: "250px"}}>
-                        <label>Options: </label>
-                        <div style={{marginLeft: "20px"}}>
-                            {
-                                param.options.map((option, index) =>
-                                    <div style={{display: "flex", marginTop: "10px", alignItems: "center" }} key={`option_${index}_${option}`}>
-                                        <FormControl style={{width: "250px"}}>
-                                            <InputLabel style={{color: "var(--faded-text-color)", left: "-5px", top: "5px"}}>Option {index + 1}</InputLabel>
-                                            <Input style={{backgroundColor: "rgba(255, 255, 255, 0.10)", paddingLeft:"5px", height: "36px"}}
-                                                   defaultValue={option}
-                                                   onBlur={(event) => {}}
-                                            />
-                                        </FormControl>
-
-                                        <IconButton style={{
-                                            width: "32px", height: "32px",
-                                            borderRadius: "6px",
-                                            marginTop: "10px",
-                                        }}
-                                                    onClick={(event)=> {editParamField("options", param.options.filter((option, optIndex) => optIndex != index))}}
-                                        >
-                                            <RemoveIcon style={{fontSize: "24px", color: customTheme.palette.error.main}}/>
-                                        </IconButton>
-                                    </div>
-                                )
-
-                            }
-
-                            <IconButton style={{
-                                backgroundColor: customTheme.palette.primary.main,
-                                width: "32px", height: "32px",
-                                borderRadius: "6px",
-                                marginTop: "10px"
-                            }}
-                                        onClick={(event)=> {editParamField("options", [...param.options, `Option ${param.options.length + 1}` ])}}
+                    <div>
+                        <FormControl style={{width: "170px", marginTop: "15px"}}>
+                            <InputLabel style={{color: "var(--faded-text-color)", position: "relative", top: "10px"}}>Value</InputLabel>
+                            <Select
+                                value={param.value}
+                                style={{backgroundColor: "rgba(255, 255, 255, 0.10)"}}
+                                onChange={(event) => editParamField("value", event.target.value)}
+                                size="small"
                             >
-                                <AddIcon style={{fontSize: "24px"}}/>
-                            </IconButton>
+                                {
+                                    (param.options).map(option => (
+                                        <MenuItem key={option} value={option}>{option}</MenuItem>
+                                    ))
+                                }
+                            </Select>
+                        </FormControl>
+
+                        <div style={{marginTop: "15px", display: "flex", flexDirection: "column", maxWidth: "250px"}}>
+                            <label>Options: </label>
+                            <div style={{marginLeft: "20px"}}>
+                                {
+                                    param.options.map((option, index) =>
+                                        <div style={{display: "flex", marginTop: "10px", alignItems: "center" }} key={`option_${index}_${option}`}>
+                                            <FormControl style={{width: "250px"}}>
+                                                <InputLabel style={{color: "var(--faded-text-color)", left: "-5px", top: "5px"}}>Option {index + 1}</InputLabel>
+                                                <Input style={{backgroundColor: "rgba(255, 255, 255, 0.10)", paddingLeft:"5px", height: "36px"}}
+                                                       defaultValue={option}
+                                                       onBlur={(event) => {}}
+                                                />
+                                            </FormControl>
+
+                                            <IconButton style={{
+                                                width: "32px", height: "32px",
+                                                borderRadius: "6px",
+                                                marginTop: "10px",
+                                            }}
+                                                        onClick={(event)=> {editParamField("options", param.options.filter((option, optIndex) => optIndex != index))}}
+                                            >
+                                                <RemoveIcon style={{fontSize: "24px", color: customTheme.palette.error.main}}/>
+                                            </IconButton>
+                                        </div>
+                                    )
+                                }
+
+                                <IconButton style={{
+                                    backgroundColor: customTheme.palette.primary.main,
+                                    width: "32px", height: "32px",
+                                    borderRadius: "6px",
+                                    marginTop: "10px"
+                                }}
+                                            onClick={(event)=> {editParamField("options", [...param.options, `Option ${param.options.length + 1}` ])}}
+                                >
+                                    <AddIcon style={{fontSize: "24px"}}/>
+                                </IconButton>
+                            </div>
                         </div>
                     </div>
             : (param.type === "multiSelect") ?
