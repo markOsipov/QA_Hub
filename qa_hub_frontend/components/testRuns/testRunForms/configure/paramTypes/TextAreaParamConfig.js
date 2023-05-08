@@ -8,8 +8,8 @@ function TextAreaParamConfig({editParamField, textAreaStyle, param}) {
         <TextareaAutosize
             style={textAreaStyle}
             label={"Value"}
-            defaultValue={param.value}
-            onBlur={(event) => {editParamField("value", event.target.value)}}
+            value={param.value}
+            onChange={(event) => {editParamField("value", event.target.value)}}
         />
     </div>
 }
