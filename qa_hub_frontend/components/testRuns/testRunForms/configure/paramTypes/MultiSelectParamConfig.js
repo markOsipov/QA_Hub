@@ -54,7 +54,7 @@ function MultiSelectParamConfig({editParamField, param}) {
             </Select>
         </FormControl>
 
-        <div style={{marginTop: "15px", display: "flex", flexDirection: "column", maxWidth: "250px"}}>
+        <div style={{marginTop: "15px", display: "flex", flexDirection: "column", minWidth: "275px"}}>
             <label>Options: </label>
             <div style={{marginLeft: "20px"}}>
                 {
@@ -76,6 +76,7 @@ function MultiSelectParamConfig({editParamField, param}) {
                                 width: "32px", height: "32px",
                                 borderRadius: "6px",
                                 marginTop: "10px",
+                                marginLeft: "5px"
                             }}
                                         onClick={(event)=> {
                                             editParamField("options", param.options.filter((option, optIndex) => optIndex !== index))

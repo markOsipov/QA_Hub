@@ -18,6 +18,7 @@ import TextParamConfig from "./paramTypes/TextParamConfig";
 import TextAreaParamConfig from "./paramTypes/TextAreaParamConfig";
 import SelectParamConfig from "./paramTypes/SelectParamConfig";
 import MultiSelectParamConfig from "./paramTypes/MultiSelectParamConfig";
+import MoreIconButton from "./MoreIconButton";
 
 function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
     const textAreaStyle = {
@@ -44,13 +45,16 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
         setParams(newParams)
     }
 
-    return <Card style={{marginBottom: "20px", border: "1px solid gray", padding: "20px 20px 25px 20px"}}>
+    return <Card style={{marginBottom: "20px", border: "1px solid gray", padding: "20px 20px 25px 20px", position: "relative"}}>
+
+        <MoreIconButton params={params} setParams={setParams} index={index}/>
+
         <div style={{display: "flex", alignItems: "end", width: "max-content"}}>
             <FormControl style={{width: "300px"}}>
                 <InputLabel style={{color: "white", left: "-5px", top: "3px"}}>Name</InputLabel>
                 <Input style={{backgroundColor: customTheme.palette.background.input, paddingLeft:"5px", height: "36px", color: "white"}}
-                       defaultValue={param.name}
-                       onBlur={(event) => {editParamField("name", event.target.value)}}
+                       value={param.name}
+                       onChange={(event) => {editParamField("name", event.target.value)}}
                 />
             </FormControl>
 
@@ -101,8 +105,8 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
             <TextareaAutosize
                 style={{...textAreaStyle, height: "46px", minHeight: "46px"}}
                 label={"Value"}
-                defaultValue={param.description}
-                onBlur={(event) => {editParamField("description", event.target.value)}}
+                value={param.description}
+                onChange={(event) => {editParamField("description", event.target.value)}}
             />
         </div>
 
