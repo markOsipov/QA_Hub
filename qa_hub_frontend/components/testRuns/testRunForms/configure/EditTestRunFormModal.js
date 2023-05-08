@@ -2,10 +2,10 @@ import {Box, Modal} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {useEffect, useState} from "react";
 import Button from "@mui/material/Button";
-import {getParamTypes, getTestRunForm, upsertTestRunForm} from "../../requests/TestRunFormsRequests";
-import projectState from "../../state/ProjectState";
+import {getParamTypes, getTestRunForm, upsertTestRunForm} from "../../../../requests/TestRunFormsRequests";
+import projectState from "../../../../state/ProjectState";
 import {observer} from "mobx-react-lite";
-import {modalStyle} from "../../styles/ModalStyle";
+import {modalStyle} from "../../../../styles/ModalStyle";
 import ConfigureParamCard from "./ConfigureParamCard";
 
 const EditTestRunFormModal = observer(({isOpen, setIsOpen, params, loadTestRunForm}) => {
