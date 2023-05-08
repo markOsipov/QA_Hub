@@ -4,7 +4,7 @@ import {customTheme} from "../../../../../styles/CustomTheme";
 function CheckboxParamConfig({ editParamField, param }) {
 
     return <div>
-        <FormControl style={{width: "170px", marginTop: "15px"}}>
+        <FormControl style={{width: "483px", marginTop: "15px"}}>
             <InputLabel style={{color: customTheme.palette.text.faded, position: "relative", top: "10px"}}>Value</InputLabel>
             <Select
                 value={param.value}

@@ -6,7 +6,7 @@ import AddIcon from "@mui/icons-material/Add";
 
 function SelectParamConfig({editParamField, param}) {
     return <div>
-        <FormControl style={{width: "170px", marginTop: "15px"}}>
+        <FormControl style={{width: "483px", marginTop: "15px"}}>
             <InputLabel style={{color: customTheme.palette.text.faded, position: "relative", top: "10px"}}>Value</InputLabel>
             <Select
                 value={param.value}
@@ -31,8 +31,8 @@ function SelectParamConfig({editParamField, param}) {
                             <FormControl style={{width: "250px"}}>
                                 <InputLabel style={{color: customTheme.palette.text.faded, left: "-5px", top: "5px"}}>Option {index + 1}</InputLabel>
                                 <Input style={{backgroundColor: customTheme.palette.background.input, paddingLeft:"5px", height: "36px"}}
-                                       defaultValue={option}
-                                       onBlur={(event) => {
+                                       value={option}
+                                       onChange={(event) => {
                                            let optionsCopy = param.options.slice()
                                            optionsCopy[index] = event.target.value
                                            editParamField("options", optionsCopy)

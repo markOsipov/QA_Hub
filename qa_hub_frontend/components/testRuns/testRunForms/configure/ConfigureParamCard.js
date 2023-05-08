@@ -43,7 +43,7 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
         setParams(newParams)
     }
 
-    return <Card style={{marginBottom: "20px", border: "1px solid gray", padding: "20px 10px 25px 20px"}}>
+    return <Card style={{marginBottom: "20px", border: "1px solid gray", padding: "20px 20px 25px 20px"}}>
         <div style={{display: "flex", alignItems: "end", width: "max-content"}}>
             <FormControl style={{width: "300px"}}>
                 <InputLabel style={{color: "white", left: "-5px", top: "3px"}}>Name</InputLabel>
