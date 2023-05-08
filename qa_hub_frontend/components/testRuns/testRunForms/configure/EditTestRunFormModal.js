@@ -10,6 +10,8 @@ import ConfigureParamCard from "./ConfigureParamCard";
 
 const EditTestRunFormModal = observer(({isOpen, setIsOpen, params, loadTestRunForm}) => {
     let {selectedProject} = projectState
+    const testRunFormParamsViewId = "edit-test-run-form-params"
+
     const [editedParams, setEditedParams] = useState(params)
     const [paramTypes, setParamTypes] = useState([])
 
@@ -46,6 +48,14 @@ const EditTestRunFormModal = observer(({isOpen, setIsOpen, params, loadTestRunFo
             ...editedParams,
             defaultNewParam
         ])
+
+        setTimeout(function() {
+            const testRunFormParamsView = document.getElementById(testRunFormParamsViewId)
+            testRunFormParamsView.scroll({
+                top: testRunFormParamsView.scrollHeight,
+                behavior: "smooth"
+            })
+        }, 100)
     }
     const handleUpdateTestRunFormClick = () => {
         if (editedParams.find(param => { return param.name === "" })) {
@@ -77,15 +87,15 @@ const EditTestRunFormModal = observer(({isOpen, setIsOpen, params, loadTestRunFo
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
     >
-        <Box sx={modalStyle} style={{paddingRight: "5px", top: "calc(50% - 30px)", minWidth: "70vw"}}>
+        <Box sx={modalStyle} style={{paddingRight: "5px", top: "calc(50% - 30px)", minWidth: "70vw"}} >
             <Typography id="modal-modal-title" variant="h6" component="h2" style={{marginBottom: "10px"}}>
                 Editing test run form
             </Typography>
 
-            <div style={{maxHeight: "86vh", overflowY: "auto", paddingRight: "10px"}}>
+            <div style={{maxHeight: "86vh", overflowY: "auto", paddingRight: "10px"}} id={testRunFormParamsViewId}>
                 {
                     editedParams.map((param, index) => {
-                        return <ConfigureParamCard key={ "param_" + param.name } param={param} index={index} params={editedParams} setParams={setEditedParams} paramTypes={paramTypes}/>
+                        return <ConfigureParamCard key={ "param_" + index } param={param} index={index} params={editedParams} setParams={setEditedParams} paramTypes={paramTypes}/>
                     })
                 }
             </div>
