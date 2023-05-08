@@ -12,7 +12,7 @@ function MultiSelectParamConfig({editParamField, param}) {
         if (param.options.length == 0) {
             return []
         } else {
-            return param.value
+            return param.defaultValue
                 .split(separator)
                 .filter( el => param.options.includes(el))
         }
@@ -21,7 +21,7 @@ function MultiSelectParamConfig({editParamField, param}) {
     const [values, setValues] = useState(getInitialValue() )
 
     useEffect(() => {
-        editParamField("value", values.join(separator))
+        editParamField("defaultValue", values.join(separator))
     }, [values])
 
     function handleValueChange(event) {
@@ -33,7 +33,7 @@ function MultiSelectParamConfig({editParamField, param}) {
 
     return <div>
         <FormControl style={{width: "483px", minWidth: "250px", marginTop: "15px"}}>
-            <InputLabel style={{color: customTheme.palette.text.faded, position: "relative", top: "10px"}}>Value</InputLabel>
+            <InputLabel style={{color: customTheme.palette.text.faded, position: "relative", top: "10px"}}>Default value</InputLabel>
             <Select
                 value={values}
                 style={{backgroundColor: customTheme.palette.background.input}}
@@ -46,7 +46,7 @@ function MultiSelectParamConfig({editParamField, param}) {
                     (param.options).map(option => (
 
                         <MenuItem key={option} value={option}>
-                            <Checkbox checked={param.value.indexOf(option) > -1} />
+                            <Checkbox checked={param.defaultValue.indexOf(option) > -1} />
                             <ListItemText primary={option} />
                         </MenuItem>
                     ))

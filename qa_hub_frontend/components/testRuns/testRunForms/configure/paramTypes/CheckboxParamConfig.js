@@ -5,11 +5,11 @@ function CheckboxParamConfig({ editParamField, param }) {
 
     return <div>
         <FormControl style={{width: "483px", marginTop: "15px"}}>
-            <InputLabel style={{color: customTheme.palette.text.faded, position: "relative", top: "10px"}}>Value</InputLabel>
+            <InputLabel style={{color: customTheme.palette.text.faded, position: "relative", top: "10px"}}>Default value</InputLabel>
             <Select
-                value={param.value}
+                value={param.defaultValue}
                 style={{backgroundColor: customTheme.palette.background.input}}
-                onChange={(event) => editParamField("value", event.target.value)}
+                onChange={(event) => editParamField("defaultValue", event.target.value)}
                 size="small"
             >
                 {
