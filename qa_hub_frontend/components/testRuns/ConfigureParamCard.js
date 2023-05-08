@@ -20,8 +20,8 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
     const textAreaStyle = {
         padding: "10px",
         resize: "vertical", width: "100%", height: "100px", maxHeight: "max-content", minHeight: "100px",
-        color: "var(--primary-text-color)",
-        backgroundColor: "rgba(255, 255, 255, 0.07)",
+        color: customTheme.palette.text.primary,
+        backgroundColor: customTheme.palette.background.textArea,
         fontFamily:"sans-serif", fontSize: "15px", lineHeight: "1.6"
     }
     const editParamField = (field, value) => {
@@ -44,17 +44,17 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
         <div style={{display: "flex", alignItems: "end", width: "max-content"}}>
             <FormControl style={{width: "300px"}}>
                 <InputLabel style={{color: "white", left: "-5px", top: "3px"}}>Name</InputLabel>
-                <Input style={{backgroundColor: "rgba(255, 255, 255, 0.10)", paddingLeft:"5px", height: "36px", color: "white"}}
+                <Input style={{backgroundColor: customTheme.palette.background.input, paddingLeft:"5px", height: "36px", color: "white"}}
                        defaultValue={param.name}
                        onBlur={(event) => {editParamField("name", event.target.value)}}
                 />
             </FormControl>
 
             <FormControl style={{marginLeft: "15px", width: "170px"}}>
-                <InputLabel style={{color: "var(--faded-text-color)", position: "relative", top: "10px"}}>Type</InputLabel>
+                <InputLabel style={{color: customTheme.palette.text.faded, position: "relative", top: "10px"}}>Type</InputLabel>
                 <Select
                     value={param.type}
-                    style={{backgroundColor: "rgba(255, 255, 255, 0.10)"}}
+                    style={{backgroundColor: customTheme.palette.background.input}}
                     onChange={(event) => editParamField("type", event.target.value)}
                     size="small"
                 >
@@ -67,7 +67,7 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
             </FormControl>
 
             <IconButton style={{
-                backgroundColor: "var(--error-red-color)",
+                backgroundColor: customTheme.palette.error.main,
                 width: "32px", height: "32px",
                 borderRadius: "6px",
                 marginLeft: "13px",
@@ -82,15 +82,15 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
         {
             (param.type === "text") ?
                 <FormControl style={{width: "100%", marginTop: "10px"}}>
-                    <InputLabel style={{color: "var(--faded-text-color)", left: "-5px", top: "5px"}}>Value</InputLabel>
-                    <Input style={{backgroundColor: "rgba(255, 255, 255, 0.10)", paddingLeft:"5px", height: "36px"}}
+                    <InputLabel style={{color: customTheme.palette.text.faded, left: "-5px", top: "5px"}}>Value</InputLabel>
+                    <Input style={{backgroundColor: customTheme.palette.background.input, paddingLeft:"5px", height: "36px"}}
                            defaultValue={param.value}
                            onBlur={(event) => {editParamField("value", event.target.value)}}
                     />
                 </FormControl>
             : (param.type === "textArea") ?
                     <div style={{marginTop: "25px"}}>
-                        <label style={{fontSize: "11px", position: "relative", left: "8px", top: "-6px", color: "var(--faded-text-color)"}}>Value</label>
+                        <label style={{fontSize: "11px", position: "relative", left: "8px", top: "-6px", color: customTheme.palette.text.faded}}>Value</label>
 
                         <TextareaAutosize
                             style={textAreaStyle}
@@ -102,10 +102,10 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
             : (param.type === "select") ?
                     <div>
                         <FormControl style={{width: "170px", marginTop: "15px"}}>
-                            <InputLabel style={{color: "var(--faded-text-color)", position: "relative", top: "10px"}}>Value</InputLabel>
+                            <InputLabel style={{color: customTheme.palette.text.faded, position: "relative", top: "10px"}}>Value</InputLabel>
                             <Select
                                 value={param.value}
-                                style={{backgroundColor: "rgba(255, 255, 255, 0.10)"}}
+                                style={{backgroundColor: customTheme.palette.background.input}}
                                 onChange={(event) => editParamField("value", event.target.value)}
                                 size="small"
                             >
@@ -124,8 +124,8 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
                                     param.options.map((option, index) =>
                                         <div style={{display: "flex", marginTop: "10px", alignItems: "center" }} key={"option_" + index}>
                                             <FormControl style={{width: "250px"}}>
-                                                <InputLabel style={{color: "var(--faded-text-color)", left: "-5px", top: "5px"}}>Option {index + 1}</InputLabel>
-                                                <Input style={{backgroundColor: "rgba(255, 255, 255, 0.10)", paddingLeft:"5px", height: "36px"}}
+                                                <InputLabel style={{color: customTheme.palette.text.faded, left: "-5px", top: "5px"}}>Option {index + 1}</InputLabel>
+                                                <Input style={{backgroundColor: customTheme.palette.background.input, paddingLeft:"5px", height: "36px"}}
                                                        defaultValue={option}
                                                        onBlur={(event) => {
                                                            let optionsCopy = param.options.slice()
@@ -167,10 +167,10 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
             : (param.type === "checkbox") ?
                     <div>
                         <FormControl style={{width: "170px", marginTop: "15px"}}>
-                            <InputLabel style={{color: "var(--faded-text-color)", position: "relative", top: "10px"}}>Value</InputLabel>
+                            <InputLabel style={{color: customTheme.palette.text.faded, position: "relative", top: "10px"}}>Value</InputLabel>
                             <Select
                                 value={param.value}
-                                style={{backgroundColor: "rgba(255, 255, 255, 0.10)"}}
+                                style={{backgroundColor: customTheme.palette.background.input}}
                                 onChange={(event) => editParamField("value", event.target.value)}
                                 size="small"
                             >
@@ -185,7 +185,7 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
             : null
         }
         <div style={{marginTop: "25px"}}>
-            <label style={{fontSize: "11px", position: "relative", left: "8px", top: "-6px", color: "var(--faded-text-color)"}}>Description</label>
+            <label style={{fontSize: "11px", position: "relative", left: "8px", top: "-6px", color: customTheme.palette.text.faded}}>Description</label>
             <TextareaAutosize
                 style={{...textAreaStyle, height: "45px", minHeight: "45px"}}
                 label={"Value"}
@@ -201,7 +201,7 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
                               />
                           }
                           label={
-                              <InputLabel style={{color: "var(--faded-text-color)", left: "-6px"}}>ReadOnly</InputLabel>
+                              <InputLabel style={{color: customTheme.palette.text.faded, left: "-6px"}}>ReadOnly</InputLabel>
                           }
         />
     </Card>
