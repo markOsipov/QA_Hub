@@ -7,6 +7,9 @@ import projectState from "../../../../state/ProjectState";
 import {observer} from "mobx-react-lite";
 import {modalStyle} from "../../../../styles/ModalStyle";
 import ConfigureParamCard from "./ConfigureParamCard";
+import IconButton from "@mui/material/IconButton";
+import {CloseIcon} from "next/dist/client/components/react-dev-overlay/internal/icons/CloseIcon";
+import {customTheme} from "../../../../styles/CustomTheme";
 
 const EditTestRunFormModal = observer(({isOpen, setIsOpen, params, loadTestRunForm}) => {
     let {selectedProject} = projectState
@@ -39,8 +42,12 @@ const EditTestRunFormModal = observer(({isOpen, setIsOpen, params, loadTestRunFo
         console.log(JSON.stringify(editedParams))
     }, [editedParams])
 
-    const handleClose = () => {
-        setIsOpen(!confirm("Close modal window?"))
+    const handleClose = (force) => {
+        if (force === true) {
+            setIsOpen(false)
+        } else {
+            setIsOpen(!confirm("Close modal window?"))
+        }
     }
 
     const handleAddNewParamClick = () => {
@@ -90,18 +97,33 @@ const EditTestRunFormModal = observer(({isOpen, setIsOpen, params, loadTestRunFo
                 }
             </div>
 
-            <div style={{display: "flex", width: "max-content", marginTop: "15px"}}>
+            <div style={{display: "flex", marginRight: "27px", alignItems: "center", paddingTop: "10px"}}>
+                <Button variant="contained"
+                        color="primary"
+                        onClick={handleAddNewParamClick}
+                        style={{margin: "0"}}
+                >Add param</Button>
+
+
+                <div style={{flexGrow: "2"}}></div>
+
                 <Button variant="contained"
                         color="error"
                         onClick={handleUpdateTestRunFormClick}
                         style={{margin: "0"}}
                 >Save changes</Button>
 
-                <Button variant="contained"
-                        color="primary"
-                        onClick={handleAddNewParamClick}
-                        style={{margin: "0"}}
-                >Add param</Button>
+                <IconButton style={{
+                    backgroundColor: customTheme.palette.primary.main,
+                    width: "32px", height: "32px",
+                    borderRadius: "6px",
+                    marginLeft: "13px",
+                    color: customTheme.palette.text.primary
+                }}
+                            onClick={() => {handleClose(true)}}
+                >
+                    <CloseIcon style={{fontSize: "24px"}}/>
+                </IconButton>
             </div>
 
         </Box>
