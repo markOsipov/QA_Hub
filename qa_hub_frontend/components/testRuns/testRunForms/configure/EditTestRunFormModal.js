@@ -2,7 +2,7 @@ import {Box, Modal} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {useEffect, useState} from "react";
 import Button from "@mui/material/Button";
-import {getParamTypes, getTestRunForm, upsertTestRunForm} from "../../../../requests/TestRunFormsRequests";
+import {getParamTypes, upsertTestRunForm} from "../../../../requests/TestRunFormsRequests";
 import projectState from "../../../../state/ProjectState";
 import {observer} from "mobx-react-lite";
 import {modalStyle} from "../../../../styles/ModalStyle";
@@ -73,26 +73,16 @@ const EditTestRunFormModal = observer(({isOpen, setIsOpen, params, loadTestRunFo
         }
     }
 
-    const updateParam = (param, index) => {
-        console.log("Updating param")
-        const currentParams = [...editedParams]
-        currentParams[index] = param
-
-        setEditedParams(currentParams)
-    }
-
     return <Modal
         open={isOpen}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
     >
-        <Box sx={modalStyle} style={{paddingRight: "5px", top: "calc(50% - 30px)", minWidth: "70vw"}} >
+        <Box sx={modalStyle} style={{paddingRight: "5px", minWidth: "70vw", marginBottom: "20px"}} >
             <Typography id="modal-modal-title" variant="h6" component="h2" style={{marginBottom: "10px"}}>
                 Editing test run form
             </Typography>
 
-            <div style={{maxHeight: "86vh", overflowY: "auto", paddingRight: "10px"}} id={testRunFormParamsViewId}>
+            <div style={{maxHeight: "88vh", overflowY: "auto", paddingRight: "10px"}} id={testRunFormParamsViewId}>
                 {
                     editedParams.map((param, index) => {
                         return <ConfigureParamCard key={ "param_" + index } param={param} index={index} params={editedParams} setParams={setEditedParams} paramTypes={paramTypes}/>
