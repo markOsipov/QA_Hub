@@ -13,22 +13,15 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import {customTheme} from "../../../../styles/CustomTheme";
-import CheckboxParamConfig from "./paramTypes/CheckboxParamConfig";
-import TextParamConfig from "./paramTypes/TextParamConfig";
-import TextAreaParamConfig from "./paramTypes/TextAreaParamConfig";
-import SelectParamConfig from "./paramTypes/SelectParamConfig";
-import MultiSelectParamConfig from "./paramTypes/MultiSelectParamConfig";
+import CheckboxParamConfig from "./paramConfigs/CheckboxParamConfig";
+import TextParamConfig from "./paramConfigs/TextParamConfig";
+import TextAreaParamConfig from "./paramConfigs/TextAreaParamConfig";
+import SelectParamConfig from "./paramConfigs/SelectParamConfig";
+import MultiSelectParamConfig from "./paramConfigs/MultiSelectParamConfig";
 import MoreIconButton from "./MoreIconButton";
+import {textAreaStyle} from "../../../../styles/TextAreaStyle";
 
 function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
-    const textAreaStyle = {
-        padding: "10px",
-        resize: "vertical", width: "100%", height: "100px", maxHeight: "max-content", minHeight: "100px",
-        color: customTheme.palette.text.primary,
-        backgroundColor: customTheme.palette.background.textArea,
-        fontFamily:"sans-serif", fontSize: "15px", lineHeight: "1.6",
-        overflow: "auto"
-    }
     const editParamField = (field, value) => {
         const newParams = params.slice()
         newParams[index] = {
@@ -91,7 +84,7 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
             (param.type === "text") ?
                 <TextParamConfig editParamField={editParamField} param={param}/>
             : (param.type === "textArea") ?
-                <TextAreaParamConfig editParamField={editParamField} param={param} textAreaStyle={textAreaStyle}/>
+                <TextAreaParamConfig editParamField={editParamField} param={param}/>
             : (param.type === "select") ?
                 <SelectParamConfig editParamField={editParamField} param={param}/>
             : (param.type === "multiSelect") ?
