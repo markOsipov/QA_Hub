@@ -2,6 +2,7 @@ package qa_hub.controller
 
 import com.mongodb.client.result.DeleteResult
 import com.mongodb.client.result.UpdateResult
+import org.bson.Document
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import qa_hub.core.mongo.QaHubMongoClient
+import qa_hub.core.mongo.entity.Collections
 import qa_hub.entity.BlockedTest
 import qa_hub.entity.CoreConfigs.*
 import qa_hub.entity.Platforms.*
@@ -37,6 +40,9 @@ class QaHubConfigController {
     @Autowired
     lateinit var projectService: ProjectService
 
+    @Autowired
+    lateinit var mongoClient: QaHubMongoClient
+
     @GetMapping("")
     fun getConfigs(): List<QaHubConfig> {
         return qaHubConfigService.getConfigs()
@@ -59,11 +65,10 @@ class QaHubConfigController {
 
     //Очистка всех данных для проверки поведения приложения на пустых таблицах
     @PostMapping("/clearData")
-    fun clearData() {
-        qaHubConfigService.deleteAllConfigs()
-        testcaseService.deleteAll()
-        blockedTestsService.unblockAll()
-        projectService.deleteAllProjects()
+    suspend fun clearData() {
+        Collections.values().forEach {
+            mongoClient.db.getCollection<Document>(it.collectionName).deleteMany()
+        }
     }
 
     //Сброс конфигов и заполнение тестовых данных
