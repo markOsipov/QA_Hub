@@ -20,8 +20,8 @@ class TestRunFormsController {
     }
 
     @GetMapping("/{project}")
-    fun getTestRunForm(@PathVariable project: String): StartTestRunForm? {
-        return testRunFormsService.findTestRunForm(project)
+    fun getTestRunForm(@PathVariable project: String): StartTestRunForm {
+        return testRunFormsService.findTestRunForm(project) ?: StartTestRunForm(project = project, params = mutableListOf())
     }
 
     @PostMapping("/upsert")
