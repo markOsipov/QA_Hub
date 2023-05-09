@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import qa_hub.core.mongo.QaHubMongoClient
 import qa_hub.core.mongo.entity.Collections.TEST_RUN_FORMS
-import qa_hub.entity.StartTestRunForm
-import qa_hub.entity.TestRunFormParams
+import qa_hub.entity.test_run.StartTestRunForm
+import qa_hub.entity.test_run.TestRunFormParams
 
 @Service
 class TestRunFormsService {

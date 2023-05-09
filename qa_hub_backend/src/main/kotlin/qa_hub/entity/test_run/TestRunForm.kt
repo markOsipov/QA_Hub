@@ -1,8 +1,8 @@
-package qa_hub.entity
+package qa_hub.entity.test_run
 
 data class StartTestRunForm(
     val project: String,
-    val params: MutableList<StartTestRunParam>
+    val params: MutableList<TestRunParamConfig>
 )
 
 enum class TestRunFormParams(val value: String) {
@@ -19,7 +19,7 @@ enum class TestRunFormParams(val value: String) {
     }
 }
 
-data class StartTestRunParam(
+data class TestRunParamConfig(
     val name: String,
     val type: String? = TestRunFormParams.TEXT.value,
     val defaultValue: String = "",

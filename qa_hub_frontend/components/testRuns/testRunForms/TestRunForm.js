@@ -81,10 +81,7 @@ const TestRunForm = observer(() => {
                             color="primary"
                             size="small"
                             onClick={() => {
-                                const projectId = projectState.getSelectedProjectFullInfo().cicdProjectId
-                                console.log(projectId)
-
-                                createNewTestRun(projectId, params)
+                                createNewTestRun(projectState.selectedProject, params)
                             }}
                             endIcon={<PlayArrowIcon />}
                     >Start</Button>

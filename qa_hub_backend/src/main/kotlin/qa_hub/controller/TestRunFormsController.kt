@@ -3,8 +3,8 @@ package qa_hub.controller
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import qa_hub.entity.StartTestRunForm
-import qa_hub.entity.TestRunFormParams
+import qa_hub.entity.test_run.StartTestRunForm
+import qa_hub.entity.test_run.TestRunFormParams
 import qa_hub.service.TestRunFormsService
 
 @RestController
