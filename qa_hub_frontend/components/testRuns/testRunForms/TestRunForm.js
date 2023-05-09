@@ -12,7 +12,7 @@ import "../../../utils/Extensions";
 import TestRunFormParam from "./TestRunFormParam";
 import SettingsIcon from '@mui/icons-material/Settings';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import {startNewTestRun} from "../../../requests/TestRunRequests";
+import {createNewTestRun} from "../../../requests/TestRunRequests";
 
 const TestRunForm = observer(() => {
     let {selectedProject} = projectState
@@ -84,7 +84,7 @@ const TestRunForm = observer(() => {
                                 const projectId = projectState.getSelectedProjectFullInfo().cicdProjectId
                                 console.log(projectId)
 
-                                startNewTestRun(projectId, params)
+                                createNewTestRun(projectId, params)
                             }}
                             endIcon={<PlayArrowIcon />}
                     >Start</Button>

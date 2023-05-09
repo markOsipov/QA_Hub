@@ -16,7 +16,7 @@ class TestRunController {
         val projectId: String,
         val params: List<TestRunRequestParam>
     )
-    @PostMapping("/start")
+    @PostMapping("/create")
     fun startNewTestRun(@RequestBody body: TestRunRequest): TestRunRequest {
         return body
     }
