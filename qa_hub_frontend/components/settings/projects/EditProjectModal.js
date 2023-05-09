@@ -2,10 +2,11 @@ import {Box, FormControl, InputLabel, MenuItem, Modal, Select, TextField} from "
 import Typography from "@mui/material/Typography";
 import {useEffect, useState} from "react";
 import useSWR from "swr";
-import {createProject, loadPlatforms, loadProjects, updateProject} from "../../../requests/ProjectRequests";
+import {loadPlatforms, updateProject} from "../../../requests/ProjectRequests";
 import StyledTextField from "../../primitives/StyledTextField";
 import Button from "@mui/material/Button";
 import projectState from "../../../state/ProjectState";
+import {modalStyle} from "../../../styles/ModalStyle";
 
 function NewProjectModal({isOpen, setIsOpen, project}) {
     const [currentProject, setCurrentProject] = useState(project)
@@ -51,19 +52,6 @@ function NewProjectModal({isOpen, setIsOpen, project}) {
         }
     }
 
-    const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: "min-content",
-        bgcolor: 'background.paper',
-        border: '2px solid #000',
-        boxShadow: 24,
-        p: 4,
-        padding: "10px 25px"
-    };
-
     if (error) {
         return <>Failed to load platforms info</>
     }
@@ -78,7 +66,7 @@ function NewProjectModal({isOpen, setIsOpen, project}) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
     >
-        <Box sx={style}>
+        <Box sx={modalStyle}>
             <Typography id="modal-modal-title" variant="h6" component="h2" style={{marginBottom: "10px"}}>
                 Editing project
             </Typography>

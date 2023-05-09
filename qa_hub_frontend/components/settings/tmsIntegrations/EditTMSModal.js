@@ -1,12 +1,10 @@
-import {Box, FormControl, InputLabel, MenuItem, Modal, Select, TextField} from "@mui/material";
+import {Box, FormControl, InputLabel, MenuItem, Modal, Select} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {useEffect, useState} from "react";
-import useSWR from "swr";
-import {createProject, loadPlatforms, loadProjects} from "../../../requests/ProjectRequests";
 import StyledTextField from "../../primitives/StyledTextField";
 import Button from "@mui/material/Button";
-import projectState from "../../../state/ProjectState";
-import {addTmsIntegration, getTmsTypes, updateTmsIntegration} from "../../../requests/TMSRequests";
+import {updateTmsIntegration} from "../../../requests/TMSRequests";
+import {modalStyle} from "../../../styles/ModalStyle";
 
 function EditTmsModal({isOpen, setIsOpen, updateTmsList, tmsTypes, tmsIntegrations, tms }) {
     const [currentTms, setCurrentTms] = useState(tms)
@@ -42,18 +40,6 @@ function EditTmsModal({isOpen, setIsOpen, updateTmsList, tmsTypes, tmsIntegratio
         }
     }
 
-    const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: "min-content",
-        bgcolor: 'background.paper',
-        border: '2px solid #000',
-        boxShadow: 24,
-        p: 4,
-        padding: "10px 25px"
-    };
 
     return <Modal
         open={isOpen}
@@ -61,7 +47,7 @@ function EditTmsModal({isOpen, setIsOpen, updateTmsList, tmsTypes, tmsIntegratio
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
     >
-        <Box sx={style}>
+        <Box sx={modalStyle}>
             <Typography id="modal-modal-title" variant="h6" component="h2" style={{marginBottom: "10px"}}>
                 Editing TMS Integration
             </Typography>

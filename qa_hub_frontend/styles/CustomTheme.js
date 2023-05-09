@@ -12,6 +12,8 @@ export var customTheme = createTheme({
         background: {
             default: '#303030',
             paper: '#424242',
+            input: 'rgba(255, 255, 255, 0.1)',
+            textArea: 'rgba(255, 255, 255, 0.07)'
         },
         success: {
             main: '#419036',
@@ -28,7 +30,9 @@ export var customTheme = createTheme({
         },
 
         text: {
-            primary: 'rgba(255,255,255,0.75)',
+            primary: 'rgba(255, 255, 255, 0.75)',
+            faded: 'rgba(255, 255, 255, 0.6)',
+            disabled: 'rgba(255, 255, 255, 0.3)',
             white: '#ffffff'
         },
     },
