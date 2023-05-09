@@ -21,7 +21,7 @@ import {textAreaStyle} from "../../../styles/TextAreaStyle";
 import TextParam from "./paramTypes/TextParam";
 import TextAreaParam from "./paramTypes/TextAreaParam";
 import SelectParam from "./paramTypes/SelectParam";
-import CheckboxParam from "./paramTypes/CheckboxParam";
+import BooleanParam from "./paramTypes/BooleanParam";
 import MultiSelectParam from "./paramTypes/MultiSelectParam";
 import ParamTypes from "./ParamTypes";
 
@@ -84,8 +84,8 @@ const TestRunForm = observer(() => {
                             <SelectParam style={{width: paramWidth}} param={param} index={index} setParamValue={setParamValue} />
                         : (param.type === ParamTypes.MULTI_SELECT) ?
                             <MultiSelectParam style={{width: paramWidth}} param={param} index={index} setParamValue={setParamValue} />
-                        : (param.type === ParamTypes.CHECKBOX) ?
-                            <CheckboxParam style={{width: paramWidth}} param={param} index={index} setParamValue={setParamValue} />
+                        : (param.type === ParamTypes.BOOLEAN) ?
+                            <BooleanParam style={{width: paramWidth}} param={param} index={index} setParamValue={setParamValue} />
                         : null
                     }
                     </div>

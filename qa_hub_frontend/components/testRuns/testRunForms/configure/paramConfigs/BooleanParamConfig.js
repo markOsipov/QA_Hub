@@ -1,7 +1,7 @@
 import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import {customTheme} from "../../../../../styles/CustomTheme";
 
-function CheckboxParamConfig({ editParamField, param }) {
+function BooleanParamConfig({ editParamField, param }) {
 
     return <div>
         <FormControl style={{width: "483px", marginTop: "15px"}}>
@@ -22,4 +22,4 @@ function CheckboxParamConfig({ editParamField, param }) {
     </div>
 }
 
-export default CheckboxParamConfig
+export default BooleanParamConfig

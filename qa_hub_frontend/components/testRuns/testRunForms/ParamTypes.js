@@ -3,7 +3,7 @@ const ParamTypes = {
     TEXT_AREA: "textArea",
     SELECT: "select",
     MULTI_SELECT: "multiSelect",
-    CHECKBOX: "checkbox"
+    BOOLEAN: "boolean"
 }
 
 export default ParamTypes

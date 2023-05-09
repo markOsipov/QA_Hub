@@ -13,7 +13,7 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import {customTheme} from "../../../../styles/CustomTheme";
-import CheckboxParamConfig from "./paramConfigs/CheckboxParamConfig";
+import BooleanParamConfig from "./paramConfigs/BooleanParamConfig";
 import TextParamConfig from "./paramConfigs/TextParamConfig";
 import TextAreaParamConfig from "./paramConfigs/TextAreaParamConfig";
 import SelectParamConfig from "./paramConfigs/SelectParamConfig";
@@ -90,8 +90,8 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
                 <SelectParamConfig editParamField={editParamField} param={param}/>
             : (param.type === ParamTypes.MULTI_SELECT) ?
                 <MultiSelectParamConfig editParamField={editParamField} param={param}/>
-            : (param.type === ParamTypes.CHECKBOX) ?
-                <CheckboxParamConfig  editParamField={editParamField}  param={param}/>
+            : (param.type === ParamTypes.BOOLEAN) ?
+                <BooleanParamConfig editParamField={editParamField} param={param}/>
             : null
         }
         <div style={{marginTop: "25px"}}>
