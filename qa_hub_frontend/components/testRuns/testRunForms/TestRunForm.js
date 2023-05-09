@@ -74,7 +74,10 @@ const TestRunForm = observer(() => {
                 const paramWidth = "700px"
 
                 return <div style={{display: "flex", alignItems: "center", width: "max-content", marginBottom: "25px"}} key={"param_" + param.name}>
-                    <div style={{minWidth: "50%"}}>
+                    <div style={{width: "300px", display: "flex", justifyContent: "end"}}>
+                        <Typography style={{position: "relative", top: "1px"}}>{param.name}</Typography>
+                    </div>
+                    <div style={{minWidth: "50%", marginLeft: "15px"}}>
                     {
                         (param.type === ParamTypes.TEXT) ?
                             <TextParam style={{width: paramWidth}} param={param} index={index} setParamValue={setParamValue} />

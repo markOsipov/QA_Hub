@@ -38,7 +38,7 @@ function MultiSelectParam({style, param, index, setParamValue}) {
     }
 
     return <FormControl style={style}>
-        <InputLabel style={{color: customTheme.palette.text.faded, position: "relative", top: "10px", left: "-5px"}}>{param.name}</InputLabel>
+        {/*<InputLabel style={{color: customTheme.palette.text.faded, position: "relative", top: "10px", left: "-5px"}}>{param.name}</InputLabel>*/}
         <Select
             value={values}
             style={{backgroundColor: customTheme.palette.background.input}}
