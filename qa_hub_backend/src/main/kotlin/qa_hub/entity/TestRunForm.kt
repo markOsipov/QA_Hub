@@ -25,5 +25,6 @@ data class StartTestRunParam(
     val defaultValue: String = "",
     val options: List<String> = listOf(),
     val description: String = "",
-    val readOnly: Boolean = false
+    val readOnly: Boolean = false,
+    val muted: Boolean = false
 )

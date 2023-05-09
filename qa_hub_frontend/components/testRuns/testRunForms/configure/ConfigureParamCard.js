@@ -51,7 +51,7 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
 
         <div style={{display: "flex", alignItems: "end", width: "max-content"}}>
             <FormControl style={{width: "300px"}}>
-                <InputLabel style={{color: "white", left: "-5px", top: "3px"}}>Name</InputLabel>
+                <InputLabel style={{color: "white", left: "-5px", top: "7px"}}>Name</InputLabel>
                 <Input style={{backgroundColor: customTheme.palette.background.input, paddingLeft:"5px", height: "36px", color: "white"}}
                        value={param.name}
                        onChange={(event) => {editParamField("name", event.target.value)}}
@@ -61,7 +61,7 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
             <FormControl style={{marginLeft: "15px", width: "170px"}}>
                 <InputLabel style={{color: customTheme.palette.text.faded, position: "relative", top: "10px"}}>Type</InputLabel>
                 <Select
-                    value={param.type}
+                    value={paramTypes.find(type => type === param.type) || ''}
                     style={{backgroundColor: customTheme.palette.background.input}}
                     onChange={(event) => editParamField("type", event.target.value)}
                     size="small"
@@ -110,16 +110,26 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
             />
         </div>
 
-        <FormControlLabel style={{marginTop: "10px"}}
-                          control={
-                              <Checkbox checked={param.readOnly}
-                                        onChange={(event) => {editParamField("readOnly", event.target.checked)}}
-                              />
-                          }
-                          label={
-                              <InputLabel style={{color: customTheme.palette.text.faded, left: "-6px"}}>ReadOnly</InputLabel>
-                          }
-        />
+        <div style={{display: "flex", marginTop: "10px"}}>
+            <FormControlLabel control={
+                                  <Checkbox checked={param.readOnly}
+                                            onChange={(event) => {editParamField("readOnly", event.target.checked)}}
+                                  />
+                              }
+                              label={
+                                  <InputLabel style={{color: customTheme.palette.text.faded, left: "-5px", top: "1px"}}>ReadOnly</InputLabel>
+                              }
+            />
+            <FormControlLabel control={
+                                  <Checkbox checked={param.muted}
+                                            onChange={(event) => {editParamField("muted", event.target.checked)}}
+                                  />
+                              }
+                              label={
+                                  <InputLabel style={{color: customTheme.palette.text.faded, left: "-5px", top: "1px"}}>Muted</InputLabel>
+                              }
+            />
+        </div>
     </Card>
 }
 
