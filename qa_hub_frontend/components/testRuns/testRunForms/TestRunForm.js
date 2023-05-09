@@ -23,6 +23,7 @@ import TextAreaParam from "./paramTypes/TextAreaParam";
 import SelectParam from "./paramTypes/SelectParam";
 import CheckboxParam from "./paramTypes/CheckboxParam";
 import MultiSelectParam from "./paramTypes/MultiSelectParam";
+import ParamTypes from "./ParamTypes";
 
 const TestRunForm = observer(() => {
     let {selectedProject} = projectState
@@ -75,15 +76,15 @@ const TestRunForm = observer(() => {
                 return <div style={{display: "flex", alignItems: "center", width: "max-content", marginBottom: "25px"}} key={"param_" + param.name}>
                     <div style={{minWidth: "50%"}}>
                     {
-                        (param.type === "text") ?
+                        (param.type === ParamTypes.TEXT) ?
                             <TextParam style={{width: paramWidth}} param={param} index={index} setParamValue={setParamValue} />
-                        : (param.type === "textArea") ?
+                        : (param.type === ParamTypes.TEXT_AREA) ?
                             <TextAreaParam style={{width: paramWidth}} param={param} index={index} setParamValue={setParamValue} />
-                        : (param.type === "select") ?
+                        : (param.type === ParamTypes.SELECT) ?
                             <SelectParam style={{width: paramWidth}} param={param} index={index} setParamValue={setParamValue} />
-                        : (param.type === "multiSelect") ?
+                        : (param.type === ParamTypes.MULTI_SELECT) ?
                             <MultiSelectParam style={{width: paramWidth}} param={param} index={index} setParamValue={setParamValue} />
-                        : (param.type === "checkbox") ?
+                        : (param.type === ParamTypes.CHECKBOX) ?
                             <CheckboxParam style={{width: paramWidth}} param={param} index={index} setParamValue={setParamValue} />
                         : null
                     }

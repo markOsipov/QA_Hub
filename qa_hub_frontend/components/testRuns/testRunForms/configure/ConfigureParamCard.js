@@ -20,6 +20,7 @@ import SelectParamConfig from "./paramConfigs/SelectParamConfig";
 import MultiSelectParamConfig from "./paramConfigs/MultiSelectParamConfig";
 import MoreIconButton from "./MoreIconButton";
 import {textAreaStyle} from "../../../../styles/TextAreaStyle";
+import ParamTypes from "../ParamTypes";
 
 function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
     const editParamField = (field, value) => {
@@ -81,15 +82,15 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
         </div>
 
         {
-            (param.type === "text") ?
+            (param.type === ParamTypes.TEXT) ?
                 <TextParamConfig editParamField={editParamField} param={param}/>
-            : (param.type === "textArea") ?
+            : (param.type === ParamTypes.TEXT_AREA) ?
                 <TextAreaParamConfig editParamField={editParamField} param={param}/>
-            : (param.type === "select") ?
+            : (param.type === ParamTypes.SELECT) ?
                 <SelectParamConfig editParamField={editParamField} param={param}/>
-            : (param.type === "multiSelect") ?
+            : (param.type === ParamTypes.MULTI_SELECT) ?
                 <MultiSelectParamConfig editParamField={editParamField} param={param}/>
-            : (param.type === "checkbox") ?
+            : (param.type === ParamTypes.CHECKBOX) ?
                 <CheckboxParamConfig  editParamField={editParamField}  param={param}/>
             : null
         }
