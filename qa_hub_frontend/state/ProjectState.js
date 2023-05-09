@@ -3,9 +3,9 @@ import {getCookie, setCookie} from "../utils/CookieHelper";
 import {loadProjects} from "../requests/ProjectRequests";
 
 class ProjectState {
-    projects = getCookie("projects")                   //Project names only
-    projectsDetails = []                                    //Projects full info.
-    selectedProject = getCookie("selected-project")    //Current project name
+    projects = getCookie("projects")                      //Project names only
+    projectsDetails = []                                //Projects full info.
+    selectedProject = getCookie("selected-project")       //Current project name
 
     setProjects(projects) {
         this.projects = projects
@@ -36,7 +36,7 @@ class ProjectState {
     getSeparator() {
         try {
             return this.projectsDetails.find(project => {
-                return project.name === selectedProject.selectedProject
+                return project.name === this.selectedProject.selectedProject
             }).separator
         } catch (e) {
             return "."
@@ -51,6 +51,12 @@ class ProjectState {
         } catch (e) {
             return "."
         }
+    }
+
+    getSelectedProjectFullInfo() {
+        return this.projectsDetails.find(project => {
+            return project.name === this.selectedProject
+        })
     }
 
     constructor() {

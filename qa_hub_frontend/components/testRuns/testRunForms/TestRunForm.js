@@ -6,14 +6,13 @@ import {getTestRunForm} from "../../../requests/TestRunFormsRequests";
 import Typography from "@mui/material/Typography";
 import EditTestRunFormModal from "./configure/EditTestRunFormModal";
 import Button from "@mui/material/Button";
-import TextParam from "./paramTypes/TextParam";
-import TextAreaParam from "./paramTypes/TextAreaParam";
-import SelectParam from "./paramTypes/SelectParam";
-import BooleanParam from "./paramTypes/BooleanParam";
-import MultiSelectParam from "./paramTypes/MultiSelectParam";
-import ParamTypes from "./ParamTypes";
 import StyledAccordionSummary from "../../primitives/StyledAccordeonSummary";
-import {Accordion, AccordionDetails, AccordionSummary, Box, Card} from "@mui/material";
+import {Accordion, AccordionDetails, } from "@mui/material";
+import "../../../utils/Extensions";
+import TestRunFormParam from "./TestRunFormParam";
+import SettingsIcon from '@mui/icons-material/Settings';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import {startNewTestRun} from "../../../requests/TestRunRequests";
 
 const TestRunForm = observer(() => {
     let {selectedProject} = projectState
@@ -28,13 +27,6 @@ const TestRunForm = observer(() => {
                 setParamConfigs(response.data?.params)
             }
         })
-    }
-
-    const setParamValue = (index, value) => {
-        const newParams = params.slice()
-        newParams[index].value = value
-
-        setParams(newParams)
     }
 
     useEffect(() => {
@@ -65,45 +57,41 @@ const TestRunForm = observer(() => {
                 <Typography variant="h5" style={{width: "max-content"}}>Start new testrun</Typography>
             </StyledAccordionSummary>
 
-            <AccordionDetails style={{marginTop: "20px"}}>
+            <AccordionDetails style={{marginTop: "20px", maxWidth: "1048px"}}>
                 {
                     paramConfigs.length === 0 ? <Typography>No params configured for this project</Typography> : null
                 }
                 {
                     params.map((param, index) => {
-                        const paramWidth = "700px"
-
-                        return <div style={{display: "flex", alignItems: "center", width: "max-content", marginBottom: "25px"}} key={"param_" + param.name}>
-                            <div style={{width: "300px", display: "flex", justifyContent: "end"}}>
-                                <Typography style={{position: "relative", top: "1px"}}>{param.name}</Typography>
-                            </div>
-                            <div style={{minWidth: "50%", marginLeft: "15px"}}>
-                            {
-                                (param.type === ParamTypes.TEXT) ?
-                                    <TextParam style={{width: paramWidth}} param={param} index={index} setParamValue={setParamValue} />
-                                : (param.type === ParamTypes.TEXT_AREA) ?
-                                    <TextAreaParam style={{width: paramWidth}} param={param} index={index} setParamValue={setParamValue} />
-                                : (param.type === ParamTypes.SELECT) ?
-                                    <SelectParam style={{width: paramWidth}} param={param} index={index} setParamValue={setParamValue} />
-                                : (param.type === ParamTypes.MULTI_SELECT) ?
-                                    <MultiSelectParam style={{width: paramWidth}} param={param} index={index} setParamValue={setParamValue} />
-                                : (param.type === ParamTypes.BOOLEAN) ?
-                                    <BooleanParam style={{width: paramWidth}} param={param} index={index} setParamValue={setParamValue} />
-                                : null
-                            }
-                            </div>
-                        </div>
+                        return <TestRunFormParam key={"param_" + index } param={param} index={index} params={params} setParams={setParams} />
                     })
                 }
 
+                <div style={{display: "flex"}}>
                     <Button variant="contained"
                             color="error"
                             size="small"
                             onClick={handleEditFormClick}
-                            style={{margin: "12px 8px 0 8px"}}
+                            startIcon={<SettingsIcon />}
                     >Configure</Button>
-                </AccordionDetails>
-            </Accordion>
+
+                    <div style={{flexGrow: "2"}}></div>
+
+                    <Button variant="contained"
+                            color="primary"
+                            size="small"
+                            onClick={() => {
+                                const projectId = projectState.getSelectedProjectFullInfo().cicdProjectId
+                                console.log(projectId)
+
+                                startNewTestRun(projectId, params)
+                            }}
+                            endIcon={<PlayArrowIcon />}
+                    >Start</Button>
+
+                </div>
+            </AccordionDetails>
+        </Accordion>
     </Paper>
 })
 
