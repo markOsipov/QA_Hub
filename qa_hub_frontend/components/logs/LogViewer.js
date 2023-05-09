@@ -175,7 +175,7 @@ function LogViewer() {
                             >
                                 {
                                     [10, 50, 100, 200, 500, 1000, 2000].map(value => {
-                                        return  <MenuItem value={value}>{value}</MenuItem>
+                                        return  <MenuItem key={value} value={value}>{value}</MenuItem>
                                     })
                                 }
                             </Select>
@@ -250,7 +250,7 @@ function LogViewer() {
                                                 <div style={{display: "flex", flexDirection: "column", whiteSpace: "pre-wrap", maxHeight: "300px", overflowY: "visible"}}>
                                                     {
                                                         messageLines.map((line, lineIndex) => {
-                                                            return <label key={index + "_" + lineIndex} style={{}}>{line}</label>
+                                                            return <label key={index + "_" + lineIndex}>{line}</label>
                                                         })
                                                     }
                                                 </div>
