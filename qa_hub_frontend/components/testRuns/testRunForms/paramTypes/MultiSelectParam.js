@@ -1,6 +1,7 @@
 import {Checkbox, FormControl, Input, InputLabel, ListItemText, MenuItem, Select} from "@mui/material";
 import {customTheme} from "../../../../styles/CustomTheme";
 import {useEffect, useState} from "react";
+import TextParam from "./TextParam";
 
 function MultiSelectParam({style, param, index, setParamValue}) {
     const separator = ", "
@@ -21,11 +22,19 @@ function MultiSelectParam({style, param, index, setParamValue}) {
         setParamValue(index, values.join(separator))
     }, [values])
 
+    useEffect(() => {
+        setValues(getInitialValue())
+    }, [param])
+
     function handleValueChange(event) {
         const value = event.target.value
         const newParamValue =  typeof value === 'string' ? value.split(separator) : value
 
         setValues(newParamValue)
+    }
+
+    if (param.readOnly) {
+        return <TextParam style={style} param={param} index={index} setParamValue={setParamValue} />
     }
 
     return <FormControl style={style}>

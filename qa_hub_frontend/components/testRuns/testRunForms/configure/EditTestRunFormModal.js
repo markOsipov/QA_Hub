@@ -38,10 +38,6 @@ const EditTestRunFormModal = observer(({isOpen, setIsOpen, params, loadTestRunFo
         }
     }, [isOpen])
 
-    useEffect(() => {
-        console.log(JSON.stringify(editedParams))
-    }, [editedParams])
-
     const handleClose = (force) => {
         if (force === true) {
             setIsOpen(false)
