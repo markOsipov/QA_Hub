@@ -12,34 +12,47 @@ data class TestRunParam(
     val name: String,
     val value: String
 )
-data class TestRunRequest(
+data class CreateTestRunRequest(
     val project: String,
     val params: List<TestRunParam>
 )
 
+data class StartTestRunRequest(
+    val testRunId: String? = null,
+    val mainInfo: TestRunMainInfo,
+    val gitlabRunner: String? = null,
+    val testList: List<TestListElement>? = null
+)
+
+data class TestListElement(
+    val testcaseId: String = "",
+    val fullName: String
+)
 data class TestRun(
-    var id: String,
-    var project: String,
-
-    var cicdJobId: String? = null,
-    var tmsLaunchId: String? = null,
-
-    var branch: String = "unknown",
-    var commit: String? = null,
-    var environment: String? = "unknown",
-
+    var _id: String? = null,
     var status: String,
-    var startDate: String,
-    var endDate: String? = null,
-    var duration: Long? = null,
+    var mainInfo: TestRunMainInfo,
 
     var testsCount: Int? = null,
     var failsCount: Int? = null,
     var successCount: Int? = null,
 
-    var retries: Int? = null,
-    var parallelThreads: Int? = null,
-
-    var tags: List<String> = listOf()
+    var startDate: String,
+    var endDate: String? = null,
+    var duration: Long? = null,
 )
 
+data class TestRunMainInfo(
+    var project: String,
+
+    var pipelineId: String? = null,
+    var tmsLaunchId: String? = null,
+
+    var branch: String = "unknown",
+    var commit: String = "unknown",
+    var environment: String? = "unknown",
+
+    var retries: Int = 1,
+    var parallelThreads: Int = 1,
+    var tags: List<String> = listOf(),
+)

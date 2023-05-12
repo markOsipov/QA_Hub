@@ -12,4 +12,9 @@ object DateTimeUtils {
     ): String {
        return date.format(formatter)
     }
+
+    fun getCurrentTimestamp(): Long {
+        val currentInstant = java.time.Instant.now()
+        return  currentInstant.toEpochMilli()
+    }
 }

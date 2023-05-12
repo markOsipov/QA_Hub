@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import qa_hub.entity.test_run.TestRun
-import qa_hub.entity.test_run.TestRunRequest
+import qa_hub.entity.test_run.CreateTestRunRequest
+import qa_hub.entity.test_run.StartTestRunRequest
 import qa_hub.service.TestRunService
 
 @RestController
@@ -18,7 +19,12 @@ class TestRunController {
     lateinit var testRunService: TestRunService
 
     @PostMapping("/create")
-    fun startNewTestRun(@RequestBody body: TestRunRequest): TestRun = runBlocking {
+    fun createNewTestRun(@RequestBody body: CreateTestRunRequest): TestRun = runBlocking {
         return@runBlocking testRunService.createTestRun(body)
+    }
+
+    @PostMapping("/start")
+    fun startNewTestRun(@RequestBody body: StartTestRunRequest): TestRun = runBlocking {
+        return@runBlocking testRunService.startTestRun(body)
     }
 }
