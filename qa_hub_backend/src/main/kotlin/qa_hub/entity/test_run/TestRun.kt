@@ -2,10 +2,9 @@ package qa_hub.entity.test_run
 
 enum class TestRunStatus(val status: String, isFinal: Boolean = false) {
     CREATED("created"),
-    STARTED("started"),
-    BUILDING("building"),
     PROCESSING("processing"),
     FINISHED("finished", true),
+    STOPPED("stopped", true),
     ERROR("error", true)
 }
 
@@ -19,9 +18,11 @@ data class TestRunRequest(
 )
 
 data class TestRun(
-    var _id: String? = null,
-    var testRunId: String? = null,
+    var id: String,
     var project: String,
+
+    var cicdJobId: String? = null,
+    var tmsLaunchId: String? = null,
 
     var branch: String = "unknown",
     var commit: String? = null,

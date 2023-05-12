@@ -1,6 +1,6 @@
 package qa_hub.entity.test_run
 data class TestRunHistory(
-    val testRunMongoId: String,
+    val testRunId: String,
     val startDate: String? = null,
     val endDate: String? = null,
     val duration: Int? = null,

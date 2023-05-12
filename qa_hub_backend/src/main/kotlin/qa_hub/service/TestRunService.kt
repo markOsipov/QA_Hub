@@ -8,7 +8,7 @@ import qa_hub.core.mongo.QaHubMongoClient
 import qa_hub.core.mongo.entity.Collections.*
 import qa_hub.entity.test_run.*
 import qa_hub.entity.test_run.TestRunStatus.*
-import java.time.LocalDateTime
+
 
 @Service
 class TestRunService {
@@ -31,9 +31,12 @@ class TestRunService {
     }
 
     suspend fun createTestRun(testRunRequest: TestRunRequest): TestRun {
-        val startDate = LocalDateTime.now().toString()
+        val currentInstant = java.time.Instant.now()
+        val currentTimeStamp = currentInstant.toEpochMilli()
+        val startDate = currentTimeStamp.toString()
 
         val newTestRun = TestRun(
+            id = startDate,
             project = testRunRequest.project,
             startDate = startDate,
             status = CREATED.status
@@ -43,12 +46,11 @@ class TestRunService {
             testRunsCollection.insertOne(newTestRun)
         }
 
-        val testRun = testRunsCollection.findOne(TestRun::startDate.eq(startDate))
-        val testRunMongoId =  testRun?._id!!
+        val testRun = testRunsCollection.findOne(TestRun::id.eq(newTestRun.id))!!
 
         testRunHistoryCollection.insertOne(
             TestRunHistory(
-                testRunMongoId = testRunMongoId,
+                testRunId = testRun.id,
                 startDate = startDate,
                 history = listOf(TestRunHistoryItem(
                     CREATED.status, startDate
@@ -58,7 +60,7 @@ class TestRunService {
 
         testRunParamsCollection.insertOne(
             TestRunParams(
-                testRunMongoId = testRunMongoId,
+                testRunId = testRun.id,
                 params = testRunRequest.params
             )
         )

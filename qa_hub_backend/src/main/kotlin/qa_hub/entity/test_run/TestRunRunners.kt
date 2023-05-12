@@ -1,7 +1,7 @@
 package qa_hub.entity.test_run
 
 data class TestRunners(
-    val testRunMongoId: String,
+    val testRunId: String,
     val runners: MutableList<TestRunRunner> = mutableListOf()
 )
 data class TestRunRunner(
