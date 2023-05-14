@@ -37,6 +37,8 @@ data class TestRun(
     var failsCount: Int? = null,
     var successCount: Int? = null,
 
+    var finishedWithError: Boolean = false,
+
     var startDate: String,
     var endDate: String? = null,
     var duration: Long? = null,

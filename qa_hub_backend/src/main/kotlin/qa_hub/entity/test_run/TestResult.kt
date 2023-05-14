@@ -8,17 +8,17 @@ enum class QaResolution(val value: String) {
     BUG("bug")
 }
 
-enum class TestStatus(val value: String) {
+enum class TestResultStatus(val value: String, val increaseRetries: Boolean = false) {
     WAITING("waiting"),
     PROCESSING("processing"),
-    SUCCESS("success"),
-    FAILURE("failure")
+    SUCCESS("success", true),
+    FAILURE("failure", true)
 }
-data class TestResult(
+data class TestResultHistoryItem(
     var testRunId: String,
     var testcaseId: String = "",
     var fullName: String,
-    var resultDate: String,
+    var date: String,
     var status: String,
 
     var duration: Double? = null,
@@ -27,9 +27,17 @@ data class TestResult(
     var device: String? = null,
     var deviceRuntime: String? = null,
     var deviceUdid: String? = null,
-    var qaComment: String? = null,
-    var qaResolution: String? = QaResolution.UNREVIEWED.value,
-    var retries: Int? = null,
+
     var attachments: List<String>? = null
 )
 
+data class TestResult(
+    val testRunId: String,
+    val fullName: String,
+
+    val retries: Int? = null,
+    val qaComment: String? = null,
+    val qaResolution: String? = QaResolution.UNREVIEWED.value,
+
+    val history: List<TestResultHistoryItem>
+)

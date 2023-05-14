@@ -5,7 +5,7 @@ enum class Collections(val collectionName: String) {
     PROJECTS("projects"),
     QA_HUB_CONFIG("qaHubConfig"),
     TESTCASES("testcases"),
-    TEST_RESULTS("testResults"),
+    TEST_RESULTS_HISTORY("testResultsHistory"),
     TEST_RUNS("testRuns"),
     TEST_RUN_HISTORY("testRunHistory"),
     TEST_RUN_RUNNERS("testRunners"),

@@ -1,5 +1,6 @@
 package qa_hub.service
 
+import com.mongodb.client.model.UpdateOptions
 import kotlinx.coroutines.runBlocking
 import org.litote.kmongo.*
 import org.springframework.beans.factory.annotation.Autowired
@@ -9,7 +10,6 @@ import qa_hub.core.mongo.entity.Collections.*
 import qa_hub.core.utils.DateTimeUtils.getCurrentTimestamp
 import qa_hub.entity.test_run.*
 import qa_hub.entity.test_run.TestRunStatus.*
-
 
 @Service
 class TestRunService {
@@ -39,8 +39,8 @@ class TestRunService {
         mongoClient.db.getCollection<TestRunTestQueue>(TEST_RUN_TEST_QUEUE.collectionName)
     }
 
-    private val testResultsCollection by lazy {
-        mongoClient.db.getCollection<TestResult>(TEST_RESULTS.collectionName)
+    private val testResultsHistoryCollection by lazy {
+        mongoClient.db.getCollection<TestResult>(TEST_RESULTS_HISTORY.collectionName)
     }
 
     suspend fun createTestRun(createTestRunRequest: CreateTestRunRequest): TestRun {
@@ -96,8 +96,8 @@ class TestRunService {
             testRunsCollection.findOneById(startTestRunRequest.testRunId)!!
         }
 
+        //multiple runners can be involved. Only first one changing status of test run and creating waiting testResults entities
         if (createdTestRun.status != PROCESSING.status) {
-
             testRunsCollection.updateOneById(
                 createdTestRun._id!!,
                 set(
@@ -115,44 +115,80 @@ class TestRunService {
                 )
             )
 
-            //Inserting Test queue if there is no one
             startTestRunRequest.testList?.let {
-                val existingQueue = testRunTestQueueCollection.findOne(TestRunTestQueue::testRunId.eq(createdTestRun._id))
-
-                if (existingQueue == null) {
-                    testRunTestQueueCollection.insertOne(
-                        TestRunTestQueue(
-                            createdTestRun._id!!,
-                            startTestRunRequest.testList.toMutableList()
-                        )
-                    )
-                }
-
-                testResultsCollection.insertMany(
-                    startTestRunRequest.testList.map{
+                testResultsHistoryCollection.insertMany(
+                    startTestRunRequest.testList.map {
                         TestResult(
                             testRunId = createdTestRun._id!!,
-                            testcaseId = it.testcaseId,
                             fullName = it.fullName,
-                            resultDate = startDate,
-                            status = TestStatus.WAITING.value
+                            history = listOf(
+                                TestResultHistoryItem(
+                                    testRunId = createdTestRun._id!!,
+                                    testcaseId = it.testcaseId,
+                                    fullName = it.fullName,
+                                    date = startDate,
+                                    status = TestResultStatus.WAITING.value
+                                )
+                            )
                         )
                     }
                 )
             }
         }
 
-        //Inserting involved runner info
         startTestRunRequest.gitlabRunner?.let {
             testRunRunnersCollection.updateOne(
                 TestRunRunners::testRunId.eq(createdTestRun._id),
                 addToSet(
                     TestRunRunners::runners,
-                    TestRunRunner(it,startDate)
+                    TestRunRunner(it, startDate)
                 )
             )
         }
 
         return@runBlocking testRunsCollection.findOneById(createdTestRun._id!!)!!
+    }
+
+    suspend fun updateTestResult(testResultHistoryItem: TestResultHistoryItem) {
+        val testResultStatus = TestResultStatus.values().first {
+            it.value == testResultHistoryItem.status
+        }
+        val incRetries = if (testResultStatus.increaseRetries) 1 else 0
+
+        testResultsHistoryCollection.updateOne(
+            and(
+                TestResult::testRunId.eq(testResultHistoryItem.testRunId),
+                TestResult::fullName.eq(testResultHistoryItem.fullName)
+            ),
+            combine(
+                addToSet(TestResult::history, testResultHistoryItem),
+                inc(TestResult::retries, incRetries)
+            ),
+
+            upsert()
+        )
+    }
+
+    fun getTestResults(testRunId: String): List<TestResult> = runBlocking {
+        testResultsHistoryCollection.find(
+            TestResult::testRunId.eq(testRunId)
+        ).toList()
+    }
+
+    fun finishTestRun(testRunId: String, runner: String, withError: Boolean = false) = runBlocking {
+        val testRun = testRunsCollection.findOneById(testRunId)!!
+        val testResults = getTestResults(testRunId)
+        val finishDate = getCurrentTimestamp().toString()
+
+        testRunRunnersCollection.updateOne(
+            and(TestRunRunners::testRunId.eq(testRunId), TestRunRunners::runners / TestRunRunner::name eq runner),
+            set(
+                (TestRunRunners::runners.posOp / TestRunRunner::finished).setTo(finishDate),
+                (TestRunRunners::runners.posOp / TestRunRunner::withError).setTo(withError)
+            ),
+            UpdateOptions().arrayFilters(listOf(TestRunRunner::name.eq(runner)))
+        )
+
+        //val runners = testRunRunnersCollection.findOne(TestRunRunners::testRunId.eq(testRunId))
     }
 }
