@@ -1,4 +1,4 @@
-package qa_hub.controller
+package qa_hub.controller.utils
 
 import com.mongodb.client.result.DeleteResult
 import com.mongodb.client.result.UpdateResult

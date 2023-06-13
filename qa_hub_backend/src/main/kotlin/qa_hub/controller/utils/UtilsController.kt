@@ -1,4 +1,4 @@
-package qa_hub.controller
+package qa_hub.controller.utils
 
 import com.google.gson.Gson
 import org.springframework.http.HttpHeaders

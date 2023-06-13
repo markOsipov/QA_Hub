@@ -9,13 +9,17 @@ Create database with name dbQaHub
 ### 2. Setup environmental variables:
 ENV_MONGO_QA_HUB_HOST  \
 ENV_MONGO_QA_HUB_LOGIN  \
-ENV_MONGO_QA_HUB_PASSWORD
+ENV_MONGO_QA_HUB_PASSWORD \
 
 used for local launch or for docker compose build
 
 ### Local Launch:
-1. Create and set permissions for logs directory
-sudo mkdir /var/log/qa_hub
+1. Create and set permissions for logs directory \
+sudo mkdir /var/log/qa_hub \
+sudo touch /var/log/qa_hub/application.log
+sudo touch /var/log/qa_hub/application_json.log \
+sudo chmod 777 /var/log/qa_hub/application.log \
+sudo chmod 777 /var/log/qa_hub/application_json.log \
 sudo chmod -R 777 /var/log/qa_hub
 
 2. Install JDK 1.8+

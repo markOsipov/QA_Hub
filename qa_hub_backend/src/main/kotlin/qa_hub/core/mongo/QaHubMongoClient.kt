@@ -16,18 +16,20 @@ class QaHubMongoClient {
     private val userName = System.getenv("ENV_MONGO_QA_HUB_LOGIN")
     private val userPass = System.getenv("ENV_MONGO_QA_HUB_PASSWORD")
 
-    val db: CoroutineDatabase = run {
+    val client = run {
         KMongo.createClient(
-            MongoClientSettings.builder()
-                .applyConnectionString(ConnectionString(mongoHost))
-                .credential(
-                    MongoCredential.createScramSha1Credential(
-                        userName,
-                        "admin",
-                        userPass.toCharArray()
-                    )
-                )
-                .build()
-        ).coroutine.getDatabase(qaHubDb)
+                MongoClientSettings.builder()
+                        .applyConnectionString(ConnectionString(mongoHost))
+                        .credential(
+                                MongoCredential.createScramSha1Credential(
+                                        userName,
+                                        "admin",
+                                        userPass.toCharArray()
+                                )
+                        )
+                        .build()
+        )
     }
+
+    val db: CoroutineDatabase = client.coroutine.getDatabase(qaHubDb)
 }
