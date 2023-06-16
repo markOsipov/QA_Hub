@@ -3,7 +3,9 @@ package qa_hub.controller.utils
 import com.mongodb.client.result.DeleteResult
 import com.mongodb.client.result.UpdateResult
 import org.bson.Document
+import org.bson.types.ObjectId
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.convert.converter.Converter
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -19,24 +21,10 @@ class MongoProxyController {
     lateinit var mongoProxyService: MongoProxyService
 
     @PostMapping("/findOne")
-    fun findOne(@RequestBody body: MongoRequest): Document? {
-        val result = mongoProxyService.findOne(body)
-        result?.set("_id", result["_id"].toString())
-
-        return result
-    }
-
+    fun findOne(@RequestBody body: MongoRequest): Document? = mongoProxyService.findOne(body)
 
     @PostMapping("/findMany")
-    fun findMany(@RequestBody body: MongoRequest): List<Document> {
-        val result = mongoProxyService.findMany(body)
-        result.forEach {el ->
-            el["_id"] = el["_id"].toString()
-        }
-
-        return result
-    }
-
+    fun findMany(@RequestBody body: MongoRequest): List<Document> = mongoProxyService.findMany(body)
 
     @PostMapping("/updateOne")
     fun updateOne(@RequestBody body: MongoRequest): UpdateResult = mongoProxyService.updateOne(body)
