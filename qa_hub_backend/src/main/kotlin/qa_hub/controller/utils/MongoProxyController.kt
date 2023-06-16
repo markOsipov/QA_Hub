@@ -19,11 +19,24 @@ class MongoProxyController {
     lateinit var mongoProxyService: MongoProxyService
 
     @PostMapping("/findOne")
-    fun findOne(@RequestBody body: MongoRequest): Document? = mongoProxyService.findOne(body)
+    fun findOne(@RequestBody body: MongoRequest): Document? {
+        val result = mongoProxyService.findOne(body)
+        result?.set("_id", result["_id"].toString())
+
+        return result
+    }
 
 
     @PostMapping("/findMany")
-    fun findMany(@RequestBody body: MongoRequest): List<Document> = mongoProxyService.findMany(body)
+    fun findMany(@RequestBody body: MongoRequest): List<Document> {
+        val result = mongoProxyService.findMany(body)
+        result.forEach {el ->
+            el["_id"] = el["_id"].toString()
+        }
+
+        return result
+    }
+
 
     @PostMapping("/updateOne")
     fun updateOne(@RequestBody body: MongoRequest): UpdateResult = mongoProxyService.updateOne(body)

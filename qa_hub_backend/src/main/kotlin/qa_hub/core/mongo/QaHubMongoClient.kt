@@ -12,9 +12,9 @@ import org.springframework.stereotype.Repository
 class QaHubMongoClient {
     private val qaHubDb = "dbQaHub"
 
-    private val mongoHost = System.getenv("ENV_MONGO_QA_HUB_HOST")
-    private val userName = System.getenv("ENV_MONGO_QA_HUB_LOGIN")
-    private val userPass = System.getenv("ENV_MONGO_QA_HUB_PASSWORD")
+    private val mongoHost = "mongodb+srv://lowkey-dev.uvyzc.mongodb.net/"  //System.getenv("ENV_MONGO_QA_HUB_HOST")
+    private val userName = "lowkey"   //System.getenv("ENV_MONGO_QA_HUB_LOGIN")
+    private val userPass = "lowkey12qwQ"  //System.getenv("ENV_MONGO_QA_HUB_PASSWORD")
 
     val client = run {
         KMongo.createClient(
