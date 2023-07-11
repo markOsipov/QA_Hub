@@ -90,7 +90,7 @@ const BlockedTestsTable = observer(() => {
                     </TableBody>
                     <TableFooter>
                         <TableRow>
-                            <StyledTableCell style={{borderBottom: "1px solid rgba(224, 224, 224, 1)", maxWidth: "50px"}} spanCol={3}>
+                            <StyledTableCell style={{borderBottom: "1px solid rgba(224, 224, 224, 1)", maxWidth: "50px"}} colspan={3}>
                                 <Button variant="contained"
                                         color="error"
                                         startIcon={<AddIcon />}

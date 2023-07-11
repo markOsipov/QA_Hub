@@ -94,8 +94,10 @@ export default function BlockedTestTableRow({ index, blockedTestForRow, showFull
                            textArea
         />
 
-        <StyledTableCell style={{color: "var(--faded-text-color)"}}>
-            <label style={{border: "1px solid darkgray", borderRadius: "5px", padding: "5px"}}>{blockedTest.team}</label>
+        <StyledTableCell style={{color: "var(--faded-text-color)"}}> {
+          blockedTest.team && <label style={{border: "1px solid darkgray", borderRadius: "5px", padding: "5px"}}>{blockedTest.team}</label>
+        }
+
         </StyledTableCell>
 
         <FullNameTableCell style={{paddingLeft: "40px"}}
