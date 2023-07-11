@@ -12,6 +12,8 @@ import qa_hub.core.mongo.utils.setCurrentPropertyValues
 import qa_hub.entity.testRun.*
 import qa_hub.utils.DateTimeHelper.currentDateTimeUtc
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 import kotlin.random.Random
 
 
@@ -22,6 +24,9 @@ class TestRunService {
 
     @Autowired
     lateinit var testResultsService: TestResultsService
+
+    @Autowired
+    lateinit var projectService: ProjectService
 
     private val testRunCollection by lazy {
         mongoClient.db.getCollection<TestRun>(TEST_RUNS.collectionName)
@@ -144,7 +149,7 @@ class TestRunService {
         )
     }
 
-    suspend fun getNextTest(testRunId: String, simulatorId: String = "", gitlabRunner: String): NextTestResponse {
+    fun getNextTest(testRunId: String, simulatorId: String = "", gitlabRunner: String): NextTestResponse = runBlocking {
         val testRun = getTestRun(testRunId)!!
 
          if (simulatorId != "") {
@@ -174,7 +179,7 @@ class TestRunService {
 
             leaveQueue(testRunId, queueTicket)
 
-            return NextTestResponse(
+            return@runBlocking NextTestResponse(
                 nextTest = nextTest.fullName,
                 testId = nextTest.testrailId,
                 lastTestTaken = waitingTests.size + readyForRetryTests.size == 1
@@ -182,11 +187,100 @@ class TestRunService {
         } else {
             leaveQueue(testRunId, queueTicket)
 
-            return NextTestResponse(
+            return@runBlocking NextTestResponse(
                 nextTest = null,
                 testId = null,
                 lastTestTaken = true
             )
         }
+    }
+
+    fun cancelRun(testRunId: String) {
+        try {
+            val testRun = getTestRun(testRunId)
+
+            //TODO: Add CICD integration
+            //val gitlabProject = UtilsDataClass.getProject(testRun.project!!).gitLabId
+            //GitLabManager(gitlabTokenService).cancelRun(gitlabProject, testRunId.toInt())
+        } finally {
+            finishTestRun(testRunId = testRunId, finishedWithError = true)
+        }
+    }
+
+    fun finishTestRun(
+        testRunId: String,
+        finishedWithError: Boolean = false
+    ): TestRun = runBlocking {
+        var testRun = getTestRun(testRunId)!!
+        val testResults = testResultsService.findTestResults(testRunId)
+
+        var failsCount = 0
+        var successCount = 0
+        testResults.forEach {
+            if (it.status == TestStatus.SUCCESS.status) {
+                successCount++
+            } else {
+                failsCount++
+            }
+        }
+
+        val endDate = LocalDateTime.now().toString()
+        testRun.timeMetrics.ended = endDate
+        testRun.tests.testsCount = testResults.size
+        testRun.tests.failsCount = failsCount
+        testRun.tests.successCount = successCount
+        testRun.hasError = finishedWithError
+
+        val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
+        testRun.timeMetrics.duration = LocalDateTime.parse(testRun.timeMetrics.started, formatter)
+            .until(LocalDateTime.parse(testRun.timeMetrics.ended, formatter), ChronoUnit.MINUTES)
+
+          testRunCollection.updateOne(
+            TestRun::testRunId eq testRun.testRunId,
+            set(
+                *(testRun.setCurrentPropertyValues(skipProperties = listOf("_id", "testRunId")))
+            )
+        )
+
+        testRun = getTestRun(testRunId)!!
+
+        return@runBlocking testRun
+    }
+
+    fun finishRunForRunner(
+        testRunId: String,
+        finishedWithError: Boolean = false,
+        runner: String
+    ): TestRun = runBlocking {
+        val endDate = currentDateTimeUtc()
+
+        testRunCollection.updateOne(
+            and(TestRun::testRunId eq testRunId, TestRun::runners / TestRunRunner::name eq runner),
+            set(
+                TestRun::runners.posOp / TestRunRunner::finished setTo endDate,
+                TestRun::runners.posOp / TestRunRunner::withError setTo finishedWithError
+            )
+        )
+
+        val testRun = getTestRun(testRunId)!!
+
+        var allFinished = true
+        var withError = false
+
+        testRun.runners.forEach {
+            if (it.finished == null) {
+                allFinished = false
+            }
+            if (it.withError) {
+                withError = true
+            }
+        }
+        if (allFinished) {
+            return@runBlocking finishTestRun(
+                testRunId = testRunId,
+                finishedWithError = withError
+            )
+        }
+        return@runBlocking testRun
     }
 }

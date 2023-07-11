@@ -34,7 +34,7 @@ class TestResultsService {
 
     fun upsertTestResult(testResult: TestResult, incRetries: Boolean = true): UpdateResult = runBlocking {
         val set = set(
-            *(testResult.setCurrentPropertyValues(skipProperties = listOf("testRunId", "fullName", "retries")))
+            *(testResult.setCurrentPropertyValues(skipProperties = listOf("_id", "testRunId", "fullName", "retries")))
         )
         val update = if (incRetries) {
             combine(set, inc(TestResult::retries,  1))
