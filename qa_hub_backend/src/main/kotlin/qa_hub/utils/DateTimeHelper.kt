@@ -8,4 +8,8 @@ object DateTimeHelper {
     fun currentDateTimeUtc(): String {
         return ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT )
     }
+
+    fun currentEpoch(): Long {
+        return ZonedDateTime.now(ZoneOffset.UTC).toEpochSecond()
+    }
 }

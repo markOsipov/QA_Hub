@@ -14,7 +14,7 @@ open class StartTestRunRequest(
 
     var testRunId: String?,
     var testList: MutableList<TestListElement> = mutableListOf(),
-    var runner: String = "unknown"
+    var runner: String?
 ): CreateTestRunRequest(projectId, params)
 data class TestRun(
     var testRunId: String,
@@ -31,16 +31,15 @@ data class TestRun(
     var parallelThreads: Int? = null,
     var tags: MutableList<String> = mutableListOf(),
     var runners: MutableList<TestRunRunner> = mutableListOf(),
-    var hasError: Boolean = false,
     var allureLaunchId: String? = null
 )
 
 enum class TestRunStatus(val status: String) {
-    CREATED("Created"),
-    PROCESSING("Processing"),
-    FINISHED("Finished"),
-    CANCELED("Canceled"),
-    ERROR("Error")
+    CREATED("CREATED"),
+    PROCESSING("PROCESSING"),
+    FINISHED("FINISHED"),
+    CANCELED("CANCELED"),
+    ERROR("ERROR")
 }
 data class TestRunTimeMetrics(
     var created: String,

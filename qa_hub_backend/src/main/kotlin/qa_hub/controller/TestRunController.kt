@@ -27,10 +27,10 @@ class TestRunController {
     @GetMapping("/nextTest/{testRunId}")
     fun getNextTest(@PathVariable testRunId: String,
                     @RequestParam("simulatorId", required = false, defaultValue = "") simulatorId: String,
-                    @RequestParam("gitlabRunner", required = false, defaultValue = "") gitlabRunner: String
+                    @RequestParam("runner", required = false, defaultValue = "") runner: String
     ): NextTestResponse {
 
-        return testRunService.getNextTest(testRunId, simulatorId, gitlabRunner)
+        return testRunService.getNextTest(testRunId, simulatorId, runner)
     }
 
     @PostMapping("/cancel/{testRunId}")
@@ -41,9 +41,9 @@ class TestRunController {
     @PostMapping("/endRunner")
     fun endRunner(
         @RequestParam testRunId: String,
-        @RequestParam(required = false, defaultValue = "false") finishedWithError: Boolean,
-        @RequestParam(required = false, defaultValue = "") gitlabRunner: String
+        @RequestParam(required = false, defaultValue = "false") hasError: Boolean,
+        @RequestParam(required = false, defaultValue = "") runner: String
     ): TestRun {
-        return testRunService.finishRunForRunner(testRunId = testRunId, finishedWithError = finishedWithError, runner = gitlabRunner)
+        return testRunService.finishRunForRunner(testRunId = testRunId, hasError = hasError, runner = runner)
     }
 }

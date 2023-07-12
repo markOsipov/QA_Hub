@@ -15,21 +15,21 @@ data class TestResult(
     var deviceUdid: String? = null,
     var qaComment: String? = null,
     var qaResolution: String? = QaResolution.UNREVIEWED.value,
-    var retries: Int? = null,
+    var retries: Int = 0,
     var attachments: List<String>? = null
 )
 
 enum class QaResolution(var value: String) {
-    UNREVIEWED("unreviewed"),
-    PASSED_LOCALLY("passedLocally"),
-    NEED_REPAIR("needRepair"),
-    TECH_PROBLEM("techProblem"),
-    BUG(value = "bug")
+    UNREVIEWED("Unreviewed"),
+    PASSED_LOCALLY("PassedLocally"),
+    NEED_REPAIR("NeedRepair"),
+    TECH_PROBLEM("TechProblem"),
+    BUG("Bug")
 }
 
 enum class TestStatus(val status: String) {
-    SUCCESS("success"),
-    FAILURE("failure"),
-    WAITING("waiting"),
-    PROCESSING("processing")
+    SUCCESS("SUCCESS"),
+    FAILURE("FAILURE"),
+    WAITING("WAITING"),
+    PROCESSING("PROCESSING")
 }

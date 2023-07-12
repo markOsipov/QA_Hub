@@ -11,7 +11,9 @@ import qa_hub.core.mongo.entity.Collections.TEST_QUEUE
 import qa_hub.core.mongo.utils.setCurrentPropertyValues
 import qa_hub.entity.testRun.*
 import qa_hub.utils.DateTimeHelper.currentDateTimeUtc
+import qa_hub.utils.DateTimeHelper.currentEpoch
 import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import kotlin.random.Random
@@ -40,9 +42,8 @@ class TestRunService {
         mongoClient.db.getCollection<TestQueue>(TEST_QUEUE.collectionName)
     }
     fun createTestRun(testRunRequest: CreateTestRunRequest): TestRun = runBlocking {
-        val creationDate = currentDateTimeUtc()
         val testRun = TestRun(
-            testRunId = creationDate,
+            testRunId = currentEpoch().toString(),
             projectId = testRunRequest.projectId,
             timeMetrics = TestRunTimeMetrics(
                 created = currentDateTimeUtc()
@@ -64,17 +65,17 @@ class TestRunService {
         }
         val startDate = currentDateTimeUtc()
         val started = testRun.status == TestRunStatus.PROCESSING.status
+        val runner = TestRunRunner(name = startTestRunRequest.runner ?: "Runner ${testRun.runners.size + 1}", started = startDate)
 
         if (!started) {
             testRun.status = TestRunStatus.PROCESSING.status
             testRun.timeMetrics.started = startDate
-            val runner = TestRunRunner(name = startTestRunRequest.runner, started = startDate)
 
             testRunCollection.updateOne(
                 TestRun::testRunId eq testRun.testRunId,
                 combine(
                     set(
-                        *(testRun.setCurrentPropertyValues(skipProperties = listOf("_id", "testRunId", "runners")))
+                        *(testRun.setCurrentPropertyValues(skipProperties = listOf("_id", "testRunId", "runners", "params", "projectId")))
                     ),
                     push(TestRun::runners, runner)
                 )
@@ -97,11 +98,7 @@ class TestRunService {
             }
 
             testResultsCollection.insertMany(testResults)
-
-
         } else {
-            val runner = TestRunRunner(name = startTestRunRequest.runner, started = startDate)
-
             testRunCollection.updateOne(
                 TestRun::testRunId eq testRun.testRunId,
                 push(TestRun::runners, runner)
@@ -117,7 +114,7 @@ class TestRunService {
         )
     }
 
-    fun enlistInQueue(testRunId: String,
+    private fun enlistInQueue(testRunId: String,
                       queueTicket: String): String = runBlocking {
         testQueueCollection.updateOne(
             TestQueue::testRunId eq testRunId,
@@ -127,9 +124,9 @@ class TestRunService {
         return@runBlocking queueTicket
     }
 
-    suspend fun waitForYourTurn(testRunId: String, queueTicket: String) {
+    private suspend fun waitForYourTurn(testRunId: String, queueTicket: String) {
         val maxWaitTime = 30000L
-        val timeout = 500L
+        val timeout = 200L
         var timePassed = 0L
         withContext(Dispatchers.Default) {
             async {
@@ -142,14 +139,14 @@ class TestRunService {
             }.await()
         }
     }
-    fun leaveQueue(testRunId: String, queueTicket: String) = runBlocking {
+    private fun leaveQueue(testRunId: String, queueTicket: String) = runBlocking {
         testQueueCollection.updateOne(
             TestQueue::testRunId eq testRunId,
             pull(TestQueue::queue, queueTicket)
         )
     }
 
-    fun getNextTest(testRunId: String, simulatorId: String = "", gitlabRunner: String): NextTestResponse = runBlocking {
+    fun getNextTest(testRunId: String, simulatorId: String = "", runner: String): NextTestResponse = runBlocking {
         val testRun = getTestRun(testRunId)!!
 
          if (simulatorId != "") {
@@ -168,13 +165,13 @@ class TestRunService {
 
         val waitingTests = testResults.filter { it.status == TestStatus.WAITING.status }
         val readyForRetryTests = testResults
-            .filter { it.status == TestStatus.FAILURE.status && ((it.retries ?: 0) < (testRun.retries ?: 1)) }
+            .filter { it.status == TestStatus.FAILURE.status && ((it.retries) < (testRun.retries ?: 1)) }
 
         val nextTest = waitingTests.firstOrNull() ?: readyForRetryTests.firstOrNull()
         if (nextTest != null) {
             nextTest.status = TestStatus.PROCESSING.status
             nextTest.deviceUdid = simulatorId
-            nextTest.gitlabRunner = gitlabRunner
+            nextTest.gitlabRunner = runner
             testResultsService.upsertTestResult(nextTest, false)
 
             leaveQueue(testRunId, queueTicket)
@@ -203,13 +200,14 @@ class TestRunService {
             //val gitlabProject = UtilsDataClass.getProject(testRun.project!!).gitLabId
             //GitLabManager(gitlabTokenService).cancelRun(gitlabProject, testRunId.toInt())
         } finally {
-            finishTestRun(testRunId = testRunId, finishedWithError = true)
+            finishTestRun(testRunId = testRunId, canceled = true)
         }
     }
 
     fun finishTestRun(
         testRunId: String,
-        finishedWithError: Boolean = false
+        hasError: Boolean = false,
+        canceled: Boolean = false
     ): TestRun = runBlocking {
         var testRun = getTestRun(testRunId)!!
         val testResults = testResultsService.findTestResults(testRunId)
@@ -224,16 +222,22 @@ class TestRunService {
             }
         }
 
-        val endDate = LocalDateTime.now().toString()
+        val endDate = currentDateTimeUtc()
         testRun.timeMetrics.ended = endDate
         testRun.tests.testsCount = testResults.size
         testRun.tests.failsCount = failsCount
         testRun.tests.successCount = successCount
-        testRun.hasError = finishedWithError
 
-        val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
-        testRun.timeMetrics.duration = LocalDateTime.parse(testRun.timeMetrics.started, formatter)
-            .until(LocalDateTime.parse(testRun.timeMetrics.ended, formatter), ChronoUnit.MINUTES)
+        if (hasError) {
+            testRun.status = TestRunStatus.ERROR.status
+        } else if(canceled) {
+            testRun.status = TestRunStatus.CANCELED.status
+        } else {
+            testRun.status = TestRunStatus.FINISHED.status
+        }
+
+        testRun.timeMetrics.duration = ZonedDateTime.parse(testRun.timeMetrics.started)
+            .until(ZonedDateTime.parse(testRun.timeMetrics.ended), ChronoUnit.MINUTES)
 
           testRunCollection.updateOne(
             TestRun::testRunId eq testRun.testRunId,
@@ -249,7 +253,7 @@ class TestRunService {
 
     fun finishRunForRunner(
         testRunId: String,
-        finishedWithError: Boolean = false,
+        hasError: Boolean = false,
         runner: String
     ): TestRun = runBlocking {
         val endDate = currentDateTimeUtc()
@@ -258,29 +262,31 @@ class TestRunService {
             and(TestRun::testRunId eq testRunId, TestRun::runners / TestRunRunner::name eq runner),
             set(
                 TestRun::runners.posOp / TestRunRunner::finished setTo endDate,
-                TestRun::runners.posOp / TestRunRunner::withError setTo finishedWithError
+                TestRun::runners.posOp / TestRunRunner::withError setTo hasError
             )
         )
 
         val testRun = getTestRun(testRunId)!!
 
         var allFinished = true
-        var withError = false
+        var hasError = false
 
         testRun.runners.forEach {
             if (it.finished == null) {
                 allFinished = false
             }
             if (it.withError) {
-                withError = true
+                hasError = true
             }
         }
+
         if (allFinished) {
             return@runBlocking finishTestRun(
                 testRunId = testRunId,
-                finishedWithError = withError
+                hasError = hasError
             )
         }
+
         return@runBlocking testRun
     }
 }
