@@ -58,7 +58,7 @@ function NewCicdModal({isOpen, setIsOpen, updateCicdList, cicdTypes, cicdIntegra
                 Adding new CICD
             </Typography>
 
-            <FormControl sx={{ minWidth: 300, margin: "8px" }} size="small">
+            <FormControl sx={{ minWidth: 400, margin: "8px" }} size="small">
                 <InputLabel style={{ color: "var(--faded-text-color)" }}>CICD Type</InputLabel>
                 <Select
                     value={newCicd.cicdType || ''}
@@ -76,7 +76,7 @@ function NewCicdModal({isOpen, setIsOpen, updateCicdList, cicdTypes, cicdIntegra
             <StyledTextField value={newCicd.baseUrl}
                              size="small"
                              label="Base URL"
-                             style={{minWidth: "300px", color: "white", margin: "8px"}}
+                             style={{minWidth: "400px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
                                  setNewCicd({
@@ -89,7 +89,7 @@ function NewCicdModal({isOpen, setIsOpen, updateCicdList, cicdTypes, cicdIntegra
             <StyledTextField value={newCicd.apiToken}
                              size="small"
                              label="Api Token"
-                             style={{minWidth: "300px", color: "white", margin: "8px"}}
+                             style={{minWidth: "400px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
                                  setNewCicd({
@@ -102,7 +102,7 @@ function NewCicdModal({isOpen, setIsOpen, updateCicdList, cicdTypes, cicdIntegra
             <StyledTextField value={newCicd.login}
                              size="small"
                              label="Login"
-                             style={{minWidth: "300px", color: "white", margin: "8px"}}
+                             style={{minWidth: "400px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
                                  setNewCicd({
@@ -115,7 +115,7 @@ function NewCicdModal({isOpen, setIsOpen, updateCicdList, cicdTypes, cicdIntegra
             <StyledTextField value={newCicd.password}
                              size="small"
                              label="Password"
-                             style={{minWidth: "300px", color: "white", margin: "8px"}}
+                             style={{minWidth: "400px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
                                  setNewCicd({

@@ -52,7 +52,7 @@ function EditCicdModal({isOpen, setIsOpen, updateCicdList, cicdTypes, cicdIntegr
                 Editing CICD Integration
             </Typography>
 
-            <FormControl sx={{ minWidth: 300, margin: "8px" }} size="small">
+            <FormControl sx={{ minWidth: 400, margin: "8px" }} size="small">
                 <InputLabel style={{ color: "var(--faded-text-color)" }}>CICD Type</InputLabel>
                 <Select
                     value={currentCicd.cicdType || ''}
@@ -70,7 +70,7 @@ function EditCicdModal({isOpen, setIsOpen, updateCicdList, cicdTypes, cicdIntegr
             <StyledTextField value={currentCicd.baseUrl}
                              size="small"
                              label="Base URL"
-                             style={{minWidth: "300px", color: "white", margin: "8px"}}
+                             style={{minWidth: "400px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
                                  setCurrentCicd({
@@ -83,7 +83,7 @@ function EditCicdModal({isOpen, setIsOpen, updateCicdList, cicdTypes, cicdIntegr
             <StyledTextField value={currentCicd.apiToken}
                              size="small"
                              label="Api Token"
-                             style={{minWidth: "300px", color: "white", margin: "8px"}}
+                             style={{minWidth: "400px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
                                  setCurrentCicd({
@@ -109,7 +109,7 @@ function EditCicdModal({isOpen, setIsOpen, updateCicdList, cicdTypes, cicdIntegr
             <StyledTextField value={currentCicd.password}
                              size="small"
                              label="Password"
-                             style={{minWidth: "300px", color: "white", margin: "8px"}}
+                             style={{minWidth: "400px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
                                  setCurrentCicd({

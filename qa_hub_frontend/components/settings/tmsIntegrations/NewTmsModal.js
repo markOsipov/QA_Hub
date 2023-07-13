@@ -58,7 +58,7 @@ function NewTmsModal({isOpen, setIsOpen, updateTmsList, tmsTypes, tmsIntegration
                 Adding new TMS
             </Typography>
 
-            <FormControl sx={{ minWidth: 300, margin: "8px" }} size="small">
+            <FormControl sx={{ minWidth: 400, margin: "8px" }} size="small">
                 <InputLabel style={{ color: "var(--faded-text-color)" }}>TMS Type</InputLabel>
                 <Select
                     value={newTms.tmsType || ''}
@@ -76,7 +76,7 @@ function NewTmsModal({isOpen, setIsOpen, updateTmsList, tmsTypes, tmsIntegration
             <StyledTextField value={newTms.baseUrl}
                              size="small"
                              label="Base URL"
-                             style={{minWidth: "300px", color: "white", margin: "8px"}}
+                             style={{minWidth: "400px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
                                  setNewTms({
@@ -89,7 +89,7 @@ function NewTmsModal({isOpen, setIsOpen, updateTmsList, tmsTypes, tmsIntegration
             <StyledTextField value={newTms.apiToken}
                              size="small"
                              label="Api Token"
-                             style={{minWidth: "300px", color: "white", margin: "8px"}}
+                             style={{minWidth: "400px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
                                  setNewTms({
@@ -102,7 +102,7 @@ function NewTmsModal({isOpen, setIsOpen, updateTmsList, tmsTypes, tmsIntegration
             <StyledTextField value={newTms.login}
                              size="small"
                              label="Login"
-                             style={{minWidth: "300px", color: "white", margin: "8px"}}
+                             style={{minWidth: "400px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
                                  setNewTms({
@@ -115,7 +115,7 @@ function NewTmsModal({isOpen, setIsOpen, updateTmsList, tmsTypes, tmsIntegration
             <StyledTextField value={newTms.password}
                              size="small"
                              label="Password"
-                             style={{minWidth: "300px", color: "white", margin: "8px"}}
+                             style={{minWidth: "400px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
                                  setNewTms({
