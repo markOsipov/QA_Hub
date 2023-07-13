@@ -1,8 +1,6 @@
 import {observer} from "mobx-react-lite";
-import {Accordion, AccordionDetails, AccordionSummary, Card} from "@mui/material";
+import {Accordion, AccordionDetails, Card} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import projectState from "../../../state/ProjectState";
-import ProjectCard from "../projects/ProjectCard";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import {useEffect, useState} from "react";
@@ -11,7 +9,6 @@ import useSWR from "swr";
 import {getTmsIntegrations, getTmsTypes} from "../../../requests/TMSRequests";
 import TmsCard from "./TmsCard";
 import NewTmsModal from "./NewTmsModal";
-import {loadPlatforms} from "../../../requests/ProjectRequests";
 
 const TmsEditor = observer(() => {
     const [isNewTmsModalOpen, setIsNewTmsModalOpen] = useState(false)
