@@ -1,4 +1,4 @@
-package qa_hub.controller
+package qa_hub.controller.integrations
 
 import com.mongodb.client.result.DeleteResult
 import org.springframework.beans.factory.annotation.Autowired
