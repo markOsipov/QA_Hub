@@ -7,6 +7,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {deleteCicdIntegration} from "../../../requests/CicdRequests";
 import EditCicdModal from "./EditCicdModal";
+import TextWithLabel from "../../primitives/TextWithLabel";
 
 export default function CicdCard({cicd, updateCicdList, cicdTypes, cicdIntegrations, ...props}) {
     const [menuAnchor, setMenuAnchor] = useState(null);
@@ -75,25 +76,10 @@ export default function CicdCard({cicd, updateCicdList, cicdTypes, cicdIntegrati
             </Menu>
         </div>
 
-        <div style={{display: "flex", width: "100%", marginBottom: "5px"}}>
-            <Typography style={{width: "100px"}}>Base URL</Typography>
-            <Typography>{cicd.baseUrl}</Typography>
-        </div>
-
-        <div style={{display: "flex", width: "100%", marginBottom: "5px"}}>
-            <Typography style={{width: "100px"}}>Api token</Typography>
-            <Typography>{cicd.apiToken}</Typography>
-        </div>
-
-        <div style={{display: "flex", width: "100%", marginBottom: "5px"}}>
-            <Typography style={{width: "100px"}}>Login</Typography>
-            <Typography>{cicd.login}</Typography>
-        </div>
-
-        <div style={{display: "flex", width: "100%", marginBottom: "5px"}}>
-            <Typography style={{width: "100px"}}>Password</Typography>
-            <Typography>{cicd.password}</Typography>
-        </div>
+        <TextWithLabel value={cicd.baseUrl} label={"Base URL"} style={{margin: '15px 0 15px 0'}}/>
+        <TextWithLabel value={cicd.apiToken} label={"Api token"} style={{margin: '20px 0 15px 0'}}/>
+        <TextWithLabel value={cicd.login} label={"Login"} style={{margin: '20px 0 15px 0'}}/>
+        <TextWithLabel value={cicd.password} label={"Password"} style={{margin: '20px 0 15px 0'}}/>
 
     </Card>
 }
