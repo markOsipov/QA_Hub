@@ -21,6 +21,9 @@ export default function TextWithLabel ({value, label, ...props }) {
       fontSize: "12px",
       paddingBottom: "0"
     }}>{label}</label>
-    <label style={{color: customTheme.palette.text.white}}>{value}</label>
+    <label style={{
+      color: customTheme.palette.text.white,
+      fontSize: props.style.fontSize
+    }}>{value}</label>
   </div>
 }

@@ -18,7 +18,7 @@ function MyApp({ Component, pageProps }) {
             const newProjects = data.data.map(project => {
                 return project.name
             })
-            projectState.updateProjects(newProjects)
+            projectState.setProjects(newProjects)
             projectState.setProjectsDetails(data.data)
 
             if (!projectState.selectedProject) {

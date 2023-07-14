@@ -2,6 +2,7 @@ package qa_hub.service
 
 import kotlinx.coroutines.*
 import org.litote.kmongo.*
+import org.litote.kmongo.coroutine.aggregate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import qa_hub.core.mongo.QaHubMongoClient
@@ -14,7 +15,6 @@ import qa_hub.utils.DateTimeHelper.currentDateTimeUtc
 import qa_hub.utils.DateTimeHelper.currentEpoch
 import java.time.LocalDateTime
 import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import kotlin.random.Random
 
@@ -41,10 +41,17 @@ class TestRunService {
     private val testQueueCollection by lazy {
         mongoClient.db.getCollection<TestQueue>(TEST_QUEUE.collectionName)
     }
+
+    fun getTestRuns(project: String): List<TestRun> = runBlocking {
+        testRunCollection.aggregate<TestRun>(
+            match(TestRun::project eq project),
+            sort(descending(TestRun::testRunId))
+        ).toList()
+    }
     fun createTestRun(testRunRequest: CreateTestRunRequest): TestRun = runBlocking {
         val testRun = TestRun(
             testRunId = currentEpoch().toString(),
-            projectId = testRunRequest.projectId,
+            project = testRunRequest.project,
             timeMetrics = TestRunTimeMetrics(
                 created = currentDateTimeUtc()
             ),
@@ -91,7 +98,7 @@ class TestRunService {
                 TestResult(
                     testRunId = testRun.testRunId,
                     testrailId = it.testId,
-                    project = testRun.projectId,
+                    project = testRun.project,
                     fullName = it.fullName,
                     status = TestStatus.WAITING.status
                 )

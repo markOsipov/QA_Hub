@@ -84,7 +84,7 @@ function NewProjectModal({isOpen, setIsOpen, project}) {
                              }}
             />
 
-            <FormControl sx={{ minWidth: 300, margin: "8px" }} size="small">
+            <FormControl sx={{ minWidth: 450, margin: "8px" }} size="small">
                 <InputLabel style={{ color: "var(--faded-text-color)" }}>Platform</InputLabel>
                 <Select
                     value={currentProject.platform || ''}
@@ -102,7 +102,7 @@ function NewProjectModal({isOpen, setIsOpen, project}) {
             <StyledTextField value={currentProject.cicdPath}
                              size="small"
                              label="CI\CD path"
-                             style={{minWidth: "300px", color: "white", margin: "8px"}}
+                             style={{minWidth: "450px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange={(event) => {
                                  setCurrentProject({
@@ -114,7 +114,7 @@ function NewProjectModal({isOpen, setIsOpen, project}) {
             <StyledTextField value={currentProject.cicdProjectId}
                              size="small"
                              label="CI\CD project id"
-                             style={{minWidth: "300px", color: "white", margin: "8px"}}
+                             style={{minWidth: "450px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange={(event) => {
                                  setCurrentProject({
@@ -127,7 +127,7 @@ function NewProjectModal({isOpen, setIsOpen, project}) {
             <StyledTextField value={currentProject.tmsProjectId}
                              size="small"
                              label="TMS project id"
-                             style={{minWidth: "300px", color: "white", margin: "8px"}}
+                             style={{minWidth: "450px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange={(event) => {
                                  setCurrentProject({

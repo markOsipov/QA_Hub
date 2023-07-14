@@ -5,7 +5,7 @@ data class TestRunRequestParam(
 )
 
 open class CreateTestRunRequest(
-    var projectId: String,
+    var project: String,
     var params: MutableList<TestRunRequestParam> = mutableListOf(),
 )
 open class StartTestRunRequest(
@@ -18,7 +18,7 @@ open class StartTestRunRequest(
 ): CreateTestRunRequest(projectId, params)
 data class TestRun(
     var testRunId: String,
-    var projectId: String,
+    var project: String,
     var params: MutableList<TestRunRequestParam> = mutableListOf(),
     var timeMetrics: TestRunTimeMetrics,
     var status: String,

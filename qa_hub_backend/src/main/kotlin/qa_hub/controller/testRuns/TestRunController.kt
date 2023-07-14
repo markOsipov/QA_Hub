@@ -1,4 +1,4 @@
-package qa_hub.controller
+package qa_hub.controller.testRuns
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
@@ -13,6 +13,11 @@ import qa_hub.service.TestRunService
 class TestRunController {
     @Autowired
     lateinit var testRunService: TestRunService
+
+    @GetMapping("/{project}")
+    fun getTestRuns(@PathVariable("project") project: String): List<TestRun> {
+        return testRunService.getTestRuns(project)
+    }
 
     @PostMapping("/create")
     fun createTestRun(@RequestBody body: CreateTestRunRequest): TestRun {

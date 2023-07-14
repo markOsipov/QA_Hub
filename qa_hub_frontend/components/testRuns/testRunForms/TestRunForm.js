@@ -46,7 +46,7 @@ const TestRunForm = observer(() => {
         setIsEditTestRunFormModalOpen(true)
     }
 
-    return <Paper style={{padding: "15px"}}>
+    return <Paper>
         <EditTestRunFormModal isOpen={isEditTestRunFormModalOpen} setIsOpen={setIsEditTestRunFormModalOpen} params={paramConfigs} loadTestRunForm={loadTestRunForm}/>
 
         <Accordion>
@@ -81,10 +81,7 @@ const TestRunForm = observer(() => {
                             color="primary"
                             size="small"
                             onClick={() => {
-                                const projectId = projectState.getSelectedProjectFullInfo().cicdProjectId
-                                console.log(projectId)
-
-                                createNewTestRun(projectId, params)
+                                createNewTestRun(selectedProject, params)
                             }}
                             endIcon={<PlayArrowIcon />}
                     >Start</Button>

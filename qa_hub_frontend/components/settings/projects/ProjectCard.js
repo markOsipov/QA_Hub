@@ -8,6 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {deleteProject} from "../../../requests/ProjectRequests";
 import projectState from "../../../state/ProjectState";
 import EditProjectModal from "./EditProjectModal";
+import TextWithLabel from "../../primitives/TextWithLabel";
 
 export default function ProjectCard({project, ...props}) {
     const [menuAnchor, setMenuAnchor] = useState(null);
@@ -35,7 +36,7 @@ export default function ProjectCard({project, ...props}) {
         handleCloseMenu();
     }
 
-    return <Card style={{padding: "15px", width: "300px", margin: "15px", backgroundColor: "rgba(255, 255, 255, 0.05)", position: "relative"}} elevation={5}  {...props}
+    return <Card style={{padding: "15px", width: "450px", margin: "15px", backgroundColor: "rgba(255, 255, 255, 0.05)", position: "relative"}} elevation={5}  {...props}
         onMouseOver={() => {setShowMoreButton(true)}}
         onMouseLeave={() => {setShowMoreButton(false)}}
     >
@@ -75,24 +76,10 @@ export default function ProjectCard({project, ...props}) {
             </Menu>
         </div>
 
-        <div style={{display: "flex", width: "100%"}}>
-            <Typography style={{width: "50%"}}>Platform</Typography>
-            <Typography>{project.platform}</Typography>
-        </div>
+        <TextWithLabel label={'Platform'} value={project.platform} style={{margin: '15px 0 15px 0'}}></TextWithLabel>
+        <TextWithLabel label={'Cicd project'} value={project.cicdProjectId} style={{margin: '15px 0 15px 0'}}></TextWithLabel>
+        <TextWithLabel label={'Cicd path'} value={project.cicdPath} style={{margin: '15px 0 15px 0'}}></TextWithLabel>
+        <TextWithLabel label={'Tms project'} value={project.tmsProjectId} style={{margin: '15px 0 15px 0'}}></TextWithLabel>
 
-        <div style={{display: "flex", width: "100%"}}>
-            <Typography style={{width: "50%"}}>Cicd project</Typography>
-            <Typography>{project.cicdProjectId}</Typography>
-        </div>
-
-        <div style={{display: "flex", width: "100%"}}>
-            <Typography style={{width: "50%"}}>Cicd path</Typography>
-            <Typography>{project.cicdPath}</Typography>
-        </div>
-
-        <div style={{display: "flex", width: "100%"}}>
-            <Typography style={{width: "50%"}}>Tms project</Typography>
-            <Typography>{project.tmsProjectId}</Typography>
-        </div>
     </Card>
 }
