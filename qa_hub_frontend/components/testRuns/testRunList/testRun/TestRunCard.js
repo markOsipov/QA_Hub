@@ -6,16 +6,24 @@ import GitEnvPlate from "./elements/GitEnvPlate";
 import RunnersPlate from "./elements/RunnersPlate";
 import TestResultsPlate from "./elements/TestResultsPlate";
 import {useEffect, useState} from "react";
+import {customTheme} from "../../../../styles/CustomTheme";
 export default function TestRunCard({testRun, ...props }) {
   const [progressBarWidth, setProgressBarWidth] = useState(500)
   const opacity = 0.7
+
+  const [isHovering, setIsHovered] = useState(false);
+  const onMouseEnter = () => setIsHovered(true);
+  const onMouseLeave = () => setIsHovered(false);
   function handleResize() {
     setProgressBarWidth(Math.max(window.innerWidth * 0.25, 100))
   }
 
   window.addEventListener('resize', handleResize)
 
-  return <Paper style={{ padding: '15px', ...props.style }}>
+  return <Paper style={{ padding: '15px', ...props.style, backgroundColor: isHovering ? 'rgba(255, 255, 255, 0.095)' : customTheme.palette.background.paper }}
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
+  >
     <div style={{ display: "flex", flexDirection: "column" }}>
       <div style={{ marginTop: "10px", display: "flex", alignItems: 'center' }}>
         <TextWithLabel
