@@ -2,12 +2,12 @@ import {customTheme} from "../../../../../styles/CustomTheme";
 import StatusBadge from "../../../../primitives/StatusBadge";
 import TextWithLabel from "../../../../primitives/TextWithLabel";
 
-export default function TestResultsPlate({testRun, ...props}) {
+export default function TestResultsPlate({testRun, progressBarWidth, ...props}) {
   if (!testRun.tests.testsCount) {
     return null
   }
 
-  const totalWidth = 500
+  const totalWidth = progressBarWidth || 500
   const minWidth = 3
 
   const successCount = testRun.tests.successCount || 0

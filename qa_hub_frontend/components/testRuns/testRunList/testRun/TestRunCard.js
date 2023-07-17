@@ -5,7 +5,16 @@ import TimingsPlate from "./elements/TimingsPlate";
 import GitEnvPlate from "./elements/GitEnvPlate";
 import RunnersPlate from "./elements/RunnersPlate";
 import TestResultsPlate from "./elements/TestResultsPlate";
+import {useEffect, useState} from "react";
 export default function TestRunCard({testRun, ...props }) {
+  const [progressBarWidth, setProgressBarWidth] = useState(500)
+
+  function handleResize() {
+    setProgressBarWidth(Math.max(window.innerWidth * 0.25, 100))
+  }
+
+  window.addEventListener('resize', handleResize)
+
   return <Paper style={{ padding: '15px', ...props.style }}>
     <div style={{ display: "flex", flexDirection: "column" }}>
       <div style={{ marginTop: "10px", display: "flex", alignItems: 'center' }}>
@@ -18,26 +27,24 @@ export default function TestRunCard({testRun, ...props }) {
         <StatusBadge label={testRun.status} style={{ marginLeft: "10px"}}/>
       </div>
 
-
-
       <div style={{display: 'flex', marginTop: '45px'}}>
         <TimingsPlate testRun={testRun}
                       style={{
                         display: 'grid',
                         alignItems: 'end',
                         justifyItems: 'start',
-                        minWidth: '390px',
+                        minWidth: '370px',
                         position: 'relative',
                       }}
         />
 
-        <div style={{display: 'flex', minWidth: '1000px', position: 'relative', top: '-37px', flexGrow: '2', justifyContent: 'center'}}>
-            <TestResultsPlate testRun={testRun} style={{minWidth: '700px'}} />
-            <RunnersPlate testRun={testRun} style={{minWidth: '300px'}} />
+        <div style={{display: 'flex', minWidth: '450px', position: 'relative', top: '-37px', flexGrow: '2', justifyContent: 'center'}}>
+          <TestResultsPlate testRun={testRun} progressBarWidth={progressBarWidth} style={{ minWidth: `${progressBarWidth + 180}px`}}/>
+          <RunnersPlate testRun={testRun} style={{minWidth: '300px', marginLeft: '50px'}} />
         </div>
 
-        <div style={{display: 'grid', minWidth: '620px', justifyItems: 'end',  position: 'relative', top: '-37px'}}>
-          <GitEnvPlate testRun={testRun} style={{marginLeft: '70px'}}/>
+        <div style={{display: 'grid', minWidth: '570px', justifyItems: 'end',  position: 'relative', top: '-37px'}}>
+          <GitEnvPlate testRun={testRun}/>
         </div>
       </div>
     </div>

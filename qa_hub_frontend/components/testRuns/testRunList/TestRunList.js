@@ -31,12 +31,13 @@ const TestRunList = observer(({...props}) => {
     <Paper style={{padding: "15px"}}>
        <Typography variant={'h5'}>TestRuns </Typography>
     </Paper>
-
+    <div style={{minWidth: 'max-content'}}>
     {
       testRuns.map((testRun) => {
-        return <TestRunCard testRun={testRun} key={testRun.testRunId} style={{marginTop: "10px", minWidth: 'max-content'}} />
+        return <TestRunCard testRun={testRun} key={testRun.testRunId} style={{marginTop: "15px", minWidth: 'max-content'}} />
       })
     }
+    </div>
   </div>
 })
 

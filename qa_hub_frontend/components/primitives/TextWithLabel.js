@@ -15,17 +15,17 @@ export default function TextWithLabel ({value, label, labelStyle, ...props }) {
   >
     <label style={{
       position: "absolute",
-      top: '-10px',
+      top: '-15px',
       backgroundColor: "rgb(77 77 77)",
       paddingLeft: "4px",
       paddingRight: "4px",
-      fontSize: "13px",
+      fontSize: "15px",
       paddingBottom: "0",
       ...style
     }}>{label}</label>
     <label style={{
       color: customTheme.palette.text.white,
-      fontSize: props.style.fontSize
+      fontSize: props.style.fontSize,
     }}>{value}</label>
   </div>
 }
