@@ -7,19 +7,18 @@ export default function StatusBadge({label, variant, ...props}) {
   const errorLabels = ['error', 'failure']
 
   function getDefaultBackground() {
-    let lowerCasedLabel = label.toLowerCase()
+    let lowerCasedLabel = String(label).toLowerCase()
 
-    if (neutralLabels.includes(lowerCasedLabel)) {
-
+    if (variant === 'neutral' || neutralLabels.includes(lowerCasedLabel)) {
       return 'grey'
-    } else if (successLabels.includes(lowerCasedLabel)) {
 
+    } else if (variant === 'success' || successLabels.includes(lowerCasedLabel)) {
       return customTheme.palette.success.main
-    } else if (processingLabels.includes(lowerCasedLabel)) {
 
+    } else if (variant === 'processing' || processingLabels.includes(lowerCasedLabel)) {
       return 'steelblue'
-    } else if (errorLabels.includes(lowerCasedLabel)) {
 
+    } else if (variant === 'error' || errorLabels.includes(lowerCasedLabel)) {
       return customTheme.palette.error.main
     }
   }
@@ -37,5 +36,5 @@ export default function StatusBadge({label, variant, ...props}) {
       height: 'min-content',
       ...props.style
     }}
-  >{label.toUpperCase()}</label>
+  >{String(label).toUpperCase()}</label>
 }

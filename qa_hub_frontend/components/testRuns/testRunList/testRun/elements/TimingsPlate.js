@@ -1,7 +1,7 @@
-import TextWithLabel from "../../../primitives/TextWithLabel";
-import {getDate, getTime, getTimeMinutes} from "../../../../utils/DateTimeUtils";
+import TextWithLabel from "../../../../primitives/TextWithLabel";
+import {getDate, getTime, getTimeMinutes} from "../../../../../utils/DateTimeUtils";
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
-export default function TestRunTimings ({testRun, ...props}) {
+export default function TimingsPlate ({testRun, ...props}) {
   function renderComponent() {
     if (testRun.timeMetrics.started != null) {
       return <div style={{display: "flex", alignItems: 'center'}}>
