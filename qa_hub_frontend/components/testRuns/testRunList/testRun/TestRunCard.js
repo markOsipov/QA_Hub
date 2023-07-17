@@ -5,9 +5,11 @@ import TimingsPlate from "./elements/TimingsPlate";
 import GitEnvPlate from "./elements/GitEnvPlate";
 import RunnersPlate from "./elements/RunnersPlate";
 import TestResultsPlate from "./elements/TestResultsPlate";
-import {useEffect, useState} from "react";
 import {customTheme} from "../../../../styles/CustomTheme";
+import {useRouter} from "next/router";
+import {useState} from "react";
 export default function TestRunCard({testRun, ...props }) {
+  const router = useRouter()
   const [progressBarWidth, setProgressBarWidth] = useState(500)
   const opacity = 0.7
 
@@ -18,11 +20,16 @@ export default function TestRunCard({testRun, ...props }) {
     setProgressBarWidth(Math.max(window.innerWidth * 0.25, 100))
   }
 
+  const handleTestRunCardClick = () => {
+    router.push(`/testRuns/${testRun.testRunId}`)
+  }
+
   window.addEventListener('resize', handleResize)
 
   return <Paper style={{ padding: '15px', ...props.style, backgroundColor: isHovering ? 'rgba(255, 255, 255, 0.095)' : customTheme.palette.background.paper }}
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
+                onClick={handleTestRunCardClick}
   >
     <div style={{ display: "flex", flexDirection: "column" }}>
       <div style={{ marginTop: "10px", display: "flex", alignItems: 'center' }}>

@@ -19,6 +19,11 @@ class TestRunController {
         return testRunService.getTestRuns(project)
     }
 
+    @GetMapping("")
+    fun getTestRun(@RequestParam("id") testRunId: String): TestRun? {
+        return testRunService.getTestRun(testRunId)
+    }
+
     @PostMapping("/create")
     fun createTestRun(@RequestBody body: CreateTestRunRequest): TestRun {
         return testRunService.createTestRun(body)

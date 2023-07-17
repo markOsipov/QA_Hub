@@ -28,3 +28,18 @@ export function getTestRuns(projectId) {
 
     return axios(config)
 }
+
+export function getTestRun(testRunId) {
+    const config = {
+        method: 'get',
+        url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat(`/api/testRuns`),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        params: {
+            id: testRunId
+        }
+    }
+
+    return axios(config)
+}
