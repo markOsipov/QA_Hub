@@ -25,7 +25,7 @@ export default function TestResultsPlate({testRun, ...props}) {
   const totalBadgeValue = notFinishedCount > 0 ? `${notFinishedCount}/${testRun.tests.testsCount} ` : testRun.tests.testsCount
 
   return <div style={{display: 'flex', flexDirection: 'column', width: 'max-content', ...props.style}}>
-    <div style={{display: 'flex', marginTop: '25px'}}>
+    <div style={{display: 'flex'}}>
       <TextWithLabel label={'Total'} value={totalBadgeValue} variant={'neutral'}
                      labelStyle={{ justifySelf: 'center'}}
                      style={{

@@ -2,53 +2,65 @@ import TextWithLabel from "../../../../primitives/TextWithLabel";
 import {getDate, getTime, getTimeMinutes} from "../../../../../utils/DateTimeUtils";
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 export default function TimingsPlate ({testRun, ...props}) {
+  const DurationElement = function ({ ...props }) {
+    return <div style={{display: 'flex', alignItems: "center", ...props.style}}>
+      <AccessTimeFilledIcon></AccessTimeFilledIcon>
+      <label style={{marginLeft: '3px'}}>{testRun.timeMetrics.duration + ' min'}</label>
+    </div>
+  }
+
+  const StartedElement = function () {
+    return <TextWithLabel
+      value={getTimeMinutes(testRun.timeMetrics.started)}
+      label={'Started'}
+      labelStyle={{ justifySelf: 'center'}}
+      style={{...dateBageStyle, marginLeft: '10px'}}
+    />
+  }
+
+  const EndedElement = function ({ ...props }) {
+    return <TextWithLabel
+      value={ getTimeMinutes(testRun.timeMetrics.ended) }
+      label={'Ended'}
+      labelStyle={{ justifySelf: 'center'}}
+      style={{...dateBageStyle, marginLeft: '10px', ...props.style}}
+    />
+  }
+
+  const DateElement = function ({dateValue, ...props}) {
+    return  <TextWithLabel
+      value={getDate(dateValue)}
+      label={'Date'}
+      labelStyle={{ justifySelf: 'center'}}
+      style={{...dateBageStyle, ...props.style}}
+    />
+  }
+
+  const CreatedElement = function () {
+    return <TextWithLabel
+      value={getTimeMinutes(testRun.timeMetrics.created)}
+      label={'Created'}
+      labelStyle={{ justifySelf: 'center'}}
+      style={{...dateBageStyle, marginLeft: '10px'}}
+    />
+  }
+
   function renderComponent() {
     if (testRun.timeMetrics.started != null) {
       return <div style={{display: "flex", alignItems: 'center'}}>
-        <TextWithLabel
-          value={getDate(testRun.timeMetrics.started)}
-          label={'Date'}
-          labelStyle={{ justifySelf: 'center'}}
-          style={dateBageStyle}
-        />
-
-        <TextWithLabel
-          value={getTimeMinutes(testRun.timeMetrics.started)}
-          label={'Started'}
-          labelStyle={{ justifySelf: 'center'}}
-          style={{...dateBageStyle, marginLeft: '10px'}}
-        />
+        <DateElement dateValue={testRun.timeMetrics.started}/>
+        <StartedElement style={{marginLeft: '15px'}}/>
         {
-          testRun.timeMetrics.ended &&
-          <TextWithLabel
-            value={ getTimeMinutes(testRun.timeMetrics.ended) }
-            label={'Ended'}
-            labelStyle={{ justifySelf: 'center'}}
-            style={{...dateBageStyle, marginLeft: '10px'}}
-          />
+          testRun.timeMetrics.ended && <EndedElement />
         }
         {
-          testRun.timeMetrics.duration &&
-          <div style={{display: 'flex', alignItems: "center", marginLeft: '15px'}}>
-            <AccessTimeFilledIcon></AccessTimeFilledIcon>
-            <label style={{marginLeft: '3px'}}>{testRun.timeMetrics.duration + ' min'}</label>
-          </div>
+          testRun.timeMetrics.duration && <DurationElement style={{ marginLeft: '15px' }}/>
         }
       </div>
     } else {
       return <div style={{display: "flex", alignItems: 'center'}}>
-        <TextWithLabel
-          value={getDate(testRun.timeMetrics.created)}
-          label={'Date'}
-          labelStyle={{ justifySelf: 'center'}}
-          style={dateBageStyle}
-        />
-        <TextWithLabel
-          value={getTimeMinutes(testRun.timeMetrics.created)}
-          label={'Created'}
-          labelStyle={{ justifySelf: 'center'}}
-          style={{...dateBageStyle, marginLeft: '10px'}}
-        />
+        <DateElement dateValue={testRun.timeMetrics.created}/>
+        <CreatedElement  style={{marginLeft: '15px'}} />
       </div>
     }
   }

@@ -34,7 +34,7 @@ const TestRunList = observer(({...props}) => {
 
     {
       testRuns.map((testRun) => {
-        return <TestRunCard testRun={testRun} key={testRun.testRunId} style={{marginTop: "10px"}} />
+        return <TestRunCard testRun={testRun} key={testRun.testRunId} style={{marginTop: "10px", minWidth: 'max-content'}} />
       })
     }
   </div>

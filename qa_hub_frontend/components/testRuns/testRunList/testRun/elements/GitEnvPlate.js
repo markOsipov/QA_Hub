@@ -11,21 +11,21 @@ export default function GitEnvPlate({testRun, ...props}) {
         value={testRun.branch}
         label={'Branch'}
         labelStyle={{ justifySelf: 'center'}}
-        style={{minWidth: "70px", width: "max-content", padding: "5px 6px", minHeight: 'unset', }}
+        style={{minWidth: "70px", width: "max-content", padding: "5px 6px", minHeight: 'unset', justifyItems: 'center'}}
       />
     </div>
 
-    <div style={{display: "flex", alignItems: "center", marginLeft: "12px"}}>
+    <div style={{display: "flex", alignItems: "center", marginLeft: "15px"}}>
       <CommitIcon style={{transform: 'rotate(90deg)'}}></CommitIcon>
       <TextWithLabel
         value={testRun.commit}
         label={'Commit'}
         labelStyle={{ justifySelf: 'center'}}
-        style={{minWidth: "70px", width: "min-content", padding: "5px 6px", minHeight: 'unset', }}
+        style={{minWidth: "70px", width: "min-content", padding: "5px 6px", minHeight: 'unset',  justifyItems: 'center' }}
       />
     </div>
 
-    <div style={{display: "flex", alignItems: "center", marginLeft: "12px"}}>
+    <div style={{display: "flex", alignItems: "center", marginLeft: "20px"}}>
       <PublicIcon></PublicIcon>
       <TextWithLabel
         value={testRun.environment}
