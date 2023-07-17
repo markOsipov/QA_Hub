@@ -22,7 +22,7 @@ export default function TestResultsPlate({testRun, progressBarWidth, ...props}) 
   const successWidth = successCount > 0 ? Math.max(successRelative, minWidth) : 0
   const othersWidth = totalWidth - failsWidth - successWidth
 
-  const totalBadgeValue = notFinishedCount > 0 ? `${notFinishedCount}/${testRun.tests.testsCount} ` : testRun.tests.testsCount
+  const totalBadgeValue = notFinishedCount > 0 ? `${successCount + failsCount}/${testRun.tests.testsCount} ` : testRun.tests.testsCount
 
   return <div style={{display: 'flex', flexDirection: 'column', width: 'max-content', ...props.style}}>
     <div style={{display: 'flex'}}>

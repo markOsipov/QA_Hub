@@ -8,7 +8,7 @@ import TestResultsPlate from "./elements/TestResultsPlate";
 import {useEffect, useState} from "react";
 export default function TestRunCard({testRun, ...props }) {
   const [progressBarWidth, setProgressBarWidth] = useState(500)
-
+  const opacity = 0.7
   function handleResize() {
     setProgressBarWidth(Math.max(window.innerWidth * 0.25, 100))
   }
@@ -35,15 +35,16 @@ export default function TestRunCard({testRun, ...props }) {
                         justifyItems: 'start',
                         minWidth: '370px',
                         position: 'relative',
+                        opacity: opacity
                       }}
         />
 
         <div style={{display: 'flex', minWidth: '450px', position: 'relative', top: '-37px', flexGrow: '2', justifyContent: 'center'}}>
-          <TestResultsPlate testRun={testRun} progressBarWidth={progressBarWidth} style={{ minWidth: `${progressBarWidth + 180}px`}}/>
-          <RunnersPlate testRun={testRun} style={{minWidth: '300px', marginLeft: '50px'}} />
+          <TestResultsPlate testRun={testRun} progressBarWidth={progressBarWidth} style={{ minWidth: `${progressBarWidth + 185}px`}}/>
+          <RunnersPlate testRun={testRun} style={{minWidth: '300px', marginLeft: '50px',  opacity: opacity}} />
         </div>
 
-        <div style={{display: 'grid', minWidth: '570px', justifyItems: 'end',  position: 'relative', top: '-37px'}}>
+        <div style={{display: 'grid', minWidth: '570px', justifyItems: 'end',  position: 'relative', top: '-37px',  opacity: opacity}}>
           <GitEnvPlate testRun={testRun}/>
         </div>
       </div>
