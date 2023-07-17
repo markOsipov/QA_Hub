@@ -6,9 +6,9 @@ import GitEnvPlate from "./elements/GitEnvPlate";
 import RunnersPlate from "./elements/RunnersPlate";
 import TestResultsPlate from "./elements/TestResultsPlate";
 export default function TestRunCard({testRun, ...props }) {
-  return <Paper style={{ padding: '15px', ...props.style}}>
-    <div style={{display: "flex", flexDirection: "column"}}>
-      <div style={{marginTop: "10px", display: "flex", alignItems: 'center'}}>
+  return <Paper style={{ padding: '15px', ...props.style }}>
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      <div style={{ marginTop: "10px", display: "flex", alignItems: 'center' }}>
         <TextWithLabel
           value={testRun.testRunId}
           label={'testRunId'}
@@ -28,7 +28,7 @@ export default function TestRunCard({testRun, ...props }) {
                         justifyItems: 'start',
                         minWidth: '390px',
                         position: 'relative',
-                    }}
+                      }}
         />
 
         <div style={{display: 'flex', minWidth: '1000px', position: 'relative', top: '-37px', flexGrow: '2', justifyContent: 'center'}}>
