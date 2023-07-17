@@ -11,6 +11,7 @@ export default function RunnersPlate({ testRun, ...props}) {
         <TextWithLabel
           value={testRun.runners.length}
           label={'Runners'}
+          labelStyle={{ justifySelf: 'center'}}
           style={{minWidth: "70px", width: "min-content", padding: "5px 6px", minHeight: 'unset', marginLeft: '4px', display: 'grid', justifyItems: 'center'}}
         />
       </div>
@@ -22,6 +23,7 @@ export default function RunnersPlate({ testRun, ...props}) {
         <TextWithLabel
           value={testRun.parallelThreads}
           label={'Devices'}
+          labelStyle={{ justifySelf: 'center'}}
           style={{minWidth: "70px", width: "min-content", padding: "5px 6px", minHeight: 'unset', marginLeft: '4px', display: 'grid', justifyItems: 'center'}}
         />
       </div>
@@ -33,6 +35,7 @@ export default function RunnersPlate({ testRun, ...props}) {
         <TextWithLabel
           value={testRun.retries}
           label={'Retries'}
+          labelStyle={{ justifySelf: 'center'}}
           style={{minWidth: "70px", width: "min-content", padding: "5px 6px", minHeight: 'unset', marginLeft: '4px', display: 'grid', justifyItems: 'center'}}
         />
       </div>

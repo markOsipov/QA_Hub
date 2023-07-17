@@ -25,7 +25,19 @@ export default function TestResultsPlate({testRun, ...props}) {
   const totalBadgeValue = notFinishedCount > 0 ? `${notFinishedCount}/${testRun.tests.testsCount} ` : testRun.tests.testsCount
 
   return <div style={{display: 'flex', flexDirection: 'column', width: 'max-content', ...props.style}}>
-    <div style={{display: 'flex'}}>
+    <div style={{display: 'flex', marginTop: '25px'}}>
+      <TextWithLabel label={'Total'} value={totalBadgeValue} variant={'neutral'}
+                     labelStyle={{ justifySelf: 'center'}}
+                     style={{
+                       marginRight: '12px',
+                       padding: '3.5px 9px',
+                       display: 'grid',
+                       justifyItems: 'center',
+                       minHeight: '20px',
+                       minWidth: '65px'
+                    }}
+      />
+
       <div style={{display: 'grid', alignItems: 'center'}}>
         <div style={{display: 'flex', width: `${totalWidth}px`, ...progressBarStyle}}>
           <div style={{ backgroundColor: customTheme.palette.success.main, width: `${successWidth}px`, ...progressBarStyle}}></div>
@@ -43,16 +55,6 @@ export default function TestResultsPlate({testRun, ...props}) {
         { failsCount > 0 &&
           <StatusBadge label={failsCount} variant={'error'} style={{marginLeft: '5px'}} />
         }
-
-        {/*{ notFinishedCount > 0 &&*/}
-        {/*  <StatusBadge label={notFinishedCount} variant={'neutral'} style={{marginLeft: '5px'}} />*/}
-        {/*}*/}
-
-
-        <TextWithLabel label={'total'} value={totalBadgeValue} variant={'neutral'}
-                       style={{marginLeft: '12px', padding: '3.5px 9px', minWidth: '50px', display: 'grid', justifyItems: 'center', minHeight: '20px'}}
-        />
-
       </div>
     </div>
 

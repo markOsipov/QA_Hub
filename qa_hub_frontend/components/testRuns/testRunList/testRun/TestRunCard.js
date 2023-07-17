@@ -12,6 +12,7 @@ export default function TestRunCard({testRun, ...props }) {
         <TextWithLabel
           value={testRun.testRunId}
           label={'testRunId'}
+          labelStyle={{ justifySelf: 'center'}}
           style={{fontSize: "17px", width: "min-content", padding: "5px 6px", minHeight: 'unset'}}
         />
         <StatusBadge label={testRun.status} style={{ marginLeft: "10px"}}/>

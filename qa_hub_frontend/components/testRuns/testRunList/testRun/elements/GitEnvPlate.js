@@ -10,6 +10,7 @@ export default function GitEnvPlate({testRun, ...props}) {
       <TextWithLabel
         value={testRun.branch}
         label={'Branch'}
+        labelStyle={{ justifySelf: 'center'}}
         style={{minWidth: "70px", width: "max-content", padding: "5px 6px", minHeight: 'unset', }}
       />
     </div>
@@ -19,6 +20,7 @@ export default function GitEnvPlate({testRun, ...props}) {
       <TextWithLabel
         value={testRun.commit}
         label={'Commit'}
+        labelStyle={{ justifySelf: 'center'}}
         style={{minWidth: "70px", width: "min-content", padding: "5px 6px", minHeight: 'unset', }}
       />
     </div>
@@ -28,6 +30,7 @@ export default function GitEnvPlate({testRun, ...props}) {
       <TextWithLabel
         value={testRun.environment}
         label={'Environment'}
+        labelStyle={{ justifySelf: 'center'}}
         style={{minWidth: "96px", width: "min-content", padding: "5px 6px", minHeight: 'unset', marginLeft: '4px', display: 'grid', justifyItems: 'center'}}
       />
     </div>

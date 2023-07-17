@@ -8,12 +8,14 @@ export default function TimingsPlate ({testRun, ...props}) {
         <TextWithLabel
           value={getDate(testRun.timeMetrics.started)}
           label={'Date'}
+          labelStyle={{ justifySelf: 'center'}}
           style={dateBageStyle}
         />
 
         <TextWithLabel
           value={getTimeMinutes(testRun.timeMetrics.started)}
           label={'Started'}
+          labelStyle={{ justifySelf: 'center'}}
           style={{...dateBageStyle, marginLeft: '10px'}}
         />
         {
@@ -21,6 +23,7 @@ export default function TimingsPlate ({testRun, ...props}) {
           <TextWithLabel
             value={ getTimeMinutes(testRun.timeMetrics.ended) }
             label={'Ended'}
+            labelStyle={{ justifySelf: 'center'}}
             style={{...dateBageStyle, marginLeft: '10px'}}
           />
         }
@@ -37,11 +40,13 @@ export default function TimingsPlate ({testRun, ...props}) {
         <TextWithLabel
           value={getDate(testRun.timeMetrics.created)}
           label={'Date'}
+          labelStyle={{ justifySelf: 'center'}}
           style={dateBageStyle}
         />
         <TextWithLabel
           value={getTimeMinutes(testRun.timeMetrics.created)}
           label={'Created'}
+          labelStyle={{ justifySelf: 'center'}}
           style={{...dateBageStyle, marginLeft: '10px'}}
         />
       </div>

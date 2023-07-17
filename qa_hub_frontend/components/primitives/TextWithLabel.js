@@ -1,8 +1,10 @@
 import {customTheme} from "../../styles/CustomTheme";
 
-export default function TextWithLabel ({value, label, ...props }) {
+export default function TextWithLabel ({value, label, labelStyle, ...props }) {
+  const style = labelStyle || { justifySelf: 'start', left: '5px'}
 
   return <div style={{
+    display: 'grid',
     borderRadius: '4px',
     border: "1px solid",
     padding: '12px',
@@ -14,12 +16,12 @@ export default function TextWithLabel ({value, label, ...props }) {
     <label style={{
       position: "absolute",
       top: '-10px',
-      left: '5px',
       backgroundColor: "rgb(77 77 77)",
-      paddingLeft: "6px",
-      paddingRight: "6px",
-      fontSize: "12px",
-      paddingBottom: "0"
+      paddingLeft: "4px",
+      paddingRight: "4px",
+      fontSize: "13px",
+      paddingBottom: "0",
+      ...style
     }}>{label}</label>
     <label style={{
       color: customTheme.palette.text.white,
