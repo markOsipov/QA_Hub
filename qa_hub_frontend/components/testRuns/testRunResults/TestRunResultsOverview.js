@@ -30,17 +30,18 @@ export default function TestRunResultsOverview({testRun, ...props}) {
           <RunnersPlate testRun={testRun} style={{minWidth: '300px', marginLeft: '35px'}} />
         </div>
 
-        {testRun.timeMetrics != null &&
-          <TimingsPlate testRun={testRun}
-                        style={{
-                          display: 'grid',
-                          alignItems: 'end',
-                          justifyItems: 'start',
-                          minWidth: '370px',
-                          position: 'relative',
-                          marginTop: '55px'
-                        }}
-
+        {
+          testRun.timeMetrics != null &&
+          <TimingsPlate
+            testRun={testRun}
+            style={{
+              display: 'grid',
+              alignItems: 'end',
+              justifyItems: 'start',
+              minWidth: '370px',
+              position: 'relative',
+              marginTop: '55px'
+            }}
           />
         }
       </div>
