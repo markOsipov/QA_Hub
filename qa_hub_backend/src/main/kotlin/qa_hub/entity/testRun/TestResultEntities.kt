@@ -9,17 +9,7 @@ data class TestResult(
 
     var duration: Double? = null,
     var status: String,
-
     var retries: Int = 0,
-)
-data class UpdateTestResultRequest(
-    var testRunId: String,
-    var testcaseId: String = "",
-    var project: String?,
-    var fullName: String,
-
-    var duration: Double? = null,
-    var status: String,
 
     var message: String? = null,
     var gitlabRunner: String = "unknown",

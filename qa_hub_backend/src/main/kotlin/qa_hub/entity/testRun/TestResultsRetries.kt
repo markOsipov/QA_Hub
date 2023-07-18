@@ -1,12 +1,14 @@
 package qa_hub.entity.testRun
 
+import qa_hub.core.utils.DateTimeUtils.currentDateTimeUtc
+
 data class TestResultRetry(
     var testRunId: String,
     var fullName: String,
     var retry: Int,
     var statusHistory: MutableList<StatusHistoryItem>,
 )
-data class StatusHistoryItem(
+class StatusHistoryItem(
     var date: String,
     var status: String,
     var duration: Double? = null,
@@ -16,4 +18,16 @@ data class StatusHistoryItem(
     var deviceRuntime: String? = "unknown",
     var deviceUdid: String? = "unknown",
     var attachments: MutableList<String> = mutableListOf()
-)
+) {
+    constructor(testResult: TestResult): this(
+        date = currentDateTimeUtc(),
+        status = testResult.status,
+        duration = testResult.duration,
+        message = testResult.message,
+        gitlabRunner = testResult.gitlabRunner,
+        device = testResult.device,
+        deviceRuntime = testResult.deviceRuntime,
+        deviceUdid = testResult.deviceUdid,
+        attachments = testResult.attachments
+    )
+}

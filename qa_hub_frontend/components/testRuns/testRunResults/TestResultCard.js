@@ -20,7 +20,8 @@ export default function TestResultCard({testResult, setSelectedTest, ...props}) 
   return <Card
     style={{
       display: 'flex',
-      backgroundColor: isHovering ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.055)',
+      backgroundColor: isHovering ? 'rgba(255, 255, 255, 0.09)' : 'rgba(255, 255, 255, 0.05)',
+      cursor: 'pointer',
       ...props.style
   }}
     onMouseEnter={onMouseEnter}

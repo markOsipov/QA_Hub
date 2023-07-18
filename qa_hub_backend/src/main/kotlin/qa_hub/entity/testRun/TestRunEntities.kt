@@ -77,6 +77,5 @@ data class TestQueue(
 
 data class NextTestResponse(
     var nextTest: String?,
-    val testId: String?,
-    var lastTestTaken: Boolean
+    val testId: String?
 )

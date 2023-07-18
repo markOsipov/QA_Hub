@@ -11,7 +11,6 @@ import qa_hub.core.mongo.QaHubMongoClient
 import qa_hub.core.mongo.entity.Collections.PROJECTS
 import qa_hub.core.mongo.utils.setCurrentPropertyValues
 import qa_hub.entity.Project
-import java.time.LocalDateTime
 
 @Service
 class ProjectService {

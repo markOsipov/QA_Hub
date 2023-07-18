@@ -12,9 +12,8 @@ import qa_hub.core.mongo.entity.Collections.TEST_RESULTS
 import qa_hub.core.mongo.entity.Collections.TEST_QUEUE
 import qa_hub.core.mongo.utils.setCurrentPropertyValues
 import qa_hub.entity.testRun.*
-import qa_hub.utils.DateTimeHelper.currentDateTimeUtc
-import qa_hub.utils.DateTimeHelper.currentEpoch
-import java.time.LocalDateTime
+import qa_hub.core.utils.DateTimeUtils.currentDateTimeUtc
+import qa_hub.core.utils.DateTimeUtils.currentEpoch
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import kotlin.random.Random
@@ -34,7 +33,7 @@ class TestRunService {
     }
 
     private val testResultsCollection by lazy {
-        mongoClient.db.getCollection<UpdateTestResultRequest>(TEST_RESULTS.collectionName)
+        mongoClient.db.getCollection<TestResult>(TEST_RESULTS.collectionName)
     }
 
     private val testRetriesCollection by lazy {
@@ -104,7 +103,7 @@ class TestRunService {
             )
 
             val updateTestResultRequests = startTestRunRequest.testList.map {
-                UpdateTestResultRequest(
+                TestResult(
                     testRunId = testRun.testRunId,
                     testcaseId = it.testId,
                     project = testRun.project,
@@ -125,13 +124,10 @@ class TestRunService {
     }
 
     fun getTestRun(testRunId: String): TestRun? = runBlocking {
-        testRunCollection.findOne(
-            TestRun::testRunId eq testRunId
-        )
+        testRunCollection.findOne(TestRun::testRunId eq testRunId)
     }
 
-    private fun enlistInQueue(testRunId: String,
-                      queueTicket: String): String = runBlocking {
+    private fun enlistInQueue(testRunId: String, queueTicket: String): String = runBlocking {
         testQueueCollection.updateOne(
             TestQueue::testRunId eq testRunId,
             push(TestQueue::queue, queueTicket)
@@ -155,7 +151,7 @@ class TestRunService {
             }.await()
         }
     }
-    private fun leaveQueue(testRunId: String, queueTicket: String) = runBlocking {
+    private suspend fun leaveQueue(testRunId: String, queueTicket: String) {
         testQueueCollection.updateOne(
             TestQueue::testRunId eq testRunId,
             pull(TestQueue::queue, queueTicket)
@@ -165,53 +161,49 @@ class TestRunService {
     fun getNextTest(testRunId: String, simulatorId: String = "", runner: String): NextTestResponse = runBlocking {
         val testRun = getTestRun(testRunId)!!
 
-         if (simulatorId != "") {
-             testResultsService.forceStopForDevice(testRunId, simulatorId, runner)
-         }
+        if (simulatorId != "") {
+            testResultsService.forceStopForDevice(testRunId, simulatorId, runner)
+        }
 
         var queueTicket = simulatorId
         if (simulatorId.isEmpty()) {
-            queueTicket = "${LocalDateTime.now()}_${Random.nextInt(1000000, 9999999)}"
+            queueTicket = "${currentEpoch()}_${Random.nextInt(1000000, 9999999)}"
         }
 
         enlistInQueue(testRunId, queueTicket)
         waitForYourTurn(testRunId, queueTicket)
 
-        val testResults = testResultsService.findTestResults(testRunId)
-
-        val waitingTests = testResults.filter { it.status == TestStatus.WAITING.status }
-        val readyForRetryTests = testResults
-            .filter { it.status == TestStatus.FAILURE.status && ((it.retries) < (testRun.config?.retries ?: 1)) }
-
-        val nextTest = waitingTests.firstOrNull() ?: readyForRetryTests.firstOrNull()
+        val nextTest = testResultsCollection.findOne(
+            or(
+                TestResult::status eq TestStatus.WAITING.status,
+                and(
+                    TestResult::status eq TestStatus.FAILURE.status,
+                    TestResult::retries lt (testRun.config?.retries ?: 1)
+                )
+            )
+        )
 
         if (nextTest != null) {
-            val updateRequest = UpdateTestResultRequest(
-                testRunId = nextTest.testRunId,
-                testcaseId = nextTest.testcaseId,
-                project = nextTest.project,
-                fullName = nextTest.fullName,
-                status =  TestStatus.PROCESSING.status,
-                deviceUdid = simulatorId,
+            nextTest.apply {
+                status = TestStatus.PROCESSING.status
+                deviceUdid = simulatorId
                 gitlabRunner = runner
-            )
+            }
 
-            testResultsService.updateTestResult(updateRequest, false)
+            testResultsService.updateTestResult(nextTest, false)
 
             leaveQueue(testRunId, queueTicket)
 
             return@runBlocking NextTestResponse(
                 nextTest = nextTest.fullName,
-                testId = nextTest.testcaseId,
-                lastTestTaken = waitingTests.size + readyForRetryTests.size == 1
+                testId = nextTest.testcaseId
             )
         } else {
             leaveQueue(testRunId, queueTicket)
 
             return@runBlocking NextTestResponse(
                 nextTest = null,
-                testId = null,
-                lastTestTaken = true
+                testId = null
             )
         }
     }

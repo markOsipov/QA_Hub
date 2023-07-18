@@ -10,7 +10,7 @@ import qa_hub.core.mongo.QaHubMongoClient
 import qa_hub.core.mongo.entity.Collections
 import qa_hub.core.mongo.utils.setCurrentPropertyValues
 import qa_hub.entity.testRun.*
-import java.time.LocalDateTime
+import qa_hub.core.utils.DateTimeUtils.currentDateTimeUtc
 
 @Service
 class TestResultsService {
@@ -27,21 +27,12 @@ class TestResultsService {
 
     fun findTestResults(testRunId: String): List<TestResult> = runBlocking {
         updateTestResultsCollectionRequest.aggregate<TestResult>(
-            match(  UpdateTestResultRequest::testRunId eq testRunId),
-            sort(ascending(UpdateTestResultRequest::fullName))
+            match(  TestResult::testRunId eq testRunId),
+            sort(ascending(TestResult::fullName))
         ).toList()
     }
 
-    fun updateTestResult(updateRequest: UpdateTestResultRequest, incRetries: Boolean = true): UpdateResult = runBlocking {
-
-        val testResult = TestResult(
-            testRunId = updateRequest.testRunId,
-            testcaseId = updateRequest.testcaseId,
-            project = updateRequest.project,
-            fullName = updateRequest.fullName,
-            status =  updateRequest.status,
-        )
-
+    fun updateTestResult(testResult: TestResult, incRetries: Boolean = true): UpdateResult = runBlocking {
         val set = set(
             *(testResult.setCurrentPropertyValues(skipProperties = listOf("_id", "testRunId", "fullName", "retries")))
         )
@@ -49,34 +40,24 @@ class TestResultsService {
             combine(set, inc(TestResult::retries,  1))
         } else { set }
 
-        updateRetriesInfo(updateRequest)
+        updateRetriesInfo(testResult)
 
         updateTestResultsCollectionRequest.updateOne(
             and(
-                UpdateTestResultRequest::testRunId eq updateRequest.testRunId,
-                UpdateTestResultRequest::fullName eq updateRequest.fullName
+                TestResult::testRunId eq testResult.testRunId,
+                TestResult::fullName eq testResult.fullName
             ),
             update
         )
     }
 
-    fun updateRetriesInfo(updateRequest: UpdateTestResultRequest) = runBlocking {
+    private fun updateRetriesInfo(testResult: TestResult) = runBlocking {
         val filter = and(
-            TestResultRetry::testRunId eq updateRequest.testRunId,
-            TestResultRetry::fullName eq updateRequest.fullName
+            TestResultRetry::testRunId eq testResult.testRunId,
+            TestResultRetry::fullName eq testResult.fullName
         )
 
-        val historyItem = StatusHistoryItem(
-            status = updateRequest.status,
-            message = updateRequest.message,
-            date = LocalDateTime.now().toString(),
-            duration = updateRequest.duration,
-            gitlabRunner = updateRequest.gitlabRunner,
-            device = updateRequest.device,
-            deviceRuntime = updateRequest.deviceRuntime,
-            deviceUdid = updateRequest.deviceUdid
-        )
-
+        val historyItem = StatusHistoryItem(testResult)
         val existingRetries = testResultsRetriesCollection.find(filter).toList()
 
         if (
@@ -86,8 +67,8 @@ class TestResultsService {
         ) {
             testResultsRetriesCollection.insertOne(
                 TestResultRetry(
-                    testRunId = updateRequest.testRunId,
-                    fullName = updateRequest.fullName,
+                    testRunId = testResult.testRunId,
+                    fullName = testResult.fullName,
                     retry = existingRetries.size + 1,
                     statusHistory = mutableListOf(historyItem)
                 )
@@ -95,8 +76,8 @@ class TestResultsService {
         } else {
             testResultsRetriesCollection.updateOne(
                 and(
-                    TestResultRetry::testRunId eq updateRequest.testRunId,
-                    TestResultRetry::fullName eq updateRequest.fullName,
+                    TestResultRetry::testRunId eq testResult.testRunId,
+                    TestResultRetry::fullName eq testResult.fullName,
                     TestResultRetry::retry eq existingRetries.size,
                 ),
                 push(
@@ -108,38 +89,24 @@ class TestResultsService {
 
     fun forceStopForDevice(testRunId: String, simulatorId: String, runner: String) = runBlocking {
         val hangingTests = updateTestResultsCollectionRequest.find(
-            and(UpdateTestResultRequest::testRunId eq testRunId,
-                UpdateTestResultRequest::deviceUdid eq simulatorId,
-                UpdateTestResultRequest::status eq TestStatus.PROCESSING.status
+            and(TestResult::testRunId eq testRunId,
+                TestResult::deviceUdid eq simulatorId,
+                TestResult::status eq TestStatus.PROCESSING.status
             )
         ).toList()
 
         hangingTests.forEach {
-            forceStop(
-                testResult = it,
-                simulatorId = simulatorId,
-                runner = runner
-            )
+            forceStop(testResult = it)
         }
     }
 
-    fun forceStop(
+    private fun forceStop(
         testResult: TestResult,
-        simulatorId: String,
-        runner: String,
         message: String = "Unexpected test failure."
-    ): UpdateResult = runBlocking {
-        val updateRequest = UpdateTestResultRequest(
-            testRunId = testResult.testRunId,
-            testcaseId = testResult.testcaseId,
-            project = testResult.project,
-            fullName = testResult.fullName,
-            status = TestStatus.FAILURE.status,
-            deviceUdid = simulatorId,
-            gitlabRunner = runner,
-            message = message
-        )
+    ) = runBlocking {
+        testResult.message = message
+        testResult.status = TestStatus.FAILURE.status
 
-        updateTestResult(updateRequest)
+        updateTestResult(testResult)
     }
 }

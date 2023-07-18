@@ -1,10 +1,16 @@
 package qa_hub.controller.testRuns
 
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.runBlocking
+import org.apache.juli.logging.LogFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
+import qa_hub.core.utils.DateTimeUtils.currentDateTimeUtc
 import qa_hub.entity.testRun.*
 import qa_hub.service.TestResultsService
 import qa_hub.service.TestRunService
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import kotlin.random.Random
 
 
@@ -66,7 +72,19 @@ class TestRunController {
     }
 
     @PostMapping("/createDebug")
-    fun createDebugTestRun(@RequestParam(required = false, defaultValue = "10") testsCount: Int): TestRun {
+    fun createDebugTestRun(@RequestParam(required = false, defaultValue = "10") testsCount: Int): List<String> {
+        val measures = mutableListOf<String>()
+
+        fun <T: Any?> measure(name: String, action: () -> T): T {
+            val start = ZonedDateTime.now(ZoneOffset.UTC).toEpochSecond()
+            val result = action()
+            val end = ZonedDateTime.now(ZoneOffset.UTC).toEpochSecond()
+
+            val time = end - start
+            measures.add("${name}: ${time} ")
+
+            return result
+        }
         data class Runner(
             val name: String,
             val simulators: List<String>
@@ -82,26 +100,30 @@ class TestRunController {
         }
         val testList = tests.map{ TestListElement(fullName = it, testId = Random.nextInt(10000, 99999).toString()) }.toMutableList()
 
-        val testRun = testRunService.createTestRun(CreateTestRunRequest("Lowkey"))
+        val testRun = measure("CreateTestRun"){
+            testRunService.createTestRun(CreateTestRunRequest("Lowkey"))
+        }
 
         runners.forEach {
-            testRunService.startTestRun(
-                StartTestRunRequest(
-                    project = testRun.project,
-                    params = testRun.params,
-                    testRunId = testRun.testRunId,
-                    testList = testList,
-                    runner = it.name,
-                    simulators = it.simulators,
-                    config = TestRunConfig(
-                        branch = "TestBranch",
-                        commit = "TestCommit",
-                        environment = "test",
-                        retries = 3,
-                        parallelThreads = 2
+            measure("StartTestRun") {
+                testRunService.startTestRun(
+                    StartTestRunRequest(
+                        project = testRun.project,
+                        params = testRun.params,
+                        testRunId = testRun.testRunId,
+                        testList = testList,
+                        runner = it.name,
+                        simulators = it.simulators,
+                        config = TestRunConfig(
+                            branch = "TestBranch",
+                            commit = "TestCommit",
+                            environment = "test",
+                            retries = 3,
+                            parallelThreads = 2
+                        )
                     )
                 )
-            )
+            }
         }
 
         var finish = false
@@ -110,36 +132,43 @@ class TestRunController {
             val simulator = runner.simulators.random()
             val status = listOf(TestStatus.SUCCESS, TestStatus.FAILURE).random()
 
-            val nextTest = testRunService.getNextTest(testRun.testRunId, simulator, runner.name)
+            val nextTest = measure("GetNextTest") {
+                testRunService.getNextTest(testRun.testRunId, simulator, runner.name)
+            }
+
             finish = nextTest.nextTest == null
 
             nextTest.nextTest?.let {
-                testResultsService.updateTestResult(
-                    UpdateTestResultRequest(
-                        testRunId = testRun.testRunId,
-                        testcaseId = nextTest.testId ?: "unknown",
-                        project = testRun.project,
-                        fullName = nextTest.nextTest ?: "unknown",
-                        status = status.status,
-                        deviceUdid = simulator,
-                        device = "iPhone 12",
-                        deviceRuntime = "iOS 16.3.1",
-                        gitlabRunner = runner.name,
-                        message = if (status.status == TestStatus.FAILURE.status) {
-                            "Testing failure"
-                        } else null
+                measure("UpdateTestResult") {
+                    testResultsService.updateTestResult(
+                        TestResult(
+                            testRunId = testRun.testRunId,
+                            testcaseId = nextTest.testId ?: "unknown",
+                            project = testRun.project,
+                            fullName = nextTest.nextTest ?: "unknown",
+                            status = status.status,
+                            deviceUdid = simulator,
+                            device = "iPhone 12",
+                            deviceRuntime = "iOS 16.3.1",
+                            gitlabRunner = runner.name,
+                            message = if (status.status == TestStatus.FAILURE.status) {
+                                "Testing failure"
+                            } else null
+                        )
                     )
-                )
+                }
             }
         }
 
         runners.forEach {
-            testRunService.finishRunForRunner(
-                testRunId = testRun.testRunId,
-                runner = it.name
-            )
+            measure("FinishTestRun") {
+                testRunService.finishRunForRunner(
+                    testRunId = testRun.testRunId,
+                    runner = it.name
+                )
+            }
         }
 
-        return testRunService.getTestRun(testRunId = testRun.testRunId)!!
+        return measures
     }
 }
