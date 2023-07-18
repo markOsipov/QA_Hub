@@ -1,11 +1,15 @@
 import {Paper} from "@mui/material";
+import TestRetriesTabs from "./TestRetriesTabs";
 
 export default function TestResultDetails({ testResult, ...props }) {
   const renderContent = () => {
     if (testResult == null) {
       return <div>Not selected</div>
     } else {
-      return <div>Test result</div>
+      return <div>
+        <label>Test result</label>
+        <TestRetriesTabs testResult={testResult} />
+      </div>
     }
   }
 

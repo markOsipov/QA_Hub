@@ -10,14 +10,13 @@ import qa_hub.core.mongo.QaHubMongoClient
 import qa_hub.core.mongo.entity.Collections
 import qa_hub.core.mongo.utils.setCurrentPropertyValues
 import qa_hub.entity.testRun.*
-import qa_hub.core.utils.DateTimeUtils.currentDateTimeUtc
 
 @Service
 class TestResultsService {
     @Autowired
     lateinit var mongoClient: QaHubMongoClient
 
-    private val updateTestResultsCollectionRequest by lazy {
+    private val testResultsCollectionRequest by lazy {
         mongoClient.db.getCollection<TestResult>(Collections.TEST_RESULTS.collectionName)
     }
 
@@ -26,9 +25,20 @@ class TestResultsService {
     }
 
     fun findTestResults(testRunId: String): List<TestResult> = runBlocking {
-        updateTestResultsCollectionRequest.aggregate<TestResult>(
+        testResultsCollectionRequest.aggregate<TestResult>(
             match(  TestResult::testRunId eq testRunId),
             sort(ascending(TestResult::fullName))
+        ).toList()
+    }
+
+    fun findTestRetries(testRunId: String, fullName: String): List<TestResultRetry> = runBlocking {
+        testResultsRetriesCollection.aggregate<TestResultRetry>(
+            match(
+                and(
+                    TestResultRetry::testRunId eq testRunId),
+                    TestResultRetry::fullName eq fullName
+                ),
+            sort(descending(TestResultRetry::retry))
         ).toList()
     }
 
@@ -42,7 +52,7 @@ class TestResultsService {
 
         updateRetriesInfo(testResult)
 
-        updateTestResultsCollectionRequest.updateOne(
+        testResultsCollectionRequest.updateOne(
             and(
                 TestResult::testRunId eq testResult.testRunId,
                 TestResult::fullName eq testResult.fullName
@@ -88,7 +98,7 @@ class TestResultsService {
     }
 
     fun forceStopForDevice(testRunId: String, simulatorId: String, runner: String) = runBlocking {
-        val hangingTests = updateTestResultsCollectionRequest.find(
+        val hangingTests = testResultsCollectionRequest.find(
             and(TestResult::testRunId eq testRunId,
                 TestResult::deviceUdid eq simulatorId,
                 TestResult::status eq TestStatus.PROCESSING.status

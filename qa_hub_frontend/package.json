@@ -13,6 +13,7 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.10.9",
+    "@mui/lab": "^5.0.0-alpha.136",
     "@mui/material": "^5.10.13",
     "@types/react": "^18.0.25",
     "axios": "^1.1.3",

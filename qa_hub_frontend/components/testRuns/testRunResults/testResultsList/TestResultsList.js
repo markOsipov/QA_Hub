@@ -1,7 +1,7 @@
 import {Paper} from "@mui/material";
 import TestResultCard from "./TestResultCard";
 import {useEffect, useState} from "react";
-import {getTestResults} from "../../../requests/TestResultsRequests";
+import {getTestResults} from "../../../../requests/TestResultsRequests";
 
 export default function TestResultsList({testRunId, setSelectedTest, ...props }) {
   const [testResults, setTestResults] = useState([])

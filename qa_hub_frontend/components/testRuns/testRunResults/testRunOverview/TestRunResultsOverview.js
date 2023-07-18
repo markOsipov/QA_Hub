@@ -1,10 +1,10 @@
 import {Paper} from "@mui/material";
-import TextWithLabel from "../../primitives/TextWithLabel";
-import StatusBadge from "../../primitives/StatusBadge";
-import TestResultsPlate from "../testRunList/testRun/elements/TestResultsPlate";
-import TimingsPlate from "../testRunList/testRun/elements/TimingsPlate";
-import RunnersPlate from "../testRunList/testRun/elements/RunnersPlate";
-import GitEnvPlate from "../testRunList/testRun/elements/GitEnvPlate";
+import TextWithLabel from "../../../primitives/TextWithLabel";
+import StatusBadge from "../../../primitives/StatusBadge";
+import TestResultsPlate from "../../testRunList/testRun/elements/TestResultsPlate";
+import TimingsPlate from "../../testRunList/testRun/elements/TimingsPlate";
+import RunnersPlate from "../../testRunList/testRun/elements/RunnersPlate";
+import GitEnvPlate from "../../testRunList/testRun/elements/GitEnvPlate";
 import RunnersDetailsPlate from "./RunnersDetailsPlate";
 
 export default function TestRunResultsOverview({testRun, ...props}) {

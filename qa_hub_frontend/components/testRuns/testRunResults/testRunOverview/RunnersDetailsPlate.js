@@ -1,5 +1,5 @@
 import ComputerIcon from "@mui/icons-material/Computer";
-import {customTheme} from "../../../styles/CustomTheme";
+import {customTheme} from "../../../../styles/CustomTheme";
 import {useState} from "react";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 

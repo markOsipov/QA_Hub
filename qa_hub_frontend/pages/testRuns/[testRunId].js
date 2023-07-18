@@ -4,9 +4,9 @@ import useSWR from "swr";
 import {getTestRun} from "../../requests/TestRunRequests";
 import {getTestResults} from "../../requests/TestResultsRequests";
 import {Paper} from "@mui/material";
-import TestRunResultsOverview from "../../components/testRuns/testRunResults/TestRunResultsOverview";
-import TestResultsList from "../../components/testRuns/testRunResults/TestResultsList";
-import TestResultDetails from "../../components/testRuns/testRunResults/TestResultDetails";
+import TestRunResultsOverview from "../../components/testRuns/testRunResults/testRunOverview/TestRunResultsOverview";
+import TestResultsList from "../../components/testRuns/testRunResults/testResultsList/TestResultsList";
+import TestResultDetails from "../../components/testRuns/testRunResults/testResultDetails/TestResultDetails";
 
 export default function TestRunPage() {
   const router = useRouter()
