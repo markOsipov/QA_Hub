@@ -34,8 +34,8 @@ class TestRunService {
         mongoClient.db.getCollection<TestRun>(TEST_RUNS.collectionName)
     }
 
-    private val testResultsCollection by lazy {
-        mongoClient.db.getCollection<TestResult>(TEST_RESULTS.collectionName)
+    private val updateTestResultsCollectionRequest by lazy {
+        mongoClient.db.getCollection<UpdateTestResultRequest>(TEST_RESULTS.collectionName)
     }
 
     private val testQueueCollection by lazy {
@@ -77,6 +77,7 @@ class TestRunService {
         if (!started) {
             testRun.status = TestRunStatus.PROCESSING.status
             testRun.timeMetrics.started = startDate
+            testRun.config = startTestRunRequest.techInfo
 
             testRunCollection.updateOne(
                 TestRun::testRunId eq testRun.testRunId,
@@ -94,17 +95,17 @@ class TestRunService {
                 upsert()
             )
 
-            val testResults = startTestRunRequest.testList.map {
-                TestResult(
+            val updateTestResultRequests = startTestRunRequest.testList.map {
+                UpdateTestResultRequest(
                     testRunId = testRun.testRunId,
-                    testrailId = it.testId,
+                    testcaseId = it.testId,
                     project = testRun.project,
                     fullName = it.fullName,
                     status = TestStatus.WAITING.status
                 )
             }
 
-            testResultsCollection.insertMany(testResults)
+            updateTestResultsCollectionRequest.insertMany(updateTestResultRequests)
         } else {
             testRunCollection.updateOne(
                 TestRun::testRunId eq testRun.testRunId,
@@ -157,7 +158,7 @@ class TestRunService {
         val testRun = getTestRun(testRunId)!!
 
          if (simulatorId != "") {
-             testResultsService.forceStopForDevice(testRunId, simulatorId)
+             testResultsService.forceStopForDevice(testRunId, simulatorId, runner)
          }
 
         var queueTicket = simulatorId
@@ -172,20 +173,28 @@ class TestRunService {
 
         val waitingTests = testResults.filter { it.status == TestStatus.WAITING.status }
         val readyForRetryTests = testResults
-            .filter { it.status == TestStatus.FAILURE.status && ((it.retries) < (testRun.retries ?: 1)) }
+            .filter { it.status == TestStatus.FAILURE.status && ((it.retries) < (testRun.config.retries ?: 1)) }
 
         val nextTest = waitingTests.firstOrNull() ?: readyForRetryTests.firstOrNull()
+
         if (nextTest != null) {
-            nextTest.status = TestStatus.PROCESSING.status
-            nextTest.deviceUdid = simulatorId
-            nextTest.gitlabRunner = runner
-            testResultsService.upsertTestResult(nextTest, false)
+            val updateRequest = UpdateTestResultRequest(
+                testRunId = nextTest.testRunId,
+                testcaseId = nextTest.testcaseId,
+                project = nextTest.project,
+                fullName = nextTest.fullName,
+                status =  TestStatus.PROCESSING.status,
+                deviceUdid = simulatorId,
+                gitlabRunner = runner
+            )
+
+            testResultsService.updateTestResult(updateRequest, false)
 
             leaveQueue(testRunId, queueTicket)
 
             return@runBlocking NextTestResponse(
                 nextTest = nextTest.fullName,
-                testId = nextTest.testrailId,
+                testId = nextTest.testcaseId,
                 lastTestTaken = waitingTests.size + readyForRetryTests.size == 1
             )
         } else {

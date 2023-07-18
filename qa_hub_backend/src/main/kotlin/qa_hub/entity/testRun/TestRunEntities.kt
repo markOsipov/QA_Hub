@@ -9,31 +9,32 @@ open class CreateTestRunRequest(
     var params: MutableList<TestRunRequestParam> = mutableListOf(),
 )
 open class StartTestRunRequest(
-    projectId: String,
+    project: String,
     params: MutableList<TestRunRequestParam> = mutableListOf(),
-
     var testRunId: String?,
+    var techInfo: TestRunConfig = TestRunConfig(),
     var testList: MutableList<TestListElement> = mutableListOf(),
     var runner: String?
-): CreateTestRunRequest(projectId, params)
+): CreateTestRunRequest(project, params)
 data class TestRun(
     var testRunId: String,
     var project: String,
     var params: MutableList<TestRunRequestParam> = mutableListOf(),
     var timeMetrics: TestRunTimeMetrics,
     var status: String,
-
-    var branch: String = "unknown",
-    var commit: String = "unknown",
-    var environment: String = "unknown",
+    var config: TestRunConfig = TestRunConfig(),
     var tests: TestRunTests = TestRunTests(),
-    var retries: Int? = null,
-    var parallelThreads: Int? = null,
-    var tags: MutableList<String> = mutableListOf(),
     var runners: MutableList<TestRunRunner> = mutableListOf(),
     var allureLaunchId: String? = null
 )
 
+data class TestRunConfig(
+    var branch: String = "unknown",
+    var commit: String = "unknown",
+    var environment: String = "unknown",
+    var retries: Int = 1,
+    var parallelThreads: Int = 1
+)
 enum class TestRunStatus(val status: String) {
     CREATED("CREATED"),
     PROCESSING("PROCESSING"),

@@ -2,34 +2,40 @@ package qa_hub.entity.testRun
 
 data class TestResult(
     var testRunId: String,
-    var testrailId: String = "",
+    var testcaseId: String = "",
+    var project: String?,
+    var fullName: String,
+
+    var duration: Double? = null,
+    var status: String,
+
+    var retries: Int = 0,
+)
+data class UpdateTestResultRequest(
+    var testRunId: String,
+    var testcaseId: String = "",
     var project: String?,
     var fullName: String,
 
     var duration: Double? = null,
     var status: String,
     var message: String? = null,
-    var gitlabRunner: String? = null,
+    var gitlabRunner: String = "unknown",
     var device: String? = "simulator",
-    var deviceRuntime: String? = null,
-    var deviceUdid: String? = null,
-    var qaComment: String? = null,
-    var qaResolution: String? = QaResolution.UNREVIEWED.value,
-    var retries: Int = 0,
-    var attachments: List<String>? = null
+    var deviceRuntime: String = "unknown",
+    var deviceUdid: String = "unknown",
+    var attachments: MutableList<String> = mutableListOf()
 )
-
-enum class QaResolution(var value: String) {
-    UNREVIEWED("Unreviewed"),
-    PASSED_LOCALLY("PassedLocally"),
-    NEED_REPAIR("NeedRepair"),
-    TECH_PROBLEM("TechProblem"),
-    BUG("Bug")
-}
 
 enum class TestStatus(val status: String) {
     SUCCESS("SUCCESS"),
     FAILURE("FAILURE"),
     WAITING("WAITING"),
-    PROCESSING("PROCESSING")
+    PROCESSING("PROCESSING");
+
+    companion object {
+        fun isFinal(status: String): Boolean {
+            return listOf(SUCCESS.status, FAILURE.status).contains(status)
+        }
+    }
 }
