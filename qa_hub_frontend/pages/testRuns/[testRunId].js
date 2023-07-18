@@ -4,6 +4,7 @@ import useSWR from "swr";
 import {getTestRun} from "../../requests/TestRunRequests";
 import {getTestResults} from "../../requests/TestResultsRequests";
 import {Paper} from "@mui/material";
+import TestRunResultsOverview from "../../components/testRuns/testRunResults/TestRunResultsOverview";
 
 export default function TestRunPage() {
   const router = useRouter()
@@ -29,7 +30,8 @@ export default function TestRunPage() {
   }, [testResultsResp.data])
 
   return <div style={{padding: "15px"}}>
-    <Paper style={{padding: "10px"}}>
+    <TestRunResultsOverview testRun={testRun}/>
+    <Paper style={{padding: "10px", marginTop: "15px"}}>
       {JSON.stringify(testRun)}
     </Paper>
     <Paper  style={{padding: "10px", marginTop: "15px"}}>

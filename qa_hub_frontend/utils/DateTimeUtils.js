@@ -7,5 +7,9 @@ export function getTimeSeconds(timestamp) {
 }
 
 export function getTimeMinutes(timestamp) {
-    return new Date(timestamp).toLocaleString('ru').split(", ")[1].substringBeforeLast(":")
+    let time = new Date(timestamp)
+      .toLocaleString('ru')
+      .split(", ")[1]
+
+    return  time.substring(0, time.lastIndexOf(":"))
 }

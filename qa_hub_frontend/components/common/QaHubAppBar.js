@@ -41,7 +41,7 @@ function QaHubAppBar() {
                     </div>
 
 
-                    <ProjectSelector style={{ marginLeft: "5px", marginRight: "20px" }}/>
+                    <ProjectSelector style={{ marginLeft: "12px", marginRight: "20px" }}/>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page) => (
