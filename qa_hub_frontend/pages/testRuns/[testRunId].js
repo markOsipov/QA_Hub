@@ -14,10 +14,28 @@ export default function TestRunPage() {
 
   const [testRun, setTestRun] = useState(null)
   const [testResults, setTestResults] = useState([])
+  const [testResultsLoader, setTestResultsLoader] = useState(false)
   const [selectedTest, setSelectedTest] = useState(null)
 
-  let testRunResp = useSWR("getTestRun", async () => { return await getTestRun(testRunId) }, { refreshInterval: 60000 })
-  let testResultsResp = useSWR("getTestResults", async () => { return await getTestResults(testRunId) }, { refreshInterval: 60000 })
+  let testRunResp = useSWR(
+    "getTestRun",
+    async () => { return await getTestRun(testRunId) },
+    { refreshInterval: 60000, revalidateOnFocus: false, revalidateIfStale: false }
+  )
+
+  let testResultsResp = useSWR(
+    "getTestResults",
+    async () => { return await updateTestResults() },
+    { refreshInterval: 60000, revalidateOnFocus: false, revalidateIfStale: false }
+  )
+
+  const updateTestResults = async () => {
+    setTestResultsLoader(true)
+    const resp = await getTestResults(testRunId)
+    setTestResultsLoader(false)
+
+    return resp
+  }
 
   useEffect(() => {
     if (testRunResp.data?.data) {
@@ -36,6 +54,7 @@ export default function TestRunPage() {
 
     <div style={{display: "flex", marginTop: '15px', width: '100%', minWidth: '100%'}}>
       <TestResultsList
+        loader={testResultsLoader}
         testResults={testResults}
         style={{width: "26%", minWidth: '500px', maxWidth: '70%', overflowX: 'auto', resize: 'horizontal'}}
         setSelectedTest={setSelectedTest}

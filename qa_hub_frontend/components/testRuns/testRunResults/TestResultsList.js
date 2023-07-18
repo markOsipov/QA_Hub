@@ -4,7 +4,11 @@ import TextWithLabel from "../../primitives/TextWithLabel";
 import Typography from "@mui/material/Typography";
 import TestResultCard from "./TestResultCard";
 
-export default function TestResultsList({ testResults, setSelectedTest, ...props }) {
+export default function TestResultsList({loader, testResults, setSelectedTest, ...props }) {
+  if (loader) {
+    return <Paper style={{padding: '15px', ...props.style}}>Loading test results</Paper>
+  }
+
   return <Paper style={{padding: '15px', ...props.style}}>
     <label>Test results list</label>
     {
