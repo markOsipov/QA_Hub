@@ -13,6 +13,10 @@ export default function TestResultCard({testResult, setSelectedTest, ...props}) 
     setSelectedTest(testResult)
   }
 
+  function getShortName(testResult) {
+    return testResult.fullName.substring(testResult.fullName.lastIndexOf(".") + 1)
+  }
+
   return <Card
     style={{
       display: 'flex',
@@ -23,7 +27,7 @@ export default function TestResultCard({testResult, setSelectedTest, ...props}) 
     onMouseLeave={onMouseLeave}
     onClick={handleTestResultCardClick}
   >
-    <div style={{display: 'flex', width: '100%', position: 'relative', top: '6px'}}>
+    <div style={{display: 'flex', width: '100%', alignItems: 'center' }}>
       <TextWithLabel
         style={{
           fontSize: "12px",
@@ -32,18 +36,23 @@ export default function TestResultCard({testResult, setSelectedTest, ...props}) 
           minHeight: 'unset',
           minWidth: '70px',
           display: 'grid',
-          justifyItems: 'center'
+          justifyItems: 'center',
+          height: 'min-content',
+          position: 'relative',
+          top: '6px',
+          marginRight: '7px'
         }}
         label={'TestcaseId'}
         value={testResult.testcaseId}
         labelStyle={{ justifySelf: 'center'}}
       />
 
-      <div style={{maxWidth: 'min-content', overflowX: 'hidden'}}>
-        <Typography variant={'h6'} style={{marginLeft: '15px', width: 'max-content'}}>{testResult.fullName}</Typography>
+      <div style={{maxWidth: 'min-content', overflowX: 'hidden', position: 'relative', marginRight: '5px', top: '-1px'}}>
+        <Typography variant={'h6'} style={{marginLeft: '15px', width: 'max-content'}}>{getShortName(testResult)}</Typography>
+        <Typography variant={'h6'} style={{marginLeft: '15px', width: 'max-content', fontSize: '14px', opacity: '0.5'}}>{testResult.fullName}</Typography>
       </div>
       <div style={{flexGrow: '1.1'}}></div>
-      <StatusBadge label={testResult.status} style={{marginLeft: '10px'}}/>
+      <StatusBadge label={testResult.status} style={{marginLeft: '4px'}}/>
     </div>
   </Card>
 }
