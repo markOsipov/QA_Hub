@@ -3,6 +3,8 @@ import Typography from "@mui/material/Typography";
 import StatusBadge from "../../../primitives/StatusBadge";
 import {Card} from "@mui/material";
 import {useState} from "react";
+import {customTheme} from "../../../../styles/CustomTheme";
+import TestStatusWithRetries from "../../../common/TestStatusWithRetries";
 
 export default function TestResultCard({testResult, setSelectedTest, ...props}) {
   const [isHovering, setIsHovered] = useState(false);
@@ -53,7 +55,8 @@ export default function TestResultCard({testResult, setSelectedTest, ...props}) 
         <Typography variant={'h6'} style={{marginLeft: '15px', width: 'max-content', fontSize: '14px', opacity: '0.5'}}>{testResult.fullName}</Typography>
       </div>
       <div style={{flexGrow: '1.1'}}></div>
-      <StatusBadge label={testResult.status} style={{marginLeft: '4px'}}/>
+      <TestStatusWithRetries status={testResult.status} retries={testResult.retries} />
+
     </div>
   </Card>
 }
