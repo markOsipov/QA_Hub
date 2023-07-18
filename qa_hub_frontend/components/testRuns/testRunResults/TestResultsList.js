@@ -1,26 +1,32 @@
-import {Card, Paper} from "@mui/material";
-import StatusBadge from "../../primitives/StatusBadge";
-import TextWithLabel from "../../primitives/TextWithLabel";
-import Typography from "@mui/material/Typography";
+import {Paper} from "@mui/material";
 import TestResultCard from "./TestResultCard";
 import {useEffect, useState} from "react";
-import useSWR from "swr";
 import {getTestResults} from "../../../requests/TestResultsRequests";
 
 export default function TestResultsList({testRunId, setSelectedTest, ...props }) {
   const [testResults, setTestResults] = useState([])
+  const [loading, setLoading] = useState(false)
 
-  let testResultsResp = useSWR(
-    "getTestResults",
-    async () => { return await getTestResults(testRunId) },
-    { refreshInterval: 60000 }
-  )
+  async function updateTestResults() {
+    if (testResults[0]?.testRunId !== testRunId) {
+      setLoading(true)
+    }
+    const resp = await getTestResults(testRunId).then((data) =>
+      setTestResults(data.data)
+    )
+    setLoading(false)
+    return resp
+  }
 
   useEffect(() => {
-    if (testResultsResp.data?.data) {
-      setTestResults(testResultsResp.data.data)
-    }
-  }, [testResultsResp.data])
+    updateTestResults()
+  }, [testRunId])
+
+
+
+  if (loading) {
+    return <Paper style={{padding: '15px', ...props.style}}>Loading test results</Paper>
+  }
 
   return <Paper style={{padding: '15px', ...props.style}}>
     <label>Test results list</label>
