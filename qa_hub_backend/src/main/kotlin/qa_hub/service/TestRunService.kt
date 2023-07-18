@@ -6,6 +6,7 @@ import org.litote.kmongo.coroutine.aggregate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import qa_hub.core.mongo.QaHubMongoClient
+import qa_hub.core.mongo.entity.Collections.TEST_RESULTS_RETRIES
 import qa_hub.core.mongo.entity.Collections.TEST_RUNS
 import qa_hub.core.mongo.entity.Collections.TEST_RESULTS
 import qa_hub.core.mongo.entity.Collections.TEST_QUEUE
@@ -27,15 +28,17 @@ class TestRunService {
     @Autowired
     lateinit var testResultsService: TestResultsService
 
-    @Autowired
-    lateinit var projectService: ProjectService
 
     private val testRunCollection by lazy {
         mongoClient.db.getCollection<TestRun>(TEST_RUNS.collectionName)
     }
 
-    private val updateTestResultsCollectionRequest by lazy {
+    private val testResultsCollection by lazy {
         mongoClient.db.getCollection<UpdateTestResultRequest>(TEST_RESULTS.collectionName)
+    }
+
+    private val testRetriesCollection by lazy {
+        mongoClient.db.getCollection<TestResultRetry>(TEST_RESULTS_RETRIES.collectionName)
     }
 
     private val testQueueCollection by lazy {
@@ -105,7 +108,7 @@ class TestRunService {
                 )
             }
 
-            updateTestResultsCollectionRequest.insertMany(updateTestResultRequests)
+            testResultsCollection.insertMany(updateTestResultRequests)
         } else {
             testRunCollection.updateOne(
                 TestRun::testRunId eq testRun.testRunId,
@@ -304,5 +307,11 @@ class TestRunService {
         }
 
         return@runBlocking testRun
+    }
+
+    fun deleteTestRun(testRunId: String) = runBlocking {
+        testRunCollection.deleteMany(TestRun::testRunId eq testRunId)
+        testResultsCollection.deleteMany(TestResult::testRunId eq testRunId)
+        testRetriesCollection.deleteMany(TestResultRetry::testRunId eq testRunId)
     }
 }

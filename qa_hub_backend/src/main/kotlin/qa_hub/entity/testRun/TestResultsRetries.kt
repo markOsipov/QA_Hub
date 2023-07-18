@@ -1,11 +1,5 @@
 package qa_hub.entity.testRun
 
-//data class TestResultRetriesInfo(
-//    var testRunId: String,
-//    var fullName: String,
-//
-//    var retries: MutableList<TestResultRetry> = mutableListOf()
-//)
 data class TestResultRetry(
     var testRunId: String,
     var fullName: String,

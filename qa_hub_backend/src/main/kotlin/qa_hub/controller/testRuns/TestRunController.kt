@@ -60,6 +60,11 @@ class TestRunController {
         return testRunService.finishRunForRunner(testRunId = testRunId, hasError = hasError, runner = runner)
     }
 
+    @PostMapping("/delete/{testRunId}")
+    fun deleteTestRun(@PathVariable testRunId: String) {
+        testRunService.deleteTestRun(testRunId = testRunId)
+    }
+
     @PostMapping("/createDebug")
     fun createDebugTestRun(@RequestParam(required = false, defaultValue = "10") testsCount: Int): TestRun {
         data class Runner(
