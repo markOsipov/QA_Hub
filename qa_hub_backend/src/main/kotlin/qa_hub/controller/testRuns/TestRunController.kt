@@ -82,61 +82,63 @@ class TestRunController {
         }
         val testList = tests.map{ TestListElement(fullName = it, testId = Random.nextInt(10000, 99999).toString()) }.toMutableList()
 
-        var testRun = testRunService.createTestRun(CreateTestRunRequest("Lowkey"))
+        val testRun = testRunService.createTestRun(CreateTestRunRequest("Lowkey"))
 
-        runners.forEach {
-            testRunService.startTestRun(
-                StartTestRunRequest(
-                    project = testRun.project,
-                    params = testRun.params,
-                    testRunId = testRun.testRunId,
-                    testList = testList,
-                    runner = it.name,
-                    techInfo = TestRunConfig(
-                        branch = "TestBranch",
-                        commit = "TestCommit",
-                        environment = "test",
-                        retries = 3,
-                        parallelThreads = 2
-                    )
-                ))
-        }
-
-        var finish = false
-        while(!finish) {
-            val runner = runners.random()
-            val simulator = runner.simulators.random()
-            val status = listOf(TestStatus.SUCCESS, TestStatus.FAILURE).random()
-
-            val nextTest = testRunService.getNextTest(testRun.testRunId, simulator, runner.name)
-            finish = nextTest.nextTest == null
-
-            nextTest.nextTest?.let {
-                testResultsService.updateTestResult(
-                    UpdateTestResultRequest(
-                        testRunId = testRun.testRunId,
-                        testcaseId = nextTest.testId ?: "unknown",
-                        project = testRun.project,
-                        fullName = nextTest.nextTest ?: "unknown",
-                        status = status.status,
-                        deviceUdid = simulator,
-                        device = "iPhone 12",
-                        deviceRuntime = "iOS 16.3.1",
-                        gitlabRunner = runner.name,
-                        message = if (status.status == TestStatus.FAILURE.status) {
-                            "Testing failure"
-                        } else null
-                    )
-                )
-            }
-        }
-
-        runners.forEach {
-            testRunService.finishRunForRunner(
-                testRunId = testRun.testRunId,
-                runner = it.name
-            )
-        }
+//        runners.forEach {
+//            testRunService.startTestRun(
+//                StartTestRunRequest(
+//                    project = testRun.project,
+//                    params = testRun.params,
+//                    testRunId = testRun.testRunId,
+//                    testList = testList,
+//                    runner = it.name,
+//                    simulators = it.simulators,
+//                    config = TestRunConfig(
+//                        branch = "TestBranch",
+//                        commit = "TestCommit",
+//                        environment = "test",
+//                        retries = 3,
+//                        parallelThreads = 2
+//                    )
+//                )
+//            )
+//        }
+//
+//        var finish = false
+//        while(!finish) {
+//            val runner = runners.random()
+//            val simulator = runner.simulators.random()
+//            val status = listOf(TestStatus.SUCCESS, TestStatus.FAILURE).random()
+//
+//            val nextTest = testRunService.getNextTest(testRun.testRunId, simulator, runner.name)
+//            finish = nextTest.nextTest == null
+//
+//            nextTest.nextTest?.let {
+//                testResultsService.updateTestResult(
+//                    UpdateTestResultRequest(
+//                        testRunId = testRun.testRunId,
+//                        testcaseId = nextTest.testId ?: "unknown",
+//                        project = testRun.project,
+//                        fullName = nextTest.nextTest ?: "unknown",
+//                        status = status.status,
+//                        deviceUdid = simulator,
+//                        device = "iPhone 12",
+//                        deviceRuntime = "iOS 16.3.1",
+//                        gitlabRunner = runner.name,
+//                        message = if (status.status == TestStatus.FAILURE.status) {
+//                            "Testing failure"
+//                        } else null
+//                    )
+//                )
+//            }
+//        }
+//
+//        runners.forEach {
+//            testRunService.finishRunForRunner(
+//                testRunId = testRun.testRunId,
+//                runner = it.name
+//            )
+//        }
 
         return testRunService.getTestRun(testRunId = testRun.testRunId)!!
     }

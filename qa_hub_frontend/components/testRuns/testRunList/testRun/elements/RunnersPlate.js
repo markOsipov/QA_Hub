@@ -17,7 +17,7 @@ export default function RunnersPlate({ testRun, ...props}) {
       </div>
     }
 
-    { testRun.config.parallelThreads != null &&
+    { testRun.config?.parallelThreads != null &&
       <div style={{display: "flex", alignItems: "center", marginLeft: "14px"}}>
         <PhoneIphoneIcon></PhoneIphoneIcon>
         <TextWithLabel
@@ -29,7 +29,7 @@ export default function RunnersPlate({ testRun, ...props}) {
       </div>
     }
 
-    { testRun.config.retries != null &&
+    { testRun.config?.retries != null &&
       <div style={{display: "flex", alignItems: "center", marginLeft: "10px"}}>
         <SyncIcon style={{transform: 'scaleX(-1)'}}></SyncIcon>
         <TextWithLabel

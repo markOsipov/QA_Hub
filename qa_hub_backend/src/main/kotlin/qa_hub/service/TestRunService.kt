@@ -75,12 +75,17 @@ class TestRunService {
         }
         val startDate = currentDateTimeUtc()
         val started = testRun.status == TestRunStatus.PROCESSING.status
-        val runner = TestRunRunner(name = startTestRunRequest.runner ?: "Runner ${testRun.runners.size + 1}", started = startDate)
+        val runner = TestRunRunner(
+            name = startTestRunRequest.runner ?: "Runner ${testRun.runners.size + 1}",
+            simulators = startTestRunRequest.simulators,
+            started = startDate
+        )
 
         if (!started) {
             testRun.status = TestRunStatus.PROCESSING.status
             testRun.timeMetrics.started = startDate
-            testRun.config = startTestRunRequest.techInfo
+            testRun.config = startTestRunRequest.config
+            testRun.tests = TestRunTests(testsCount = startTestRunRequest.testList.size, 0, 0)
 
             testRunCollection.updateOne(
                 TestRun::testRunId eq testRun.testRunId,
@@ -176,7 +181,7 @@ class TestRunService {
 
         val waitingTests = testResults.filter { it.status == TestStatus.WAITING.status }
         val readyForRetryTests = testResults
-            .filter { it.status == TestStatus.FAILURE.status && ((it.retries) < (testRun.config.retries ?: 1)) }
+            .filter { it.status == TestStatus.FAILURE.status && ((it.retries) < (testRun.config?.retries ?: 1)) }
 
         val nextTest = waitingTests.firstOrNull() ?: readyForRetryTests.firstOrNull()
 

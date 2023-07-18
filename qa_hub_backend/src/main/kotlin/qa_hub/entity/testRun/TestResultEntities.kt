@@ -1,5 +1,6 @@
 package qa_hub.entity.testRun
 
+
 data class TestResult(
     var testRunId: String,
     var testcaseId: String = "",
@@ -19,6 +20,7 @@ data class UpdateTestResultRequest(
 
     var duration: Double? = null,
     var status: String,
+
     var message: String? = null,
     var gitlabRunner: String = "unknown",
     var device: String? = "simulator",

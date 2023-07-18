@@ -11,10 +11,13 @@ open class CreateTestRunRequest(
 open class StartTestRunRequest(
     project: String,
     params: MutableList<TestRunRequestParam> = mutableListOf(),
+
     var testRunId: String?,
-    var techInfo: TestRunConfig = TestRunConfig(),
+    var config: TestRunConfig = TestRunConfig(),
     var testList: MutableList<TestListElement> = mutableListOf(),
-    var runner: String?
+
+    var runner: String? = null,
+    var simulators: List<String> = listOf()
 ): CreateTestRunRequest(project, params)
 data class TestRun(
     var testRunId: String,
@@ -22,9 +25,10 @@ data class TestRun(
     var params: MutableList<TestRunRequestParam> = mutableListOf(),
     var timeMetrics: TestRunTimeMetrics,
     var status: String,
-    var config: TestRunConfig = TestRunConfig(),
+    var config: TestRunConfig? = null,
     var tests: TestRunTests = TestRunTests(),
-    var runners: MutableList<TestRunRunner> = mutableListOf(),
+    var runners: List<TestRunRunner> = listOf(),
+
     var allureLaunchId: String? = null
 )
 
@@ -56,6 +60,7 @@ data class TestRunTests(
 
 data class TestRunRunner(
     var name: String,
+    var simulators: List<String> = listOf(),
     var started: String? = null,
     var finished: String? = null,
     var withError: Boolean = false
