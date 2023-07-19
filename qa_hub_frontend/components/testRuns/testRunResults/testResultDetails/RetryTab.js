@@ -1,9 +1,13 @@
 import StatusBadge from "../../../primitives/StatusBadge";
 import {useEffect, useState} from "react";
 import {customTheme} from "../../../../styles/CustomTheme";
+import StepsPanel from "./steps/StepsPanel";
+import LogsPanel from "./logs/LogPanel";
 
 export default function RetryTab({retry, ...props}) {
-  const[lastResult, setLastResult] = useState(null)
+  const [lastResult, setLastResult] = useState(null)
+  const [selectedStep, setSelectedStep] = useState(null)
+
   useEffect(() => {
     setLastResult(retry.statusHistory[retry.statusHistory.length - 1])
   }, [retry])
@@ -36,5 +40,19 @@ export default function RetryTab({retry, ...props}) {
 
       </div>
     }
+    <div style={{display: 'flex', marginTop: '15px'}}>
+      <StepsPanel
+        style={{width: '90%', minWidth: '100px', resize: 'horizontal', overflowX: 'auto'}}
+        retry={retry}
+        selectedStep={selectedStep}
+        setSelectedStep={setSelectedStep}
+      />
+      <LogsPanel
+        style={{flexGrow: '1', marginLeft: '15px'}}
+        retry={retry}
+        selectedStep={selectedStep}
+        setSelectedStep={setSelectedStep}
+      />
+    </div>
   </div>
 }

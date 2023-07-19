@@ -2,7 +2,7 @@ import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
 import useSWR from "swr";
 import {getTestRun} from "../../requests/TestRunRequests";
-import {getTestResults} from "../../requests/TestResultsRequests";
+import {getTestResults} from "../../requests/testResults/TestResultsRequests";
 import {Paper} from "@mui/material";
 import TestRunResultsOverview from "../../components/testRuns/testRunResults/testRunOverview/TestRunResultsOverview";
 import TestResultsList from "../../components/testRuns/testRunResults/testResultsList/TestResultsList";
@@ -37,7 +37,7 @@ export default function TestRunPage() {
         setSelectedTest={setSelectedTest}
         style={{width: "550px", minWidth: '470px', maxWidth: '70%', overflowX: 'auto', resize: 'horizontal'}}
       />
-      <TestResultDetails testResult={selectedTest} style={{flexGrow: '1.1', marginLeft: '15px'}}></TestResultDetails>
+      <TestResultDetails testResult={selectedTest} style={{flexGrow: '1.1', marginLeft: '15px', overflowX: 'auto'}}></TestResultDetails>
     </div>
   </div>
 }

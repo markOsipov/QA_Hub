@@ -1,4 +1,4 @@
-import process from "../next.config";
+import process from "../../next.config";
 import axios from "axios";
 
 export function getTestResults(testRunId) {
