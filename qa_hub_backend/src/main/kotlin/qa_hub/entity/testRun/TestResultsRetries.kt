@@ -27,7 +27,7 @@ class StatusHistoryItem(
         gitlabRunner = testResult.gitlabRunner,
         device = testResult.device,
         deviceRuntime = testResult.deviceRuntime,
-        deviceUdid = testResult.deviceUdid,
+        deviceUdid = testResult.deviceId,
         attachments = testResult.attachments
     )
 }

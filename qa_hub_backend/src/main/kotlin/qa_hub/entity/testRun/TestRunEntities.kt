@@ -77,5 +77,6 @@ data class TestQueue(
 
 data class NextTestResponse(
     var nextTest: String?,
-    val testId: String?
+    val testId: String?,
+    val retry: Int?
 )

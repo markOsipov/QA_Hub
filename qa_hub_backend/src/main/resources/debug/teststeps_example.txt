@@ -1,0 +1,120 @@
+[
+  {
+    "result" : "success",
+    "id" : "1",
+    "parentId" : "0",
+    "name" : "SetUp: Deleting the lowkey app",
+    "steps" : [
+      {
+        "result" : "success",
+        "id" : "2",
+        "parentId" : "1",
+        "name" : "Step: Opening context menu",
+        "steps" : [
+
+        ]
+      },
+      {
+        "result" : "success",
+        "id" : "3",
+        "parentId" : "1",
+        "name" : "Step: Deleting the app",
+        "steps" : [
+          {
+            "result" : "success",
+            "id" : "4",
+            "parentId" : "3",
+            "name" : "Step: WaitForElement: \"Delete App\" Button. State: isHittable == 1",
+            "steps" : [
+
+            ]
+          },
+          {
+            "result" : "success",
+            "id" : "5",
+            "parentId" : "3",
+            "name" : "Step: WaitForElement: \"Lowkey Dev\" Icon. State: exists == 0",
+            "steps" : [
+
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "result" : "failure",
+    "id" : "6",
+    "parentId" : "0",
+    "name" : "Test: Auth confirmation page: Try another phone button. TestcaseId: 42",
+    "steps" : [
+      {
+        "result" : "success",
+        "id" : "7",
+        "parentId" : "6",
+        "name" : "Step: Leaving the Landing page",
+        "steps" : [
+          {
+            "result" : "success",
+            "id" : "8",
+            "parentId" : "7",
+            "name" : "Step: Tap: \"ContinueButton\" Any",
+            "steps" : [
+
+            ]
+          }
+        ]
+      },
+      {
+        "result" : "success",
+        "id" : "9",
+        "parentId" : "6",
+        "name" : "Step: Input the phone number",
+        "steps" : [
+          {
+            "result" : "success",
+            "id" : "10",
+            "parentId" : "9",
+            "name" : "Step: SelectAndType: \"PhoneNumberTextInput\" Any. Text: 6609814280",
+            "steps" : [
+              {
+                "result" : "success",
+                "id" : "11",
+                "parentId" : "10",
+                "name" : "Step: TapAtCenter: \"PhoneNumberTextInput\" TextField",
+                "steps" : [
+                  {
+                    "result" : "success",
+                    "id" : "12",
+                    "parentId" : "11",
+                    "name" : "Step: WaitForElement: \"PhoneNumberTextInput\" TextField. State: exists == 1",
+                    "steps" : [
+
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "result" : "failure",
+        "id" : "13",
+        "parentId" : "6",
+        "name" : "Step: Click on the Try another phone button",
+        "steps" : [
+          {
+            "result" : "failure",
+            "id" : "14",
+            "parentId" : "13",
+            "name" : "Step: Tap: \"TryAnotherPhoneText\" Any",
+            "steps" : [
+
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

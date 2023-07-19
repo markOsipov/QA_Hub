@@ -1,4 +1,4 @@
-package qa_hub.service
+package qa_hub.service.testResults
 
 import com.mongodb.client.result.UpdateResult
 import kotlinx.coroutines.runBlocking
@@ -16,7 +16,7 @@ class TestResultsService {
     @Autowired
     lateinit var mongoClient: QaHubMongoClient
 
-    private val testResultsCollectionRequest by lazy {
+    private val testResultsCollection by lazy {
         mongoClient.db.getCollection<TestResult>(Collections.TEST_RESULTS.collectionName)
     }
 
@@ -25,7 +25,7 @@ class TestResultsService {
     }
 
     fun findTestResults(testRunId: String): List<TestResult> = runBlocking {
-        testResultsCollectionRequest.aggregate<TestResult>(
+        testResultsCollection.aggregate<TestResult>(
             match(  TestResult::testRunId eq testRunId),
             sort(ascending(TestResult::fullName))
         ).toList()
@@ -42,22 +42,21 @@ class TestResultsService {
         ).toList()
     }
 
-    fun updateTestResult(testResult: TestResult, incRetries: Boolean = true): UpdateResult = runBlocking {
-        val set = set(
-            *(testResult.setCurrentPropertyValues(skipProperties = listOf("_id", "testRunId", "fullName", "retries")))
-        )
-        val update = if (incRetries) {
-            combine(set, inc(TestResult::retries,  1))
-        } else { set }
+    fun updateTestResult(testResult: TestResult): UpdateResult = runBlocking {
+        val skipProperties = mutableListOf("_id", "testRunId", "fullName")
+        if (testResult.status != TestStatus.PROCESSING.status) {
+            skipProperties.add("retries")
+        }
 
         updateRetriesInfo(testResult)
-
-        testResultsCollectionRequest.updateOne(
+        testResultsCollection.updateOne(
             and(
                 TestResult::testRunId eq testResult.testRunId,
                 TestResult::fullName eq testResult.fullName
             ),
-            update
+            set(
+                *(testResult.setCurrentPropertyValues(skipProperties))
+            )
         )
     }
 
@@ -98,9 +97,9 @@ class TestResultsService {
     }
 
     fun forceStopForDevice(testRunId: String, simulatorId: String, runner: String) = runBlocking {
-        val hangingTests = testResultsCollectionRequest.find(
+        val hangingTests = testResultsCollection.find(
             and(TestResult::testRunId eq testRunId,
-                TestResult::deviceUdid eq simulatorId,
+                TestResult::deviceId eq simulatorId,
                 TestResult::status eq TestStatus.PROCESSING.status
             )
         ).toList()

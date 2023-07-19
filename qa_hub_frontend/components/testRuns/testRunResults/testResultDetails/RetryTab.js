@@ -1,5 +1,6 @@
 import StatusBadge from "../../../primitives/StatusBadge";
 import {useEffect, useState} from "react";
+import {customTheme} from "../../../../styles/CustomTheme";
 
 export default function RetryTab({retry, ...props}) {
   const[lastResult, setLastResult] = useState(null)
@@ -12,8 +13,28 @@ export default function RetryTab({retry, ...props}) {
   }
 
   return <div style={{...props.style}}>
-    <StatusBadge label={lastResult.status} style={{ marginLeft: "10px"}}/>
+    <StatusBadge label={lastResult.status} />
 
+    {
+      lastResult.message &&
+      <div style={{
+        marginTop: '15px',
+        padding: '10px',
+        border: '1px solid',
+        borderColor: customTheme.palette.error.main,
+        borderRadius: '10px',
+        backgroundColor: customTheme.palette.error.faded,
+        width: 'max-content',
+        minWidth: '50%',
+        display: 'grid'
+      }}>
+        {
+          lastResult.message.split("\n").map((line, index) => {
+            return <label key={index} style={{whiteSpace: 'break-spaces'}}>{line}</label>
+          })
+        }
 
+      </div>
+    }
   </div>
 }

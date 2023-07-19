@@ -1,5 +1,6 @@
 package qa_hub.entity.testRun
 
+import qa_hub.core.utils.DateTimeUtils.currentEpoch
 
 data class TestResult(
     var testRunId: String,
@@ -15,7 +16,7 @@ data class TestResult(
     var gitlabRunner: String = "unknown",
     var device: String? = "simulator",
     var deviceRuntime: String = "unknown",
-    var deviceUdid: String = "unknown",
+    var deviceId: String = "unknown",
     var attachments: MutableList<String> = mutableListOf()
 )
 

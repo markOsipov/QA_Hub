@@ -36,7 +36,7 @@ export default function TestRetriesTabs({ testResult, ...props }) {
       </Box>
       {
         retries.map((retry, index) => {
-          return <TabPanel  key={`RetryPanel${retry.retry}`} value={index}>
+          return <TabPanel  key={`RetryPanel${retry.retry}`} value={index} style={{padding: '24px 5px'}}>
             <RetryTab retry={retry} />
           </TabPanel>
         })

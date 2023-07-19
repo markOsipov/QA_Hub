@@ -39,9 +39,5 @@ export default function TestRunPage() {
       />
       <TestResultDetails testResult={selectedTest} style={{flexGrow: '1.1', marginLeft: '15px'}}></TestResultDetails>
     </div>
-
-    <Paper style={{padding: "10px", marginTop: "15px"}}>
-      {JSON.stringify(testRun)}
-    </Paper>
   </div>
 }

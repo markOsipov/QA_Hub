@@ -6,10 +6,13 @@ enum class Collections(val collectionName: String) {
     PROJECTS("projects"),
     QA_HUB_CONFIG("qaHubConfig"),
     TESTCASES("testcases"),
+    TEST_LOGS("testLogs"),
+    TEST_QA_REVIEWS("testQaReviews"),
+    TEST_QUEUE("testQueue"),
     TEST_RESULTS_RETRIES("testResultsRetries"),
     TEST_RESULTS("testResults"),
     TEST_RUN_FORMS("testRunForms"),
     TEST_RUNS("testRuns"),
-    TEST_QUEUE("testQueue"),
+    TEST_STEPS("testSteps"),
     TMS_INTEGRATIONS("tmsIntegrations");
 }

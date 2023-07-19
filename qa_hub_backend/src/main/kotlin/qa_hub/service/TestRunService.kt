@@ -6,14 +6,14 @@ import org.litote.kmongo.coroutine.aggregate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import qa_hub.core.mongo.QaHubMongoClient
-import qa_hub.core.mongo.entity.Collections.TEST_RESULTS_RETRIES
-import qa_hub.core.mongo.entity.Collections.TEST_RUNS
-import qa_hub.core.mongo.entity.Collections.TEST_RESULTS
-import qa_hub.core.mongo.entity.Collections.TEST_QUEUE
+import qa_hub.core.mongo.entity.Collections.*
 import qa_hub.core.mongo.utils.setCurrentPropertyValues
 import qa_hub.entity.testRun.*
 import qa_hub.core.utils.DateTimeUtils.currentDateTimeUtc
 import qa_hub.core.utils.DateTimeUtils.currentEpoch
+import qa_hub.service.testResults.TestLogsService
+import qa_hub.service.testResults.TestResultsService
+import qa_hub.service.testResults.TestStepsService
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import kotlin.random.Random
@@ -42,6 +42,18 @@ class TestRunService {
 
     private val testQueueCollection by lazy {
         mongoClient.db.getCollection<TestQueue>(TEST_QUEUE.collectionName)
+    }
+
+    private val testLogsCollection by lazy {
+        mongoClient.db.getCollection<TestLogsService.TestLog>(TEST_LOGS.collectionName)
+    }
+
+    private val testStepsCollection by lazy {
+        mongoClient.db.getCollection<TestStepsService.TestSteps>(TEST_STEPS.collectionName)
+    }
+
+    private val testQaReviewsCollection by lazy {
+        mongoClient.db.getCollection<TestResultQaResolution>(TEST_QA_REVIEWS.collectionName)
     }
 
     fun getTestRuns(project: String): List<TestRun> = runBlocking {
@@ -186,24 +198,26 @@ class TestRunService {
         if (nextTest != null) {
             nextTest.apply {
                 status = TestStatus.PROCESSING.status
-                deviceUdid = simulatorId
+                deviceId = simulatorId
                 gitlabRunner = runner
+                retries +=  1
             }
 
-            testResultsService.updateTestResult(nextTest, false)
-
+            testResultsService.updateTestResult(nextTest)
             leaveQueue(testRunId, queueTicket)
 
             return@runBlocking NextTestResponse(
                 nextTest = nextTest.fullName,
-                testId = nextTest.testcaseId
+                testId = nextTest.testcaseId,
+                retry = nextTest.retries
             )
         } else {
             leaveQueue(testRunId, queueTicket)
 
             return@runBlocking NextTestResponse(
                 nextTest = null,
-                testId = null
+                testId = null,
+                retry = null
             )
         }
     }
@@ -310,5 +324,9 @@ class TestRunService {
         testRunCollection.deleteMany(TestRun::testRunId eq testRunId)
         testResultsCollection.deleteMany(TestResult::testRunId eq testRunId)
         testRetriesCollection.deleteMany(TestResultRetry::testRunId eq testRunId)
+        testQueueCollection.deleteMany(TestQueue::testRunId eq testRunId)
+        testLogsCollection.deleteMany(TestLogsService.TestLog::testRunId eq testRunId)
+        testStepsCollection.deleteMany(TestStepsService.TestSteps::testRunId eq testRunId)
+        testQaReviewsCollection.deleteMany(TestResultQaResolution::testRunId eq testRunId)
     }
 }

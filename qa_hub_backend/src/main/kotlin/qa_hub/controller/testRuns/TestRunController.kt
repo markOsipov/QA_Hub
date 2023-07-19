@@ -1,14 +1,17 @@
 package qa_hub.controller.testRuns
 
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.runBlocking
-import org.apache.juli.logging.LogFactory
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.io.ClassPathResource
 import org.springframework.web.bind.annotation.*
-import qa_hub.core.utils.DateTimeUtils.currentDateTimeUtc
 import qa_hub.entity.testRun.*
-import qa_hub.service.TestResultsService
+import qa_hub.service.testResults.TestResultsService
 import qa_hub.service.TestRunService
+import qa_hub.service.testResults.TestLogsService
+import qa_hub.service.testResults.TestStepsService
+import java.io.BufferedReader
+import java.io.InputStreamReader
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import kotlin.random.Random
@@ -23,6 +26,11 @@ class TestRunController {
     @Autowired
     lateinit var testResultsService: TestResultsService
 
+    @Autowired
+    lateinit var testLogsService: TestLogsService
+
+    @Autowired
+    lateinit var testStepsService: TestStepsService
     @GetMapping("/{project}")
     fun getTestRuns(@PathVariable("project") project: String): List<TestRun> {
         return testRunService.getTestRuns(project)
@@ -73,6 +81,14 @@ class TestRunController {
 
     @PostMapping("/createDebug")
     fun createDebugTestRun(@RequestParam(required = false, defaultValue = "10") testsCount: Int): List<String> {
+        val logFile = ClassPathResource("debug/testlog_example.log")
+        val logText = BufferedReader(InputStreamReader(logFile.inputStream)).readText()
+
+        val stepsFile = ClassPathResource("debug/teststeps_example.txt")
+        val stepsText = BufferedReader(InputStreamReader(stepsFile.inputStream)).readText()
+        val stepsTypeToken = object : TypeToken<List<TestStepsService.TestStep>>() {}.type
+        val steps: List<TestStepsService.TestStep> = Gson().fromJson(stepsText, stepsTypeToken)
+
         val measures = mutableListOf<String>()
 
         fun <T: Any?> measure(name: String, action: () -> T): T {
@@ -89,9 +105,10 @@ class TestRunController {
             val name: String,
             val simulators: List<String>
         )
+
         val runners = listOf(
-            Runner("Runner 1", listOf("Simulator 1", "Simulator 2")),
-            Runner("Runner 2", listOf("Simulator 3", "Simulator 4"))
+            Runner("Runner 1", listOf("0034468A-B653-4FD9-9D29-EF25302AB9C9", "55B2ABE2-3AC8-40A1-B5F6-4FFBBD059811")),
+            Runner("Runner 2", listOf("0BE2A453-56F6-4735-982B-B5E97B1E5400", "AB32FAF0-CBEF-424D-BB36-DB5A34C93B89"))
         )
 
         val tests = mutableListOf<String>()
@@ -147,13 +164,21 @@ class TestRunController {
                             project = testRun.project,
                             fullName = nextTest.nextTest ?: "unknown",
                             status = status.status,
-                            deviceUdid = simulator,
+                            deviceId = simulator,
                             device = "iPhone 12",
                             deviceRuntime = "iOS 16.3.1",
                             gitlabRunner = runner.name,
+                            duration = Random.nextDouble(300.0),
                             message = if (status.status == TestStatus.FAILURE.status) {
-                                "Testing failure"
+                                logText.take(Random.nextInt(20, 500))
                             } else null
+                        )
+                    )
+
+                    testLogsService.insertTestLog(testRun.testRunId, nextTest.nextTest ?: "unknown", nextTest.retry!!, logText)
+                    testStepsService.insertTestSteps(
+                        TestStepsService.TestSteps(
+                            testRun.testRunId, nextTest.nextTest ?: "unknown", nextTest.retry, steps
                         )
                     )
                 }

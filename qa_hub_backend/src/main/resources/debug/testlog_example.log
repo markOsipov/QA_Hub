@@ -1,0 +1,197 @@
+2023-07-19 15:51:36.879291+0400 LowkeyUITests-Runner[79567:4730768] Running tests...
+Test Suite 'Selected tests' started at 2023-07-19 15:51:39.142
+Test Suite 'LowkeyUITests.xctest' started at 2023-07-19 15:51:39.143
+Test Suite 'OnboardingTests' started at 2023-07-19 15:51:39.143
+Test Case '-[LowkeyUITests.OnboardingTests testTryAnotherPhoneButton]' started.
+    t =     0.00s Start Test at 2023-07-19 15:51:39.143
+    t =     0.09s Set Up
+    t =     0.09s     allure.label.thread:8B530F7E-D97C-4A94-8CB7-974918EDF161
+Starting step 1
+    t =     0.09s     SetUp: Deleting the lowkey app
+    t =     0.09s         Terminate com.dev.lowkeychatdev:0
+    t =     0.11s         Get number of matches for: Elements matching predicate '"Lowkey Dev" IN identifiers'
+    t =     0.27s         Checking existence of `"Lowkey Dev" Icon`
+    t =     0.29s         Find the "Lowkey Dev" Icon
+Starting step 2
+    t =     0.36s         Step: Opening context menu
+    t =     0.36s             Press "Lowkey Dev" Icon for 1.0 seconds
+    t =     0.36s                 Wait for com.apple.springboard to idle
+    t =     0.39s                 Find the "Lowkey Dev" Icon
+    t =     0.42s                 Check for interrupting elements affecting "Lowkey Dev" Icon
+    t =     0.46s                 Synthesize event
+    t =     1.82s                 Wait for com.apple.springboard to idle
+Starting step 3
+    t =     1.86s         Step: Deleting the app
+    t =     1.86s             Tap "Remove App" Button
+    t =     1.86s                 Wait for com.apple.springboard to idle
+    t =     1.87s                 Find the "Remove App" Button
+    t =     1.91s             Ignoring failure to get hierarchy for remote element in process 79600 (Error getting main window kAXErrorServerNotFound)
+    t =     1.92s                 Check for interrupting elements affecting "com.apple.springboardhome.application-shortcut-item.remove-app" Button
+    t =     1.94s             Ignoring failure to get hierarchy for remote element in process 79600 (Error getting main window kAXErrorServerNotFound)
+    t =     1.94s                 Synthesize event
+    t =     2.24s                 Wait for com.apple.springboard to idle
+Starting step 4
+    t =     2.38s             Step: WaitForElement: "Delete App" Button. State: isHittable == 1
+    t =     3.38s                 Checking `Expect predicate `isHittable == 1` for object "Delete App" Button`
+    t =     3.38s                     Find the "Delete App" Button
+    t =     3.40s                 Ignoring failure to get hierarchy for remote element in process 79600 (Error getting main window kAXErrorServerNotFound)
+    t =     3.43s             Tap "Delete App" Button
+    t =     3.43s                 Wait for com.apple.springboard to idle
+    t =     3.45s                 Find the "Delete App" Button
+    t =     3.47s             Ignoring failure to get hierarchy for remote element in process 79600 (Error getting main window kAXErrorServerNotFound)
+    t =     3.47s                 Check for interrupting elements affecting "Delete App" Button
+    t =     3.49s             Ignoring failure to get hierarchy for remote element in process 79600 (Error getting main window kAXErrorServerNotFound)
+    t =     3.49s                 Synthesize event
+    t =     3.79s                 Wait for com.apple.springboard to idle
+    t =     4.00s             Tap "Delete" Button
+    t =     4.00s                 Wait for com.apple.springboard to idle
+    t =     4.43s                 Find the "Delete" Button
+    t =     4.45s             Ignoring failure to get hierarchy for remote element in process 79600 (Error getting main window kAXErrorServerNotFound)
+    t =     4.45s                 Check for interrupting elements affecting "Delete" Button
+    t =     4.47s             Ignoring failure to get hierarchy for remote element in process 79600 (Error getting main window kAXErrorServerNotFound)
+    t =     4.47s                 Synthesize event
+    t =     4.78s                 Wait for com.apple.springboard to idle
+Starting step 5
+    t =     4.98s             Step: WaitForElement: "Lowkey Dev" Icon. State: exists == 0
+    t =     5.98s                 Checking `Expect predicate `exists == 0` for object "Lowkey Dev" Icon`
+    t =     5.98s                     Checking existence of `"Lowkey Dev" Icon`
+    t =     6.01s                 Ignoring failure to get hierarchy for remote element in process 79600 (Error getting main window kAXErrorServerNotFound)
+    t =     6.01s allure.label.tag:Acceptance
+    t =     6.01s allure.label.tag:Regression
+    t =     6.01s allure.label.tag:Onboarding
+    t =     6.01s allure.label.AS_ID:42
+    t =     6.01s allure.name:Auth confirmation page: Try another phone button
+Starting step 6
+    t =     6.01s Test: Auth confirmation page: Try another phone button. TestcaseId: 42
+    t =     6.01s     Open com.dev.lowkeychatdev
+    t =     6.03s         Launch com.dev.lowkeychatdev
+    t =     7.66s             Setting up automation session
+    t =     9.44s             Wait for com.dev.lowkeychatdev to idle
+GENERATED NUMBER: 6352761214
+Starting step 7
+    t =    10.79s     Step: Leaving the Landing page
+Starting step 8
+    t =    10.79s         Step: Tap: "ContinueButton" Any
+    t =    10.79s             Tap "ContinueButton" Any
+    t =    10.79s                 Wait for com.dev.lowkeychatdev to idle
+    t =    11.74s                 Find the "ContinueButton" Any
+    t =    12.08s                 Check for interrupting elements affecting "ContinueButton" Other
+    t =    12.59s                 Synthesize event
+    t =    12.89s                 Wait for com.dev.lowkeychatdev to idle
+Starting step 9
+    t =    12.91s     Step: Input the phone number
+Starting step 10
+    t =    12.91s         Step: SelectAndType: "PhoneNumberTextInput" Any. Text: 6352761214
+    t =    12.91s             Find the "PhoneNumberTextInput" Any
+Starting step 11
+    t =    12.98s             Step: TapAtCenter: "PhoneNumberTextInput" TextField
+    t =    12.98s                 Find the "PhoneNumberTextInput" TextField
+    t =    13.03s                 Find the "PhoneNumberTextInput" TextField
+Starting step 12
+    t =    13.08s                 Step: WaitForElement: "PhoneNumberTextInput" TextField. State: exists == 1
+    t =    14.11s                     Checking `Expect predicate `exists == 1` for object "PhoneNumberTextInput" TextField`
+    t =    14.11s                         Checking existence of `"PhoneNumberTextInput" TextField`
+    t =    14.15s                 Tap "PhoneNumberTextInput" TextField[0.00, 0.00] -> (157.8, 24.5)
+    t =    14.15s                     Wait for com.dev.lowkeychatdev to idle
+    t =    14.16s                     Find the "PhoneNumberTextInput" TextField
+    t =    14.21s                     Check for interrupting elements affecting "PhoneNumberTextInput" TextField
+    t =    14.22s                     Synthesize event
+    t =    14.24s                         Find the "PhoneNumberTextInput" TextField
+    t =    14.28s                         Find the "PhoneNumberTextInput" TextField
+    t =    14.32s                         Find the "PhoneNumberTextInput" TextField
+    t =    14.65s                     Wait for com.dev.lowkeychatdev to idle
+    t =    14.70s             Type '6352761214' into "PhoneNumberTextInput" TextField
+    t =    14.70s                 Wait for com.dev.lowkeychatdev to idle
+    t =    14.72s                 Find the "PhoneNumberTextInput" TextField
+    t =    14.85s                 Check for interrupting elements affecting "PhoneNumberTextInput" TextField
+    t =    14.88s                 Synthesize event
+    t =    15.26s                 Wait for com.dev.lowkeychatdev to idle
+Starting step 13
+    t =    15.62s     Step: Click on the Try another phone button
+Starting step 14
+    t =    15.62s         Step: Tap: "TryAnotherPhoneText" Any
+    t =    15.62s             Tap "TryAnotherPhoneText" Any
+    t =    15.62s                 Wait for com.dev.lowkeychatdev to idle
+    t =    15.64s                 Find the "TryAnotherPhoneText" Any
+    t =    15.73s             Ignoring failure to get hierarchy for remote element in process 79619 (Error getting main window kAXErrorServerNotFound)
+    t =    15.74s                 Check for interrupting elements affecting "TryAnotherPhoneText" Other
+    t =    15.76s             Ignoring failure to get hierarchy for remote element in process 79619 (Error getting main window kAXErrorServerNotFound)
+    t =    15.78s                 Synthesize event
+    t =    15.81s                     Scroll element to visible
+    t =    15.81s                     Find the "TryAnotherPhoneText" Other
+    t =    15.88s                         Ignoring failure to get hierarchy for remote element in process 79619 (Error getting main window kAXErrorServerNotFound)
+    t =    15.90s                     Computed hit point {-1, -1} after scrolling to visible
+    t =    15.90s                     Failed: Failed to scroll to visible (by AX action) Other, {{281.3, 328.7}, {26.3, 20.0}}, identifier: 'TryAnotherPhoneText', error: Error kAXErrorCannotComplete performing AXAction kAXScrollToVisibleAction on element AX element pid: 79605, elementOrHash.elementID: 5455432288.122
+    t =    16.91s                 Retrying `Tap "TryAnotherPhoneText" Any` (attempt #2)
+    t =    16.91s                     Wait for com.dev.lowkeychatdev to idle
+    t =    16.92s                     Find the "TryAnotherPhoneText" Other
+    t =    17.02s                     Check for interrupting elements affecting "TryAnotherPhoneText" Other
+    t =    17.05s                     Synthesize event
+    t =    17.07s                         Scroll element to visible
+    t =    17.07s                         Find the "TryAnotherPhoneText" Other
+    t =    17.14s                         Computed hit point {-1, -1} after scrolling to visible
+    t =    17.15s                         Failed: Failed to scroll to visible (by AX action) Other, {{281.3, 328.7}, {26.3, 20.0}}, identifier: 'TryAnotherPhoneText', error: Error kAXErrorCannotComplete performing AXAction kAXScrollToVisibleAction on element AX element pid: 79605, elementOrHash.elementID: 5455432288.122
+    t =    18.15s                 Retrying `Tap "TryAnotherPhoneText" Any` (attempt #3)
+    t =    18.15s                     Wait for com.dev.lowkeychatdev to idle
+    t =    18.19s                     Find the "TryAnotherPhoneText" Other
+    t =    18.32s                     Check for interrupting elements affecting "TryAnotherPhoneText" Other
+    t =    18.37s                     Synthesize event
+    t =    18.67s                     Wait for com.dev.lowkeychatdev to idle
+Starting step 15
+    t =    19.04s     Step: Return to the phone auth page check
+Starting step 16
+    t =    19.04s         Check: Element is displayed: '"AuthPhonePage" Any'
+    t =    19.04s             Waiting 10.0s for "AuthPhonePage" Any to exist
+    t =    20.07s                 Checking `Expect predicate `exists == 1` for object "AuthPhonePage" Any`
+    t =    20.07s                     Checking existence of `"AuthPhonePage" Any`
+    t =    20.10s         Find the "PhoneNumberTextInput" Any
+    t =    20.17s         Find the "PhoneNumberTextInput" TextField
+Starting step 17
+    t =    20.24s         Check: Element "PhoneNumberTextInput" TextField has label ''. Retries: 5. Timeout: 0.5с
+    t =    20.25s             Find the "PhoneNumberTextInput" TextField
+Try 1 out of 5: Success.
+
+    t =    20.32s Tear Down
+    t =    20.32s     Terminate com.apple.mobilesafari:0
+    t =    20.33s     Terminate com.dev.lowkeychatdev:79605
+Starting step 18
+    t =    21.35s     Step: Deleting all users
+Starting step 19
+    t =    21.35s         Step: Deleting user 6352761214
+
+------------------START REQUEST------------------
+
+POST http://qa.lowkeychat.com:8080/api/mongo/deleteOne?
+Request Headers: 
+["Content-Type": "application/json"]
+
+Request Body: 
+{
+  "db" : "lowkey-test",
+  "filter" : {
+    "uuid" : "6352761214"
+  },
+  "collection" : "users"
+}
+
+Starting step 20
+    t =    21.35s             Step: Waiting for server response. 
+Max wait time: 45.0s. Timeout: 0.2с
+
+Status code: 200
+
+Response body:
+{
+  "deletedCount" : 0
+}
+
+-------------------END REQUEST-------------------
+
+Test Case '-[LowkeyUITests.OnboardingTests testTryAnotherPhoneButton]' passed (23.025 seconds).
+Test Suite 'OnboardingTests' passed at 2023-07-19 15:52:02.168.
+	 Executed 1 test, with 0 failures (0 unexpected) in 23.025 (23.025) seconds
+Test Suite 'LowkeyUITests.xctest' passed at 2023-07-19 15:52:02.168.
+	 Executed 1 test, with 0 failures (0 unexpected) in 23.025 (23.026) seconds
+Test Suite 'Selected tests' passed at 2023-07-19 15:52:02.168.
+	 Executed 1 test, with 0 failures (0 unexpected) in 23.025 (23.026) seconds
+2023-07-19 15:52:04.677551+0400 LowkeyUITests-Runner[79567:4730768] [client] Timed out waiting for the exit barrier block. activeSendTransactions=0
