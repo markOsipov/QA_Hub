@@ -34,7 +34,17 @@ export default function LogsPanel({ retry, selectedStep, setSelectedStep, ...pro
 
   return <div style={{...props.style}}>
     <label>Test logs</label>
-    <div style={{display: 'grid', marginTop: '10px', padding: '15px 5px', borderRadius: '5px', backgroundColor: 'rgba(0, 0, 0, 0.65)'}}>
+    <div
+      style={{
+        display: 'grid',
+        marginTop: '10px',
+        padding: '15px 5px',
+        borderRadius: '5px',
+        backgroundColor: 'rgba(0, 0, 0, 0.65)',
+        overflowY: 'auto',
+        maxHeight: '85vh'
+      }}
+    >
       {
         logs.log.split("\n").map((line, index) => {
           return <LogRow key={index} line={line} index={index} selectedLogRow={selectedLogRow} />

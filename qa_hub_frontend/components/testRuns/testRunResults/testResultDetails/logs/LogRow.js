@@ -6,7 +6,7 @@ export default function LogRow({ line, index, selectedLogRow, ...props }) {
 
   useEffect(() => {
     if (selectedLogRow === index) {
-      ref.current?.scrollIntoView({ behavior: 'smooth' });
+      ref.current?.scrollIntoView({ behavior: 'smooth', block: "center" });
     }
   }, [index, selectedLogRow])
 
