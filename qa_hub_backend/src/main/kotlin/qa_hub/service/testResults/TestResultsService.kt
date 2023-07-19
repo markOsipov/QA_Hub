@@ -38,7 +38,7 @@ class TestResultsService {
                     TestResultRetry::testRunId eq testRunId),
                     TestResultRetry::fullName eq fullName
                 ),
-            sort(descending(TestResultRetry::retry))
+            sort(ascending(TestResultRetry::retry))
         ).toList()
     }
 
