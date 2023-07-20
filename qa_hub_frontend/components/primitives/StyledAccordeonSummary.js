@@ -6,7 +6,7 @@ const StyledAccordionSummary = styled((props) => (
     <MuiAccordionSummary
 
         expandIcon={
-            <KeyboardArrowRightIcon style={{color: "rgba(255,255,255,0.75)", fontSize: "32px"}} />
+            <KeyboardArrowRightIcon style={{color: "rgba(255,255,255,0.75)", fontSize: "29px"}} />
         }
         {...props}
     />
