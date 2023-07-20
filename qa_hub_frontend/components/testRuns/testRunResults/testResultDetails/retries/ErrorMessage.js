@@ -12,12 +12,12 @@ export default function ErrorMessage({ message, ...props }) {
   }
 
   useEffect(() => {
-    document.addEventListener('select', handleSelect);
+    document.addEventListener('selectionchange', handleSelect);
   }, [handleSelect])
 
   useEffect(() => {
     return () => {
-      document.removeEventListener('select', handleSelect);
+      document.removeEventListener('selectionchange', handleSelect);
     }
   }, [handleSelect])
 
