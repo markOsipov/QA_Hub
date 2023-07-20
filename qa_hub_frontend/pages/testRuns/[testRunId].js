@@ -33,7 +33,7 @@ export default function TestRunPage() {
       <TestResultsList
         testRunId={testRunId}
         setSelectedTest={setSelectedTest}
-        style={{width: "550px", minWidth: '470px', maxWidth: '70%', overflowX: 'auto', resize: 'horizontal'}}
+        style={{width: "550px", minWidth: '370px', maxWidth: '70%', overflowX: 'auto', resize: 'horizontal'}}
       />
       <TestResultDetails testResult={selectedTest} style={{marginLeft: '15px', overflowX: 'auto', width: 'min-content', flexGrow:'1.1'}} />
     </div>
