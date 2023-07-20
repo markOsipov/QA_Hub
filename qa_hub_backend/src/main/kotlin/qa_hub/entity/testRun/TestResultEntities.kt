@@ -1,7 +1,5 @@
 package qa_hub.entity.testRun
 
-import qa_hub.core.utils.DateTimeUtils.currentEpoch
-
 data class TestResult(
     var testRunId: String,
     var testcaseId: String = "",
@@ -13,7 +11,7 @@ data class TestResult(
     var retries: Int = 0,
 
     var message: String? = null,
-    var gitlabRunner: String = "unknown",
+    var runner: String = "unknown",
     var device: String? = "simulator",
     var deviceRuntime: String = "unknown",
     var deviceId: String = "unknown",

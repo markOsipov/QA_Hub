@@ -167,7 +167,7 @@ class TestRunController {
                             deviceId = simulator,
                             device = "iPhone 12",
                             deviceRuntime = "iOS 16.3.1",
-                            gitlabRunner = runner.name,
+                            runner = runner.name,
                             duration = Random.nextDouble(300.0),
                             message = if (status.status == TestStatus.FAILURE.status) {
                                 logText.take(Random.nextInt(20, 500))

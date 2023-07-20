@@ -1,15 +1,18 @@
-import StatusBadge from "../../../primitives/StatusBadge";
+import StatusBadge from "../../../../primitives/StatusBadge";
 import {useEffect, useState} from "react";
-import {customTheme} from "../../../../styles/CustomTheme";
+import {customTheme} from "../../../../../styles/CustomTheme";
 import StepsPanel from "./steps/StepsPanel";
 import LogsPanel from "./logs/LogPanel";
-import StyledAccordionSummary from "../../../primitives/StyledAccordeonSummary";
+import StyledAccordionSummary from "../../../../primitives/StyledAccordeonSummary";
 import Typography from "@mui/material/Typography";
 import {Accordion, AccordionDetails} from "@mui/material";
+import StatusHistory from "./StatusHistory";
+import ErrorMessage from "./ErrorMessage";
 
 export default function RetryTab({retry, ...props}) {
   const [lastResult, setLastResult] = useState(null)
   const [selectedStep, setSelectedStep] = useState(null)
+
 
   useEffect(() => {
     setLastResult(retry.statusHistory[retry.statusHistory.length - 1])
@@ -20,29 +23,8 @@ export default function RetryTab({retry, ...props}) {
   }
 
   return <div style={{...props.style}}>
-    <StatusBadge label={lastResult.status} />
-
-    {
-      lastResult.message &&
-      <div style={{
-        marginTop: '15px',
-        padding: '10px',
-        border: '1px solid',
-        borderColor: customTheme.palette.error.main,
-        borderRadius: '10px',
-        backgroundColor: customTheme.palette.error.faded,
-        width: 'max-content',
-        minWidth: '50%',
-        display: 'grid'
-      }}>
-        {
-          lastResult.message.split("\n").map((line, index) => {
-            return <label key={index} style={{whiteSpace: 'break-spaces'}}>{line}</label>
-          })
-        }
-
-      </div>
-    }
+    <StatusHistory retry={retry} />
+    <ErrorMessage message={lastResult.message} style={{marginTop: '15px', minWidth: '50%'}}/>
 
     <Accordion style={{ marginTop: '25px', backgroundColor: 'rgba(0, 0, 0, 0.07)', borderRadius: '12px'}}>
       <StyledAccordionSummary

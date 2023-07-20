@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {getTestSteps} from "../../../../../requests/testResults/TestStepsRequests";
+import {getTestSteps} from "../../../../../../requests/testResults/TestStepsRequests";
 import {Card} from "@mui/material";
 import TestStep from "./TestStep";
 import TestSteps from "./TestSteps";

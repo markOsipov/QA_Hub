@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState} from "react";
-import {getTestLogs} from "../../../../../requests/testResults/TestLogsRequests";
+import {getTestLogs} from "../../../../../../requests/testResults/TestLogsRequests";
 import LogRow from "./LogRow";
 
 export default function LogsPanel({ retry, selectedStep, setSelectedStep, ...props }) {

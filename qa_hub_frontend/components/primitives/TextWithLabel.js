@@ -1,19 +1,20 @@
 import {customTheme} from "../../styles/CustomTheme";
 
-export default function TextWithLabel ({value, label, labelStyle, ...props }) {
+export default function TextWithLabel ({value, label, labelStyle, valueStyle, ...props }) {
   const style = labelStyle || { justifySelf: 'start', left: '5px'}
 
   return <div style={{
     display: 'grid',
     borderRadius: '4px',
     border: "1px solid",
-    padding: '12px',
+    padding:'5px',
+    minHeight: '33px',
     position: 'relative',
     borderColor: customTheme.palette.text.disabled,
-    minHeight: "41px",
     ...(props.style)}}
   >
-    { label != null &&
+    {
+      label != null &&
       <label style={{
         position: "absolute",
         top: '-14px',
@@ -31,7 +32,9 @@ export default function TextWithLabel ({value, label, labelStyle, ...props }) {
     <label style={{
       color: customTheme.palette.text.white,
       fontSize: props.style?.fontSize || '14px',
-      paddingTop: '6px',
+      paddingTop: label ? '4px' : '1px',
+      paddingBottom: label ? '4px' : '1px',
+      ...valueStyle
     }}>{value}</label>
   </div>
 }

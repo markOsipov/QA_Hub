@@ -199,7 +199,7 @@ class TestRunService {
             nextTest.apply {
                 status = TestStatus.PROCESSING.status
                 deviceId = simulatorId
-                gitlabRunner = runner
+                this.runner = runner
                 retries +=  1
             }
 

@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {customTheme} from "../../../../../styles/CustomTheme";
+import {customTheme} from "../../../../../../styles/CustomTheme";
 import CheckIcon from "@mui/icons-material/Check";
 import TestSteps from "./TestSteps";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';

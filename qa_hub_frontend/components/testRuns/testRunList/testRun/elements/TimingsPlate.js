@@ -14,7 +14,7 @@ export default function TimingsPlate ({testRun, ...props}) {
       value={getTimeMinutes(testRun.timeMetrics.started)}
       label={'Started'}
       labelStyle={{ justifySelf: 'center'}}
-      style={{...dateBageStyle, marginLeft: '10px'}}
+      style={{...dateBadgeStyle, marginLeft: '10px'}}
     />
   }
 
@@ -23,7 +23,7 @@ export default function TimingsPlate ({testRun, ...props}) {
       value={ getTimeMinutes(testRun.timeMetrics.ended) }
       label={'Ended'}
       labelStyle={{ justifySelf: 'center'}}
-      style={{...dateBageStyle, marginLeft: '10px', ...props.style}}
+      style={{...dateBadgeStyle, marginLeft: '10px', ...props.style}}
     />
   }
 
@@ -32,7 +32,7 @@ export default function TimingsPlate ({testRun, ...props}) {
       value={getDate(dateValue)}
       label={'Date'}
       labelStyle={{ justifySelf: 'center'}}
-      style={{...dateBageStyle, ...props.style}}
+      style={{...dateBadgeStyle, ...props.style}}
     />
   }
 
@@ -41,7 +41,7 @@ export default function TimingsPlate ({testRun, ...props}) {
       value={getTimeMinutes(testRun.timeMetrics.created)}
       label={'Created'}
       labelStyle={{ justifySelf: 'center'}}
-      style={{...dateBageStyle, marginLeft: '10px'}}
+      style={{...dateBadgeStyle, marginLeft: '10px'}}
     />
   }
 
@@ -71,7 +71,7 @@ export default function TimingsPlate ({testRun, ...props}) {
     </div>
 }
 
-const dateBageStyle = {
+const dateBadgeStyle = {
   fontSize: "12px",
   width: "max-content",
   padding: "5px 6px",

@@ -1,5 +1,5 @@
 import {Paper} from "@mui/material";
-import TestRetriesTabs from "./TestRetriesTabs";
+import TestRetriesTabs from "./retries/TestRetriesTabs";
 import TextWithLabel from "../../../primitives/TextWithLabel";
 import Typography from "@mui/material/Typography";
 import TestStatusWithRetries from "../../../common/TestStatusWithRetries";

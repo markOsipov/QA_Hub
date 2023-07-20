@@ -13,10 +13,10 @@ class StatusHistoryItem(
     var status: String,
     var duration: Double? = null,
     var message: String? = null,
-    var gitlabRunner: String? = "unknown",
+    var runner: String? = "unknown",
     var device: String? = "unknown",
     var deviceRuntime: String? = "unknown",
-    var deviceUdid: String? = "unknown",
+    var deviceId: String? = "unknown",
     var attachments: MutableList<String> = mutableListOf()
 ) {
     constructor(testResult: TestResult): this(
@@ -24,10 +24,10 @@ class StatusHistoryItem(
         status = testResult.status,
         duration = testResult.duration,
         message = testResult.message,
-        gitlabRunner = testResult.gitlabRunner,
+        runner = testResult.runner,
         device = testResult.device,
         deviceRuntime = testResult.deviceRuntime,
-        deviceUdid = testResult.deviceId,
+        deviceId = testResult.deviceId,
         attachments = testResult.attachments
     )
 }
