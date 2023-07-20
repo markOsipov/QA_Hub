@@ -3,6 +3,9 @@ import {useEffect, useState} from "react";
 import {customTheme} from "../../../../styles/CustomTheme";
 import StepsPanel from "./steps/StepsPanel";
 import LogsPanel from "./logs/LogPanel";
+import StyledAccordionSummary from "../../../primitives/StyledAccordeonSummary";
+import Typography from "@mui/material/Typography";
+import {Accordion, AccordionDetails} from "@mui/material";
 
 export default function RetryTab({retry, ...props}) {
   const [lastResult, setLastResult] = useState(null)
@@ -40,19 +43,31 @@ export default function RetryTab({retry, ...props}) {
 
       </div>
     }
-    <div style={{display: 'flex', marginTop: '15px'}}>
-      <StepsPanel
-        style={{width: '90%', minWidth: '100px', resize: 'horizontal', overflowX: 'auto'}}
-        retry={retry}
-        selectedStep={selectedStep}
-        setSelectedStep={setSelectedStep}
-      />
-      <LogsPanel
-        style={{flexGrow: '1', marginLeft: '15px'}}
-        retry={retry}
-        selectedStep={selectedStep}
-        setSelectedStep={setSelectedStep}
-      />
-    </div>
+
+    <Accordion style={{ marginTop: '20px', backgroundColor: 'rgba(0, 0, 0, 0.07)', borderRadius: '12px'}}>
+      <StyledAccordionSummary
+        style={{maxWidth: "max-content"}}
+        aria-controls="panel1a-content"
+      >
+        <Typography variant="h5" style={{marginBottom: "5px", marginTop: "5px"}}>Test logs</Typography>
+      </StyledAccordionSummary>
+
+      <AccordionDetails >
+        <div style={{display: 'flex'}}>
+          <StepsPanel
+            style={{width: '90%', minWidth: '100px', resize: 'horizontal', overflowX: 'auto'}}
+            retry={retry}
+            selectedStep={selectedStep}
+            setSelectedStep={setSelectedStep}
+          />
+          <LogsPanel
+            style={{flexGrow: '1', marginLeft: '15px'}}
+            retry={retry}
+            selectedStep={selectedStep}
+            setSelectedStep={setSelectedStep}
+          />
+        </div>
+      </AccordionDetails>
+    </Accordion>
   </div>
 }

@@ -9,8 +9,8 @@ export default function TestResultDetails({ testResult, ...props }) {
     if (testResult == null) {
       return <div>Not selected</div>
     } else {
-      return <div style={{padding: '2px 10px'}}>
-        <div style={{display: 'flex'}}>
+      return <div style={{padding: '2px 2px'}}>
+        <div style={{display: 'flex', marginLeft: '8px'}}>
           <TextWithLabel
             style={{
               fontSize: "12px",
