@@ -1,5 +1,4 @@
 import {useState} from "react";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import {customTheme} from "../../../../../styles/CustomTheme";
 import CheckIcon from "@mui/icons-material/Check";
 import TestSteps from "./TestSteps";
@@ -8,6 +7,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 export default function TestStep({step, margin, setSelectedStep, ...props}) {
   const iconSize = '18px'
   const [expanded, setExpanded] = useState( step.result === 'failure')
+  const [hovered, setHovered] = useState(false)
 
   return <div style={{ ...props.style }}>
     <div style={{display: "flex", alignItems: 'center'}}>
@@ -53,12 +53,19 @@ export default function TestStep({step, margin, setSelectedStep, ...props}) {
         }}/>
       }
       <label style={{marginLeft: '15px', opacity: '0.3'}}>{ step.id }</label>
-      <label
-        style={{marginLeft: '15px'}}
+      <div
+        style={{
+          marginLeft: '10px',
+          backgroundColor: hovered ? 'rgba(255, 255, 255, 0.03)' : 'unset',
+          padding: '6px'
+        }}
         onClick={() => { setSelectedStep(step.id)} }
+        onMouseEnter={() => {setHovered(true)}}
+        onMouseLeave={() => {setHovered(false)}}
       >
-        { step.name }
-      </label>
+        <label>{ step.name }</label>
+      </div>
+
     </div>
 
     {

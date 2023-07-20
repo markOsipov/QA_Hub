@@ -11,7 +11,7 @@ export default function TestSteps({ steps, margin, setSelectedStep, ...props }) 
           setSelectedStep={setSelectedStep}
           style={{
             marginLeft: margin * 10 + 'px',
-            marginTop: margin !== 0 || index === 0 ? '15px' : '15px',
+            marginTop: '10px',
           }}
         />
       })
