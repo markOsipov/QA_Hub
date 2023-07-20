@@ -1,6 +1,4 @@
-import StatusBadge from "../../../../primitives/StatusBadge";
 import {useEffect, useState} from "react";
-import {customTheme} from "../../../../../styles/CustomTheme";
 import StepsPanel from "./steps/StepsPanel";
 import LogsPanel from "./logs/LogPanel";
 import StyledAccordionSummary from "../../../../primitives/StyledAccordeonSummary";
@@ -9,7 +7,7 @@ import {Accordion, AccordionDetails} from "@mui/material";
 import StatusHistory from "./StatusHistory";
 import ErrorMessage from "./ErrorMessage";
 
-export default function RetryTab({retry, ...props}) {
+export default function RetryTab({retry, testResults, setTestResults, ...props}) {
   const [lastResult, setLastResult] = useState(null)
   const [selectedStep, setSelectedStep] = useState(null)
 
@@ -24,7 +22,12 @@ export default function RetryTab({retry, ...props}) {
 
   return <div style={{...props.style}}>
     <StatusHistory retry={retry} />
-    <ErrorMessage message={lastResult.message} style={{marginTop: '15px', minWidth: '50%'}}/>
+    <ErrorMessage
+      message={lastResult.message}
+      testResults={testResults}
+      setTestResults={setTestResults}
+      style={{marginTop: '15px', minWidth: '50%'}}
+    />
 
     <Accordion style={{ marginTop: '25px', backgroundColor: 'rgba(0, 0, 0, 0.07)', borderRadius: '12px'}}>
       <StyledAccordionSummary

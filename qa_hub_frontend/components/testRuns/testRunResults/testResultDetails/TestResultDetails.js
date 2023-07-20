@@ -4,7 +4,7 @@ import TextWithLabel from "../../../primitives/TextWithLabel";
 import Typography from "@mui/material/Typography";
 import TestStatusWithRetries from "../../../common/TestStatusWithRetries";
 
-export default function TestResultDetails({ testResult, ...props }) {
+export default function TestResultDetails({ testResult, testResults, setTestResults, ...props }) {
   const renderContent = () => {
     if (testResult == null) {
       return <div>Not selected</div>
@@ -35,7 +35,11 @@ export default function TestResultDetails({ testResult, ...props }) {
           </div>
           <TestStatusWithRetries status={testResult.status} retries={testResult.retries} style={{position: 'relative', top: '12px', marginLeft: '25px'}}/>
         </div>
-        <TestRetriesTabs testResult={testResult} />
+        <TestRetriesTabs
+          testResult={testResult}
+          testResults={testResults}
+          setTestResults={setTestResults}
+        />
       </div>
     }
   }

@@ -6,7 +6,7 @@ import TabPanel from '@mui/lab/TabPanel';
 import {useEffect, useState} from "react";
 import {getTestRetries} from "../../../../../requests/testResults/TestResultsRequests";
 import RetryTab from "./RetryTab";
-export default function TestRetriesTabs({ testResult, ...props }) {
+export default function TestRetriesTabs({ testResult, testResults, setTestResults, ...props }) {
 
   const [tabValue, setTabValue] = useState(0);
   const [retries, setRetries] = useState([])
@@ -40,7 +40,11 @@ export default function TestRetriesTabs({ testResult, ...props }) {
       {
         retries.map((retry, index) => {
           return <TabPanel  key={`RetryPanel${retry.retry}`} value={retries.length - index - 1} style={{padding: '24px 5px'}}>
-            <RetryTab retry={retry} />
+            <RetryTab
+              retry={retry}
+              testResults={testResults}
+              setTestResults={setTestResults}
+            />
           </TabPanel>
         })
       }

@@ -1,15 +1,17 @@
 import {customTheme} from "../../../../../styles/CustomTheme";
-import {createRef, useEffect, useRef, useState} from "react";
-import Button from "@mui/material/Button";
-
-export default function ErrorMessage({ message, ...props }) {
+import {createRef, useEffect, useState} from "react";
+import {ListItemIcon, ListItemText, Menu, MenuItem} from "@mui/material";
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import WarningIcon from '@mui/icons-material/Warning';
+export default function ErrorMessage({ message, testResults, setTestResults, ...props }) {
   const ref = createRef()
   const [anchorEl, setAnchorEl] = useState(null)
+  const menuOpen = Boolean(anchorEl);
 
   const [selectedText, setSelectedText] = useState(null)
-  const handleSelect = () => {
+  const [testsWithSimilarError, setTestsWithSimilarError] = useState(null)
+  const handleSelect = (event) => {
     const selection = window.getSelection()
-    const { current: el } = ref
 
     if (!selection.toString()) return;
 
@@ -21,7 +23,16 @@ export default function ErrorMessage({ message, ...props }) {
 
   const closeMenu = () => {
     setAnchorEl(null)
+    setSelectedText(null)
   }
+
+  useEffect(() => {
+    if (menuOpen) {
+      setTestsWithSimilarError(testResults.filter(el => {
+        return el.message?.includes(selectedText || message)
+      }).length)
+    }
+  }, [menuOpen])
 
   useEffect(() => {
     document.addEventListener('selectionchange', handleSelect);
@@ -35,7 +46,37 @@ export default function ErrorMessage({ message, ...props }) {
 
   if (!message) return null
 
-  return <div onBlur={() => { setSelectedText(null) }}>
+  return <div>
+    <Menu
+      anchorEl={anchorEl}
+      open={menuOpen}
+      onClose={closeMenu}
+      MenuListProps={{
+        'aria-labelledby': 'basic-button',
+      }}
+    >
+      <div style={{padding: '0 10px 10px 10px'}}>
+        <div style={{display: 'flex', alignItems: 'center'}}>
+          <WarningIcon style={{ color: customTheme.palette.error.main }}/>
+          <label style={{marginLeft: '4px'}}>Similar errors: { testsWithSimilarError - 1 }</label>
+        </div>
+
+        { selectedText &&
+          <div style={{display: 'flex', alignItems: 'center', marginTop: '12px'}}>
+            <label style={{marginLeft: '4px', opacity: '0.8'}}>Containing:</label>
+            <label style={{marginLeft: '6px', opacity: '0.6'}}>{ selectedText }</label>
+          </div>
+        }
+
+      </div>
+
+      <MenuItem onClick={() => { alert(selectedText)}} disabled={true}>
+        <ListItemIcon>
+          <FilterAltIcon fontSize="small" style={{color: "var(--primary-text-color)"}}/>
+        </ListItemIcon>
+        <ListItemText>Add to filter</ListItemText>
+      </MenuItem>
+    </Menu>
     <div
       style={{
         padding: '10px',
@@ -44,12 +85,11 @@ export default function ErrorMessage({ message, ...props }) {
         borderRadius: '10px',
         backgroundColor: customTheme.palette.error.faded,
         width: 'max-content',
-
         display: 'grid',
         ...props.style
       }}
     >
-      <label ref={ref} style={{whiteSpace: 'break-spaces'}}
+      <label ref={ref}  onMouseUp={() => { setAnchorEl(ref.current) }}  style={{whiteSpace: 'break-spaces', cursor: 'pointer'}}
       >{message}</label>
     </div>
   </div>

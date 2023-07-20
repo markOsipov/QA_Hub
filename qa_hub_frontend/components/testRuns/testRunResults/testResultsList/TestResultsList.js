@@ -3,8 +3,7 @@ import TestResultCard from "./TestResultCard";
 import {useEffect, useState} from "react";
 import {getTestResults} from "../../../../requests/testResults/TestResultsRequests";
 
-export default function TestResultsList({testRunId, setSelectedTest, ...props }) {
-  const [testResults, setTestResults] = useState([])
+export default function TestResultsList({testRunId, testResults, setTestResults, setSelectedTest, ...props }) {
   const [loading, setLoading] = useState(false)
 
   async function updateTestResults() {

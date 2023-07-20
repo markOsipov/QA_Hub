@@ -12,6 +12,7 @@ export default function TestRunPage() {
 
   const [testRun, setTestRun] = useState(null)
   const [selectedTest, setSelectedTest] = useState(null)
+  const [testResults, setTestResults] = useState([])
 
   let testRunResp = useSWR(
     "getTestRun",
@@ -31,11 +32,18 @@ export default function TestRunPage() {
 
     <div style={{display: "flex", marginTop: '15px', width: '100%', minWidth: '100%'}}>
       <TestResultsList
+        testResults={testResults}
+        setTestResults={setTestResults}
         testRunId={testRunId}
         setSelectedTest={setSelectedTest}
         style={{width: "550px", minWidth: '370px', maxWidth: '70%', overflowX: 'auto', resize: 'horizontal'}}
       />
-      <TestResultDetails testResult={selectedTest} style={{marginLeft: '15px', overflowX: 'auto', width: 'min-content', flexGrow:'1.1'}} />
+      <TestResultDetails
+        testResult={selectedTest}
+        testResults={testResults}
+        setTestResults={setTestResults}
+        style={{marginLeft: '15px', overflowX: 'auto', width: 'min-content', flexGrow:'1.1'}}
+      />
     </div>
   </div>
 }
