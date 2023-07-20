@@ -42,7 +42,8 @@ export default function LogsPanel({ retry, selectedStep, setSelectedStep, ...pro
         borderRadius: '5px',
         backgroundColor: 'rgba(0, 0, 0, 0.65)',
         overflowY: 'auto',
-        maxHeight: '85vh'
+        maxHeight: '85vh',
+        width: '100%'
       }}
     >
       {

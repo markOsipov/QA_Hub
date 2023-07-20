@@ -44,7 +44,7 @@ export default function TestResultDetails({ testResult, ...props }) {
     return testResult.fullName.substring(testResult.fullName.lastIndexOf(".") + 1)
   }
 
-  return <Paper style={{padding: '15px', ...props.style}}>
+  return <Paper style={{padding: '15px 10px', ...props.style}}>
     {
       renderContent()
     }

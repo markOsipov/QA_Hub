@@ -44,7 +44,7 @@ export default function RetryTab({retry, ...props}) {
       </div>
     }
 
-    <Accordion style={{ marginTop: '20px', backgroundColor: 'rgba(0, 0, 0, 0.07)', borderRadius: '12px'}}>
+    <Accordion style={{ marginTop: '25px', backgroundColor: 'rgba(0, 0, 0, 0.07)', borderRadius: '12px'}}>
       <StyledAccordionSummary
         style={{maxWidth: "max-content"}}
         aria-controls="panel1a-content"
@@ -55,13 +55,13 @@ export default function RetryTab({retry, ...props}) {
       <AccordionDetails >
         <div style={{display: 'flex'}}>
           <StepsPanel
-            style={{width: '90%', minWidth: '100px', resize: 'horizontal', overflowX: 'auto'}}
+            style={{width: '40%', minWidth: '100px', resize: 'horizontal', overflowX: 'auto'}}
             retry={retry}
             selectedStep={selectedStep}
             setSelectedStep={setSelectedStep}
           />
           <LogsPanel
-            style={{flexGrow: '1', marginLeft: '15px'}}
+            style={{width: 'min-content', flexGrow: '1.1', marginLeft: '15px'}}
             retry={retry}
             selectedStep={selectedStep}
             setSelectedStep={setSelectedStep}

@@ -21,7 +21,7 @@ export default function LogRow({ line, index, selectedLogRow, ...props }) {
         fontFamily: 'monospace',
         width: '100%',
         backgroundColor: index === selectedLogRow && 'yellow',
-        color: index === selectedLogRow && 'black'
+        color: index === selectedLogRow && 'black',
       }}
     >{line}</label>
   </div>
