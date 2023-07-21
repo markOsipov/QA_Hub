@@ -6,32 +6,24 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import {Switch} from "@mui/material";
 import EditableTableCell from "../primitives/Table/EditableTableCell";
 import FullNameTableCell from "./FullNameTableCell";
-import {editBlockedTest, getBlockedTests, unblockTest} from "../../requests/BlockerRequests";
-import projectState from "../../state/ProjectState";
-import {useState, useEffect} from "react";
+import {useState} from "react";
+import {observer} from "mobx-react-lite";
+import blockerState from "../../state/BlockerState";
 
-export default function BlockedTestTableRow({ index, blockedTestForRow, showFullName, setShowFullName, updateBlockedTestsList }) {
+const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, setShowFullName }) => {
     const [blockedTest, setBlockedTest] = useState(blockedTestForRow)
 
-    function handleUnblockButtonClick(blockedTest) {
-        unblockTest(blockedTest).then( response => {
-            if (response.data.deletedCount > 0) {
-                updateBlockedTestsList()
-            }
-        })
+    function handleUnblockButtonClick() {
+        blockerState.unblockTest(blockedTest)
     }
 
-    function handleSwitchTrial(blockedTest, event) {
+    function handleSwitchTrial(event) {
         const editedTest = {
             ...blockedTest,
             allowTrialRuns: event.target.checked
         }
         setBlockedTest(editedTest)
-        editBlockedTest(editedTest).then(response => {
-            if (response.data.modifiedCount > 0) {
-                updateBlockedTestsList()
-            }
-        })
+        blockerState.editBlockedTest(editedTest)
     }
 
     function handleTestcaseFieldChange(field, event) {
@@ -60,11 +52,7 @@ export default function BlockedTestTableRow({ index, blockedTestForRow, showFull
     }
 
     function handleTestcaseEditFinish() {
-        editBlockedTest(blockedTest).then(response => {
-            if (response.data.modifiedCount > 0) {
-                updateBlockedTestsList()
-            }
-        })
+        blockerState.unblockTest(blockedTest)
     }
 
     return <StyledTableRow>
@@ -75,7 +63,7 @@ export default function BlockedTestTableRow({ index, blockedTestForRow, showFull
         <StyledTableCell align="left">
             <IconButton className="hover-highlight"
                         style={{color: customTheme.palette.text.primary, borderRadius: "2px"}}
-                        onClick={() => { handleUnblockButtonClick(blockedTest) }}
+                        onClick={handleUnblockButtonClick}
             >
                 <LockOpenIcon/>
             </IconButton>
@@ -84,13 +72,13 @@ export default function BlockedTestTableRow({ index, blockedTestForRow, showFull
         <StyledTableCell align="center">
             <Switch
                 checked={blockedTest.allowTrialRuns}
-                onChange={ (event) => { handleSwitchTrial(blockedTest, event) } }
+                onChange={ handleSwitchTrial }
             />
         </StyledTableCell>
 
         <EditableTableCell contentText={blockedTest.testcaseId}
                            onChangeCallback={ handleTestcaseIdChange }
-                           onBlurCallback={(event) => { handleTestcaseEditFinish() }}
+                           onBlurCallback={ handleTestcaseEditFinish }
                            textArea
         />
 
@@ -119,10 +107,12 @@ export default function BlockedTestTableRow({ index, blockedTestForRow, showFull
 
         <EditableTableCell contentText={blockedTest.jiraIssue}
                            onChangeCallback={ handleJiraIssueChange }
-                           onBlurCallback={handleTestcaseEditFinish}
+                           onBlurCallback={ handleTestcaseEditFinish }
                            textArea
         />
 
         <StyledTableCell align="center">{blockedTest.blockDate}</StyledTableCell>
     </StyledTableRow>
-}
+})
+
+export default BlockedTestTableRow
