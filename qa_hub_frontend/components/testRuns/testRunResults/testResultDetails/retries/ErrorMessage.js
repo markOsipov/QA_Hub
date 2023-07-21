@@ -87,8 +87,8 @@ export default function ErrorMessage({ message, testResults, setTestResults, ...
         <ListItemText>Add to filter</ListItemText>
       </MenuItem>
     </Menu>
-    <div >
-      <label ref={ref}  onMouseUp={() => { setAnchorEl(ref.current) }}  style={{whiteSpace: 'break-spaces', cursor: 'pointer'}}
+    <div onMouseUp={() => { setAnchorEl(ref.current) }}>
+      <label ref={ref}    style={{whiteSpace: 'break-spaces', cursor: 'pointer'}}
       >{message}</label>
     </div>
   </div>
