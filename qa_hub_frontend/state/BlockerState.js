@@ -8,15 +8,19 @@ class BlockerState {
     this.blockedTests = blockedTests
   }
 
-  updateBlockedTests(project) {
+  updateBlockedTests(project, afterAction) {
     getBlockedTests(project).then(blockedTestsResponse => {
       this.setBlockedTests(blockedTestsResponse.data)
+
+      if (afterAction) {
+        afterAction()
+      }
     })
   }
 
-  blockTest(newBlockedTest) {
+  blockTest(newBlockedTest, afterAction) {
     blockTest(newBlockedTest).then(() => {
-      this.updateBlockedTests(newBlockedTest.project)
+      this.updateBlockedTests(newBlockedTest.project, afterAction)
     })
   }
 

@@ -8,7 +8,7 @@ import StatusHistory from "./StatusHistory";
 import ErrorMessage from "./ErrorMessage";
 import QaResolutionPanel from "./QaResolutionPanel";
 
-export default function RetryTab({retry, isLastRetry, testResults, setTestResults, ...props}) {
+export default function RetryTab({retry, testResult, isLastRetry, testResults, setTestResults, ...props}) {
   const [lastResult, setLastResult] = useState(null)
   const [selectedStep, setSelectedStep] = useState(null)
 
@@ -33,7 +33,7 @@ export default function RetryTab({retry, isLastRetry, testResults, setTestResult
       />
       {
         isLastRetry && lastResult.status === "FAILURE" &&
-        <QaResolutionPanel testResult={retry} style={{marginLeft: '30px'}}/>
+        <QaResolutionPanel testResult={testResult} style={{marginLeft: '30px'}}/>
       }
     </div>
 

@@ -14,6 +14,9 @@ import {styled} from "@mui/material/styles";
 import {customTheme} from "../../../../../styles/CustomTheme";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from '@mui/icons-material/Edit';
+import LockIcon from '@mui/icons-material/Lock';
+import AccessibleForwardIcon from '@mui/icons-material/AccessibleForward';
+import BlockTestComponent from "./BlockTestComponent";
 export default function QaResolutionPanel({ testResult, ...props}) {
   const defaultReview = {
     testRunId: testResult.testRunId,
@@ -126,6 +129,8 @@ export default function QaResolutionPanel({ testResult, ...props}) {
       }
 
     </div>
+
+    <BlockTestComponent testResult={testResult} qaComment={qaReview.qaComment} style={{ marginRight: '49px', marginTop: '7px'}}/>
   </Card>
 }
 
