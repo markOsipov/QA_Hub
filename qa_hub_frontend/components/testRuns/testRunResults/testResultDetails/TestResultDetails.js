@@ -1,9 +1,12 @@
-import {Paper} from "@mui/material";
+import {Accordion, AccordionDetails, Paper} from "@mui/material";
 import TestRetriesTabs from "./retries/TestRetriesTabs";
 import TextWithLabel from "../../../primitives/TextWithLabel";
 import Typography from "@mui/material/Typography";
 import TestStatusWithRetries from "../../../common/TestStatusWithRetries";
 import QaResolutionPanel from "./retries/QaResolutionPanel";
+import StyledAccordionSummary from "../../../primitives/StyledAccordeonSummary";
+import StepsPanel from "./retries/steps/StepsPanel";
+import LogsPanel from "./retries/logs/LogPanel";
 
 export default function TestResultDetails({ testResult, testResults, setTestResults, ...props }) {
   const renderContent = () => {
@@ -54,6 +57,7 @@ export default function TestResultDetails({ testResult, testResults, setTestResu
           testResult={testResult}
           testResults={testResults}
           setTestResults={setTestResults}
+          style={{marginTop: '30px'}}
         />
       </div>
     }
