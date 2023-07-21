@@ -42,6 +42,7 @@ export default function TestRetriesTabs({ testResult, testResults, setTestResult
           return <TabPanel  key={`RetryPanel${retry.retry}`} value={String(retries.length - index - 1)} style={{padding: '24px 5px'}}>
             <RetryTab
               retry={retry}
+              isLastRetry={retries.length - index - 1 === 0 }
               testResults={testResults}
               setTestResults={setTestResults}
             />

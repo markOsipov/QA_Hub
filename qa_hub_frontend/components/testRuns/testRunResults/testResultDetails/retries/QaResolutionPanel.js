@@ -42,7 +42,7 @@ export default function QaResolutionPanel({ testResult, ...props}) {
   }
 
   const updateComment = () => {
-    postQaReview(testResult.testRunId, testResult.fullName, qaReview.qaComment, null).then((data) =>
+    postQaReview(testResult.testRunId, testResult.fullName, qaReview.qaComment, qaReview.qaResolution).then((data) =>
       setQaReview(data?.data || defaultReview)
     )
     setEditing(false)
@@ -58,20 +58,30 @@ export default function QaResolutionPanel({ testResult, ...props}) {
     return null
   }
 
-  return <Card style={{padding: '15px', width: 'max-content', display: 'grid', backgroundColor: 'rgba(255, 255, 255, 0.04)', ...props.style}}>
+  return <Card
+    style={{
+      padding: '15px',
+      width: 'max-content',
+      minWidth: 'max-content',
+      display: 'grid',
+      height: 'min-content',
+      backgroundColor: 'rgba(255, 255, 255, 0.04)',
+      ...props.style
+    }}
+  >
     <FormControl>
       <RadioGroup row value={qaReview.qaResolution} onChange={updateResolution}>
-        <ReviewFormControlLabel value="Unreviewed" unreviewed={true} control={<Radio />} label="Unreviewed"/>
+        <ReviewFormControlLabel value="Unreviewed" unreviewed={'true'} control={<Radio />} label="Unreviewed"/>
         <ReviewFormControlLabel value="PassedLocally" control={<Radio />} label="Passed locally" />
         <ReviewFormControlLabel value="NeedRepair" control={<Radio />} label="Need repair" />
         <ReviewFormControlLabel value="TechProblem" control={<Radio />} label="Tech issue" />
         <ReviewFormControlLabel value="Bug" control={<Radio />} label="Bug" />
       </RadioGroup>
     </FormControl>
-    <div style={{display: 'flex', marginTop: '5px'}}>
+    <div style={{display: 'flex', marginTop: '5px', alignItems: 'center'}}>
       <TextareaAutosize
         value={qaReview.qaComment}
-        onChange={(event) => {setQaReview({ ...qaReview, qaComment: event.target.value })}}
+        onChange={(event) => {setQaReview({ ...qaReview, qaComment: event.target.value || "" })}}
         onKeyDown={handleShiftEnterKeysPressed}
         disabled={!editing}
         style={{
@@ -124,7 +134,7 @@ const StyledFormControlLabel = styled((props) => (
 ))(({ theme, checked, unreviewed }) => ({
 
   ".MuiFormControlLabel-label":  {
-    backgroundColor: checked && (unreviewed ? customTheme.palette.error.main : customTheme.palette.text.disabledMore),
+    backgroundColor: checked && (unreviewed === 'true' ? customTheme.palette.error.main : customTheme.palette.text.disabledMore),
     padding: '2px 10px',
     color: checked && 'rgba(255, 255, 255, 0.95)',
     borderRadius: '5px',

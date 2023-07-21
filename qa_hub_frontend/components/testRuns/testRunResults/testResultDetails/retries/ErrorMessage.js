@@ -46,7 +46,18 @@ export default function ErrorMessage({ message, testResults, setTestResults, ...
 
   if (!message) return null
 
-  return <div>
+  return <div
+    style={{
+      padding: '10px',
+      border: '1px solid',
+      borderColor: customTheme.palette.error.main,
+      borderRadius: '10px',
+      backgroundColor: customTheme.palette.error.faded,
+      width: 'max-content',
+      display: 'grid',
+      ...props.style
+    }}
+  >
     <Menu
       anchorEl={anchorEl}
       open={menuOpen}
@@ -67,7 +78,6 @@ export default function ErrorMessage({ message, testResults, setTestResults, ...
             <label style={{marginLeft: '6px', opacity: '0.6'}}>{ selectedText }</label>
           </div>
         }
-
       </div>
 
       <MenuItem onClick={() => { alert(selectedText)}} disabled={true}>
@@ -77,18 +87,7 @@ export default function ErrorMessage({ message, testResults, setTestResults, ...
         <ListItemText>Add to filter</ListItemText>
       </MenuItem>
     </Menu>
-    <div
-      style={{
-        padding: '10px',
-        border: '1px solid',
-        borderColor: customTheme.palette.error.main,
-        borderRadius: '10px',
-        backgroundColor: customTheme.palette.error.faded,
-        width: 'max-content',
-        display: 'grid',
-        ...props.style
-      }}
-    >
+    <div >
       <label ref={ref}  onMouseUp={() => { setAnchorEl(ref.current) }}  style={{whiteSpace: 'break-spaces', cursor: 'pointer'}}
       >{message}</label>
     </div>

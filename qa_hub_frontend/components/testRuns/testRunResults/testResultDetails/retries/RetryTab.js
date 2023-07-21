@@ -8,7 +8,7 @@ import StatusHistory from "./StatusHistory";
 import ErrorMessage from "./ErrorMessage";
 import QaResolutionPanel from "./QaResolutionPanel";
 
-export default function RetryTab({retry, testResults, setTestResults, ...props}) {
+export default function RetryTab({retry, isLastRetry, testResults, setTestResults, ...props}) {
   const [lastResult, setLastResult] = useState(null)
   const [selectedStep, setSelectedStep] = useState(null)
 
@@ -23,12 +23,20 @@ export default function RetryTab({retry, testResults, setTestResults, ...props})
 
   return <div style={{...props.style}}>
     <StatusHistory retry={retry} />
-    <ErrorMessage
-      message={lastResult.message}
-      testResults={testResults}
-      setTestResults={setTestResults}
-      style={{marginTop: '15px', minWidth: '50%'}}
-    />
+
+    <div style={{display: "flex", marginTop: '15px'}}>
+      <ErrorMessage
+        message={lastResult.message}
+        testResults={testResults}
+        setTestResults={setTestResults}
+        style={{width: '50%'}}
+      />
+      {
+        isLastRetry && lastResult.status === "FAILURE" &&
+        <QaResolutionPanel testResult={retry} style={{marginLeft: '30px'}}/>
+      }
+    </div>
+
 
     <Accordion style={{ marginTop: '25px', backgroundColor: 'rgba(0, 0, 0, 0.07)', borderRadius: '12px'}}>
       <StyledAccordionSummary

@@ -44,10 +44,10 @@ export default function TestResultDetails({ testResult, testResults, setTestResu
           }}/>
         </div>
 
-        {
-          testResult.status !== 'SUCCESS' &&
-          <QaResolutionPanel testResult={testResult} style={{marginTop: '35px', marginBottom: '25px'}}/>
-        }
+        {/*{*/}
+        {/*  testResult.status !== 'SUCCESS' &&*/}
+        {/*  <QaResolutionPanel testResult={testResult} style={{marginTop: '35px', marginBottom: '25px'}}/>*/}
+        {/*}*/}
 
 
         <TestRetriesTabs
