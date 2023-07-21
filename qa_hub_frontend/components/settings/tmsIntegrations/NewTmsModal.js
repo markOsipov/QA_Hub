@@ -5,6 +5,7 @@ import StyledTextField from "../../primitives/StyledTextField";
 import Button from "@mui/material/Button";
 import {addTmsIntegration} from "../../../requests/TMSRequests";
 import {modalStyle} from "../../../styles/ModalStyle";
+import StyledSelect from "../../primitives/StyledSelect";
 
 function NewTmsModal({isOpen, setIsOpen, updateTmsList, tmsTypes, tmsIntegrations}) {
     const defaultTmsValue = {
@@ -60,7 +61,7 @@ function NewTmsModal({isOpen, setIsOpen, updateTmsList, tmsTypes, tmsIntegration
 
             <FormControl sx={{ minWidth: 400, margin: "8px" }} size="small">
                 <InputLabel style={{ color: "var(--faded-text-color)" }}>TMS Type</InputLabel>
-                <Select
+                <StyledSelect
                     value={newTms.tmsType || ''}
                     label="Tms type"
                     onChange={selectTms}
@@ -70,7 +71,7 @@ function NewTmsModal({isOpen, setIsOpen, updateTmsList, tmsTypes, tmsIntegration
                             <MenuItem key={tms.tmsName} value={tms.tmsName}>{tms.tmsName}</MenuItem>
                         )
                     }
-                </Select>
+                </StyledSelect>
             </FormControl>
 
             <StyledTextField value={newTms.baseUrl}

@@ -7,16 +7,10 @@ enum class QaResolution(var value: String) {
     TECH_PROBLEM("TechProblem"),
     BUG("Bug")
 }
-data class TestResultQaResolution(
+data class QaReview(
     var testRunId: String,
     var fullName: String,
-    var qaComments: MutableList<TestResultQaComment> = mutableListOf(),
-    var qaResolution: String? = QaResolution.UNREVIEWED.value,
-)
-
-data class TestResultQaComment(
-    val text: String,
-    val author: String? = "unknown",
-    val date: String
+    var qaComment: String?,
+    var qaResolution: String?
 )
 

@@ -31,10 +31,11 @@ export var customTheme = createTheme({
         },
 
         text: {
+            white: '#ffffff',
             primary: 'rgba(255, 255, 255, 0.75)',
             faded: 'rgba(255, 255, 255, 0.6)',
             disabled: 'rgba(255, 255, 255, 0.3)',
-            white: '#ffffff'
+            disabledMore: 'rgba(255, 255, 255, 0.2)'
         },
     },
 });

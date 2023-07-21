@@ -14,6 +14,7 @@ import {StyledTableCell} from "../../components/primitives/Table/StyledTableCell
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from "@mui/material/IconButton";
 import SyncIcon from '@mui/icons-material/Sync';
+import StyledSelect from "../primitives/StyledSelect";
 
 function LogViewer() {
     const logLevels = [
@@ -124,7 +125,7 @@ function LogViewer() {
             <div style={{display: "flex"}}>
                 <FormControl sx={{ m: 1, width: 300 }}>
                     <InputLabel style={{color: "var(--faded-text-color)", position: "relative", top: "10px"}}>Log level</InputLabel>
-                    <Select
+                    <StyledSelect
                         multiple
                         value={logFilter.level}
                         onChange={handleLogLevelChange}
@@ -139,7 +140,7 @@ function LogViewer() {
                                 <ListItemText primary={logLevel} />
                             </MenuItem>
                         ))}
-                    </Select>
+                    </StyledSelect>
                 </FormControl>
 
                 <div style={{display: "grid", alignSelf: "end", padding: "10px"}}>
@@ -166,7 +167,7 @@ function LogViewer() {
 
                         <FormControl style={{minWidth: "100px"}}>
                             <InputLabel style={{color: "var(--faded-text-color)"}}>Lines count</InputLabel>
-                            <Select
+                            <StyledSelect
                                 style={{backgroundColor: "rgba(255, 255, 255, 0.10)"}}
                                 value={linesCount}
                                 label="Age"
@@ -178,7 +179,7 @@ function LogViewer() {
                                         return  <MenuItem key={value} value={value}>{value}</MenuItem>
                                     })
                                 }
-                            </Select>
+                            </StyledSelect>
                         </FormControl>
 
                         <IconButton style={{

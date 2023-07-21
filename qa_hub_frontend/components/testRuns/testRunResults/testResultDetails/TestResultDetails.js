@@ -3,6 +3,7 @@ import TestRetriesTabs from "./retries/TestRetriesTabs";
 import TextWithLabel from "../../../primitives/TextWithLabel";
 import Typography from "@mui/material/Typography";
 import TestStatusWithRetries from "../../../common/TestStatusWithRetries";
+import QaResolutionPanel from "./retries/QaResolutionPanel";
 
 export default function TestResultDetails({ testResult, testResults, setTestResults, ...props }) {
   const renderContent = () => {
@@ -33,8 +34,22 @@ export default function TestResultDetails({ testResult, testResults, setTestResu
             <Typography variant={'h6'} style={{marginLeft: '15px', width: 'max-content'}}>{getShortName(testResult)}</Typography>
             <Typography variant={'h6'} style={{marginLeft: '15px', width: 'max-content', fontSize: '14px', opacity: '0.5'}}>{testResult.fullName}</Typography>
           </div>
-          <TestStatusWithRetries status={testResult.status} retries={testResult.retries} style={{position: 'relative', top: '12px', marginLeft: '25px'}}/>
+          <TestStatusWithRetries
+            status={testResult.status}
+            retries={testResult.retries}
+            style={{
+              position: 'relative',
+              top: '12px',
+              marginLeft: '25px'
+          }}/>
         </div>
+
+        {
+          testResult.status !== 'SUCCESS' &&
+          <QaResolutionPanel testResult={testResult} style={{marginTop: '35px', marginBottom: '25px'}}/>
+        }
+
+
         <TestRetriesTabs
           testResult={testResult}
           testResults={testResults}

@@ -53,7 +53,7 @@ class TestRunService {
     }
 
     private val testQaReviewsCollection by lazy {
-        mongoClient.db.getCollection<TestResultQaResolution>(TEST_QA_REVIEWS.collectionName)
+        mongoClient.db.getCollection<QaReview>(TEST_QA_REVIEWS.collectionName)
     }
 
     fun getTestRuns(project: String): List<TestRun> = runBlocking {
@@ -327,6 +327,6 @@ class TestRunService {
         testQueueCollection.deleteMany(TestQueue::testRunId eq testRunId)
         testLogsCollection.deleteMany(TestLogsService.TestLog::testRunId eq testRunId)
         testStepsCollection.deleteMany(TestStepsService.TestSteps::testRunId eq testRunId)
-        testQaReviewsCollection.deleteMany(TestResultQaResolution::testRunId eq testRunId)
+        testQaReviewsCollection.deleteMany(QaReview::testRunId eq testRunId)
     }
 }

@@ -3,12 +3,13 @@ import {customTheme} from "../../../../../styles/CustomTheme";
 import IconButton from "@mui/material/IconButton";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
+import StyledSelect from "../../../../primitives/StyledSelect";
 
 function SelectParamConfig({editParamField, param}) {
     return <div>
         <FormControl style={{width: "483px", marginTop: "15px"}}>
             <InputLabel style={{color: customTheme.palette.text.faded, position: "relative", top: "10px"}}>Default value</InputLabel>
-            <Select
+            <StyledSelect
                 value={param.defaultValue}
                 style={{backgroundColor: customTheme.palette.background.input}}
                 onChange={(event) => editParamField("defaultValue", event.target.value)}
@@ -19,7 +20,7 @@ function SelectParamConfig({editParamField, param}) {
                         <MenuItem key={option} value={option}>{option}</MenuItem>
                     ))
                 }
-            </Select>
+            </StyledSelect>
         </FormControl>
 
         <div style={{marginTop: "15px", display: "flex", flexDirection: "column", minWidth: "275px"}}>

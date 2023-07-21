@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
+import qa_hub.entity.testRun.QaReview
 import qa_hub.entity.testRun.TestResult
 import qa_hub.entity.testRun.TestResultRetry
+import qa_hub.service.testResults.QaReviewService
 import qa_hub.service.testResults.TestLogsService
 import qa_hub.service.testResults.TestResultsService
 import qa_hub.service.testResults.TestStepsService
@@ -28,6 +30,9 @@ class TestResultsController {
 
     @Autowired
     lateinit var testStepsService: TestStepsService
+
+    @Autowired
+    lateinit var qaReviewService: QaReviewService
     @GetMapping("/{testRunId}")
     fun getTestResults(@PathVariable("testRunId") testRunId: String): List<TestResult> {
         return testResultsService.findTestResults(testRunId)
@@ -76,5 +81,19 @@ class TestResultsController {
         @RequestParam("retry", required = false, defaultValue = "1") retry: Int,
     ): TestStepsService.TestSteps? {
         return testStepsService.getSteps(testRunId, fullName, retry)
+    }
+    @PostMapping("/review")
+    fun postTestReview(
+        @RequestBody body: QaReview
+    ): QaReview {
+        return qaReviewService.updateQaReview(body)
+    }
+
+    @GetMapping("/review")
+    fun getTestReview(
+        @RequestParam("testRunId") testRunId: String,
+        @RequestParam("fullName") fullName: String
+    ): QaReview? {
+        return qaReviewService.getQaReview(testRunId, fullName)
     }
 }

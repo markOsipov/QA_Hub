@@ -21,6 +21,7 @@ import MultiSelectParamConfig from "./paramConfigs/MultiSelectParamConfig";
 import MoreIconButton from "./MoreIconButton";
 import {textAreaStyle} from "../../../../styles/TextAreaStyle";
 import ParamTypes from "../ParamTypes";
+import StyledSelect from "../../../primitives/StyledSelect";
 
 function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
     const editParamField = (field, value) => {
@@ -54,7 +55,7 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
 
             <FormControl style={{marginLeft: "15px", width: "170px"}}>
                 <InputLabel style={{color: customTheme.palette.text.faded, position: "relative", top: "10px"}}>Type</InputLabel>
-                <Select
+                <StyledSelect
                     value={paramTypes.find(type => type === param.type) || ''}
                     style={{backgroundColor: customTheme.palette.background.input}}
                     onChange={(event) => editParamField("type", event.target.value)}
@@ -65,7 +66,7 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
                             <MenuItem key={paramType} value={paramType}>{paramType}</MenuItem>
                         ))
                     }
-                </Select>
+                </StyledSelect>
             </FormControl>
 
             <IconButton style={{

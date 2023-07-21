@@ -8,7 +8,7 @@ import {getTestRetries} from "../../../../../requests/testResults/TestResultsReq
 import RetryTab from "./RetryTab";
 export default function TestRetriesTabs({ testResult, testResults, setTestResults, ...props }) {
 
-  const [tabValue, setTabValue] = useState(0);
+  const [tabValue, setTabValue] = useState('0');
   const [retries, setRetries] = useState([])
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export default function TestRetriesTabs({ testResult, testResults, setTestResult
   }, [testResult.testRunId, testResult.fullName])
 
   useEffect(() => {
-    setTabValue(0)
+    setTabValue('0')
   },[testResult.testRunId, testResult.fullName])
 
   const handleChange = (event, newValue) => {
@@ -31,7 +31,7 @@ export default function TestRetriesTabs({ testResult, testResults, setTestResult
         <TabList onChange={handleChange} aria-label="lab API tabs example">
           {
             retries.map((retry, index) => {
-              return <Tab label={`Retry ${retry.retry}`} value={retries.length - index - 1} key={`RetryTab${retry.retry}`} style={{color: 'white'}}/>
+              return <Tab label={`Retry ${retry.retry}`} value={String(retries.length - index - 1)} key={`RetryTab${retry.retry}`} style={{color: 'white'}}/>
             })
           }
 
@@ -39,7 +39,7 @@ export default function TestRetriesTabs({ testResult, testResults, setTestResult
       </Box>
       {
         retries.map((retry, index) => {
-          return <TabPanel  key={`RetryPanel${retry.retry}`} value={retries.length - index - 1} style={{padding: '24px 5px'}}>
+          return <TabPanel  key={`RetryPanel${retry.retry}`} value={String(retries.length - index - 1)} style={{padding: '24px 5px'}}>
             <RetryTab
               retry={retry}
               testResults={testResults}

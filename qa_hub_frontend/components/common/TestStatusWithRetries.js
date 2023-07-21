@@ -61,7 +61,7 @@ export default function TestStatusWithRetries({status, retries, ...props}) {
   }
 
 
-  return <div style={{marginLeft: '4px', position: 'relative', display: 'grid', height: 'min-content', ...props.style}}>
+  return <div style={{marginLeft: '4px', position: 'relative', display: 'grid', height: '30px', ...props.style}}>
     <StatusBadge label={status} />
     {
       retries > 1 &&

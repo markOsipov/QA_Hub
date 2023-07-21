@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import {Accordion, AccordionDetails} from "@mui/material";
 import StatusHistory from "./StatusHistory";
 import ErrorMessage from "./ErrorMessage";
+import QaResolutionPanel from "./QaResolutionPanel";
 
 export default function RetryTab({retry, testResults, setTestResults, ...props}) {
   const [lastResult, setLastResult] = useState(null)

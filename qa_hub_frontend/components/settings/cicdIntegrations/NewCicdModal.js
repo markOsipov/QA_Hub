@@ -5,6 +5,7 @@ import StyledTextField from "../../primitives/StyledTextField";
 import Button from "@mui/material/Button";
 import {addCicdIntegration} from "../../../requests/CICDRequests";
 import {modalStyle} from "../../../styles/ModalStyle";
+import StyledSelect from "../../primitives/StyledSelect";
 
 function NewCicdModal({isOpen, setIsOpen, updateCicdList, cicdTypes, cicdIntegrations}) {
     const defaultCicdValue = {
@@ -60,7 +61,7 @@ function NewCicdModal({isOpen, setIsOpen, updateCicdList, cicdTypes, cicdIntegra
 
             <FormControl sx={{ minWidth: 400, margin: "8px" }} size="small">
                 <InputLabel style={{ color: "var(--faded-text-color)" }}>CICD Type</InputLabel>
-                <Select
+                <StyledSelect
                     value={newCicd.cicdType || ''}
                     label="Cicd type"
                     onChange={selectCicd}
@@ -70,7 +71,7 @@ function NewCicdModal({isOpen, setIsOpen, updateCicdList, cicdTypes, cicdIntegra
                             <MenuItem key={cicd.cicdName} value={cicd.cicdName}>{cicd.cicdName}</MenuItem>
                         )
                     }
-                </Select>
+                </StyledSelect>
             </FormControl>
 
             <StyledTextField value={newCicd.baseUrl}

@@ -7,6 +7,7 @@ import StyledTextField from "../../primitives/StyledTextField";
 import Button from "@mui/material/Button";
 import projectState from "../../../state/ProjectState";
 import {modalStyle} from "../../../styles/ModalStyle";
+import StyledSelect from "../../primitives/StyledSelect";
 
 function NewProjectModal({isOpen, setIsOpen, project}) {
     const [currentProject, setCurrentProject] = useState(project)
@@ -86,7 +87,7 @@ function NewProjectModal({isOpen, setIsOpen, project}) {
 
             <FormControl sx={{ minWidth: 450, margin: "8px" }} size="small">
                 <InputLabel style={{ color: "var(--faded-text-color)" }}>Platform</InputLabel>
-                <Select
+                <StyledSelect
                     value={currentProject.platform || ''}
                     label="Platform"
                     onChange={selectPlatform}
@@ -96,7 +97,7 @@ function NewProjectModal({isOpen, setIsOpen, project}) {
                             <MenuItem key={platform.name} value={platform.name}>{platform.name}</MenuItem>
                         )
                     }
-                </Select>
+                </StyledSelect>
             </FormControl>
 
             <StyledTextField value={currentProject.cicdPath}

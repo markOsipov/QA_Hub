@@ -2,6 +2,7 @@ import {Checkbox, FormControl, Input, InputLabel, ListItemText, MenuItem, Select
 import {customTheme} from "../../../../styles/CustomTheme";
 import {useEffect, useState} from "react";
 import TextParam from "./TextParam";
+import StyledSelect from "../../../primitives/StyledSelect";
 
 function MultiSelectParam({style, param, index, setParamValue}) {
     const separator = ", "
@@ -39,7 +40,7 @@ function MultiSelectParam({style, param, index, setParamValue}) {
 
     return <FormControl style={style}>
         {/*<InputLabel style={{color: customTheme.palette.text.faded, position: "relative", top: "10px", left: "-5px"}}>{param.name}</InputLabel>*/}
-        <Select
+        <StyledSelect
             value={values}
             style={{backgroundColor: customTheme.palette.background.input}}
             onChange={handleValueChange}
@@ -56,7 +57,7 @@ function MultiSelectParam({style, param, index, setParamValue}) {
                     </MenuItem>
                 ))
             }
-        </Select>
+        </StyledSelect>
     </FormControl>
 }
 

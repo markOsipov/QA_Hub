@@ -55,7 +55,7 @@ export default function StatusHistory({ retry, ...props}) {
               </div>
 
               <TextWithLabel
-                label={'Date'} value={getTimeSeconds(item.date)}
+                label={'Time'} value={getTimeSeconds(item.date)}
                 labelStyle={{ justifySelf: 'center'}}
                 style={{padding: '3px', alignItems: 'center', minHeight: 'unset', marginLeft: '20px'}}
               />
