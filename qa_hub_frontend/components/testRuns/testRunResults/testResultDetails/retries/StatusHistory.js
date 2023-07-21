@@ -7,7 +7,7 @@ import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import {useState} from "react";
 
 export default function StatusHistory({ retry, ...props}) {
-  const [showStatusHistory, setShowStatusHistroy] = useState(false)
+  const [showStatusHistory, setShowStatusHistory] = useState(false)
   const [hovered, setHovered] = useState(false)
 
   return <div style={{ ...props.style }}>
@@ -20,7 +20,7 @@ export default function StatusHistory({ retry, ...props}) {
           height: '21px',
           width: '21px'
         }}
-        onClick={() => { setShowStatusHistroy(!showStatusHistory) }}
+        onClick={() => { setShowStatusHistory(!showStatusHistory) }}
         onMouseEnter={() => { setHovered(true)}}
         onMouseLeave={() => { setHovered(false)}}
       >

@@ -1,9 +1,7 @@
 import TextWithLabel from "../../../primitives/TextWithLabel";
 import Typography from "@mui/material/Typography";
-import StatusBadge from "../../../primitives/StatusBadge";
 import {Card} from "@mui/material";
 import {useState} from "react";
-import {customTheme} from "../../../../styles/CustomTheme";
 import TestStatusWithRetries from "../../../common/TestStatusWithRetries";
 
 export default function TestResultCard({testResult, setSelectedTest, ...props}) {

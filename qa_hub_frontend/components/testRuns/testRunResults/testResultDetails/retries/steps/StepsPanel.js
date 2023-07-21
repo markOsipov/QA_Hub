@@ -1,7 +1,6 @@
 import {useEffect, useState} from "react";
 import {getTestSteps} from "../../../../../../requests/testResults/TestStepsRequests";
 import {Card} from "@mui/material";
-import TestStep from "./TestStep";
 import TestSteps from "./TestSteps";
 export default function StepsPanel({ retry, setSelectedStep, ...props }) {
   const [steps, setSteps] = useState(null)
@@ -10,7 +9,7 @@ export default function StepsPanel({ retry, setSelectedStep, ...props }) {
     getTestSteps(retry.testRunId, retry.fullName, retry.retry).then((data) => {
       setSteps(data.data)
     })
-  }, [retry.testRunId, retry.fullName, retry.retry])
+  }, [retry])
 
   if (!steps) {
     return <div style={{...props.style}}>{ "Can't find test steps for current retry" }</div>

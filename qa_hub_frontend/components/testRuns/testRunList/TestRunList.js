@@ -4,9 +4,6 @@ import {observer} from "mobx-react-lite";
 import projectState from "../../../state/ProjectState";
 import {useEffect, useState} from "react";
 import {getTestRuns} from "../../../requests/TestRunRequests";
-import StatusBadge from "../../primitives/StatusBadge";
-import TextWithLabel from "../../primitives/TextWithLabel";
-import {getTime} from "../../../utils/DateTimeUtils";
 import TestRunCard from "./testRun/TestRunCard";
 
 const TestRunList = observer(({...props}) => {
