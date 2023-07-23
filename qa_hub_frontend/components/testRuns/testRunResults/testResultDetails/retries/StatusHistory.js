@@ -5,14 +5,16 @@ import {getTimeSeconds} from "../../../../../utils/DateTimeUtils";
 import ComputerIcon from "@mui/icons-material/Computer";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import {useState} from "react";
+import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
 
 export default function StatusHistory({ retry, ...props}) {
   const [showStatusHistory, setShowStatusHistory] = useState(false)
   const [hovered, setHovered] = useState(false)
+  let lastResult = retry.statusHistory[retry.statusHistory.length - 1]
 
   return <div style={{ ...props.style }}>
     <div style={{display: 'flex', alignItems: 'center'}}>
-      <StatusBadge label={retry.statusHistory[retry.statusHistory.length - 1].status} />
+      <StatusBadge label={lastResult.status} />
       <div
         style={{
           backgroundColor: hovered ? 'rgba(255, 255, 255, 0.07)' : '',
@@ -26,13 +28,11 @@ export default function StatusHistory({ retry, ...props}) {
       >
         <KeyboardArrowRightIcon
           style={{
-
             transform: showStatusHistory && 'rotate(90deg)',
             transition: 'all 0.1s linear',
           }}
         />
       </div>
-
     </div>
     {
       showStatusHistory &&
