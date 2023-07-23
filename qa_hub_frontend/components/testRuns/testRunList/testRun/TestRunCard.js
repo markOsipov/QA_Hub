@@ -77,11 +77,9 @@ export default function TestRunCard({testRun, ...props }) {
         />
       </div>
 
-      <div style={{flexGrow: '1.1', width: '50px'}}></div>
-
       <div style={{display: 'flex', width: '100%'}}>
-
-        <div style={{display: 'flex', flexGrow: '2', position: 'relative', top: '11px'}}>
+        <div style={{flexGrow: '1'}}></div>
+        <div style={{display: 'flex', flexGrow: '1', position: 'relative', top: '11px'}}>
           <div style={{display: 'flex', alignItems: 'center', marginLeft: '20px', flexGrow: '1.4'}}>
             <div style={{display: 'flex', minWidth: '450px', position: 'relative',  justifyContent: 'start'}}>
               <TestResultsPlate testRun={testRun} progressBarWidth={progressBarWidth} style={{ minWidth: `${progressBarWidth + 185}px`}}/>
@@ -89,7 +87,10 @@ export default function TestRunCard({testRun, ...props }) {
             </div>
           </div>
 
-          <GitEnvPlate testRun={testRun} style={{opacity: opacity, marginRight: '8px', marginLeft: '15px'}}/>
+          <div style={{display: 'grid', justifyItems:'end', width: '40%', minWidth: '470px'}}>
+            <GitEnvPlate testRun={testRun} style={{opacity: opacity, marginRight: '8px', marginLeft: '15px', }}/>
+          </div>
+
         </div>
       </div>
 
