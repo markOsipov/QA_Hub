@@ -34,8 +34,8 @@ export default function TestRunCard({testRun, ...props }) {
   return <Paper style={{ padding: '15px', ...props.style,  }}
 
   >
-    <div style={{ display: "flex" }}>
-      <div style={{display: 'grid'}}>
+    <div style={{ display: "flex", width: '100%'}}>
+      <div style={{display: 'grid', minWidth: '311px'}}>
         <div
           style={{
             marginTop: "10px",
@@ -77,20 +77,20 @@ export default function TestRunCard({testRun, ...props }) {
         />
       </div>
 
-      <div style={{display: 'flex', width: '100%', position: 'relative', top: '11px'}}>
-        <div style={{flexGrow: '0.7'}}></div>
-        <div style={{display: 'flex', alignItems: 'center', marginLeft: '20px'}}>
-          <div style={{display: 'flex', minWidth: '450px', position: 'relative', flexGrow: '2', justifyContent: 'center'}}>
-            <TestResultsPlate testRun={testRun} progressBarWidth={progressBarWidth} style={{ minWidth: `${progressBarWidth + 185}px`}}/>
-            <RunnersPlate testRun={testRun} style={{minWidth: '300px',  opacity: opacity}} />
+      <div style={{flexGrow: '1.1', width: '50px'}}></div>
+
+      <div style={{display: 'flex', width: '100%'}}>
+
+        <div style={{display: 'flex', flexGrow: '2', position: 'relative', top: '11px'}}>
+          <div style={{display: 'flex', alignItems: 'center', marginLeft: '20px', flexGrow: '1.4'}}>
+            <div style={{display: 'flex', minWidth: '450px', position: 'relative',  justifyContent: 'start'}}>
+              <TestResultsPlate testRun={testRun} progressBarWidth={progressBarWidth} style={{ minWidth: `${progressBarWidth + 185}px`}}/>
+              <RunnersPlate testRun={testRun} style={{minWidth: '300px',  opacity: opacity}} />
+            </div>
           </div>
+
+          <GitEnvPlate testRun={testRun} style={{opacity: opacity, marginRight: '8px', marginLeft: '15px'}}/>
         </div>
-
-
-        <div style={{flexGrow: '1.1'}}></div>
-
-
-        <GitEnvPlate testRun={testRun} style={{opacity: opacity, marginRight: '8px', marginLeft: '15px'}}/>
       </div>
 
     </div>

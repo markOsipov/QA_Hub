@@ -35,6 +35,7 @@ export default function TestResultsPlate({testRun, progressBarWidth, ...props}) 
                        justifyItems: 'center',
                        minHeight: '20px',
                        minWidth: '65px',
+                       opacity: '0.8'
                     }}
       />
 
