@@ -9,6 +9,7 @@ import HelpIcon from "@mui/icons-material/Help";
 import {useState, useEffect} from "react";
 import {styled} from "@mui/material/styles";
 import {Tooltip, tooltipClasses} from "@mui/material";
+import StyledTooltip from "../../primitives/StyledTooltip";
 function TestRunFormParam({param, index, params, setParams, props}) {
     const paramWidth = "700px"
 
@@ -19,15 +20,6 @@ function TestRunFormParam({param, index, params, setParams, props}) {
 
         setParams(newParams)
     }
-
-    const ParamNameTooltip = styled(({ className, ...props }) => (
-        <Tooltip {...props} classes={{ popper: className }} />
-    ))({
-        [`& .${tooltipClasses.tooltip}`]: {
-            maxWidth: 'none',
-            fontSize: "14px"
-        },
-    })
 
     const DescriptionTooltip = styled(({ className, ...props }) => (
         <Tooltip {...props} classes={{ popper: className }} />
@@ -43,9 +35,9 @@ function TestRunFormParam({param, index, params, setParams, props}) {
                 onMouseLeave={() => {setShowHelp(false)}}
     >
         <div style={{width: "300px", display: "flex", justifyContent: "end"}}>
-            <ParamNameTooltip title={param.name} maxWidth={'none'}>
+            <StyledTooltip title={param.name} maxWidth={'none'}>
                 <Typography style={{position: "relative", top: "1px"}}>{param.name.cut(30)}</Typography>
-            </ParamNameTooltip>
+            </StyledTooltip>
         </div>
         <div style={{minWidth: "50%", marginLeft: "15px"}}>
             {

@@ -7,7 +7,7 @@ export default function GitEnvPlate({testRun, ...props}) {
   return <div style={{display: "flex", ...props.style}}>
     { testRun.config?.branch != null &&
       <div style={{display: "flex", alignItems: "center"}}>
-        <ForkLeftIcon></ForkLeftIcon>
+        <ForkLeftIcon/>
         <TextWithLabel
           value={testRun.config.branch}
           label={'Branch'}
@@ -30,7 +30,7 @@ export default function GitEnvPlate({testRun, ...props}) {
 
     { testRun.config?.environment != null &&
       <div style={{display: "flex", alignItems: "center", marginLeft: "10px"}}>
-        <PublicIcon></PublicIcon>
+        <PublicIcon/>
         <TextWithLabel
           value={testRun.config.environment}
           label={'Environment'}

@@ -7,6 +7,7 @@ export default function TextWithLabel ({value, label, labelStyle, valueStyle, ..
     {...props}
     style={{
       display: 'grid',
+      alignItems: 'center',
       borderRadius: '4px',
       border: "1px solid",
       padding:'5px',

@@ -34,7 +34,7 @@ export default function TestResultsPlate({testRun, progressBarWidth, ...props}) 
                        display: 'grid',
                        justifyItems: 'center',
                        minHeight: '20px',
-                       minWidth: '65px',
+                       minWidth: '50px',
                        opacity: '0.8'
                     }}
       />
