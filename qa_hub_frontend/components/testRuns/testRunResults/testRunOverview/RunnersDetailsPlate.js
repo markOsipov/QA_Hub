@@ -6,6 +6,14 @@ import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 export default function RunnersDetailsPlate({ testRun, ...props }) {
   const [selectedRunner, setSelectedRunner] = useState(null)
 
+  const handleSelectRunnerClick = (runner) => {
+    if (runner.name === selectedRunner?.name) {
+      setSelectedRunner(null)
+    } else {
+      setSelectedRunner(runner)
+    }
+  }
+
   return <div style={{display: 'flex', ...props.style}}>
     <div style={{display: 'flex', flexDirection: 'column'}}>
       <label
@@ -29,7 +37,7 @@ export default function RunnersDetailsPlate({ testRun, ...props }) {
                 marginBottom: '7px',
                 opacity: selectedRunner?.name === runner.name ? '1' : selectedRunner == null ? '0.6' : '0.4'
               }}
-              onClick={() => { setSelectedRunner(runner) }}
+              onClick={() => { handleSelectRunnerClick(runner) }}
             >
               <ComputerIcon style={{position: 'relative', top: '1px'}}/>
               <label
@@ -60,7 +68,7 @@ export default function RunnersDetailsPlate({ testRun, ...props }) {
           }}
         >Devices on {selectedRunner.name}</label>
 
-        <div style={{display: 'flex', flexDirection: 'column', width: 'max-content',  marginTop: '15px'}}>
+        <div style={{display: 'flex', flexDirection: 'column', width: 'max-content', paddingRight: '15px', marginTop: '15px', maxHeight: '200px', overflowY: 'auto'}}>
           {
             selectedRunner.simulators.map((simulator) => {
               return <div
@@ -75,13 +83,30 @@ export default function RunnersDetailsPlate({ testRun, ...props }) {
                     border: `1px solid ${customTheme.palette.text.disabled}`,
                     borderRadius: '5px',
                     cursor: 'pointer',
-                    opacity: '0.6'
+                    opacity: '0.6',
+                    minWidth: '335px'
                   }}
                 >{simulator}</label>
               </div>
             })
           }
         </div>
+      </div>
+    }
+
+    {
+      selectedRunner == null &&
+      <div style={{display: 'flex', flexDirection: 'column', marginLeft: '28px'}}>
+        <label
+          style={{
+            backgroundColor: "rgb(77 77 77)",
+            borderRadius: '5px',
+            border: `1px solid ${customTheme.palette.text.disabled}`,
+            width: 'max-content',
+            padding: '1px 8px 3px 6px'
+          }}
+        >Devices</label>
+        <label style={{marginTop: '20px', minWidth: '379px'}}>No selected runner</label>
       </div>
     }
   </div>
