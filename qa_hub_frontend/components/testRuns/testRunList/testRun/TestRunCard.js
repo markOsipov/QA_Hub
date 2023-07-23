@@ -9,13 +9,14 @@ import {customTheme} from "../../../../styles/CustomTheme";
 import {useRouter} from "next/router";
 import {useState} from "react";
 export default function TestRunCard({testRun, ...props }) {
+  const opacity = 0.6
   function getProgressBarWidth() {
-    return Math.max(window.innerWidth * 0.15, 200)
+    return Math.max(window.innerWidth * 0.2, 200)
   }
 
   const router = useRouter()
   const [progressBarWidth, setProgressBarWidth] = useState(getProgressBarWidth())
-  const opacity = 0.7
+
 
   const [isHovering, setIsHovered] = useState(false);
   const onMouseEnter = () => setIsHovered(true);
@@ -35,18 +36,17 @@ export default function TestRunCard({testRun, ...props }) {
                 onMouseLeave={onMouseLeave}
                 onClick={handleTestRunCardClick}
   >
-    <div style={{ display: "flex", flexDirection: "column" }}>
-      <div style={{ marginTop: "10px", display: "flex", alignItems: 'center' }}>
-        <TextWithLabel
-          value={testRun.testRunId}
-          label={'testRunId'}
-          labelStyle={{ justifySelf: 'center'}}
-          style={{fontSize: "15px", width: "min-content", padding: "5px 6px", minHeight: 'unset'}}
-        />
-        <StatusBadge label={testRun.status} style={{ marginLeft: "10px"}}/>
-      </div>
-
-      <div style={{display: 'flex', marginTop: '45px'}}>
+    <div style={{ display: "flex" }}>
+      <div style={{display: 'grid'}}>
+        <div style={{ marginTop: "10px", display: "flex", alignItems: 'center'}}>
+          <TextWithLabel
+            value={testRun.testRunId}
+            label={'testRunId'}
+            labelStyle={{ justifySelf: 'center'}}
+            style={{fontSize: "15px", width: "min-content", padding: "5px 6px", minHeight: 'unset'}}
+          />
+          <StatusBadge label={testRun.status} style={{ marginLeft: "10px"}}/>
+        </div>
 
         <TimingsPlate testRun={testRun}
                       style={{
@@ -54,19 +54,28 @@ export default function TestRunCard({testRun, ...props }) {
                         alignItems: 'end',
                         justifyItems: 'start',
                         position: 'relative',
+                        marginTop: '45px',
                         opacity: opacity
                       }}
-
         />
-        <div style={{display: 'flex', minWidth: '450px', position: 'relative', flexGrow: '2', justifyContent: 'center'}}>
-          <TestResultsPlate testRun={testRun} progressBarWidth={progressBarWidth} style={{ minWidth: `${progressBarWidth + 185}px`}}/>
-          <RunnersPlate testRun={testRun} style={{minWidth: '300px', marginLeft: '20px',  opacity: opacity}} />
+      </div>
+
+      <div style={{display: 'flex', width: '100%', position: 'relative', top: '11px'}}>
+        <div style={{flexGrow: '0.7'}}></div>
+        <div style={{display: 'flex', alignItems: 'center', marginLeft: '40px'}}>
+          <div style={{display: 'flex', minWidth: '450px', position: 'relative', flexGrow: '2', justifyContent: 'center'}}>
+            <TestResultsPlate testRun={testRun} progressBarWidth={progressBarWidth} style={{ minWidth: `${progressBarWidth + 185}px`}}/>
+            <RunnersPlate testRun={testRun} style={{minWidth: '300px', marginLeft: '30px',  opacity: opacity}} />
+          </div>
         </div>
 
-        <div style={{display: 'grid', justifyItems: 'end',  position: 'relative',  opacity: opacity, marginRight: '10px'}}>
-          <GitEnvPlate testRun={testRun} style={{opacity: opacity}}/>
-        </div>
+
+        <div style={{flexGrow: '1.1'}}></div>
+
+
+        <GitEnvPlate testRun={testRun} style={{opacity: opacity, marginRight: '10px'}}/>
       </div>
+
     </div>
   </Paper>
 }

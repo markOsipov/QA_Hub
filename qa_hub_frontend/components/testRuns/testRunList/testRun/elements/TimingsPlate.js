@@ -54,7 +54,7 @@ export default function TimingsPlate ({testRun, ...props}) {
           testRun.timeMetrics.ended && <EndedElement />
         }
         {
-          testRun.timeMetrics.duration && <DurationElement style={{ marginLeft: '15px' }}/>
+          testRun.timeMetrics.duration && <DurationElement style={{ marginLeft: '15px', minWidth: 'max-content' }}/>
         }
       </div>
     } else {
