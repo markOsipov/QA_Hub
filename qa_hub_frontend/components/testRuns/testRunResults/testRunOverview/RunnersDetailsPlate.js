@@ -68,12 +68,12 @@ export default function RunnersDetailsPlate({ testRun, ...props }) {
           }}
         >Devices on {selectedRunner.name}</label>
 
-        <div style={{display: 'flex', flexDirection: 'column', width: 'max-content', paddingRight: '15px', marginTop: '15px', maxHeight: '200px', overflowY: 'auto'}}>
+        <div style={{display: 'flex', flexDirection: 'column', width: 'max-content', paddingRight: '15px', marginTop: '15px', maxHeight: '230px', overflowY: 'auto'}}>
           {
-            selectedRunner.simulators.map((simulator) => {
+            selectedRunner.simulators.map((simulator, index) => {
               return <div
                 key={simulator}
-                style={{display: 'flex', alignItems: 'center',  marginBottom: '7px',}}
+                style={{display: 'flex', alignItems: 'center',  marginBottom: '7px', justifyContent: 'end'}}
               >
                 <PhoneIphoneIcon style={{position: 'relative', top: '1px'}}/>
                 <label

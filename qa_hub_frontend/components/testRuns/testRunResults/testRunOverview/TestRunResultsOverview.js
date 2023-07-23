@@ -58,12 +58,12 @@ export default function TestRunResultsOverview({testRun, ...props}) {
 
           <div style={{display: 'grid', marginLeft: '50px', alignItems: 'center', alignSelf: 'center'}}>
             <div style={{display: 'flex', justifyContent: 'end'}}>
-              <TestResultsPlate testRun={testRun} style={{minWidth: '300px', opacity: opacity, marginTop: '10px'}}/>
+              <TestResultsPlate testRun={testRun} style={{minWidth: '300px', opacity: opacity, marginTop: '20px'}}/>
             </div>
 
             {
               testRun.config !== null &&
-              <TestRunConfig testRun={testRun} style={{marginTop: '13px'}}/>
+              <TestRunConfig testRun={testRun} style={{marginTop: '23px'}}/>
             }
           </div>
         </div>
