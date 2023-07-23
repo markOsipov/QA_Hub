@@ -9,15 +9,19 @@ import {customTheme} from "../../../../styles/CustomTheme";
 import {useRouter} from "next/router";
 import {useState} from "react";
 export default function TestRunCard({testRun, ...props }) {
+  function getProgressBarWidth() {
+    return Math.max(window.innerWidth * 0.15, 200)
+  }
+
   const router = useRouter()
-  const [progressBarWidth, setProgressBarWidth] = useState(500)
+  const [progressBarWidth, setProgressBarWidth] = useState(getProgressBarWidth())
   const opacity = 0.7
 
   const [isHovering, setIsHovered] = useState(false);
   const onMouseEnter = () => setIsHovered(true);
   const onMouseLeave = () => setIsHovered(false);
   function handleResize() {
-    setProgressBarWidth(Math.max(window.innerWidth * 0.25, 100))
+    setProgressBarWidth(getProgressBarWidth())
   }
 
   const handleTestRunCardClick = () => {
@@ -37,30 +41,30 @@ export default function TestRunCard({testRun, ...props }) {
           value={testRun.testRunId}
           label={'testRunId'}
           labelStyle={{ justifySelf: 'center'}}
-          style={{fontSize: "17px", width: "min-content", padding: "5px 6px", minHeight: 'unset'}}
+          style={{fontSize: "15px", width: "min-content", padding: "5px 6px", minHeight: 'unset'}}
         />
         <StatusBadge label={testRun.status} style={{ marginLeft: "10px"}}/>
       </div>
 
       <div style={{display: 'flex', marginTop: '45px'}}>
+
         <TimingsPlate testRun={testRun}
                       style={{
                         display: 'grid',
                         alignItems: 'end',
                         justifyItems: 'start',
-                        minWidth: '370px',
                         position: 'relative',
                         opacity: opacity
                       }}
-        />
 
-        <div style={{display: 'flex', minWidth: '450px', position: 'relative', top: '-37px', flexGrow: '2', justifyContent: 'center'}}>
+        />
+        <div style={{display: 'flex', minWidth: '450px', position: 'relative', flexGrow: '2', justifyContent: 'center'}}>
           <TestResultsPlate testRun={testRun} progressBarWidth={progressBarWidth} style={{ minWidth: `${progressBarWidth + 185}px`}}/>
-          <RunnersPlate testRun={testRun} style={{minWidth: '300px', marginLeft: '50px',  opacity: opacity}} />
+          <RunnersPlate testRun={testRun} style={{minWidth: '300px', marginLeft: '20px',  opacity: opacity}} />
         </div>
 
-        <div style={{display: 'grid', minWidth: '570px', justifyItems: 'end',  position: 'relative', top: '-37px',  opacity: opacity}}>
-          <GitEnvPlate testRun={testRun}/>
+        <div style={{display: 'grid', justifyItems: 'end',  position: 'relative',  opacity: opacity, marginRight: '10px'}}>
+          <GitEnvPlate testRun={testRun} style={{opacity: opacity}}/>
         </div>
       </div>
     </div>

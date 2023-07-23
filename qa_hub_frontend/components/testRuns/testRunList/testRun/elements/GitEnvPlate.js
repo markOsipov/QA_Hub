@@ -12,32 +12,41 @@ export default function GitEnvPlate({testRun, ...props}) {
           value={testRun.config.branch}
           label={'Branch'}
           labelStyle={{ justifySelf: 'center'}}
-          style={{minWidth: "70px", width: "max-content", padding: "5px 6px", minHeight: 'unset', justifyItems: 'center'}}
+          style={{...itemStyle}}
         />
       </div>
     }
     { testRun.config?.commit != null &&
-      <div style={{display: "flex", alignItems: "center", marginLeft: "15px"}}>
+      <div style={{display: "flex", alignItems: "center", marginLeft: "5px"}}>
         <CommitIcon style={{transform: 'rotate(90deg)'}}></CommitIcon>
         <TextWithLabel
           value={testRun.config.commit}
           label={'Commit'}
           labelStyle={{ justifySelf: 'center'}}
-          style={{minWidth: "70px", width: "min-content", padding: "5px 6px", minHeight: 'unset',  justifyItems: 'center' }}
+          style={{...itemStyle}}
         />
       </div>
     }
 
     { testRun.config?.environment != null &&
-      <div style={{display: "flex", alignItems: "center", marginLeft: "20px"}}>
+      <div style={{display: "flex", alignItems: "center", marginLeft: "16px"}}>
         <PublicIcon></PublicIcon>
         <TextWithLabel
           value={testRun.config.environment}
           label={'Environment'}
           labelStyle={{ justifySelf: 'center'}}
-          style={{minWidth: "96px", width: "min-content", padding: "5px 6px", minHeight: 'unset', marginLeft: '4px', display: 'grid', justifyItems: 'center'}}
+          style={{...itemStyle}}
         />
       </div>
     }
   </div>
+}
+
+const itemStyle = {
+  minWidth: "70px",
+  width: "max-content",
+  padding: "5px 6px",
+  minHeight: 'unset',
+  justifyItems: 'center',
+  fontSize: '13px'
 }

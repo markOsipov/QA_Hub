@@ -52,7 +52,7 @@ const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, 
     }
 
     function handleTestcaseEditFinish() {
-        blockerState.unblockTest(blockedTest)
+        blockerState.editBlockedTest(blockedTest)
     }
 
     return <StyledTableRow>
