@@ -29,13 +29,13 @@ export default function GitEnvPlate({testRun, ...props}) {
     }
 
     { testRun.config?.environment != null &&
-      <div style={{display: "flex", alignItems: "center", marginLeft: "16px"}}>
+      <div style={{display: "flex", alignItems: "center", marginLeft: "10px"}}>
         <PublicIcon></PublicIcon>
         <TextWithLabel
           value={testRun.config.environment}
           label={'Environment'}
           labelStyle={{ justifySelf: 'center'}}
-          style={{...itemStyle}}
+          style={{...itemStyle, marginLeft: '5px'}}
         />
       </div>
     }

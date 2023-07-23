@@ -3,15 +3,18 @@ import {customTheme} from "../../styles/CustomTheme";
 export default function TextWithLabel ({value, label, labelStyle, valueStyle, ...props }) {
   const style = labelStyle || { justifySelf: 'start', left: '5px'}
 
-  return <div style={{
-    display: 'grid',
-    borderRadius: '4px',
-    border: "1px solid",
-    padding:'5px',
-    minHeight: '33px',
-    position: 'relative',
-    borderColor: customTheme.palette.text.disabled,
-    ...(props.style)}}
+  return <div
+    {...props}
+    style={{
+      display: 'grid',
+      borderRadius: '4px',
+      border: "1px solid",
+      padding:'5px',
+      minHeight: '33px',
+      position: 'relative',
+      borderColor: customTheme.palette.text.disabled,
+      ...(props.style)
+    }}
   >
     {
       label != null &&

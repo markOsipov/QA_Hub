@@ -31,19 +31,36 @@ export default function TestRunCard({testRun, ...props }) {
 
   window.addEventListener('resize', handleResize)
 
-  return <Paper style={{ padding: '15px', ...props.style, backgroundColor: isHovering ? 'rgba(255, 255, 255, 0.095)' : customTheme.palette.background.paper }}
-                onMouseEnter={onMouseEnter}
-                onMouseLeave={onMouseLeave}
-                onClick={handleTestRunCardClick}
+  return <Paper style={{ padding: '15px', ...props.style,  }}
+
   >
     <div style={{ display: "flex" }}>
       <div style={{display: 'grid'}}>
-        <div style={{ marginTop: "10px", display: "flex", alignItems: 'center'}}>
+        <div
+          style={{
+            marginTop: "10px",
+            display: "flex",
+            alignItems: 'center',
+            width: 'min-content'
+          }}
+
+        >
           <TextWithLabel
             value={testRun.testRunId}
             label={'testRunId'}
-            labelStyle={{ justifySelf: 'center'}}
-            style={{fontSize: "15px", width: "min-content", padding: "5px 6px", minHeight: 'unset'}}
+            labelStyle={{ justifySelf: 'center', cursor: 'pointer'}}
+            valueStyle={{cursor: 'pointer'}}
+            style={{
+              fontSize: "15px",
+              width: "min-content",
+              padding: "5px 6px",
+              minHeight: 'unset',
+              backgroundColor: isHovering ? 'rgba(255, 255, 255, 0.07)' : customTheme.palette.background.paper,
+              cursor: 'pointer'
+            }}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            onClick={handleTestRunCardClick}
           />
           <StatusBadge label={testRun.status} style={{ marginLeft: "10px"}}/>
         </div>
@@ -62,10 +79,10 @@ export default function TestRunCard({testRun, ...props }) {
 
       <div style={{display: 'flex', width: '100%', position: 'relative', top: '11px'}}>
         <div style={{flexGrow: '0.7'}}></div>
-        <div style={{display: 'flex', alignItems: 'center', marginLeft: '40px'}}>
+        <div style={{display: 'flex', alignItems: 'center', marginLeft: '20px'}}>
           <div style={{display: 'flex', minWidth: '450px', position: 'relative', flexGrow: '2', justifyContent: 'center'}}>
             <TestResultsPlate testRun={testRun} progressBarWidth={progressBarWidth} style={{ minWidth: `${progressBarWidth + 185}px`}}/>
-            <RunnersPlate testRun={testRun} style={{minWidth: '300px', marginLeft: '30px',  opacity: opacity}} />
+            <RunnersPlate testRun={testRun} style={{minWidth: '300px',  opacity: opacity}} />
           </div>
         </div>
 
@@ -73,7 +90,7 @@ export default function TestRunCard({testRun, ...props }) {
         <div style={{flexGrow: '1.1'}}></div>
 
 
-        <GitEnvPlate testRun={testRun} style={{opacity: opacity, marginRight: '10px'}}/>
+        <GitEnvPlate testRun={testRun} style={{opacity: opacity, marginRight: '8px', marginLeft: '15px'}}/>
       </div>
 
     </div>
