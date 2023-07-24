@@ -34,8 +34,12 @@ class TestResultsController {
     @Autowired
     lateinit var qaReviewService: QaReviewService
     @GetMapping("/{testRunId}")
-    fun getTestResults(@PathVariable("testRunId") testRunId: String): List<TestResult> {
-        return testResultsService.findTestResults(testRunId)
+    fun getTestResults(
+        @PathVariable("testRunId") testRunId: String,
+        @RequestParam("skip", required = false, defaultValue = "0") skip: Int,
+        @RequestParam("limit", required = false, defaultValue = "0") limit: Int,
+    ): List<TestResult> {
+        return testResultsService.findTestResults(testRunId, skip, limit)
     }
 
     @GetMapping("/retries")

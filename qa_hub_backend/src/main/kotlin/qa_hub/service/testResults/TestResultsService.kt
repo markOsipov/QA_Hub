@@ -25,11 +25,14 @@ class TestResultsService {
         mongoClient.db.getCollection<TestResultRetry>(Collections.TEST_RESULTS_RETRIES.collectionName)
     }
 
-    fun findTestResults(testRunId: String): List<TestResult> = runBlocking {
-        testResultsCollection.aggregate<TestResult>(
-            match(  TestResult::testRunId eq testRunId),
-            sort(ascending(TestResult::fullName))
-        ).toList()
+    fun findTestResults(testRunId: String, skip: Int, limit: Int): List<TestResult> = runBlocking {
+        val query = mutableListOf( match(  TestResult::testRunId eq testRunId),
+            sort(ascending(TestResult::fullName)),
+            skip(skip))
+        if (limit > 0) {
+            query.add(limit(limit) )
+        }
+        testResultsCollection.aggregate<TestResult>(query).toList()
     }
 
     fun findTestRetries(testRunId: String, fullName: String): List<TestResultRetry> = runBlocking {
