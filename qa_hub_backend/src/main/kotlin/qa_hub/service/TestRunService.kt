@@ -314,7 +314,7 @@ class TestRunService {
         }
 
         val duration = ZonedDateTime.parse(testRun.timeMetrics.started)
-            .until(ZonedDateTime.parse(testRun.timeMetrics.ended), ChronoUnit.MINUTES)
+            .until(ZonedDateTime.parse(endDate), ChronoUnit.MINUTES)
 
           testRunCollection.updateOne(
             TestRun::testRunId eq testRun.testRunId,
