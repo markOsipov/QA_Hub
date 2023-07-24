@@ -1,5 +1,18 @@
 package qa_hub.entity.testRun
 
+
+data class TestResultFilterRequest(
+    val filter: TestResultFilter?
+)
+
+data class TestResultFilter(
+    val statuses: MutableList<String> = mutableListOf(),
+    val message: String?,
+    val deviceId: String?,
+    val runner: String?,
+    val hasRetries: Boolean?,
+    val unreviewed: Boolean?
+)
 data class TestResult(
     var testRunId: String,
     var testcaseId: String = "",
