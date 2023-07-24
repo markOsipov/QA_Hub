@@ -25,7 +25,7 @@ class TestResultsService {
         mongoClient.db.getCollection<TestResultRetry>(Collections.TEST_RESULTS_RETRIES.collectionName)
     }
 
-    fun findTestResults(testRunId: String, request: TestResultFilterRequest?): List<TestResult> = runBlocking {
+    fun findTestResults(testRunId: String, request: TestResultsRequest?): List<TestResult> = runBlocking {
         val filter = mutableListOf(TestResult::testRunId eq testRunId)
 
         request?.filter?.let {

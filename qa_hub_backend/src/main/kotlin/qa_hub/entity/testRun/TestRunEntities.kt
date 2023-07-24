@@ -10,7 +10,8 @@ open class CreateTestRunRequest(
 )
 
 data class TestRunsRequest(
-    val filter: TestRunFilter?
+    val filter: TestRunFilter? = null,
+    val pagination: Pagination? = Pagination()
 )
 data class TestRunFilter(
     val statuses: List<String> = listOf(),

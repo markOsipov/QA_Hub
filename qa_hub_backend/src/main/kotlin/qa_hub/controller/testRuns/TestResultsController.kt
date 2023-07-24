@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import qa_hub.entity.testRun.QaReview
 import qa_hub.entity.testRun.TestResult
-import qa_hub.entity.testRun.TestResultFilterRequest
+import qa_hub.entity.testRun.TestResultsRequest
 import qa_hub.entity.testRun.TestResultRetry
 import qa_hub.service.testResults.QaReviewService
 import qa_hub.service.testResults.TestLogsService
@@ -37,7 +37,7 @@ class TestResultsController {
     @PostMapping("/{testRunId}")
     fun getTestResults(
         @PathVariable("testRunId") testRunId: String,
-        @RequestBody requestBody: TestResultFilterRequest? = null
+        @RequestBody requestBody: TestResultsRequest? = null
     ): List<TestResult> {
         return testResultsService.findTestResults(testRunId, requestBody)
     }

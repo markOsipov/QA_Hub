@@ -36,8 +36,8 @@ class TestRunController {
     @Autowired
     lateinit var testStepsService: TestStepsService
     @PostMapping("/{project}")
-    fun getTestRuns(@PathVariable("project") project: String, @RequestBody filter: TestRunsRequest?): List<TestRun> {
-        return testRunService.getTestRuns(project, filter?.filter)
+    fun getTestRuns(@PathVariable("project") project: String, @RequestBody request: TestRunsRequest?): List<TestRun> {
+        return testRunService.getTestRuns(project, request)
     }
 
     @GetMapping("")

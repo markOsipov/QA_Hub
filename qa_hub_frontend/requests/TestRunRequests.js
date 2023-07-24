@@ -17,7 +17,7 @@ export function createNewTestRun(project, params) {
     return axios(config)
 }
 
-export function getTestRuns(projectId, filter) {
+export function getTestRuns(projectId, filter, skip, limit) {
     const config = {
         method: 'post',
         url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat(`/api/testRuns/${projectId}`),
@@ -25,7 +25,11 @@ export function getTestRuns(projectId, filter) {
             'Content-Type': 'application/json'
         },
         data: {
-            filter: filter
+            filter: filter,
+            pagination: {
+                skip: skip || 0,
+                limit: limit || 0
+            }
         }
     }
 

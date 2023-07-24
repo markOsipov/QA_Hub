@@ -56,45 +56,51 @@ class TestRunService {
         mongoClient.db.getCollection<QaReview>(TEST_QA_REVIEWS.collectionName)
     }
 
-    fun getTestRuns(project: String, testRunFilter: TestRunFilter?): List<TestRun> = runBlocking {
+    fun getTestRuns(project: String, request: TestRunsRequest?): List<TestRun> = runBlocking {
         val filter = mutableListOf(TestRun::project eq project)
 
-        testRunFilter?.let {
-            if (testRunFilter.statuses.isNotEmpty()) {
+        request?.filter?.let {
+            if (it.statuses.isNotEmpty()) {
                 filter.add(
-                    TestRun::status `in` testRunFilter.statuses
+                    TestRun::status `in` it.statuses
                 )
             }
 
-            if (!testRunFilter.branch.isNullOrEmpty()) {
+            if (!it.branch.isNullOrEmpty()) {
                 filter.add(
-                    TestRun::config / TestRunConfig::branch eq testRunFilter.branch
+                    TestRun::config / TestRunConfig::branch eq it.branch
                 )
             }
 
-            if (!testRunFilter.commit.isNullOrEmpty()) {
+            if (!it.commit.isNullOrEmpty()) {
                 filter.add(
-                    TestRun::config / TestRunConfig::commit eq testRunFilter.commit
+                    TestRun::config / TestRunConfig::commit eq it.commit
                 )
             }
 
-            if (!testRunFilter.environment.isNullOrEmpty()) {
+            if (!it.environment.isNullOrEmpty()) {
                 filter.add(
-                    TestRun::config / TestRunConfig::environment eq testRunFilter.environment
+                    TestRun::config / TestRunConfig::environment eq it.environment
                 )
             }
 
-            if (!testRunFilter.tag.isNullOrEmpty()) {
+            if (!it.tag.isNullOrEmpty()) {
                 filter.add(
-                    TestRun::tags contains testRunFilter.tag
+                    TestRun::tags contains it.tag
                 )
             }
         }
 
-        testRunCollection.aggregate<TestRun>(
+        val query = mutableListOf(
             match(and(*filter.toTypedArray())),
-            sort(descending(TestRun::testRunId))
-        ).toList()
+            sort(descending(TestRun::testRunId)),
+            skip(request?.pagination?.skip ?: 0 ))
+
+        if ((request?.pagination?.limit ?: 0)> 0) {
+            query.add(limit(request!!.pagination!!.limit) )
+        }
+
+        testRunCollection.aggregate<TestRun>(query).toList()
     }
     fun createTestRun(testRunRequest: CreateTestRunRequest): TestRun = runBlocking {
         val testRun = TestRun(

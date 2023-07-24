@@ -1,12 +1,12 @@
 package qa_hub.entity.testRun
 
 
-data class TestResultFilterRequest(
+data class TestResultsRequest(
     val filter: TestResultFilter? = null,
-    val pagination: TestResultPagination? = TestResultPagination()
+    val pagination: Pagination? = Pagination()
 )
 
-data class TestResultPagination(
+data class Pagination(
     val skip: Int = 0,
     val limit: Int = 0
 )
