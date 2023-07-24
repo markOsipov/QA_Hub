@@ -21,13 +21,22 @@ const TestRunList = observer(({...props}) => {
     })
   }
 
+  function clearAndLoad() {
+    setFilter({})
+    getTestRuns(selectedProject, {}).then(response => {
+      if (response.data) {
+        setTestRuns(response.data)
+      }
+    })
+  }
+
   useEffect(() => {
     loadTestRuns()
   }, [selectedProject])
 
 
   return <div style={{...props.style}}>
-    <TestRunsFilter filter={filter} setFilter={setFilter} loadTestRuns={loadTestRuns}/>
+    <TestRunsFilter filter={filter} setFilter={setFilter} loadTestRuns={loadTestRuns} clearAndLoad={clearAndLoad}/>
     <div style={{minWidth: 'max-content'}}>
     {
       testRuns.map((testRun) => {

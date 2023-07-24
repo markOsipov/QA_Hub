@@ -59,34 +59,36 @@ class TestRunService {
     fun getTestRuns(project: String, testRunFilter: TestRunFilter?): List<TestRun> = runBlocking {
         val filter = mutableListOf(TestRun::project eq project)
 
-        if (!testRunFilter?.statuses.isNullOrEmpty()) {
-            filter.add(
-                TestRun::status `in` testRunFilter?.statuses!!
-            )
-        }
+        testRunFilter?.let {
+            if (testRunFilter.statuses.isNotEmpty()) {
+                filter.add(
+                    TestRun::status `in` testRunFilter.statuses
+                )
+            }
 
-        testRunFilter?.branch?.let {
-            filter.add(
-                TestRun::config / TestRunConfig::branch eq it
-            )
-        }
+            if (!testRunFilter.branch.isNullOrEmpty()) {
+                filter.add(
+                    TestRun::config / TestRunConfig::branch eq testRunFilter.branch
+                )
+            }
 
-        testRunFilter?.commit?.let {
-            filter.add(
-                TestRun::config / TestRunConfig::commit eq it
-            )
-        }
+            if (!testRunFilter.commit.isNullOrEmpty()) {
+                filter.add(
+                    TestRun::config / TestRunConfig::commit eq testRunFilter.commit
+                )
+            }
 
-        testRunFilter?.environment?.let {
-            filter.add(
-                TestRun::config / TestRunConfig::environment eq it
-            )
-        }
+            if (!testRunFilter.environment.isNullOrEmpty()) {
+                filter.add(
+                    TestRun::config / TestRunConfig::environment eq testRunFilter.environment
+                )
+            }
 
-        testRunFilter?.tag?.let {
-            filter.add(
-                TestRun::tags contains it
-            )
+            if (!testRunFilter.tag.isNullOrEmpty()) {
+                filter.add(
+                    TestRun::tags contains testRunFilter.tag
+                )
+            }
         }
 
         testRunCollection.aggregate<TestRun>(
