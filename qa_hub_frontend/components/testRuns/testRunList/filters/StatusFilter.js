@@ -15,6 +15,10 @@ export default function StatusFilter({filter, setFilter, ...props}) {
     })
   }, [statuses])
 
+  useEffect(() => {
+    setStatuses(filter.statuses || [])
+  }, [filter.statuses])
+
   const handleStatusChange = (event) => {
     const value = event.target.value
     setStatuses(

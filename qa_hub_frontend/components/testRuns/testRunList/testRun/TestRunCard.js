@@ -8,7 +8,7 @@ import TestResultsPlate from "./elements/TestResultsPlate";
 import {customTheme} from "../../../../styles/CustomTheme";
 import {useRouter} from "next/router";
 import {useState} from "react";
-export default function TestRunCard({testRun, ...props }) {
+export default function TestRunCard({testRun, filter, filterAndLoad, ...props }) {
   const opacity = 0.6
   function getProgressBarWidth() {
     return Math.max(window.innerWidth * 0.2, 200)
@@ -31,9 +31,23 @@ export default function TestRunCard({testRun, ...props }) {
 
   window.addEventListener('resize', handleResize)
 
-  return <Paper style={{ padding: '15px', ...props.style,  }}
+  const filterByStatus = () => {
+    const statuses = filter.statuses || []
+    if (statuses.includes(testRun.status)) {
+      statuses.pop(testRun.status)
+    } else {
+      statuses.push(testRun.status)
+    }
 
-  >
+    const newFilterValue = {
+      ...filter,
+      statuses: statuses
+    }
+
+    filterAndLoad(newFilterValue)
+  }
+
+  return <Paper style={{ padding: '15px', ...props.style,  }}>
     <div style={{ display: "flex", width: '100%'}}>
       <div style={{display: 'grid', minWidth: '311px'}}>
         <div
@@ -43,7 +57,6 @@ export default function TestRunCard({testRun, ...props }) {
             alignItems: 'center',
             width: 'min-content'
           }}
-
         >
           <TextWithLabel
             value={testRun.testRunId}
@@ -62,7 +75,11 @@ export default function TestRunCard({testRun, ...props }) {
             onMouseLeave={onMouseLeave}
             onClick={handleTestRunCardClick}
           />
-          <StatusBadge label={testRun.status} style={{ marginLeft: "10px"}}/>
+          <StatusBadge
+            label={testRun.status}
+            style={{ marginLeft: "10px", cursor: 'pointer'}}
+            onClick={filterByStatus}
+          />
         </div>
 
         <TimingsPlate testRun={testRun}
@@ -88,7 +105,7 @@ export default function TestRunCard({testRun, ...props }) {
           </div>
 
           <div style={{display: 'grid', justifyItems:'end', width: '40%', minWidth: '470px'}}>
-            <GitEnvPlate testRun={testRun} style={{opacity: opacity, marginRight: '8px', marginLeft: '15px', }}/>
+            <GitEnvPlate testRun={testRun} filter={filter} filterAndLoad={filterAndLoad} style={{marginRight: '8px', marginLeft: '15px', }}/>
           </div>
 
         </div>

@@ -21,9 +21,10 @@ const TestRunList = observer(({...props}) => {
     })
   }
 
-  function clearAndLoad() {
-    setFilter({})
-    getTestRuns(selectedProject, {}).then(response => {
+  function filterAndLoad(filter) {
+    const filterValue = filter || {}
+    setFilter(filterValue)
+    getTestRuns(selectedProject, filterValue).then(response => {
       if (response.data) {
         setTestRuns(response.data)
       }
@@ -36,11 +37,17 @@ const TestRunList = observer(({...props}) => {
 
 
   return <div style={{...props.style}}>
-    <TestRunsFilter filter={filter} setFilter={setFilter} loadTestRuns={loadTestRuns} clearAndLoad={clearAndLoad}/>
+    <TestRunsFilter filter={filter} setFilter={setFilter} loadTestRuns={loadTestRuns} filterAndLoad={filterAndLoad}/>
     <div style={{minWidth: 'max-content'}}>
     {
       testRuns.map((testRun) => {
-        return <TestRunCard testRun={testRun} key={testRun.testRunId} style={{marginTop: "15px", minWidth: 'max-content'}} />
+        return <TestRunCard
+          testRun={testRun}
+          key={testRun.testRunId}
+          style={{marginTop: "15px", minWidth: 'max-content'}}
+          filter={filter}
+          filterAndLoad={filterAndLoad}
+        />
       })
     }
     </div>

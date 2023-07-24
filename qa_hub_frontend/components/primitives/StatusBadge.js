@@ -24,6 +24,7 @@ export default function StatusBadge({label, variant, ...props}) {
   }
 
   return <label
+    {...props}
     style={{
       borderRadius: "5px",
       border: "1px solid",

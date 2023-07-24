@@ -7,8 +7,7 @@ import CommitFilter from "./CommitFilter";
 import BranchFilter from "./BranchFilter";
 import EnvironmentFilter from "./EnvironmentFilter";
 import TagFilter from "./TagFilter";
-export default function TestRunsFilter({ filter, setFilter, loadTestRuns, clearAndLoad, ...props }) {
-
+export default function TestRunsFilter({ filter, setFilter, loadTestRuns, filterAndLoad, ...props }) {
 
   return <Paper style={{padding: "15px", ...props.style}}>
     <div style={{display: 'flex', alignItems: 'center'}}>
@@ -21,7 +20,6 @@ export default function TestRunsFilter({ filter, setFilter, loadTestRuns, clearA
       <CommitFilter filter={filter} setFilter={setFilter} style={{marginLeft: '15px', width: '120px'}}/>
       <EnvironmentFilter filter={filter} setFilter={setFilter} style={{marginLeft: '15px', width: '120px'}}/>
 
-
       <Button variant="contained"
               color="primary"
               size="small"
@@ -33,10 +31,9 @@ export default function TestRunsFilter({ filter, setFilter, loadTestRuns, clearA
       <Button variant="contained"
               color="error"
               size="small"
-              onClick={clearAndLoad}
+              onClick={() => {filterAndLoad({})}}
               style={{height: 'min-content', marginLeft: '10px'}}
       >Clear</Button>
     </div>
-
   </Paper>
 }
