@@ -31,8 +31,8 @@ class TestRunController {
 
     @Autowired
     lateinit var testStepsService: TestStepsService
-    @GetMapping("/{project}")
-    fun getTestRuns(@PathVariable("project") project: String, @RequestBody filter: TestRunsRequest? = null): List<TestRun> {
+    @PostMapping("/{project}")
+    fun getTestRuns(@PathVariable("project") project: String, @RequestBody filter: TestRunsRequest?): List<TestRun> {
         return testRunService.getTestRuns(project, filter?.filter)
     }
 
@@ -111,6 +111,8 @@ class TestRunController {
             Runner("Runner 2", listOf("0BE2A453-56F6-4735-982B-B5E97B1E5400", "AB32FAF0-CBEF-424D-BB36-DB5A34C93B89"))
         )
 
+        val tags = listOf("Release", "Daily", "Regression", "Dev")
+
         val tests = mutableListOf<String>()
         repeat(testsCount) { index ->
             tests.add("TestTarget.TestClass.testMethod${index}")
@@ -129,6 +131,7 @@ class TestRunController {
                         params = testRun.params,
                         testRunId = testRun.testRunId,
                         testList = testList,
+                        tags = tags.shuffled().take(Random.nextInt(0, tags.size - 1)).toMutableList(),
                         runner = it.name,
                         simulators = it.simulators,
                         config = TestRunConfig(

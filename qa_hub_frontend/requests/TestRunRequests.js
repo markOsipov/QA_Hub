@@ -19,7 +19,7 @@ export function createNewTestRun(project, params) {
 
 export function getTestRuns(projectId, filter) {
     const config = {
-        method: 'get',
+        method: 'post',
         url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat(`/api/testRuns/${projectId}`),
         headers: {
             'Content-Type': 'application/json'

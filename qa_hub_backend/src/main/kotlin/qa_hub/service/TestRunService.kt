@@ -59,9 +59,9 @@ class TestRunService {
     fun getTestRuns(project: String, testRunFilter: TestRunFilter?): List<TestRun> = runBlocking {
         val filter = mutableListOf(TestRun::project eq project)
 
-        testRunFilter?.status?.let {
+        if (!testRunFilter?.statuses.isNullOrEmpty()) {
             filter.add(
-                TestRun::status eq it
+                TestRun::status `in` testRunFilter?.statuses!!
             )
         }
 

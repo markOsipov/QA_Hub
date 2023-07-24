@@ -13,7 +13,7 @@ data class TestRunsRequest(
     val filter: TestRunFilter?
 )
 data class TestRunFilter(
-    val status: String?,
+    val statuses: List<String> = listOf(),
     val branch: String?,
     val commit: String?,
     val environment: String?,
@@ -26,6 +26,7 @@ open class StartTestRunRequest(
     var testRunId: String?,
     var config: TestRunConfig = TestRunConfig(),
     var testList: MutableList<TestListElement> = mutableListOf(),
+    var tags: MutableList<String> = mutableListOf(),
 
     var runner: String? = null,
     var simulators: List<String> = listOf()

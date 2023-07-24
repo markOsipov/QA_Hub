@@ -5,14 +5,16 @@ import projectState from "../../../state/ProjectState";
 import {useEffect, useState} from "react";
 import {getTestRuns} from "../../../requests/TestRunRequests";
 import TestRunCard from "./testRun/TestRunCard";
+import TestRunsFilter from "./filters/TestRunsFilter";
 
 const TestRunList = observer(({...props}) => {
   let {selectedProject} = projectState
 
   let [testRuns, setTestRuns] = useState([])
+  let [filter, setFilter] = useState({})
 
   function loadTestRuns() {
-    getTestRuns(selectedProject).then(response => {
+    getTestRuns(selectedProject, filter).then(response => {
       if (response.data) {
         setTestRuns(response.data)
       }
@@ -25,9 +27,7 @@ const TestRunList = observer(({...props}) => {
 
 
   return <div style={{...props.style}}>
-    <Paper style={{padding: "15px"}}>
-       <Typography variant={'h5'}>TestRuns </Typography>
-    </Paper>
+    <TestRunsFilter filter={filter} setFilter={setFilter} loadTestRuns={loadTestRuns}/>
     <div style={{minWidth: 'max-content'}}>
     {
       testRuns.map((testRun) => {
