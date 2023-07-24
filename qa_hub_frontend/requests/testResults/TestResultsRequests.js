@@ -1,12 +1,19 @@
 import process from "../../next.config";
 import axios from "axios";
 
-export function getTestResults(testRunId) {
+export function getTestResults(testRunId, filter, skip, limit) {
   const config = {
-    method: 'get',
+    method: 'post',
     url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat(`/api/testResults/${testRunId}`),
     headers: {
       'Content-Type': 'application/json'
+    },
+    data: {
+      filter: filter,
+      pagination: {
+        skip: skip || 0,
+        limit: skip || 0
+      }
     }
   }
 

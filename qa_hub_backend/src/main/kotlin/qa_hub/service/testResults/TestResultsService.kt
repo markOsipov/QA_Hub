@@ -25,13 +25,46 @@ class TestResultsService {
         mongoClient.db.getCollection<TestResultRetry>(Collections.TEST_RESULTS_RETRIES.collectionName)
     }
 
-    fun findTestResults(testRunId: String, skip: Int, limit: Int): List<TestResult> = runBlocking {
-        val query = mutableListOf( match(  TestResult::testRunId eq testRunId),
-            sort(ascending(TestResult::fullName)),
-            skip(skip))
-        if (limit > 0) {
-            query.add(limit(limit) )
+    fun findTestResults(testRunId: String, request: TestResultFilterRequest?): List<TestResult> = runBlocking {
+        val filter = mutableListOf(TestResult::testRunId eq testRunId)
+
+        request?.filter?.let {
+            if (it.deviceId != null) {
+                filter.add(TestResult::deviceId eq it.deviceId)
+            }
+
+            if (it.runner != null) {
+                filter.add(TestResult::runner eq it.runner)
+            }
+
+            if (it.message != null) {
+                filter.add(TestResult::message regex it.message)
+            }
+
+            if (it.statuses.isNotEmpty()) {
+                filter.add(TestResult::status `in` it.statuses)
+            }
+
+            if (it.retries == true) {
+                filter.add(TestResult::retries gt 0)
+            } else if ((it.retries == false)) {
+                filter.add(TestResult::retries eq 0)
+            }
+
+            if (it.unreviewed != null) {
+                filter.add(TestResult::reviewed eq !it.unreviewed)
+            }
         }
+
+        val query = mutableListOf(
+            match(and(*filter.toTypedArray())),
+            sort(ascending(TestResult::fullName)),
+            skip(request?.pagination?.skip ?: 0 ))
+
+        if ((request?.pagination?.limit ?: 0)> 0) {
+            query.add(limit(request!!.pagination!!.limit) )
+        }
+
         testResultsCollection.aggregate<TestResult>(query).toList()
     }
 

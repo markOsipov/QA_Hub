@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import qa_hub.entity.testRun.QaReview
 import qa_hub.entity.testRun.TestResult
+import qa_hub.entity.testRun.TestResultFilterRequest
 import qa_hub.entity.testRun.TestResultRetry
 import qa_hub.service.testResults.QaReviewService
 import qa_hub.service.testResults.TestLogsService
@@ -33,13 +34,12 @@ class TestResultsController {
 
     @Autowired
     lateinit var qaReviewService: QaReviewService
-    @GetMapping("/{testRunId}")
+    @PostMapping("/{testRunId}")
     fun getTestResults(
         @PathVariable("testRunId") testRunId: String,
-        @RequestParam("skip", required = false, defaultValue = "0") skip: Int,
-        @RequestParam("limit", required = false, defaultValue = "0") limit: Int,
+        @RequestBody requestBody: TestResultFilterRequest? = null
     ): List<TestResult> {
-        return testResultsService.findTestResults(testRunId, skip, limit)
+        return testResultsService.findTestResults(testRunId, requestBody)
     }
 
     @GetMapping("/retries")

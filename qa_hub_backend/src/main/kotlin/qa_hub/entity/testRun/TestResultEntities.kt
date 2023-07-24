@@ -2,15 +2,20 @@ package qa_hub.entity.testRun
 
 
 data class TestResultFilterRequest(
-    val filter: TestResultFilter?
+    val filter: TestResultFilter? = null,
+    val pagination: TestResultPagination? = TestResultPagination()
 )
 
+data class TestResultPagination(
+    val skip: Int = 0,
+    val limit: Int = 0
+)
 data class TestResultFilter(
     val statuses: MutableList<String> = mutableListOf(),
     val message: String?,
     val deviceId: String?,
     val runner: String?,
-    val hasRetries: Boolean?,
+    val retries: Boolean?,
     val unreviewed: Boolean?
 )
 data class TestResult(
@@ -28,6 +33,8 @@ data class TestResult(
     var device: String? = "simulator",
     var deviceRuntime: String = "unknown",
     var deviceId: String = "unknown",
+
+    var reviewed: Boolean = false,
     var attachments: MutableList<String> = mutableListOf()
 )
 

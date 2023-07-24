@@ -2,13 +2,15 @@ package qa_hub.service.testResults
 
 import qa_hub.entity.testRun.QaReview
 import com.mongodb.client.model.Filters
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.litote.kmongo.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import qa_hub.core.mongo.QaHubMongoClient
 import qa_hub.core.mongo.entity.Collections
-
+import qa_hub.entity.testRun.QaResolution
+import qa_hub.entity.testRun.TestResult
 
 
 @Service
@@ -18,6 +20,10 @@ class QaReviewService {
 
     private val qaReviewCollection by lazy {
         mongoClient.db.getCollection<QaReview>(Collections.TEST_QA_REVIEWS.collectionName)
+    }
+
+    private val testResultsCollection by lazy {
+        mongoClient.db.getCollection<TestResult>(Collections.TEST_RESULTS.collectionName)
     }
 
     fun getQaReview(
@@ -47,6 +53,18 @@ class QaReviewService {
 
         qaReview.qaResolution?.let{
             update.add(QaReview::qaResolution setTo qaReview.qaResolution)
+
+            launch {
+                testResultsCollection.updateOne(
+                    and(
+                        TestResult::testRunId eq qaReview.testRunId,
+                        TestResult::fullName eq qaReview.fullName
+                    ),
+                    set(
+                        TestResult::reviewed setTo (qaReview.qaResolution != QaResolution.UNREVIEWED.value)
+                    )
+                )
+            }
         }
 
         qaReviewCollection.updateOne(
