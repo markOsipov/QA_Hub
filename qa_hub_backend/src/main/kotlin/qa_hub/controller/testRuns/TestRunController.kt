@@ -2,9 +2,12 @@ package qa_hub.controller.testRuns
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.ClassPathResource
 import org.springframework.web.bind.annotation.*
+import qa_hub.core.utils.runParallel
 import qa_hub.entity.testRun.*
 import qa_hub.service.testResults.TestResultsService
 import qa_hub.service.TestRunService
@@ -15,6 +18,7 @@ import java.io.InputStreamReader
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import kotlin.random.Random
+import kotlin.random.nextLong
 
 
 @RestController
@@ -52,7 +56,7 @@ class TestRunController {
     }
 
     @GetMapping("/nextTest/{testRunId}")
-    fun getNextTest(@PathVariable testRunId: String,
+    suspend fun getNextTest(@PathVariable testRunId: String,
                     @RequestParam("simulatorId", required = false, defaultValue = "") simulatorId: String,
                     @RequestParam("runner", required = false, defaultValue = "") runner: String
     ): NextTestResponse {
@@ -80,7 +84,11 @@ class TestRunController {
     }
 
     @PostMapping("/createDebug")
-    fun createDebugTestRun(@RequestParam(required = false, defaultValue = "10") testsCount: Int): List<String> {
+    fun createDebugTestRun(
+        @RequestParam(required = false, defaultValue = "10") testsCount: Int,
+        @RequestParam(required = false, defaultValue = "2") runnersCount: Int,
+        @RequestParam(required = false, defaultValue = "2") simulatorsCount: Int
+    ): List<String> {
         val logFile = ClassPathResource("debug/testlog_example.log")
         val logText = BufferedReader(InputStreamReader(logFile.inputStream)).readText()
 
@@ -97,7 +105,7 @@ class TestRunController {
             val end = ZonedDateTime.now(ZoneOffset.UTC).toEpochSecond()
 
             val time = end - start
-            measures.add("${name}: ${time} ")
+            measures.add("$name: $time")
 
             return result
         }
@@ -106,10 +114,14 @@ class TestRunController {
             val simulators: List<String>
         )
 
-        val runners = listOf(
-            Runner("Runner 1", listOf("0034468A-B653-4FD9-9D29-EF25302AB9C9", "55B2ABE2-3AC8-40A1-B5F6-4FFBBD059811")),
-            Runner("Runner 2", listOf("0BE2A453-56F6-4735-982B-B5E97B1E5400", "AB32FAF0-CBEF-424D-BB36-DB5A34C93B89"))
-        )
+        val runners = (1 ..runnersCount).toList().map { runner ->
+            val simulators = (1 .. simulatorsCount).toList().map {simulator ->
+                "0BE2A453-56F6-4735-982B-B5E97B1E54${runner}${simulator - 1}"
+            }
+
+            return@map Runner("Runner $runner", simulators)
+        }
+
 
         val tags = listOf("Release", "Daily", "Regression", "Dev")
 
@@ -139,54 +151,74 @@ class TestRunController {
                             commit = "TestCommit",
                             environment = "test",
                             retries = 3,
-                            parallelThreads = 2
+                            parallelThreads = simulatorsCount
                         )
                     )
                 )
             }
         }
 
-        var finish = false
-        while(!finish) {
-            val runner = runners.random()
-            val simulator = runner.simulators.random()
-            val status = listOf(TestStatus.SUCCESS, TestStatus.FAILURE).random()
-
-            val nextTest = measure("GetNextTest") {
-                testRunService.getNextTest(testRun.testRunId, simulator, runner.name)
+        data class Worker(val runner: String, val simulator: String)
+        val workers = mutableListOf<Worker>()
+        runners.forEach { runner ->
+            runner.simulators.forEach { simulator ->
+                workers.add(Worker(runner.name, simulator))
             }
+        }
 
-            finish = nextTest.nextTest == null
+        fun runTests(runner: String, simulator: String) {
+            var finish = false
+            while(!finish) {
+                val status = listOf(TestStatus.SUCCESS, TestStatus.FAILURE).random()
 
-            nextTest.nextTest?.let {
-                measure("UpdateTestResult") {
-                    testResultsService.updateTestResult(
-                        TestResult(
-                            testRunId = testRun.testRunId,
-                            testcaseId = nextTest.testId ?: "unknown",
-                            project = testRun.project,
-                            fullName = nextTest.nextTest ?: "unknown",
-                            status = status.status,
-                            deviceId = simulator,
-                            device = "iPhone 12",
-                            deviceRuntime = "iOS 16.3.1",
-                            runner = runner.name,
-                            duration = Random.nextDouble(300.0),
-                            message = if (status.status == TestStatus.FAILURE.status) {
-                                logText.take(Random.nextInt(20, 500))
-                            } else null
+                val nextTest = measure("GetNextTest") { runBlocking {
+                        testRunService.getNextTest(testRun.testRunId, simulator, runner)
+                    }
+                }
+                runBlocking {
+                    delay(Random.nextLong(1000, 10000))
+                }
+
+                finish = nextTest.nextTest == null
+                nextTest.nextTest?.let {
+                    measure("UpdateTestResult") {
+                        testResultsService.updateTestResult(
+                            TestResult(
+                                testRunId = testRun.testRunId,
+                                testcaseId = nextTest.testId ?: "unknown",
+                                project = testRun.project,
+                                fullName = nextTest.nextTest ?: "unknown",
+                                status = status.status,
+                                deviceId = simulator,
+                                device = "iPhone 12",
+                                deviceRuntime = "iOS 16.3.1",
+                                runner = runner,
+                                duration = Random.nextDouble(300.0),
+                                message = if (status.status == TestStatus.FAILURE.status) {
+                                    logText.take(Random.nextInt(20, 500))
+                                } else null
+                            )
                         )
-                    )
 
-                    testLogsService.insertTestLog(testRun.testRunId, nextTest.nextTest ?: "unknown", nextTest.retry!!, logText)
-                    testStepsService.insertTestSteps(
-                        TestStepsService.TestSteps(
-                            testRun.testRunId, nextTest.nextTest ?: "unknown", nextTest.retry, steps
+
+                        testLogsService.insertTestLog(
+                            testRun.testRunId,
+                            nextTest.nextTest ?: "unknown",
+                            nextTest.retry!!,
+                            logText
                         )
-                    )
+                        testStepsService.insertTestSteps(
+                            TestStepsService.TestSteps(
+                                testRun.testRunId, nextTest.nextTest ?: "unknown", nextTest.retry, steps
+                            )
+                        )
+                    }
                 }
             }
         }
+
+        val actions = workers.map{{ runTests(it.runner, it.simulator) }}
+        runParallel(actions)
 
         runners.forEach {
             measure("FinishTestRun") {

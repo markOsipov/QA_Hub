@@ -1,6 +1,7 @@
 package qa_hub.service.testResults
 
 import com.mongodb.client.result.UpdateResult
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.litote.kmongo.*
 import org.litote.kmongo.coroutine.aggregate
@@ -48,7 +49,10 @@ class TestResultsService {
             skipProperties.add("retries")
         }
 
-        updateRetriesInfo(testResult)
+        launch {
+            updateRetriesInfo(testResult)
+        }
+
         testResultsCollection.updateOne(
             and(
                 TestResult::testRunId eq testResult.testRunId,
@@ -60,7 +64,7 @@ class TestResultsService {
         )
     }
 
-    private fun updateRetriesInfo(testResult: TestResult) = runBlocking {
+    private suspend fun updateRetriesInfo(testResult: TestResult) {
         val filter = and(
             TestResultRetry::testRunId eq testResult.testRunId,
             TestResultRetry::fullName eq testResult.fullName

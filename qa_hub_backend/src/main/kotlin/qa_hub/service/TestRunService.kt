@@ -176,25 +176,32 @@ class TestRunService {
     private fun enlistInQueue(testRunId: String, queueTicket: String): String = runBlocking {
         testQueueCollection.updateOne(
             TestQueue::testRunId eq testRunId,
-            push(TestQueue::queue, queueTicket)
+            push(TestQueue::queue, queueTicket),
+            upsert()
         )
 
         return@runBlocking queueTicket
     }
 
-    private suspend fun waitForYourTurn(testRunId: String, queueTicket: String) {
-        val maxWaitTime = 30000L
+    private fun waitForYourTurn(testRunId: String, queueTicket: String) = runBlocking {
+        val maxWaitTime = 10000L
         val timeout = 200L
-        var timePassed = 0L
-        withContext(Dispatchers.Default) {
-            async {
-                while (
-                    timePassed < maxWaitTime && testQueueCollection.findOne(TestQueue::testRunId eq testRunId)?.queue?.firstOrNull() != queueTicket
-                ) {
-                    delay(timeout)
-                    timePassed += timeout
-                }
-            }.await()
+        val deadline = currentEpoch() + maxWaitTime
+
+//        withContext(Dispatchers.Default) {
+//            async {
+//                while (
+//                    currentEpoch() < deadline && testQueueCollection.findOne(TestQueue::testRunId eq testRunId)?.queue?.firstOrNull() != queueTicket
+//                ) {
+//                    delay(timeout)
+//                }
+//            }.await()
+//        }
+
+        while (
+            currentEpoch() < deadline && testQueueCollection.findOne(TestQueue::testRunId eq testRunId)?.queue?.firstOrNull() != queueTicket
+        ) {
+            delay(timeout)
         }
     }
     private suspend fun leaveQueue(testRunId: String, queueTicket: String) {
@@ -211,20 +218,22 @@ class TestRunService {
             testResultsService.forceStopForDevice(testRunId, simulatorId, runner)
         }
 
-        var queueTicket = simulatorId
+        var queueTicket = "${runner}_$simulatorId"
         if (simulatorId.isEmpty()) {
             queueTicket = "${currentEpoch()}_${Random.nextInt(1000000, 9999999)}"
         }
-
         enlistInQueue(testRunId, queueTicket)
         waitForYourTurn(testRunId, queueTicket)
 
         val nextTest = testResultsCollection.findOne(
-            or(
-                TestResult::status eq TestStatus.WAITING.status,
-                and(
-                    TestResult::status eq TestStatus.FAILURE.status,
-                    TestResult::retries lt (testRun.config?.retries ?: 1)
+            and(
+                TestResult::testRunId eq testRunId,
+                or(
+                    TestResult::status eq TestStatus.WAITING.status,
+                    and(
+                        TestResult::status eq TestStatus.FAILURE.status,
+                        TestResult::retries lt (testRun.config?.retries ?: 1)
+                    )
                 )
             )
         )
