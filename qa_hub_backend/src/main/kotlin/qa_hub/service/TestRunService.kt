@@ -277,45 +277,52 @@ class TestRunService {
         }
     }
 
+    private fun getActualTestsCount(testRunId: String) = runBlocking {
+        val filter = TestResult::testRunId eq testRunId
+
+        val totalCount = testResultsCollection.countDocuments(filter).toInt()
+        val successCount = testResultsCollection.countDocuments(
+            and(filter, TestResult::status eq TestStatus.SUCCESS.status)
+        ).toInt()
+        val failedCount = testResultsCollection.countDocuments(
+            and(filter, TestResult::status eq TestStatus.FAILURE.status)
+        ).toInt()
+
+        return@runBlocking TestRunTests(
+            testsCount = totalCount,
+            failsCount = failedCount,
+            successCount = successCount,
+        )
+    }
+
     fun finishTestRun(
         testRunId: String,
         hasError: Boolean = false,
         canceled: Boolean = false
     ): TestRun = runBlocking {
         var testRun = getTestRun(testRunId)!!
-        val testResults = testResultsService.findTestResults(testRunId)
 
-        var failsCount = 0
-        var successCount = 0
-        testResults.forEach {
-            if (it.status == TestStatus.SUCCESS.status) {
-                successCount++
-            } else {
-                failsCount++
-            }
-        }
-
+        val testsCount = getActualTestsCount(testRunId)
         val endDate = currentDateTimeUtc()
-        testRun.timeMetrics.ended = endDate
-        testRun.tests.testsCount = testResults.size
-        testRun.tests.failsCount = failsCount
-        testRun.tests.successCount = successCount
 
-        if (hasError) {
-            testRun.status = TestRunStatus.ERROR.status
+        val status = if (hasError) {
+            TestRunStatus.ERROR.status
         } else if(canceled) {
-            testRun.status = TestRunStatus.CANCELED.status
+            TestRunStatus.CANCELED.status
         } else {
-            testRun.status = TestRunStatus.FINISHED.status
+            TestRunStatus.FINISHED.status
         }
 
-        testRun.timeMetrics.duration = ZonedDateTime.parse(testRun.timeMetrics.started)
+        val duration = ZonedDateTime.parse(testRun.timeMetrics.started)
             .until(ZonedDateTime.parse(testRun.timeMetrics.ended), ChronoUnit.MINUTES)
 
           testRunCollection.updateOne(
             TestRun::testRunId eq testRun.testRunId,
             set(
-                *(testRun.setCurrentPropertyValues(skipProperties = listOf("_id", "testRunId")))
+                TestRun::tests setTo testsCount,
+                TestRun::timeMetrics / TestRunTimeMetrics::ended setTo endDate,
+                TestRun::timeMetrics / TestRunTimeMetrics::duration setTo duration,
+                TestRun::status setTo status
             )
         )
 
