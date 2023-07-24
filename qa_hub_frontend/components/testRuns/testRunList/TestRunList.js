@@ -1,5 +1,3 @@
-import {Paper} from "@mui/material";
-import Typography from "@mui/material/Typography";
 import {observer} from "mobx-react-lite";
 import projectState from "../../../state/ProjectState";
 import {useEffect, useState} from "react";

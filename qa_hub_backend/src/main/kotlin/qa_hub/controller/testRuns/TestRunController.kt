@@ -175,9 +175,9 @@ class TestRunController {
                         testRunService.getNextTest(testRun.testRunId, simulator, runner)
                     }
                 }
-                runBlocking {
-                    delay(Random.nextLong(1000, 10000))
-                }
+//                runBlocking {
+//                    delay(Random.nextLong(1000, 10000))
+//                }
 
                 finish = nextTest.nextTest == null
                 nextTest.nextTest?.let {

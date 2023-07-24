@@ -26,7 +26,9 @@ export default function TestRunCard({testRun, filter, filterAndLoad, ...props })
   }
 
   const handleTestRunCardClick = () => {
-    router.push(`/testRuns/${testRun.testRunId}`)
+     window.location.href = `/testRuns/${testRun.testRunId}`
+
+     //router.push(`testRuns/${testRun.testRunId}`) //got a bug, changes URL but doesn't render the new page
   }
 
   window.addEventListener('resize', handleResize)
