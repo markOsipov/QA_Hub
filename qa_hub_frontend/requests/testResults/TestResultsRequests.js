@@ -12,7 +12,7 @@ export function getTestResults(testRunId, filter, skip, limit) {
       filter: filter,
       pagination: {
         skip: skip || 0,
-        limit: skip || 0
+        limit: limit || 0
       }
     }
   }
