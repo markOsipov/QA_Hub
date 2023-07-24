@@ -8,6 +8,17 @@ open class CreateTestRunRequest(
     var project: String,
     var params: MutableList<TestRunRequestParam> = mutableListOf(),
 )
+
+data class TestRunsRequest(
+    val filter: TestRunFilter?
+)
+data class TestRunFilter(
+    val status: String?,
+    val branch: String?,
+    val commit: String?,
+    val environment: String?,
+    val tag: String?
+)
 open class StartTestRunRequest(
     project: String,
     params: MutableList<TestRunRequestParam> = mutableListOf(),
@@ -19,6 +30,7 @@ open class StartTestRunRequest(
     var runner: String? = null,
     var simulators: List<String> = listOf()
 ): CreateTestRunRequest(project, params)
+
 data class TestRun(
     var testRunId: String,
     var project: String,
@@ -27,6 +39,7 @@ data class TestRun(
     var status: String,
     var config: TestRunConfig? = null,
     var tests: TestRunTests = TestRunTests(),
+    var tags: MutableList<String> = mutableListOf(),
     var runners: List<TestRunRunner> = listOf(),
 
     var allureLaunchId: String? = null

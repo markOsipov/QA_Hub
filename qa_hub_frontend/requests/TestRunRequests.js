@@ -17,12 +17,15 @@ export function createNewTestRun(project, params) {
     return axios(config)
 }
 
-export function getTestRuns(projectId) {
+export function getTestRuns(projectId, filter) {
     const config = {
         method: 'get',
         url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat(`/api/testRuns/${projectId}`),
         headers: {
             'Content-Type': 'application/json'
+        },
+        data: {
+            filter: filter
         }
     }
 

@@ -56,9 +56,41 @@ class TestRunService {
         mongoClient.db.getCollection<QaReview>(TEST_QA_REVIEWS.collectionName)
     }
 
-    fun getTestRuns(project: String): List<TestRun> = runBlocking {
+    fun getTestRuns(project: String, testRunFilter: TestRunFilter?): List<TestRun> = runBlocking {
+        val filter = mutableListOf(TestRun::project eq project)
+
+        testRunFilter?.status?.let {
+            filter.add(
+                TestRun::status eq it
+            )
+        }
+
+        testRunFilter?.branch?.let {
+            filter.add(
+                TestRun::config / TestRunConfig::branch eq it
+            )
+        }
+
+        testRunFilter?.commit?.let {
+            filter.add(
+                TestRun::config / TestRunConfig::commit eq it
+            )
+        }
+
+        testRunFilter?.environment?.let {
+            filter.add(
+                TestRun::config / TestRunConfig::environment eq it
+            )
+        }
+
+        testRunFilter?.tag?.let {
+            filter.add(
+                TestRun::tags contains it
+            )
+        }
+
         testRunCollection.aggregate<TestRun>(
-            match(TestRun::project eq project),
+            match(and(*filter.toTypedArray())),
             sort(descending(TestRun::testRunId))
         ).toList()
     }
