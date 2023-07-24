@@ -49,6 +49,12 @@ export default function QaResolutionPanel({ testResult, ...props}) {
     setEditing(false)
   }
 
+  const handleDoubleClick = () => {
+    if (!editing) {
+      setEditing(true)
+    }
+  }
+
   const handleShiftEnterKeysPressed = (event) => {
     if (event.shiftKey && event.key === 'Enter') {
       updateComment()
@@ -79,7 +85,7 @@ export default function QaResolutionPanel({ testResult, ...props}) {
         <ReviewFormControlLabel value="Bug" control={<Radio />} label="Bug" />
       </RadioGroup>
     </FormControl>
-    <div style={{display: 'flex', marginTop: '5px', alignItems: 'center'}}>
+    <div style={{display: 'flex', marginTop: '5px', alignItems: 'center'}}  onDoubleClick={handleDoubleClick}>
       <TextareaAutosize
         value={qaReview.qaComment}
         onChange={(event) => {setQaReview({ ...qaReview, qaComment: event.target.value || "" })}}

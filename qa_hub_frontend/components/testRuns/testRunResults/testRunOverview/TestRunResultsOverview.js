@@ -58,7 +58,7 @@ export default function TestRunResultsOverview({testRun, ...props}) {
 
           <div style={{display: 'grid', marginLeft: '50px', alignItems: 'center', alignSelf: 'center'}}>
             <div style={{display: 'flex', justifyContent: 'end'}}>
-              <TestResultsPlate testRun={testRun} style={{minWidth: '300px', opacity: opacity, marginTop: '20px'}}/>
+              <TestResultsPlate testRun={testRun} style={{minWidth: '300px', marginTop: '20px'}}/>
             </div>
 
             {
