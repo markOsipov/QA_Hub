@@ -1,10 +1,9 @@
 import {customTheme} from "../../../../../styles/CustomTheme";
 import StyledTooltip from "../../../../primitives/StyledTooltip";
 import {useState} from "react";
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 export default function DeviceFilter({filter, setFilter, setFilterChanged, ...props}) {
-  const errorFilterStyle = {
+  const filterStyle = {
     color: customTheme.palette.text.white,
     border: `1px solid ${customTheme.palette.text.white}`,
     borderRadius: '5px',
@@ -33,27 +32,15 @@ export default function DeviceFilter({filter, setFilter, setFilterChanged, ...pr
         display: 'grid',
         alignContent: 'center',
         justifyContent: 'center',
-        ...errorFilterStyle,
+        backgroundColor: hovered && 'rgba(0, 0, 0, 0.7)',
+        ...filterStyle,
         ...props.style
       }}
       onClick={handleIconClick}
       onMouseOver={() => { setHovered(true)}}
       onMouseLeave={() => { setHovered(false)}}
     >
-      {
-        !hovered &&
-        <PhoneIphoneIcon style={{height: '21px', width: '22px'}}/>}
-      {
-        hovered &&
-        <DeleteForeverIcon
-          style={{
-            height: '21px',
-            width: '21px',
-            backgroundColor: 'rgba(0, 0, 0, 0.7)',
-            color: 'rgba(255, 255, 255, 1)'
-          }}
-        />
-      }
+      <PhoneIphoneIcon style={{height: '21px', width: '22px'}}/>
     </div>
   </StyledTooltip>
 }
