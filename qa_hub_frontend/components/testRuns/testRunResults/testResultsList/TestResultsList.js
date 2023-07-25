@@ -3,9 +3,12 @@ import TestResultCard from "./TestResultCard";
 import {useEffect, useState} from "react";
 import {getTestResults} from "../../../../requests/testResults/TestResultsRequests";
 import LoadMoreTests from "./LoadMoreTests";
+import TestRunsFilter from "./filters/TestResultsFilter";
+import TestResultsFilter from "./filters/TestResultsFilter";
+import {getTestRuns} from "../../../../requests/TestRunRequests";
 
 export default function TestResultsList({testsCount, testRunId, testResults, setTestResults, setSelectedTest, ...props }) {
-  const initialLoadSize = 25
+  const initialLoadSize = 50
   const initialSkip = 0
 
   const [loadMoreSize, setLoadMoreSize] = useState(initialLoadSize)
@@ -35,6 +38,18 @@ export default function TestResultsList({testsCount, testRunId, testResults, set
     )
   }
 
+  function filterAndLoad(filter) {
+    const filterValue = filter || {}
+
+    setFilter(filterValue)
+
+    getTestResults(testRunId, filter, initialSkip, loadMoreSize).then(response => {
+      if (response.data) {
+        setTestResults(response.data)
+      }
+    })
+  }
+
   useEffect(() => {
     setSkip(initialSkip)
     updateTestResults(initialSkip, initialLoadSize)
@@ -47,7 +62,7 @@ export default function TestResultsList({testsCount, testRunId, testResults, set
   }
 
   return <Paper style={{padding: '15px', ...props.style}}>
-    <label>Test results list</label>
+    <TestResultsFilter filter={filter} setFilter={setFilter} filterAndLoad={filterAndLoad}/>
     {
       testResults.map((testResult) => {
         return <TestResultCard
