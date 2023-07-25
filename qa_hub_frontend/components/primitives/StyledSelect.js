@@ -4,16 +4,20 @@ import {customTheme} from "../../styles/CustomTheme";
 
 const StyledSelect = styled((props) => (
   <Select {...props}/>
-))(({ theme }) => ({
+))(({ theme, ...props }) => ({
   '& .MuiInputLabel-root': {
-    color: customTheme.palette.text.faded
+    color: customTheme.palette.text.faded,
+
   },
   '& .MuiOutlinedInput-notchedOutline': {
     border: `1px solid ${customTheme.palette.text.disabled}`
   },
   '& .MuiSelect-icon': {
     color: customTheme.palette.text.faded
-  }
+  },
+  '& .MuiSelect-select': {
+    padding: props.size === 'tiny' && '5px'
+  },
 }));
 
 export default StyledSelect

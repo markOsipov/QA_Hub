@@ -2,6 +2,8 @@ import StyledSelect from "../../../primitives/StyledSelect";
 import {customTheme} from "../../../../styles/CustomTheme";
 import {Checkbox, FormControl, InputLabel, ListItemText, MenuItem} from "@mui/material";
 import {useEffect, useState} from "react";
+import StyledInputLabel from "../../../primitives/StyledInputLabel";
+import StyledFormControl from "../../../primitives/StyledFormControl";
 
 export default function StatusFilter({filter, setFilter, ...props}) {
   const separator = ", "
@@ -26,8 +28,8 @@ export default function StatusFilter({filter, setFilter, ...props}) {
     );
   }
 
-  return <FormControl size="small" style={{...props.style}}>
-    <InputLabel style={{color: customTheme.palette.text.faded}}>Status</InputLabel>
+  return <StyledFormControl size={"tiny"} style={{...props.style}}>
+    <StyledInputLabel>Status</StyledInputLabel>
     <StyledSelect
       value={statuses}
       style={{backgroundColor: customTheme.palette.background.input, minWidth: '150px'}}
@@ -44,6 +46,6 @@ export default function StatusFilter({filter, setFilter, ...props}) {
           </MenuItem>
         ))
       }
-  </StyledSelect>
-    </FormControl>
+    </StyledSelect>
+  </StyledFormControl>
 }
