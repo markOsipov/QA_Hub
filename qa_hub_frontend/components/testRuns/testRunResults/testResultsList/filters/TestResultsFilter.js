@@ -4,6 +4,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import {customTheme} from "../../../../../styles/CustomTheme";
 import {useEffect, useState} from "react";
 import UnreviewedFilter from "./UnreviewedFilter";
+import RetriesFilter from "./RetriesFilter";
 
 export default function TestResultsFilter({ filter, setFilter, filterAndLoad, ...props }) {
   const [searchIconHovered, setSearchIconHovered] = useState(false)
@@ -24,6 +25,7 @@ export default function TestResultsFilter({ filter, setFilter, filterAndLoad, ..
     <div style={{display: 'flex', alignItems: 'center'}}>
       <div style={{flexGrow: '1.1'}}></div>
 
+      <RetriesFilter filter={filter} setFilter={setFilter} setFilterChanged={setFilterChanged} style={{marginLeft: '8px'}}/>
       <UnreviewedFilter filter={filter} setFilter={setFilter} setFilterChanged={setFilterChanged} style={{marginLeft: '8px'}}/>
       <StatusFilter filter={filter} setFilter={setFilter} setFilterChanged={setFilterChanged} style={{marginLeft: '8px'}} />
 

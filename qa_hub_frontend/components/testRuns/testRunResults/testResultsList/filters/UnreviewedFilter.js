@@ -44,7 +44,7 @@ export default function UnreviewedFilter({filter, setFilter, setFilterChanged, .
     setFilterChanged(true)
   }
 
-  return <StyledTooltip title={getTooltipText()} enterDelay={500}><BugReportIcon
+  return <StyledTooltip title={getTooltipText()} enterDelay={300}><BugReportIcon
     style={{
       borderRadius: '5px',
       cursor: 'pointer',

@@ -46,9 +46,9 @@ class TestResultsService {
             }
 
             if (it.retries == true) {
-                filter.add(TestResult::retries gt 0)
+                filter.add(TestResult::retries gt 1)
             } else if ((it.retries == false)) {
-                filter.add(TestResult::retries eq 0)
+                filter.add(TestResult::retries lte 1)
             }
 
             when (it.unreviewed) {
