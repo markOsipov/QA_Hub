@@ -8,7 +8,6 @@ import TestResultDetails from "../../components/testRuns/testRunResults/testResu
 
 export default function TestRunPage() {
   const router = useRouter()
-  const testRunId = router.query.testRunId
 
   const [testRun, setTestRun] = useState(null)
   const [selectedTest, setSelectedTest] = useState(null)
@@ -17,18 +16,21 @@ export default function TestRunPage() {
   const [filter, setFilter] = useState({})
   const [filterChanged, setFilterChanged] = useState(false)
 
-  let testRunResp = useSWR(
-    "getTestRun",
-    async () => { return await getTestRun(testRunId) },
-    { refreshInterval: 60000 }
-  )
-
   useEffect(() => {
-    if (testRunResp.data?.data) {
-      setTestRun(testRunResp.data.data)
-    }
-  }, [testRunResp.data])
+    const testRunId = router.query.testRunId
 
+    if (testRunId) {
+      getTestRun(testRunId).then(data => {
+        if (data?.data) {
+          setTestRun(data.data)
+        }
+      })
+    }
+  }, [router.query])
+
+  if (!testRun) {
+    return <div>Loading</div>
+  }
 
   return <div style={{padding: "15px"}}>
     <TestRunResultsOverview
@@ -43,7 +45,7 @@ export default function TestRunPage() {
         testsCount={testRun?.tests?.testsCount}
         testResults={testResults}
         setTestResults={setTestResults}
-        testRunId={testRunId}
+        testRunId={testRun.testRunId}
         setSelectedTest={setSelectedTest}
         filter={filter}
         setFilter={setFilter}

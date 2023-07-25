@@ -3,9 +3,9 @@ import TestResultCard from "./TestResultCard";
 import {useEffect, useState} from "react";
 import {getTestResults} from "../../../../requests/testResults/TestResultsRequests";
 import LoadMoreTests from "./LoadMoreTests";
-import TestRunsFilter from "./filters/TestResultsFilter";
 import TestResultsFilter from "./filters/TestResultsFilter";
-import {getTestRuns} from "../../../../requests/TestRunRequests";
+import StyledTextField from "../../../primitives/StyledTextField";
+import {getCookie, setCookie} from "../../../../utils/CookieHelper";
 
 export default function TestResultsList(
   {
@@ -14,7 +14,8 @@ export default function TestResultsList(
     ...props
   }
 ) {
-  const initialLoadSize = 50
+  const loadMoreCookie = "testResultsLoadCount"
+  const initialLoadSize = getCookie(loadMoreCookie) || 50
   const initialSkip = 0
 
   const [loadMoreSize, setLoadMoreSize] = useState(initialLoadSize)
@@ -56,10 +57,16 @@ export default function TestResultsList(
 
   useEffect(() => {
     setSkip(initialSkip)
-    updateTestResults(initialSkip, initialLoadSize)
+    updateTestResults(initialSkip, loadMoreSize)
   }, [testRunId])
 
+  const updateLoadMoreCount = (event) => {
+    setLoadMoreSize(Number.parseInt(event.target.value))
+  }
 
+  const saveCurrentLoadCount = () => {
+    setCookie(loadMoreCookie, loadMoreSize)
+  }
 
   if (loading) {
     return <Paper style={{padding: '15px', ...props.style}}>Loading test results</Paper>
@@ -92,7 +99,21 @@ export default function TestResultsList(
       />
     }
     <div style={{marginTop: '11px', paddingLeft: '4px', opacity: '0.55'}}>
-      <label >{`Test results: ${testResults.length}/${testsCount}`}</label>
+      <div style={{display: 'flex'}}>
+        <label >{`Test results: ${testResults.length}/${testsCount}`}</label>
+        <div style={{flexGrow: '1.1'}}></div>
+
+        <div style={{display: 'flex', alignItems: 'center'}}>
+          <label style={{fontSize: '12px', marginRight: '5px'}}>Load count</label>
+          <StyledTextField
+            size={"tiny"}
+            value={loadMoreSize}
+            onChange={updateLoadMoreCount}
+            onBlur={saveCurrentLoadCount}
+            style={{width: 'min-content', minWidth: '50px'}}
+          />
+        </div>
+      </div>
     </div>
   </Paper>
 }
