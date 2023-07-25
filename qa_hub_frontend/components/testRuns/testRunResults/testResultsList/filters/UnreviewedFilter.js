@@ -2,13 +2,13 @@ import BugReportIcon from '@mui/icons-material/BugReport';
 import {customTheme} from "../../../../../styles/CustomTheme";
 import StyledTooltip from "../../../../primitives/StyledTooltip";
 export default function UnreviewedFilter({filter, setFilter, setFilterChanged, ...props}) {
-  const turnedOnUnrevieweStyle = {
+  const turnedOnUnreviewedStyle = {
     backgroundColor: customTheme.palette.error.main,
     color: customTheme.palette.text.white,
     borderRadius: '5px',
   }
 
-  const turnedOnRevieweStyle = {
+  const turnedOnReviewedStyle = {
     backgroundColor: customTheme.palette.success.main,
     color: customTheme.palette.text.white,
     borderRadius: '5px',
@@ -21,9 +21,9 @@ export default function UnreviewedFilter({filter, setFilter, setFilterChanged, .
 
   const getStyle = () => {
     if (filter.unreviewed === true) {
-      return turnedOnUnrevieweStyle
+      return turnedOnUnreviewedStyle
     } else if (filter.unreviewed === false) {
-      return turnedOnRevieweStyle
+      return turnedOnReviewedStyle
     } else return turnedOffStyle
   }
 
@@ -32,7 +32,7 @@ export default function UnreviewedFilter({filter, setFilter, setFilterChanged, .
         return "Only UNREVIEWED tests are shown"
       } else if (filter.unreviewed === false) {
         return "Only REVIEWED tests are shown"
-      } else return "Shows only reviewe/unreviewed tests if turned on"
+      } else return "Shows only reviewed/unreviewed tests if turned on"
   }
 
   const handleIconClick = () => {
