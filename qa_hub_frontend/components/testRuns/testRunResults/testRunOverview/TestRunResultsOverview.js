@@ -2,7 +2,7 @@ import {Paper} from "@mui/material";
 import TextWithLabel from "../../../primitives/TextWithLabel";
 import StatusBadge from "../../../primitives/StatusBadge";
 import TestResultsPlate from "../../testRunList/testRun/elements/TestResultsPlate";
-import TimingsPlate from "../../testRunList/testRun/elements/TimingsPlate";
+import TimingsPlate from "../../testRunList/testRun/elements/timings/TimingsPlate";
 import TestRunConfig from "./TestRunConfig";
 import RunnersDetailsPlate from "./RunnersDetailsPlate";
 
