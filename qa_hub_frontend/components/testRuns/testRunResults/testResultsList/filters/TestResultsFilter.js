@@ -45,7 +45,7 @@ export default function TestResultsFilter({ filter, setFilter, filterAndLoad, fi
       >
         <div style={{
           ...customIconButtonHoverLayerStyle,
-          backgroundColor: searchIconHovered ? 'rgba(0, 0, 0, 0.5)' : 'rgba(0, 0, 0, 0)'
+          backgroundColor: searchIconHovered ? 'rgba(255, 255, 255, 0.08)' : ''
         }}></div>
         <SearchIcon style={{color: customTheme.palette.text.primary, zIndex:'20'}} />
         {
@@ -78,7 +78,7 @@ export default function TestResultsFilter({ filter, setFilter, filterAndLoad, fi
       >
         <div style={{
           ...customIconButtonHoverLayerStyle,
-          backgroundColor: clearIconHovered ? 'rgba(0, 0, 0, 0.5)' : 'rgba(0, 0, 0, 0)'
+          backgroundColor: clearIconHovered ? 'rgba(255, 255, 255, 0.08)' : ''
         }}></div>
         <ClearIcon style={{color: customTheme.palette.text.primary, zIndex:'20'}} />
       </div>

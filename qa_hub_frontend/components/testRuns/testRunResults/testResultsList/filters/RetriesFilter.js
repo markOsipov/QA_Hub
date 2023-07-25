@@ -2,17 +2,18 @@ import BugReportIcon from '@mui/icons-material/BugReport';
 import {customTheme} from "../../../../../styles/CustomTheme";
 import StyledTooltip from "../../../../primitives/StyledTooltip";
 import SyncIcon from "@mui/icons-material/Sync";
+import {useState} from "react";
 export default function RetriesFilter({filter, setFilter, setFilterChanged, ...props}) {
+  const [hovered, setHovered] = useState(false)
+
   const retriesStyle = {
     backgroundColor: customTheme.palette.error.main,
     color: customTheme.palette.text.white,
-    borderRadius: '5px',
   }
 
   const noRetriesStyle = {
     backgroundColor: customTheme.palette.success.main,
     color: customTheme.palette.text.white,
-    borderRadius: '5px',
   }
 
   const turnedOffStyle = {
@@ -46,17 +47,44 @@ export default function RetriesFilter({filter, setFilter, setFilterChanged, ...p
   }
 
   return <StyledTooltip title={getTooltipText()} enterDelay={300}>
-    <SyncIcon
+    <div
+      onClick={handleIconClick}
+      onMouseOver={() => { setHovered(true)}}
+      onMouseLeave={() => { setHovered(false)}}
+
       style={{
-        transform: 'scaleX(-1)',
-        borderRadius: '5px',
-        cursor: 'pointer',
+        position: 'relative',
         height: '25px',
         width: '25px',
+        display: 'grid',
+        alignContent: 'center',
+        justifyContent: 'center',
+        borderRadius: '5px',
+        cursor: 'pointer',
         ...getStyle(),
         ...props.style
       }}
-      onClick={handleIconClick}
-  /></StyledTooltip>
+    >
+      <div style={{
+        position: 'absolute',
+        left: '-1',
+        top: '-1',
+        width: '25px',
+        height: '25px',
+        borderRadius: '5px',
+        backgroundColor: hovered ? 'rgba(255, 255, 255, 0.08)' : ''}} />
+      <SyncIcon
+        style={{
+          transform: 'scaleX(-1)',
+          height: '25px',
+          width: '25px',
+          borderRadius: '5px',
+
+
+          color: customTheme.palette.text.white
+        }}
+      />
+    </div>
+  </StyledTooltip>
 }
 

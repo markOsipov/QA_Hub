@@ -1,17 +1,18 @@
 import BugReportIcon from '@mui/icons-material/BugReport';
 import {customTheme} from "../../../../../styles/CustomTheme";
 import StyledTooltip from "../../../../primitives/StyledTooltip";
+import {useState} from "react";
 export default function UnreviewedFilter({filter, setFilter, setFilterChanged, ...props}) {
+  const [hovered, setHovered] = useState(false)
+
   const turnedOnUnreviewedStyle = {
     backgroundColor: customTheme.palette.error.main,
     color: customTheme.palette.text.white,
-    borderRadius: '5px',
   }
 
   const turnedOnReviewedStyle = {
     backgroundColor: customTheme.palette.success.main,
     color: customTheme.palette.text.white,
-    borderRadius: '5px',
   }
 
   const turnedOffStyle = {
@@ -44,16 +45,44 @@ export default function UnreviewedFilter({filter, setFilter, setFilterChanged, .
     setFilterChanged(true)
   }
 
-  return <StyledTooltip title={getTooltipText()} enterDelay={300}><BugReportIcon
-    style={{
-      borderRadius: '5px',
-      cursor: 'pointer',
-      height: '25px',
-      width: '25px',
-      ...getStyle(),
-      ...props.style
-  }}
-    onClick={handleIconClick}
-  /></StyledTooltip>
+  return <StyledTooltip title={getTooltipText()} enterDelay={300}>
+    <div
+      onClick={handleIconClick}
+      onMouseOver={() => { setHovered(true)}}
+      onMouseLeave={() => { setHovered(false)}}
+
+      style={{
+        position: 'relative',
+        height: '25px',
+        width: '25px',
+        display: 'grid',
+        alignContent: 'center',
+        justifyContent: 'center',
+        borderRadius: '5px',
+        cursor: 'pointer',
+        ...getStyle(),
+        ...props.style
+      }}
+    >
+      <div style={{
+        position: 'absolute',
+        left: '-1',
+        top: '-1',
+        width: '25px',
+        height: '25px',
+        borderRadius: '5px',
+        backgroundColor: hovered ? 'rgba(255, 255, 255, 0.08)' : ''}} />
+      <BugReportIcon
+        style={{
+          height: '25px',
+          width: '25px',
+          borderRadius: '5px',
+          cursor: 'pointer',
+
+          color: customTheme.palette.text.white
+        }}
+      />
+    </div>
+  </StyledTooltip>
 }
 
