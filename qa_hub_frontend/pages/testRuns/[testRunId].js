@@ -32,6 +32,7 @@ export default function TestRunPage() {
 
     <div style={{display: "flex", marginTop: '15px', width: '100%', minWidth: '100%', maxHeight: '90vh', overflowY: 'auto'}}>
       <TestResultsList
+        testsCount={testRun?.tests?.testsCount}
         testResults={testResults}
         setTestResults={setTestResults}
         testRunId={testRunId}
