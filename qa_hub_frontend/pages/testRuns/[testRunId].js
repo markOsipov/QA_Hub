@@ -31,7 +31,12 @@ export default function TestRunPage() {
 
 
   return <div style={{padding: "15px"}}>
-    <TestRunResultsOverview testRun={testRun}/>
+    <TestRunResultsOverview
+      testRun={testRun}
+      filter={filter}
+      setFilter={setFilter}
+      setFilterChanged={setFilterChanged}
+    />
 
     <div style={{display: "flex", marginTop: '15px', width: '100%', minWidth: '100%', maxHeight: '90vh', overflowY: 'auto'}}>
       <TestResultsList

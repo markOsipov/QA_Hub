@@ -7,7 +7,7 @@ import TestRunConfig from "./TestRunConfig";
 import RunnersDetailsPlate from "./RunnersDetailsPlate";
 
 
-export default function TestRunResultsOverview({testRun, ...props}) {
+export default function TestRunResultsOverview({testRun, filter, setFilter, setFilterChanged, ...props}) {
   const opacity = '0.8'
 
   if (testRun == null) {
@@ -69,7 +69,12 @@ export default function TestRunResultsOverview({testRun, ...props}) {
         </div>
         {
           testRun.runners.length > 0 &&
-          <RunnersDetailsPlate testRun={testRun} style={{marginLeft: '50px', flexGrow: '1.1', justifyContent: 'end'}} />
+          <RunnersDetailsPlate
+            testRun={testRun}
+            filter={filter}
+            setFilter={setFilter}
+            setFilterChanged={setFilterChanged}
+            style={{marginLeft: '50px', flexGrow: '1.1', justifyContent: 'end'}} />
         }
       </div>
     </Paper>

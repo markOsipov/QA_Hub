@@ -3,7 +3,7 @@ import {customTheme} from "../../../../styles/CustomTheme";
 import {useState} from "react";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 
-export default function RunnersDetailsPlate({ testRun, ...props }) {
+export default function RunnersDetailsPlate({ testRun, filter, setFilter, setFilterChanged, ...props }) {
   const [selectedRunner, setSelectedRunner] = useState(null)
 
   const handleSelectRunnerClick = (runner) => {
@@ -13,6 +13,17 @@ export default function RunnersDetailsPlate({ testRun, ...props }) {
       setSelectedRunner(runner)
     }
   }
+
+  const handleSelectDevice = (device) => {
+    if (filter.deviceId === device) {
+      setFilter({...filter, deviceId: null})
+    } else {
+      setFilter({...filter, deviceId: device})
+    }
+
+    setFilterChanged(true)
+  }
+
 
   return <div style={{display: 'flex', ...props.style}}>
     <div style={{display: 'flex', flexDirection: 'column'}}>
@@ -73,7 +84,14 @@ export default function RunnersDetailsPlate({ testRun, ...props }) {
             selectedRunner.simulators.map((simulator, index) => {
               return <div
                 key={simulator}
-                style={{display: 'flex', alignItems: 'center',  marginBottom: '7px', justifyContent: 'end'}}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginBottom: '7px',
+                  justifyContent: 'end',
+                  opacity: filter.deviceId === simulator ? '1' : simulator == null ? '0.6' : '0.4'
+                }}
+                onClick={() => {handleSelectDevice(simulator)}}
               >
                 <PhoneIphoneIcon style={{position: 'relative', top: '1px'}}/>
                 <label
@@ -83,7 +101,6 @@ export default function RunnersDetailsPlate({ testRun, ...props }) {
                     border: `1px solid ${customTheme.palette.text.disabled}`,
                     borderRadius: '5px',
                     cursor: 'pointer',
-                    opacity: '0.6',
                     minWidth: '335px'
                   }}
                 >{simulator}</label>

@@ -1,9 +1,9 @@
 import {customTheme} from "../../../../../styles/CustomTheme";
 import StyledTooltip from "../../../../primitives/StyledTooltip";
-import ReportIcon from '@mui/icons-material/Report';
 import {useState} from "react";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-export default function ErrorFilter({filter, setFilter, setFilterChanged, ...props}) {
+import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
+export default function DeviceFilter({filter, setFilter, setFilterChanged, ...props}) {
   const errorFilterStyle = {
     color: customTheme.palette.text.white,
     border: `1px solid ${customTheme.palette.text.white}`,
@@ -14,14 +14,14 @@ export default function ErrorFilter({filter, setFilter, setFilterChanged, ...pro
   const [hovered, setHovered] = useState(false)
 
   const getTooltipText = () => {
-    return `Only tests which contain next error message are shown: '${filter.message}'`
+    return `Only tests executed on next device are shown: '${filter.deviceId}'`
   }
 
   const handleIconClick = () => {
-    setFilter({ ...filter, message: null})
+    setFilter({ ...filter, deviceId: null})
     setFilterChanged(true)
   }
-  if (!filter.message) return null
+  if (!filter.deviceId) return null
 
   return <StyledTooltip title={getTooltipText()} enterDelay={200}>
     <div
@@ -42,7 +42,7 @@ export default function ErrorFilter({filter, setFilter, setFilterChanged, ...pro
     >
       {
         !hovered &&
-        <ReportIcon style={{height: '23px', width: '23px',}}/>}
+        <PhoneIphoneIcon style={{height: '21px', width: '22px'}}/>}
       {
         hovered &&
         <DeleteForeverIcon
