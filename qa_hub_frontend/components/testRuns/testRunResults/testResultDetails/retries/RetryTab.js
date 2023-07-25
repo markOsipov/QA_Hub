@@ -12,7 +12,7 @@ import StyledTooltip from "../../../../primitives/StyledTooltip";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import AppleIcon from '@mui/icons-material/Apple';
 
-export default function RetryTab({retry, testResult, isLastRetry, testResults, setTestResults, ...props}) {
+export default function RetryTab({retry, testResult, isLastRetry, testResults, setTestResults, filter, setFilter, setFilterChanged, ...props}) {
   const [selectedStep, setSelectedStep] = useState(null)
 
   let lastResult = retry.statusHistory[retry.statusHistory.length - 1]
@@ -27,6 +27,9 @@ export default function RetryTab({retry, testResult, isLastRetry, testResults, s
           message={lastResult.message}
           testResults={testResults}
           setTestResults={setTestResults}
+          filter={filter}
+          setFilter={setFilter}
+          setFilterChanged={setFilterChanged}
           style={{width: '50%'}}
         />
         {

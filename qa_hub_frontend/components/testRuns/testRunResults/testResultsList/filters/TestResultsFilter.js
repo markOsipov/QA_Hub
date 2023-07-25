@@ -5,11 +5,11 @@ import {customTheme} from "../../../../../styles/CustomTheme";
 import {useEffect, useState} from "react";
 import UnreviewedFilter from "./UnreviewedFilter";
 import RetriesFilter from "./RetriesFilter";
+import ErrorFilter from "./ErrorFilter";
 
-export default function TestResultsFilter({ filter, setFilter, filterAndLoad, ...props }) {
+export default function TestResultsFilter({ filter, setFilter, filterAndLoad, filterChanged, setFilterChanged, ...props }) {
   const [searchIconHovered, setSearchIconHovered] = useState(false)
   const [clearIconHovered, setClearIconHovered] = useState(false)
-  const [filterChanged, setFilterChanged] = useState(false)
 
   const handleSearchButtonClick = () => {
     filterAndLoad(filter)
@@ -25,9 +25,10 @@ export default function TestResultsFilter({ filter, setFilter, filterAndLoad, ..
     <div style={{display: 'flex', alignItems: 'center'}}>
       <div style={{flexGrow: '1.1'}}></div>
 
-      <RetriesFilter filter={filter} setFilter={setFilter} setFilterChanged={setFilterChanged} style={{marginLeft: '8px'}}/>
-      <UnreviewedFilter filter={filter} setFilter={setFilter} setFilterChanged={setFilterChanged} style={{marginLeft: '8px'}}/>
-      <StatusFilter filter={filter} setFilter={setFilter} setFilterChanged={setFilterChanged} style={{marginLeft: '8px'}} />
+      <ErrorFilter filter={filter} setFilter={setFilter} setFilterChanged={setFilterChanged} style={{marginLeft: '5px'}}/>
+      <RetriesFilter filter={filter} setFilter={setFilter} setFilterChanged={setFilterChanged} style={{marginLeft: '5px'}}/>
+      <UnreviewedFilter filter={filter} setFilter={setFilter} setFilterChanged={setFilterChanged} style={{marginLeft: '5px'}}/>
+      <StatusFilter filter={filter} setFilter={setFilter} setFilterChanged={setFilterChanged} style={{marginLeft: '5px'}} />
 
       <div
         onClick={handleSearchButtonClick}

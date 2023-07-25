@@ -14,6 +14,9 @@ export default function TestRunPage() {
   const [selectedTest, setSelectedTest] = useState(null)
   const [testResults, setTestResults] = useState([])
 
+  const [filter, setFilter] = useState({})
+  const [filterChanged, setFilterChanged] = useState(false)
+
   let testRunResp = useSWR(
     "getTestRun",
     async () => { return await getTestRun(testRunId) },
@@ -37,12 +40,19 @@ export default function TestRunPage() {
         setTestResults={setTestResults}
         testRunId={testRunId}
         setSelectedTest={setSelectedTest}
+        filter={filter}
+        setFilter={setFilter}
+        filterChanged={filterChanged}
+        setFilterChanged={setFilterChanged}
         style={{width: "550px", minWidth: '370px', maxWidth: '70%', overflowX: 'auto', resize: 'horizontal'}}
       />
       <TestResultDetails
         testResult={selectedTest}
         testResults={testResults}
         setTestResults={setTestResults}
+        filter={filter}
+        setFilter={setFilter}
+        setFilterChanged={setFilterChanged}
         style={{marginLeft: '15px', overflowX: 'auto', width: 'min-content', flexGrow:'1.1'}}
       />
     </div>

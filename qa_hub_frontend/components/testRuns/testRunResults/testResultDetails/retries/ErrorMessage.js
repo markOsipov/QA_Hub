@@ -3,7 +3,7 @@ import {createRef, useEffect, useState} from "react";
 import {ListItemIcon, ListItemText, Menu, MenuItem} from "@mui/material";
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import WarningIcon from '@mui/icons-material/Warning';
-export default function ErrorMessage({ message, testResults, setTestResults, ...props }) {
+export default function ErrorMessage({ message, testResults, setTestResults, filter, setFilter, setFilterChanged, ...props }) {
   const ref = createRef()
   const [anchorEl, setAnchorEl] = useState(null)
   const menuOpen = Boolean(anchorEl);
@@ -19,6 +19,11 @@ export default function ErrorMessage({ message, testResults, setTestResults, ...
       const selected = selection.extentNode.textContent.slice(selection.anchorOffset, selection.focusOffset)
       setSelectedText(selected)
     }
+  }
+
+  const handleAddToFilterClick = () => {
+    setFilter({...filter, message: selectedText || message})
+    setFilterChanged(true)
   }
 
   const closeMenu = () => {
@@ -80,7 +85,7 @@ export default function ErrorMessage({ message, testResults, setTestResults, ...
         }
       </div>
 
-      <MenuItem onClick={() => { alert(selectedText)}} disabled={true}>
+      <MenuItem onClick={handleAddToFilterClick}>
         <ListItemIcon>
           <FilterAltIcon fontSize="small" style={{color: "var(--primary-text-color)"}}/>
         </ListItemIcon>

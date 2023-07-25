@@ -7,13 +7,18 @@ import TestRunsFilter from "./filters/TestResultsFilter";
 import TestResultsFilter from "./filters/TestResultsFilter";
 import {getTestRuns} from "../../../../requests/TestRunRequests";
 
-export default function TestResultsList({testsCount, testRunId, testResults, setTestResults, setSelectedTest, ...props }) {
+export default function TestResultsList(
+  {
+    testsCount, testRunId, testResults, setTestResults, setSelectedTest,
+    filter, setFilter, filterChanged, setFilterChanged,
+    ...props
+  }
+) {
   const initialLoadSize = 50
   const initialSkip = 0
 
   const [loadMoreSize, setLoadMoreSize] = useState(initialLoadSize)
   const [skip, setSkip] = useState(initialSkip)
-  const [filter, setFilter] = useState({})
   const [loading, setLoading] = useState(false)
 
   async function updateTestResults(skip, limit) {
@@ -64,7 +69,10 @@ export default function TestResultsList({testsCount, testRunId, testResults, set
     <TestResultsFilter
       filter={filter}
       setFilter={setFilter}
-      filterAndLoad={filterAndLoad}/>
+      filterAndLoad={filterAndLoad}
+      filterChanged={filterChanged}
+      setFilterChanged={setFilterChanged}
+    />
     {
       testResults.map((testResult) => {
         return <TestResultCard
