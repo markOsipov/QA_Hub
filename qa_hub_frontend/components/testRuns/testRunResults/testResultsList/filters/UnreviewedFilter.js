@@ -1,7 +1,7 @@
 import BugReportIcon from '@mui/icons-material/BugReport';
 import {customTheme} from "../../../../../styles/CustomTheme";
 import StyledTooltip from "../../../../primitives/StyledTooltip";
-export default function UnreviewedFilter({filter, setFilter, ...props}) {
+export default function UnreviewedFilter({filter, setFilter, setFilterChanged, ...props}) {
   const turnedOnUnrevieweStyle = {
     backgroundColor: customTheme.palette.error.main,
     color: customTheme.palette.text.white,
@@ -24,7 +24,7 @@ export default function UnreviewedFilter({filter, setFilter, ...props}) {
       return turnedOnUnrevieweStyle
     } else if (filter.unreviewed === false) {
       return turnedOnRevieweStyle
-    } else  return turnedOffStyle
+    } else return turnedOffStyle
   }
 
   const getTooltipText = () => {
@@ -36,11 +36,12 @@ export default function UnreviewedFilter({filter, setFilter, ...props}) {
   }
 
   const handleIconClick = () => {
-    if (filter.unreviewed === null) {
-      setFilter({ ...filter, unreviewed: true })
-    } else if (filter.unreviewed === true) {
+    if (filter.unreviewed === true) {
       setFilter({ ...filter, unreviewed: false })
-    } else setFilter({ ...filter, unreviewed: null })
+    } else if (filter.unreviewed === false) {
+      setFilter({ ...filter, unreviewed: null })
+    } else setFilter({ ...filter, unreviewed: true })
+    setFilterChanged(true)
   }
 
   return <StyledTooltip title={getTooltipText()} enterDelay={500}><BugReportIcon

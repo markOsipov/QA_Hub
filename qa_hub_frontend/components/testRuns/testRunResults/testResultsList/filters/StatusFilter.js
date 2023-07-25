@@ -5,7 +5,7 @@ import {useEffect, useState} from "react";
 import StyledInputLabel from "../../../../primitives/StyledInputLabel";
 import StyledFormControl from "../../../../primitives/StyledFormControl";
 
-export default function StatusFilter({filter, setFilter, ...props}) {
+export default function StatusFilter({filter, setFilter,setFilterChanged, ...props}) {
   const separator = ", "
   const options = ["WAITING", "PROCESSING", "SUCCESS", "FAILURE"]
 
@@ -25,7 +25,8 @@ export default function StatusFilter({filter, setFilter, ...props}) {
     const value = event.target.value
     setStatuses(
       typeof value === 'string' ? value.split(',') : value,
-    );
+    )
+    setFilterChanged(true)
   }
 
   return <StyledFormControl size={"tiny"} style={{...props.style}}>

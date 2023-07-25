@@ -33,9 +33,8 @@ export default function TestResultsList({testsCount, testRunId, testResults, set
     setSkip(newSkip)
 
     await getTestResults(testRunId, filter, newSkip, loadMoreSize).then((data) => {
-        setTestResults([...testResults, ...data.data])
-      }
-    )
+      setTestResults([...testResults, ...data.data])
+    })
   }
 
   function filterAndLoad(filter) {
@@ -62,7 +61,10 @@ export default function TestResultsList({testsCount, testRunId, testResults, set
   }
 
   return <Paper style={{padding: '15px', ...props.style}}>
-    <TestResultsFilter filter={filter} setFilter={setFilter} filterAndLoad={filterAndLoad}/>
+    <TestResultsFilter
+      filter={filter}
+      setFilter={setFilter}
+      filterAndLoad={filterAndLoad}/>
     {
       testResults.map((testResult) => {
         return <TestResultCard
