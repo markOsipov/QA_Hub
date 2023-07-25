@@ -51,8 +51,10 @@ class TestResultsService {
                 filter.add(TestResult::retries eq 0)
             }
 
-            if (it.unreviewed != null) {
-                filter.add(TestResult::reviewed eq !it.unreviewed)
+            when (it.unreviewed) {
+                true -> filter.add(TestResult::reviewed ne true)
+                false -> filter.add(TestResult::reviewed eq true)
+                else -> {}
             }
         }
 
