@@ -8,7 +8,6 @@ export default function ErrorFilter({filter, setFilter, setFilterChanged, ...pro
     color: customTheme.palette.text.white,
     border: `1px solid ${customTheme.palette.text.white}`,
     borderRadius: '5px',
-    opacity: '0.95'
   }
 
   const [hovered, setHovered] = useState(false)
@@ -23,7 +22,7 @@ export default function ErrorFilter({filter, setFilter, setFilterChanged, ...pro
   }
   if (!filter.message) return null
 
-  return <StyledTooltip title={getTooltipText()} enterDelay={200}>
+  return <StyledTooltip title={getTooltipText()} enterDelay={800}>
     <div
       style={{
         borderRadius: '5px',
@@ -33,7 +32,8 @@ export default function ErrorFilter({filter, setFilter, setFilterChanged, ...pro
         display: 'grid',
         alignContent: 'center',
         justifyContent: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        backgroundColor: hovered ? 'rgba(0, 0, 0, 0.9)' : 'rgba(0, 0, 0, 0.7)',
+        opacity: hovered ? '1' : '0.85',
         ...filterStyle,
         ...props.style
       }}

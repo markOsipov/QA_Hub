@@ -45,7 +45,7 @@ export default function UnreviewedFilter({filter, setFilter, setFilterChanged, .
     setFilterChanged(true)
   }
 
-  return <StyledTooltip title={getTooltipText()} enterDelay={300}>
+  return <StyledTooltip title={getTooltipText()} enterDelay={800}>
     <div
       onClick={handleIconClick}
       onMouseOver={() => { setHovered(true)}}
