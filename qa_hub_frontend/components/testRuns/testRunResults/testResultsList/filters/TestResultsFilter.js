@@ -21,10 +21,9 @@ export default function TestResultsFilter({ filter, setFilter, filterAndLoad, fi
     setFilterChanged(false)
   }
 
-  return <div style={{...props.style}}>
-    <div style={{display: 'flex', alignItems: 'center'}}>
+  return <div style={{overflowX: 'auto', ...props.style}}>
+    <div style={{display: 'flex', alignItems: 'center', minWidth: 'max-content', paddingTop: '6px'}}>
       <div style={{flexGrow: '1.1'}}></div>
-
       <ErrorFilter filter={filter} setFilter={setFilter} setFilterChanged={setFilterChanged} style={{marginLeft: '5px'}}/>
       <RetriesFilter filter={filter} setFilter={setFilter} setFilterChanged={setFilterChanged} style={{marginLeft: '5px'}}/>
       <UnreviewedFilter filter={filter} setFilter={setFilter} setFilterChanged={setFilterChanged} style={{marginLeft: '5px'}}/>
@@ -72,7 +71,7 @@ export default function TestResultsFilter({ filter, setFilter, filterAndLoad, fi
           backgroundColor: customTheme.palette.error.main,
           height: '25px',
           width: '25px',
-          marginLeft: '10px',
+          marginLeft: '6px',
           ...customIconButtonBackgroundStyle
         }}
       >

@@ -29,11 +29,11 @@ export default function StatusFilter({filter, setFilter,setFilterChanged, ...pro
     setFilterChanged(true)
   }
 
-  return <StyledFormControl size={"tiny"} style={{...props.style}}>
+  return <StyledFormControl size={"tiny"} style={{ width: 'min-content', ...props.style}}>
     <StyledInputLabel>Status</StyledInputLabel>
     <StyledSelect
       value={statuses}
-      style={{backgroundColor: customTheme.palette.background.input, minWidth: '150px'}}
+      style={{backgroundColor: customTheme.palette.background.input, minWidth: '100px', maxWidth: '150px'}}
       onChange={handleStatusChange}
       renderValue={(selected) => selected.join(separator)}
       multiple
