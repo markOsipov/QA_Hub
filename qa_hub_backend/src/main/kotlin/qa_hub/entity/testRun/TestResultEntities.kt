@@ -1,5 +1,9 @@
 package qa_hub.entity.testRun
 
+data class SingleTestResultRequest(
+    val testRunId: String,
+    val identifier: String
+)
 
 data class TestResultsRequest(
     val filter: TestResultFilter? = null,

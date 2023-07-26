@@ -3,14 +3,18 @@ import Typography from "@mui/material/Typography";
 import {Card} from "@mui/material";
 import {useState} from "react";
 import TestStatusWithRetries from "../../../common/TestStatusWithRetries";
+import {useRouter} from "next/router";
 
 export default function TestResultCard({testResult, setSelectedTest, ...props}) {
+  const router = useRouter()
   const [isHovering, setIsHovered] = useState(false);
   const onMouseEnter = () => setIsHovered(true);
   const onMouseLeave = () => setIsHovered(false);
 
   const handleTestResultCardClick = () => {
     setSelectedTest(testResult)
+    router.query.test = (testResult.testcaseId != null && testResult.testcaseId.length > 0) ? testResult.testcaseId : testResult.fullName
+    router.push(router)
   }
 
   function getShortName(testResult) {

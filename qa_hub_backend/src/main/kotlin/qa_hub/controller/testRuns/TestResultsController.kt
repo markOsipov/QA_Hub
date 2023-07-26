@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
-import qa_hub.entity.testRun.QaReview
-import qa_hub.entity.testRun.TestResult
-import qa_hub.entity.testRun.TestResultsRequest
-import qa_hub.entity.testRun.TestResultRetry
+import qa_hub.entity.testRun.*
 import qa_hub.service.testResults.QaReviewService
 import qa_hub.service.testResults.TestLogsService
 import qa_hub.service.testResults.TestResultsService
@@ -40,6 +37,13 @@ class TestResultsController {
         @RequestBody requestBody: TestResultsRequest? = null
     ): List<TestResult> {
         return testResultsService.findTestResults(testRunId, requestBody)
+    }
+
+    @PostMapping("/single")
+    fun getTestResult(
+        @RequestBody requestBody: SingleTestResultRequest
+    ): TestResult? {
+        return testResultsService.findSingleResult(requestBody.testRunId, requestBody.identifier)
     }
 
     @GetMapping("/retries")

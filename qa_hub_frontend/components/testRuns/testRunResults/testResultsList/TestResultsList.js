@@ -19,7 +19,6 @@ export default function TestResultsList(
   const initialSkip = 0
 
   const [loadMoreSize, setLoadMoreSize] = useState(initialLoadSize)
-  const [skip, setSkip] = useState(initialSkip)
   const [loading, setLoading] = useState(false)
 
   async function updateTestResults(skip, limit) {
@@ -34,11 +33,7 @@ export default function TestResultsList(
   }
 
    const loadMoreResults = async () => {
-    const newSkip = skip + loadMoreSize
-
-    setSkip(newSkip)
-
-    await getTestResults(testRunId, filter, newSkip, loadMoreSize).then((data) => {
+    await getTestResults(testRunId, filter, testResults.length, loadMoreSize).then((data) => {
       setTestResults([...testResults, ...data.data])
     })
   }
@@ -56,7 +51,6 @@ export default function TestResultsList(
   }
 
   useEffect(() => {
-    setSkip(initialSkip)
     updateTestResults(initialSkip, loadMoreSize)
   }, [testRunId])
 

@@ -1,10 +1,10 @@
 import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
-import useSWR from "swr";
 import {getTestRun} from "../../requests/TestRunRequests";
 import TestRunResultsOverview from "../../components/testRuns/testRunResults/testRunOverview/TestRunResultsOverview";
 import TestResultsList from "../../components/testRuns/testRunResults/testResultsList/TestResultsList";
 import TestResultDetails from "../../components/testRuns/testRunResults/testResultDetails/TestResultDetails";
+import {getSingleTestResult} from "../../requests/testResults/TestResultsRequests";
 
 export default function TestRunPage() {
   const router = useRouter()
@@ -16,6 +16,18 @@ export default function TestRunPage() {
   const [filter, setFilter] = useState({})
   const [filterChanged, setFilterChanged] = useState(false)
 
+  const loadTestResultFromUrl = (testRunId) => {
+    const identifier = router.query.test
+
+    if (identifier) {
+      getSingleTestResult(testRunId, identifier).then((data) => {
+        if (data?.data) {
+          setSelectedTest(data.data)
+        }
+      })
+    }
+  }
+
   useEffect(() => {
     const testRunId = router.query.testRunId
 
@@ -25,6 +37,7 @@ export default function TestRunPage() {
           setTestRun(data.data)
         }
       })
+      loadTestResultFromUrl(testRunId)
     }
   }, [router.query])
 
