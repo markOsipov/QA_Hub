@@ -18,6 +18,8 @@ const pages = ['blocker', 'statistics', 'metrics', 'testRuns'];
 function QaHubAppBar() {
     const router = useRouter()
 
+    const path = router.asPath
+    const label = path. substring(0, path.indexOf("?"))
     return (
         <AppBar position="static">
             <Container style={{maxWidth: "100vw", paddingLeft: "10px"}}>
@@ -37,7 +39,7 @@ function QaHubAppBar() {
                         >
                             QA Hub
                         </Typography>
-                        <Typography>{router.asPath}</Typography>
+                        <Typography>{label}</Typography>
                     </div>
 
 
