@@ -23,6 +23,9 @@ export default function TestRunPage() {
       getSingleTestResult(testRunId, identifier).then((data) => {
         if (data?.data) {
           setSelectedTest(data.data)
+        } else {
+          delete router.query.test
+          router.push(router)
         }
       })
     }

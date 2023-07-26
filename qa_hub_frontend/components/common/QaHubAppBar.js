@@ -12,14 +12,15 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import ProjectSelector from "./ProjectSelector";
 import {useRouter} from "next/router";
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
+import {useEffect, useState} from "react";
 
 const pages = ['blocker', 'statistics', 'metrics', 'testRuns'];
 
 function QaHubAppBar() {
     const router = useRouter()
 
-    const path = router.asPath
-    const label = path. substring(0, path.indexOf("?"))
+    const label= router.asPath.substring(0, Math.max(router.asPath.indexOf("?"), router.asPath.length))
+
     return (
         <AppBar position="static">
             <Container style={{maxWidth: "100vw", paddingLeft: "10px"}}>
