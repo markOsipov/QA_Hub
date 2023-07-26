@@ -56,26 +56,27 @@ export default function TestRunResultsOverview({testRun, filter, setFilter, setF
             />
           </div>
 
-          <div style={{display: 'grid', marginLeft: '50px', alignItems: 'center', alignSelf: 'center'}}>
-            <div style={{display: 'flex', justifyContent: 'end'}}>
-              <TestResultsPlate testRun={testRun} style={{minWidth: '300px', marginTop: '20px'}}/>
+
+            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'end', alignItems: 'center', marginLeft: '50px'}}>
+              <TestResultsPlate testRun={testRun} style={{minWidth: '300px', marginTop: '20px', position: 'relative', top: '-9px'}}/>
+
+              {
+                testRun.config !== null &&
+                <TestRunConfig testRun={testRun} style={{position: 'relative'}}/>
+              }
             </div>
 
-            {
-              testRun.config !== null &&
-              <TestRunConfig testRun={testRun} style={{marginTop: '23px'}}/>
-            }
-          </div>
+
         </div>
-        {
-          testRun.runners.length > 0 &&
-          <RunnersDetailsPlate
-            testRun={testRun}
-            filter={filter}
-            setFilter={setFilter}
-            setFilterChanged={setFilterChanged}
-            style={{marginLeft: '50px', flexGrow: '1.1', justifyContent: 'end'}} />
-        }
+        {/*{*/}
+        {/*  testRun.runners.length > 0 &&*/}
+        {/*  <RunnersDetailsPlate*/}
+        {/*    testRun={testRun}*/}
+        {/*    filter={filter}*/}
+        {/*    setFilter={setFilter}*/}
+        {/*    setFilterChanged={setFilterChanged}*/}
+        {/*    style={{marginLeft: '50px', flexGrow: '1.1', justifyContent: 'end'}} />*/}
+        {/*}*/}
       </div>
     </Paper>
   </div>
