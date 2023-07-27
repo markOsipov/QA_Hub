@@ -14,7 +14,7 @@ export default function TestResultCard({testResult, setSelectedTest, ...props}) 
   const handleTestResultCardClick = () => {
     setSelectedTest(testResult)
     router.query.test = (testResult.testcaseId != null && testResult.testcaseId.length > 0) ? testResult.testcaseId : testResult.fullName
-    router.push(router)
+    router.replace(router)
   }
 
   function getShortName(testResult) {

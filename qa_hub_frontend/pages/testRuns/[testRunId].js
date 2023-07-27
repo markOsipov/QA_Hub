@@ -25,7 +25,7 @@ export default function TestRunPage() {
           setSelectedTest(data.data)
         } else {
           delete router.query.test
-          router.push(router)
+          router.replace(router)
         }
       })
     }
