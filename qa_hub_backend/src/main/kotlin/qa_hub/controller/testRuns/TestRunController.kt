@@ -148,7 +148,7 @@ class TestRunController {
                         simulators = it.simulators,
                         config = TestRunConfig(
                             branch = "TestBranch",
-                            commit = "TestCommit",
+                            commit = "092d9b${Random.nextInt(0, 9)}",
                             environment = "test",
                             retries = 3,
                             parallelThreads = simulatorsCount
