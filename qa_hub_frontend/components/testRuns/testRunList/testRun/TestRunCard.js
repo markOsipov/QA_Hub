@@ -2,8 +2,6 @@ import {Paper} from "@mui/material";
 import TextWithLabel from "../../../primitives/TextWithLabel";
 import StatusBadge from "../../../primitives/StatusBadge";
 import TimingsPlate from "./elements/timings/TimingsPlate";
-import GitEnvPlate from "./elements/GitEnvPlate";
-import RunnersPlate from "./elements/RunnersPlate";
 import TestResultsPlate from "./elements/TestResultsPlate";
 import {customTheme} from "../../../../styles/CustomTheme";
 import {useRouter} from "next/router";
@@ -11,28 +9,21 @@ import {useState} from "react";
 import TestRunConfig from "../../testRunResults/testRunOverview/TestRunConfig";
 export default function TestRunCard({testRun, filter, filterAndLoad, ...props }) {
   const opacity = 0.6
-  function getProgressBarWidth() {
-    return Math.max(window.innerWidth * 0.2, 200)
-  }
 
   const router = useRouter()
-  const [progressBarWidth, setProgressBarWidth] = useState(getProgressBarWidth())
 
+  const progressBarWidth = Math.max(window.innerWidth * 0.2, 200)
 
   const [isHovering, setIsHovered] = useState(false);
   const onMouseEnter = () => setIsHovered(true);
   const onMouseLeave = () => setIsHovered(false);
-  function handleResize() {
-    setProgressBarWidth(getProgressBarWidth())
-  }
+
 
   const handleTestRunCardClick = () => {
      window.location.href = `/testRuns/${testRun.testRunId}`
 
      //router.push(`testRuns/${testRun.testRunId}`) //got a bug, changes URL but doesn't render the new page
   }
-
-  window.addEventListener('resize', handleResize)
 
   const filterByStatus = () => {
     const statuses = filter.statuses || []
