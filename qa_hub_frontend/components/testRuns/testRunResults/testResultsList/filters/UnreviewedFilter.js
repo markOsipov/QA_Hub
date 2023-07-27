@@ -17,7 +17,8 @@ export default function UnreviewedFilter({filter, setFilter, setFilterChanged, .
 
   const turnedOffStyle = {
     border: `1px solid ${customTheme.palette.text.white}`,
-    opacity: '0.5'
+    opacity: '0.5',
+    backgroundColor: hovered ? 'rgba(0, 0, 0, 0.9)' : '',
   }
 
   const getStyle = () => {

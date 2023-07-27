@@ -67,6 +67,7 @@ export default function TestRunPage() {
         setFilter={setFilter}
         filterChanged={filterChanged}
         setFilterChanged={setFilterChanged}
+        runners={testRun.runners || []}
         style={{width: "550px", minWidth: '370px', maxWidth: '70%', overflowX: 'auto', resize: 'horizontal'}}
       />
       <TestResultDetails

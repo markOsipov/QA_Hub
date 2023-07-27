@@ -18,6 +18,7 @@ export default function RetriesFilter({filter, setFilter, setFilterChanged, ...p
 
   const turnedOffStyle = {
     border: `1px solid ${customTheme.palette.text.white}`,
+    backgroundColor: hovered ? 'rgba(0, 0, 0, 0.9)' : '',
     opacity: '0.5'
   }
 

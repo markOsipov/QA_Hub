@@ -10,7 +10,7 @@ import {getCookie, setCookie} from "../../../../utils/CookieHelper";
 export default function TestResultsList(
   {
     testsCount, testRunId, testResults, setTestResults, setSelectedTest,
-    filter, setFilter, filterChanged, setFilterChanged,
+    filter, setFilter, filterChanged, setFilterChanged, runners,
     ...props
   }
 ) {
@@ -73,6 +73,7 @@ export default function TestResultsList(
       filterAndLoad={filterAndLoad}
       filterChanged={filterChanged}
       setFilterChanged={setFilterChanged}
+      runners={runners}
     />
     {
       testResults.map((testResult) => {
