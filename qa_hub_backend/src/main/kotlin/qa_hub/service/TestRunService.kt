@@ -376,6 +376,15 @@ class TestRunService {
         return@runBlocking testRun
     }
 
+    fun startRerun(testRunId: String) = runBlocking {
+        val testRun = testRunCollection.findOne(TestRun::testRunId eq testRunId)!!
+
+        createTestRun(CreateTestRunRequest(
+            testRun.project,
+            testRun.params
+        ))
+    }
+
     fun deleteTestRun(testRunId: String) = runBlocking {
         testRunCollection.deleteMany(TestRun::testRunId eq testRunId)
         testResultsCollection.deleteMany(TestResult::testRunId eq testRunId)

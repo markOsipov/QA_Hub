@@ -1,7 +1,7 @@
 import {observer} from "mobx-react-lite";
 import projectState from "../../../state/ProjectState";
 import {useEffect, useState} from "react";
-import {getTestRuns} from "../../../requests/TestRunRequests";
+import {getTestRuns} from "../../../requests/testRuns/TestRunRequests";
 import TestRunCard from "./testRun/TestRunCard";
 import TestRunsFilter from "./filters/TestRunsFilter";
 

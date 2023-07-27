@@ -2,7 +2,7 @@ import {Box, Modal} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {useEffect, useState} from "react";
 import Button from "@mui/material/Button";
-import {getParamTypes, upsertTestRunForm} from "../../../../requests/TestRunFormsRequests";
+import {getParamTypes, upsertTestRunForm} from "../../../../requests/testRuns/TestRunFormsRequests";
 import projectState from "../../../../state/ProjectState";
 import {observer} from "mobx-react-lite";
 import {modalStyle} from "../../../../styles/ModalStyle";

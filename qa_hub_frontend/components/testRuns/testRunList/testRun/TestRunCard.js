@@ -8,6 +8,11 @@ import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
 
 import TestRunConfigFilterable from "./elements/TestRunConfigFilterable";
+import Button from "@mui/material/Button";
+import DeleteIcon from "@mui/icons-material/Delete";
+import {cancelTestRun, deleteTestRun} from "../../../../requests/testRuns/TestRunRequests";
+import StopIcon from '@mui/icons-material/Stop';
+import TestRunActions from "./elements/TestRunActions";
 export default function TestRunCard({testRun, filter, setFilter, filterAndLoad, ...props }) {
   const opacity = 0.6
 
@@ -45,7 +50,7 @@ export default function TestRunCard({testRun, filter, setFilter, filterAndLoad, 
     filterAndLoad(newFilterValue)
   }
 
-  return <Paper style={{ padding: '15px', ...props.style,  }}>
+  return <Paper style={{ padding: '15px', position: 'relative', ...props.style,  }}>
     <div style={{ display: "flex", width: '100%', position: 'relative'}}>
       <div style={{display: 'grid', minWidth: '340px'}}>
         <div
@@ -92,7 +97,6 @@ export default function TestRunCard({testRun, filter, setFilter, filterAndLoad, 
         />
       </div>
 
-      {/*<div style={{flexGrow: '1.1', maxWidth: '15%'}}></div>*/}
       <div
         style={{
           display: 'flex',
@@ -101,7 +105,7 @@ export default function TestRunCard({testRun, filter, setFilter, filterAndLoad, 
           alignItems: 'center',
           marginLeft: '50px',
           position: 'relative',
-          left: `calc(50% - ${progressBarWidth * 2 + 100}px)`
+          left: `calc(50% - ${progressBarWidth * 2 + 100}px)`,
         }}
       >
         <TestResultsPlate testRun={testRun} progressBarWidth={progressBarWidth} style={{minWidth: `${progressBarWidth + 170}px`, marginTop: '20px', position: 'relative', top: '-9px'}}/>
@@ -118,5 +122,11 @@ export default function TestRunCard({testRun, filter, setFilter, filterAndLoad, 
         }
       </div>
     </div>
+
+    <TestRunActions
+      testRun={testRun}
+      filter={filter}
+      filterAndLoad={filterAndLoad}
+      style={{position: 'absolute', right: '15px', bottom: '15px'}}/>
   </Paper>
 }

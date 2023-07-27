@@ -1,6 +1,6 @@
 import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
-import {getTestRun} from "../../requests/TestRunRequests";
+import {getTestRun} from "../../requests/testRuns/TestRunRequests";
 import TestRunResultsOverview from "../../components/testRuns/testRunResults/testRunOverview/TestRunResultsOverview";
 import TestResultsList from "../../components/testRuns/testRunResults/testResultsList/TestResultsList";
 import TestResultDetails from "../../components/testRuns/testRunResults/testResultDetails/TestResultDetails";

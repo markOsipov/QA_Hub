@@ -55,6 +55,11 @@ class TestRunController {
         return testRunService.startTestRun(body)
     }
 
+    @PostMapping("/rerun/{testRunId}")
+    fun startRerun(@PathVariable testRunId: String) {
+        testRunService.startRerun(testRunId)
+    }
+
     @GetMapping("/nextTest/{testRunId}")
     suspend fun getNextTest(@PathVariable testRunId: String,
                     @RequestParam("simulatorId", required = false, defaultValue = "") simulatorId: String,

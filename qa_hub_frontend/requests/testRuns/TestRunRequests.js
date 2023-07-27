@@ -1,4 +1,4 @@
-import process from "../next.config";
+import process from "../../next.config";
 import axios from "axios";
 
 export function createNewTestRun(project, params) {
@@ -45,6 +45,42 @@ export function getTestRun(testRunId) {
         },
         params: {
             id: testRunId
+        }
+    }
+
+    return axios(config)
+}
+
+export function startRerun(testRunId) {
+    const config = {
+        method: 'post',
+        url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat(`/api/testRuns/rerun/${testRunId}`),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+
+    return axios(config)
+}
+
+export function cancelTestRun(testRunId) {
+    const config = {
+        method: 'post',
+        url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat(`/api/testRuns/cancel/${testRunId}`),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+
+    return axios(config)
+}
+
+export function deleteTestRun(testRunId) {
+    const config = {
+        method: 'post',
+        url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat(`/api/testRuns/delete/${testRunId}`),
+        headers: {
+            'Content-Type': 'application/json'
         }
     }
 
