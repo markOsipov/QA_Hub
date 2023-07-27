@@ -62,7 +62,7 @@ export default function TestRunResultsOverview({testRun, filter, setFilter, setF
 
               {
                 testRun.config !== null &&
-                <TestRunConfig testRun={testRun} style={{position: 'relative'}}/>
+                <TestRunConfig testRun={testRun} style={{marginLeft: '50px', position: 'relative', top: '13px'}}/>
               }
             </div>
 
