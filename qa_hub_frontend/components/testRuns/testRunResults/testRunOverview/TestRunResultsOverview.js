@@ -4,10 +4,10 @@ import StatusBadge from "../../../primitives/StatusBadge";
 import TestResultsPlate from "../../testRunList/testRun/elements/TestResultsPlate";
 import TimingsPlate from "../../testRunList/testRun/elements/timings/TimingsPlate";
 import TestRunConfig from "./TestRunConfig";
-import RunnersDetailsPlate from "./RunnersDetailsPlate";
+import TestRunActionsOnPage from "./TestRunActionsOnPage";
 
 
-export default function TestRunResultsOverview({testRun, filter, setFilter, setFilterChanged, ...props}) {
+export default function TestRunResultsOverview({testRun, filter, setFilter, setFilterChanged, filterAndLoad, updateTestRunInfo, ...props}) {
   const opacity = '0.8'
 
   if (testRun == null) {
@@ -15,7 +15,7 @@ export default function TestRunResultsOverview({testRun, filter, setFilter, setF
   }
 
   return <div style={{display: 'flex', flexGrow: '1.1'}}>
-    <Paper style={{ padding: '15px', ...props.style, width: '100%' }}>
+    <Paper style={{ padding: '15px', width: '100%', position: 'relative', ...props.style }}>
       <div style={{ display: "flex", width: '100%'}}>
         <div style={{display: "flex", height: 'min-content'}}>
           <div style={{display: 'grid', minWidth: '311px'}}>
@@ -66,17 +66,13 @@ export default function TestRunResultsOverview({testRun, filter, setFilter, setF
               }
             </div>
 
-
+          <div style={{position: 'absolute', right: '15px', bottom: '15px'}} >
+            <TestRunActionsOnPage
+              testRun={testRun}
+              updateTestRunInfo={updateTestRunInfo}
+            />
+          </div>
         </div>
-        {/*{*/}
-        {/*  testRun.runners.length > 0 &&*/}
-        {/*  <RunnersDetailsPlate*/}
-        {/*    testRun={testRun}*/}
-        {/*    filter={filter}*/}
-        {/*    setFilter={setFilter}*/}
-        {/*    setFilterChanged={setFilterChanged}*/}
-        {/*    style={{marginLeft: '50px', flexGrow: '1.1', justifyContent: 'end'}} />*/}
-        {/*}*/}
       </div>
     </Paper>
   </div>

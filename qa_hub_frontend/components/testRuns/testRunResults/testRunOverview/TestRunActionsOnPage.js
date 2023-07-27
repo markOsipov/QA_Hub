@@ -1,20 +1,25 @@
+import {cancelTestRun, deleteTestRun, startRerun} from "../../../../requests/testRuns/TestRunRequests";
+import StyledTooltip from "../../../primitives/StyledTooltip";
+import CustomIconButton from "../../../primitives/CustomIconButton";
+import {customTheme} from "../../../../styles/CustomTheme";
+import ReplayIcon from "@mui/icons-material/Replay";
 import StopIcon from "@mui/icons-material/Stop";
-import {customTheme} from "../../../../../styles/CustomTheme";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {cancelTestRun, deleteTestRun, startRerun} from "../../../../../requests/testRuns/TestRunRequests";
-import CustomIconButton from "../../../../primitives/CustomIconButton";
-import StyledTooltip from "../../../../primitives/StyledTooltip";
-import ReplayIcon from '@mui/icons-material/Replay';
-export default function TestRunActions({testRun, filter, filterAndLoad, ...props}) {
+import {useRouter} from "next/router";
+
+export default function TestRunActionsOnPage({testRun, updateTestRunInfo, ...props}) {
+  const router = useRouter()
+
   const handleStartRerunClick = () => {
     startRerun(testRun.testRunId).then(() => {
-      filterAndLoad(filter)
+      alert("New testrun has started")
     })
   }
   const handleDeleteTestRunClick = () => {
     if (confirm("This Testrun will be deleted. Are you sure?")) {
       deleteTestRun(testRun.testRunId).then(() => {
-        filterAndLoad(filter)
+        router.push("/testRuns")
+        alert(`Testun ${testRun.testRunId} has been deleted`)
       })
     }
   }
@@ -22,7 +27,7 @@ export default function TestRunActions({testRun, filter, filterAndLoad, ...props
   const handleCancelTestRunClick = () => {
     if (confirm("This Testrun will be canceled. Are you sure?")) {
       cancelTestRun(testRun.testRunId).then(() => {
-        filterAndLoad(filter)
+        updateTestRunInfo(testRun.testRunId)
       })
     }
   }

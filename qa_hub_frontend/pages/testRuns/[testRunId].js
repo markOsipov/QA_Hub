@@ -31,16 +31,20 @@ export default function TestRunPage() {
     }
   }
 
+  const updateTestRunInfo = (testRunId) => {
+    getTestRun(testRunId).then(data => {
+      if (data?.data) {
+        setTestRun(data.data)
+      }
+    })
+    loadTestResultFromUrl(testRunId)
+  }
+
   useEffect(() => {
     const testRunId = router.query.testRunId
 
     if (testRunId) {
-      getTestRun(testRunId).then(data => {
-        if (data?.data) {
-          setTestRun(data.data)
-        }
-      })
-      loadTestResultFromUrl(testRunId)
+      updateTestRunInfo(testRunId)
     }
   }, [router.query])
 
@@ -54,6 +58,7 @@ export default function TestRunPage() {
       filter={filter}
       setFilter={setFilter}
       setFilterChanged={setFilterChanged}
+      updateTestRunInfo={updateTestRunInfo}
     />
 
     <div style={{display: "flex", marginTop: '15px', width: '100%', minWidth: '100%', maxHeight: '90vh', overflowY: 'auto'}}>

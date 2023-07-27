@@ -4,19 +4,12 @@ import StatusBadge from "../../../primitives/StatusBadge";
 import TimingsPlate from "./elements/timings/TimingsPlate";
 import TestResultsPlate from "./elements/TestResultsPlate";
 import {customTheme} from "../../../../styles/CustomTheme";
-import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
-
 import TestRunConfigFilterable from "./elements/TestRunConfigFilterable";
-import Button from "@mui/material/Button";
-import DeleteIcon from "@mui/icons-material/Delete";
-import {cancelTestRun, deleteTestRun} from "../../../../requests/testRuns/TestRunRequests";
-import StopIcon from '@mui/icons-material/Stop';
 import TestRunActions from "./elements/TestRunActions";
+
 export default function TestRunCard({testRun, filter, setFilter, filterAndLoad, ...props }) {
   const opacity = 0.6
-
-  const router = useRouter()
 
   const [progressBarWidth, setProgressBarWidth] = useState(Math.max(window.innerWidth * 0.2, 200))
   useEffect(() => {
@@ -50,7 +43,11 @@ export default function TestRunCard({testRun, filter, setFilter, filterAndLoad, 
     filterAndLoad(newFilterValue)
   }
 
-  return <Paper style={{ padding: '15px', position: 'relative', ...props.style,  }}>
+  return <Paper
+    style={{
+      padding: '15px', position: 'relative', ...props.style,
+    }}
+  >
     <div style={{ display: "flex", width: '100%', position: 'relative'}}>
       <div style={{display: 'grid', minWidth: '340px'}}>
         <div
@@ -123,10 +120,12 @@ export default function TestRunCard({testRun, filter, setFilter, filterAndLoad, 
       </div>
     </div>
 
-    <TestRunActions
-      testRun={testRun}
-      filter={filter}
-      filterAndLoad={filterAndLoad}
-      style={{position: 'absolute', right: '15px', bottom: '15px'}}/>
+    <div style={{position: 'absolute', right: '15px', bottom: '15px'}} >
+        <TestRunActions
+          testRun={testRun}
+          filter={filter}
+          filterAndLoad={filterAndLoad}
+        />
+    </div>
   </Paper>
 }
