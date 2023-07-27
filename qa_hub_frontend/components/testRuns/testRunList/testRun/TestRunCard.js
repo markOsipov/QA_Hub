@@ -8,6 +8,7 @@ import TestResultsPlate from "./elements/TestResultsPlate";
 import {customTheme} from "../../../../styles/CustomTheme";
 import {useRouter} from "next/router";
 import {useState} from "react";
+import TestRunConfig from "../../testRunResults/testRunOverview/TestRunConfig";
 export default function TestRunCard({testRun, filter, filterAndLoad, ...props }) {
   const opacity = 0.6
   function getProgressBarWidth() {
@@ -50,8 +51,8 @@ export default function TestRunCard({testRun, filter, filterAndLoad, ...props })
   }
 
   return <Paper style={{ padding: '15px', ...props.style,  }}>
-    <div style={{ display: "flex", width: '100%'}}>
-      <div style={{display: 'grid', minWidth: '311px'}}>
+    <div style={{ display: "flex", width: '100%', position: 'relative'}}>
+      <div style={{display: 'grid', minWidth: '340px'}}>
         <div
           style={{
             marginTop: "10px",
@@ -96,23 +97,25 @@ export default function TestRunCard({testRun, filter, filterAndLoad, ...props })
         />
       </div>
 
-      <div style={{display: 'flex', width: '100%'}}>
-        <div style={{flexGrow: '1'}}></div>
-        <div style={{display: 'flex', flexGrow: '1', position: 'relative', top: '11px'}}>
-          <div style={{display: 'flex', alignItems: 'center', marginLeft: '20px', flexGrow: '1.4'}}>
-            <div style={{display: 'flex', minWidth: '450px', position: 'relative',  justifyContent: 'start'}}>
-              <TestResultsPlate testRun={testRun} progressBarWidth={progressBarWidth} style={{ minWidth: `${progressBarWidth + 185}px`}}/>
-              <RunnersPlate testRun={testRun} style={{minWidth: '300px',  opacity: opacity}} />
-            </div>
-          </div>
+      {/*<div style={{flexGrow: '1.1', maxWidth: '15%'}}></div>*/}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'end',
+          alignItems: 'center',
+          marginLeft: '50px',
+          position: 'relative',
+          left: `calc(50% - ${progressBarWidth * 2 + 100}px)`
+        }}
+      >
+        <TestResultsPlate testRun={testRun} progressBarWidth={progressBarWidth} style={{minWidth: `${progressBarWidth + 170}px`, marginTop: '20px', position: 'relative', top: '-9px'}}/>
 
-          <div style={{display: 'grid', justifyItems:'end', width: '40%', minWidth: '470px'}}>
-            <GitEnvPlate testRun={testRun} filter={filter} filterAndLoad={filterAndLoad} style={{marginRight: '8px', marginLeft: '15px', }}/>
-          </div>
-
-        </div>
+        {
+          testRun.config !== null &&
+          <TestRunConfig testRun={testRun} style={{marginLeft: '80px', position: 'relative', top: '13px'}}/>
+        }
       </div>
-
     </div>
   </Paper>
 }

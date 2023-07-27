@@ -7,7 +7,7 @@ import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import SyncIcon from "@mui/icons-material/Sync";
 
 export default function TestRunConfig({testRun, ...props}) {
-  const marginBottom = '10px'
+  const marginBottom = '14px'
   const iconWidth = '20px'
 
   return <div style={{display: 'flex', flexDirection: 'column', height: 'min-content', opacity: '0.8', ...props.style}}>
