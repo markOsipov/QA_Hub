@@ -23,15 +23,18 @@ export default function DeviceFilter({filter, setFilter, setFilterChanged, runne
   }
 
   const getStyle = () => {
-    if (!filter.deviceId) {
+    if (!filter.deviceId && !filter.runner) {
       return turnedOffStyle
     } else return turnedOnStyle
   }
 
   const getTooltipText = () => {
     if (filter.deviceId) {
-      return `Only tests executed on the next device are shown: ${filter.deviceId}`
-    } else return "Shows only tests executed on certain device if turned on"
+      return `Only tests executed on the next DEVICE are shown: ${filter.deviceId}`
+    } else if (filter.runner) {
+      return `Only tests executed on the next RUNNER are shown: ${filter.runner}`
+    }
+      return "Shows only tests executed on certain device or runner if turned on"
   }
 
   return <>
@@ -72,7 +75,14 @@ export default function DeviceFilter({filter, setFilter, setFilterChanged, runne
           height: '25px',
           borderRadius: '5px',
           backgroundColor: hovered ? 'rgba(255, 255, 255, 0.08)' : ''}} />
-        <PhoneIphoneIcon style={{height: '21px', width: '22px'}}/>
+        {
+          filter.runner &&
+          <ComputerIcon style={{height: '21px', width: '22px'}}/>
+        }
+        {
+          !filter.runner &&
+          <PhoneIphoneIcon style={{height: '21px', width: '22px'}}/>
+        }
       </div>
     </StyledTooltip>
     </>
@@ -93,49 +103,99 @@ function FilterMenu({filter, setFilter, runners, anchorEl, setAnchorEl, setFilte
     <div style={{display: 'grid', padding: '5px 15px'}}>
       {
         runners.map((runner, index) => {
-          return <div key={index} style={{marginTop: index > 0 && '14px'}}>
-            <div style={{display: 'flex', alignItems: 'center'}}>
-              <ComputerIcon />
-              <label style={{marginLeft: '4px'}}>{runner.name}</label>
-            </div>
-            <div style={{display: 'grid'}}>
-              {
-                (runner.simulators || []).map((simulator, index) => {
-                  return <CustomMenuItem
-                    key={index}
-                    simulator={simulator}
-                    filter={filter}
-                    setFilter={setFilter}
-                    setFilterChanged={setFilterChanged}
-                  />
-                })
-              }
-            </div>
-          </div>
+          return <RunnerMenuItem
+            key={index}
+            filter={filter}
+            setFilter={setFilter}
+            runner={runner}
+            anchorEl={anchorEl}
+            setAnchorEl={setAnchorEl}
+            setFilterChanged={setFilterChanged}
+            style={{marginTop: index > 0 && '14px'}}
+          />
         })
       }
     </div>
   </Menu>
 }
 
-function CustomMenuItem({simulator, filter, setFilter, setFilterChanged, ...props}) {
+function RunnerMenuItem({filter, setFilter, runner, anchorEl, setAnchorEl, setFilterChanged, ...props}) {
+  const [hovered, setHovered] = useState(false)
+
+  const getStyle = () => {
+    if (!filter.runner && !filter.deviceId) {
+      return {
+        opacity: '0.7'
+      }
+    } else if (filter.runner === runner.name || runner.simulators.includes(filter.deviceId)) {
+      return {
+        opacity: '1'
+      }
+    } else return {
+      opacity: '0.4'
+    }
+  }
+  const filterByRunner = () => {
+    if (filter.runner === runner.name) {
+      setFilter({ ...filter, deviceId: null, runner: null })
+    } else {
+      setFilter({ ...filter, deviceId: null, runner: runner.name })
+    }
+    setFilterChanged(true)
+  }
+
+  return <div style={{...props.style}}>
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        backgroundColor: hovered && 'rgba(255, 255, 255, 0.05)',
+        padding: '5px 10px',
+        ...getStyle(),
+      }}
+      onMouseOver={() => { setHovered(true)}}
+      onMouseLeave={() => { setHovered(false)}}
+      onClick={filterByRunner}
+    >
+      <ComputerIcon />
+      <label style={{marginLeft: '4px'}}>{runner.name}</label>
+    </div>
+    <div style={{display: 'grid'}}>
+      {
+        (runner.simulators || []).map((simulator, index) => {
+          return <SimulatorMenuItem
+            key={index}
+            simulator={simulator}
+            runner={runner}
+            filter={filter}
+            setFilter={setFilter}
+            setFilterChanged={setFilterChanged}
+            style={{marginLeft: '18px'}}
+          />
+        })
+      }
+    </div>
+  </div>
+}
+
+function SimulatorMenuItem({runner, simulator, filter, setFilter, setFilterChanged, ...props}) {
   const [hovered, setHovered] = useState(false)
 
   const filterBySimulator = () => {
     if (filter.deviceId === simulator) {
-      setFilter({ ...filter, deviceId: null })
+      setFilter({ ...filter, deviceId: null, runner: null })
     } else {
-      setFilter({ ...filter, deviceId: simulator })
+      setFilter({ ...filter, deviceId: simulator, runner: null })
     }
     setFilterChanged(true)
   }
 
   const getStyle = () => {
-    if (!filter.deviceId) {
+    if (!filter.deviceId && !filter.runner) {
       return {
         opacity: '0.7'
       }
-    } else if (filter.deviceId === simulator) {
+    } else if (filter.deviceId === simulator || filter.runner === runner.name) {
       return {
         opacity: '1'
       }
