@@ -42,7 +42,7 @@ export default function TimingsPlate ({testRun, ...props}) {
         />
         <DateView
           style={{marginLeft: '15px'}}
-          value={getTimeMinutes(testRun.timeMetrics.started)}
+          value={getTimeMinutes(testRun.timeMetrics.created)}
           label={"Created"}
         />
       </div>
