@@ -19,7 +19,7 @@ const pages = ['blocker', 'statistics', 'metrics', 'testRuns'];
 function QaHubAppBar() {
     const router = useRouter()
 
-    const label= router.asPath.substring(0, Math.max(router.asPath.indexOf("?"), router.asPath.length))
+    const label= router.asPath.split("?")[0]
 
     return (
         <AppBar position="static">
