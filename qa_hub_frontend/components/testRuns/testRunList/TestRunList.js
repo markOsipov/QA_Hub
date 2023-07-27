@@ -44,6 +44,7 @@ const TestRunList = observer(({...props}) => {
           key={testRun.testRunId}
           style={{marginTop: "15px", minWidth: 'max-content'}}
           filter={filter}
+          setFilter={setFilter}
           filterAndLoad={filterAndLoad}
         />
       })

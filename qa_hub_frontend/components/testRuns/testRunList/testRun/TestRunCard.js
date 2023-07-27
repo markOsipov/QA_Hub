@@ -7,7 +7,8 @@ import {customTheme} from "../../../../styles/CustomTheme";
 import {useRouter} from "next/router";
 import {useState} from "react";
 import TestRunConfig from "../../testRunResults/testRunOverview/TestRunConfig";
-export default function TestRunCard({testRun, filter, filterAndLoad, ...props }) {
+import TestRunConfigFilterable from "./elements/TestRunConfigFilterable";
+export default function TestRunCard({testRun, filter, setFilter, filterAndLoad, ...props }) {
   const opacity = 0.6
 
   const router = useRouter()
@@ -104,7 +105,13 @@ export default function TestRunCard({testRun, filter, filterAndLoad, ...props })
 
         {
           testRun.config !== null &&
-          <TestRunConfig testRun={testRun} style={{marginLeft: '80px', position: 'relative', top: '13px'}}/>
+          <TestRunConfigFilterable
+            style={{marginLeft: '80px', position: 'relative', top: '13px'}}
+            testRun={testRun}
+            filter={filter || {}}
+            setFilter={setFilter}
+            filterAndLoad={filterAndLoad}
+          />
         }
       </div>
     </div>
