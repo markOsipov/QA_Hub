@@ -5,15 +5,18 @@ import TimingsPlate from "./elements/timings/TimingsPlate";
 import TestResultsPlate from "./elements/TestResultsPlate";
 import {customTheme} from "../../../../styles/CustomTheme";
 import {useRouter} from "next/router";
-import {useState} from "react";
-import TestRunConfig from "../../testRunResults/testRunOverview/TestRunConfig";
+import {useEffect, useState} from "react";
+
 import TestRunConfigFilterable from "./elements/TestRunConfigFilterable";
 export default function TestRunCard({testRun, filter, setFilter, filterAndLoad, ...props }) {
   const opacity = 0.6
 
   const router = useRouter()
 
-  const progressBarWidth = Math.max(window.innerWidth * 0.2, 200)
+  const [progressBarWidth, setProgressBarWidth] = useState(Math.max(window.innerWidth * 0.2, 200))
+  useEffect(() => {
+    setProgressBarWidth(Math.max(window.innerWidth * 0.2, 200))
+  }, [window.innerWidth])
 
   const [isHovering, setIsHovered] = useState(false);
   const onMouseEnter = () => setIsHovered(true);
