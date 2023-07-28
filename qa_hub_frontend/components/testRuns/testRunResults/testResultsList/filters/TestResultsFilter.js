@@ -29,10 +29,25 @@ export default function TestResultsFilter({ filter, setFilter, filterAndLoad, fi
       <StatusFilter filter={filter} setFilter={setFilter} setFilterChanged={setFilterChanged} style={{marginLeft: '5px'}} />
 
 
-      <CustomIconButton
-        action={handleSearchButtonClick}
-        icon={<SearchIcon/>}
-      />
+      <div style={{position:'relative'}}>
+        <CustomIconButton
+          action={handleSearchButtonClick}
+          icon={<SearchIcon/>}
+        />
+        {
+          filterChanged &&
+          <div style={{
+            width: '5px',
+            height: '5px',
+            borderRadius: '5px',
+            backgroundColor: 'red',
+            left: 'calc(100% - 4px)',
+            top: 'calc(100% - 4px)',
+            position: 'absolute'
+          }}
+          />
+        }
+      </div>
       <CustomIconButton
         action={handleClearButtonClick}
         color={customTheme.palette.error.main}
