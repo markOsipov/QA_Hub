@@ -13,8 +13,10 @@ import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import AppleIcon from '@mui/icons-material/Apple';
 import {observer} from "mobx-react-lite";
 import testResultsFilter from "../../testResultsList/filters/TestResultsFilter";
+import testResultsState from "../../../../../state/testResults/TestResultsState";
 
-const RetryTab = observer(({retry, testResult, isLastRetry, testResults, setTestResults, ...props}) => {
+const RetryTab = observer(({retry, isLastRetry, ...props}) => {
+  const {selectedTest} = testResultsState
   const [selectedStep, setSelectedStep] = useState(null)
 
   let lastResult = retry.statusHistory[retry.statusHistory.length - 1]
@@ -27,13 +29,11 @@ const RetryTab = observer(({retry, testResult, isLastRetry, testResults, setTest
       <div style={{display: "flex", marginTop: '15px'}}>
         <ErrorMessage
           message={lastResult.message}
-          testResults={testResults}
-          setTestResults={setTestResults}
           style={{width: '50%'}}
         />
         {
           isLastRetry && lastResult.status === "FAILURE" &&
-          <QaResolutionPanel testResult={testResult} style={{marginLeft: '30px'}}/>
+          <QaResolutionPanel testResult={selectedTest} style={{marginLeft: '30px'}}/>
         }
       </div>
     }

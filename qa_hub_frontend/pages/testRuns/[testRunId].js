@@ -7,15 +7,12 @@ import TestResultDetails from "../../components/testRuns/testRunResults/testResu
 import {getSingleTestResult} from "../../requests/testResults/TestResultsRequests";
 import {observer} from "mobx-react-lite";
 import testResultsFilterState from "../../state/testResults/TestResultsFilterState";
+import testResultsState from "../../state/testResults/TestResultsState";
 
 const TestRunPage = observer(() => {
   const router = useRouter()
 
   const [testRun, setTestRun] = useState(null)
-  const [selectedTest, setSelectedTest] = useState(null)
-  const [testResults, setTestResults] = useState([])
-
-  const {filter } = testResultsFilterState
 
   const loadTestResultFromUrl = (testRunId) => {
     const identifier = router.query.test
@@ -23,7 +20,7 @@ const TestRunPage = observer(() => {
     if (identifier) {
       getSingleTestResult(testRunId, identifier).then((data) => {
         if (data?.data) {
-          setSelectedTest(data.data)
+          testResultsState.setSelectedTest(data.data)
         } else {
           delete router.query.test
           router.replace(router)
@@ -61,18 +58,10 @@ const TestRunPage = observer(() => {
 
     <div style={{display: "flex", marginTop: '15px', width: '100%', minWidth: '100%', maxHeight: '90vh', overflowY: 'auto'}}>
       <TestResultsList
-        testsCount={testRun?.tests?.testsCount}
-        testResults={testResults}
-        setTestResults={setTestResults}
-        testRunId={testRun.testRunId}
-        setSelectedTest={setSelectedTest}
-        runners={testRun.runners || []}
+        testRun={testRun}
         style={{width: "550px", minWidth: '370px', maxWidth: '70%', overflowX: 'auto', resize: 'horizontal'}}
       />
       <TestResultDetails
-        testResult={selectedTest}
-        testResults={testResults}
-        setTestResults={setTestResults}
         style={{marginLeft: '15px', overflowX: 'auto', width: 'min-content', flexGrow:'1.1'}}
       />
     </div>

@@ -9,19 +9,21 @@ import RetryTab from "./RetryTab";
 import testResultsFilter from "../../testResultsList/filters/TestResultsFilter";
 import {observer} from "mobx-react-lite";
 import testResultsFilterState from "../../../../../state/testResults/TestResultsFilterState";
-const TestRetriesTabs = observer(({ testResult, testResults, setTestResults, ...props }) => {
+import testResultsState from "../../../../../state/testResults/TestResultsState";
+const TestRetriesTabs = observer(({ ...props }) => {
+  const {selectedTest} = testResultsState
   const [tabValue, setTabValue] = useState('0');
   const [retries, setRetries] = useState([])
 
   useEffect(() => {
-    getTestRetries(testResult.testRunId, testResult.fullName).then((data) => {
+    getTestRetries(selectedTest.testRunId, selectedTest.fullName).then((data) => {
       setRetries(data.data)
     })
-  }, [testResult.testRunId, testResult.fullName])
+  }, [selectedTest.testRunId, selectedTest.fullName])
 
   useEffect(() => {
     setTabValue('0')
-  },[testResult.testRunId, testResult.fullName])
+  },[selectedTest.testRunId, selectedTest.fullName])
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
@@ -44,10 +46,7 @@ const TestRetriesTabs = observer(({ testResult, testResults, setTestResults, ...
           return <TabPanel  key={`RetryPanel${retry.retry}`} value={String(retries.length - index - 1)} style={{padding: '24px 5px 0px 5px'}}>
             <RetryTab
               retry={retry}
-              testResult={testResult}
               isLastRetry={retries.length - index - 1 === 0 }
-              testResults={testResults}
-              setTestResults={setTestResults}
             />
           </TabPanel>
         })

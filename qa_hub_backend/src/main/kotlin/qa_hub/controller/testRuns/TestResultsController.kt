@@ -39,6 +39,14 @@ class TestResultsController {
         return testResultsService.findTestResults(testRunId, requestBody)
     }
 
+    @PostMapping("/count/{testRunId}")
+    fun countTestResults(
+        @PathVariable("testRunId") testRunId: String,
+        @RequestBody requestBody: TestResultFilter? = null
+    ): TestResultsService.CountResponse {
+        return testResultsService.countTestResults(testRunId, requestBody)
+    }
+
     @PostMapping("/single")
     fun getTestResult(
         @RequestBody requestBody: SingleTestResultRequest

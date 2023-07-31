@@ -36,6 +36,19 @@ export function getTestResults(testRunId, filter, skip, limit) {
   return axios(config)
 }
 
+export function countTestResults(testRunId, filter) {
+  const config = {
+    method: 'post',
+    url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat(`/api/testResults/count/${testRunId}`),
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data: filter
+  }
+
+  return axios(config)
+}
+
 export function getTestRetries(testRunId, fullName) {
   const config = {
     method: 'get',

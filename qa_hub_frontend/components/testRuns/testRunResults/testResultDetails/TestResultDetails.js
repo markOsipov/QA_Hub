@@ -5,10 +5,12 @@ import Typography from "@mui/material/Typography";
 import TestStatusWithRetries from "../../../common/TestStatusWithRetries";
 import {observer} from "mobx-react-lite";
 import testResultsFilterState from "../../../../state/testResults/TestResultsFilterState";
+import testResultsState from "../../../../state/testResults/TestResultsState";
 
-const TestResultDetails = observer(({ testResult, testResults, setTestResults, ...props }) => {
+const TestResultDetails = observer(({ ...props }) => {
+  const {  selectedTest } = testResultsState
   const renderContent = () => {
-    if (testResult == null) {
+    if (selectedTest == null) {
       return <div>Not selected</div>
     } else {
       return <div style={{padding: '2px 2px'}}>
@@ -28,16 +30,16 @@ const TestResultDetails = observer(({ testResult, testResults, setTestResults, .
               marginRight: '7px'
             }}
             label={'TestcaseId'}
-            value={testResult.testcaseId}
+            value={selectedTest.testcaseId}
             labelStyle={{ justifySelf: 'center'}}
           />
           <div style={{maxWidth: 'min-content', overflowX: 'hidden', position: 'relative', marginLeft: '15px', top: '-1px'}}>
-            <Typography variant={'h6'} style={{marginLeft: '15px', width: 'max-content'}}>{getShortName(testResult)}</Typography>
-            <Typography variant={'h6'} style={{marginLeft: '15px', width: 'max-content', fontSize: '14px', opacity: '0.5'}}>{testResult.fullName}</Typography>
+            <Typography variant={'h6'} style={{marginLeft: '15px', width: 'max-content'}}>{getShortName(selectedTest)}</Typography>
+            <Typography variant={'h6'} style={{marginLeft: '15px', width: 'max-content', fontSize: '14px', opacity: '0.5'}}>{selectedTest.fullName}</Typography>
           </div>
           <TestStatusWithRetries
-            status={testResult.status}
-            retries={testResult.retries}
+            status={selectedTest.status}
+            retries={selectedTest.retries}
             style={{
               position: 'relative',
               top: '12px',
@@ -45,12 +47,7 @@ const TestResultDetails = observer(({ testResult, testResults, setTestResults, .
           }}/>
         </div>
 
-        <TestRetriesTabs
-          testResult={testResult}
-          testResults={testResults}
-          setTestResults={setTestResults}
-          style={{marginTop: '30px'}}
-        />
+        <TestRetriesTabs style={{marginTop: '30px'}}/>
       </div>
     }
   }

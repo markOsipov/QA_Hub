@@ -5,8 +5,11 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import WarningIcon from '@mui/icons-material/Warning';
 import {observer} from "mobx-react-lite";
 import testResultsFilterState from "../../../../../state/testResults/TestResultsFilterState";
-const ErrorMessage = observer(({ message, testResults, setTestResults, ...props }) => {
+import testResultsState from "../../../../../state/testResults/TestResultsState";
+import {countTestResults} from "../../../../../requests/testResults/TestResultsRequests";
+const ErrorMessage = observer(({ message, ...props }) => {
   const {filter} = testResultsFilterState
+  const {selectedTest, testResults} = testResultsState
   const ref = createRef()
   const [anchorEl, setAnchorEl] = useState(null)
   const menuOpen = Boolean(anchorEl);
@@ -36,9 +39,9 @@ const ErrorMessage = observer(({ message, testResults, setTestResults, ...props 
 
   useEffect(() => {
     if (menuOpen) {
-      setTestsWithSimilarError(testResults.filter(el => {
-        return el.message?.includes(selectedText || message)
-      }).length)
+      countTestResults(selectedTest.testRunId, {message: selectedText || message}).then((data) => {
+        setTestsWithSimilarError(data.data.count)
+      })
     }
   }, [menuOpen])
 
@@ -77,7 +80,7 @@ const ErrorMessage = observer(({ message, testResults, setTestResults, ...props 
       <div style={{padding: '0 10px 10px 10px'}}>
         <div style={{display: 'flex', alignItems: 'center'}}>
           <WarningIcon style={{ color: customTheme.palette.error.main }}/>
-          <label style={{marginLeft: '4px'}}>Similar errors: { testsWithSimilarError - 1 }</label>
+          <label style={{marginLeft: '4px'}}>Similar errors: { testsWithSimilarError }</label>
         </div>
 
         { selectedText &&
@@ -96,7 +99,7 @@ const ErrorMessage = observer(({ message, testResults, setTestResults, ...props 
       </MenuItem>
     </Menu>
     <div onMouseUp={() => { setAnchorEl(ref.current) }}>
-      <label ref={ref}    style={{whiteSpace: 'break-spaces', cursor: 'pointer'}}
+      <label ref={ref} style={{whiteSpace: 'break-spaces', cursor: 'pointer'}}
       >{message}</label>
     </div>
   </div>

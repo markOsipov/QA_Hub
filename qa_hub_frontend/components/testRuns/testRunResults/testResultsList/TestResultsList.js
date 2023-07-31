@@ -8,14 +8,11 @@ import StyledTextField from "../../../primitives/StyledTextField";
 import {getCookie, setCookie} from "../../../../utils/CookieHelper";
 import testResultsFilterState from "../../../../state/testResults/TestResultsFilterState";
 import {observer} from "mobx-react-lite";
+import testResultsState from "../../../../state/testResults/TestResultsState";
 
-const TestResultsList = observer((
-  {
-    testsCount, testRunId, testResults, setTestResults, setSelectedTest, runners,
-    ...props
-  }
-) => {
-  const {filter } = testResultsFilterState
+const TestResultsList = observer(({  testRun, ...props}) => {
+  const { filter } = testResultsFilterState
+  const { testResults} = testResultsState
 
   const loadMoreCookie = "testResultsLoadCount"
   const initialLoadSize = getCookie(loadMoreCookie) || 50
@@ -24,12 +21,16 @@ const TestResultsList = observer((
   const [loadMoreSize, setLoadMoreSize] = useState(initialLoadSize)
   const [loading, setLoading] = useState(false)
 
+  const testsCount = testRun?.tests?.testsCount
+  const testRunId = testRun.testRunId
+  const runners = testRun.runners || []
+
   async function updateTestResults(skip, limit) {
     if (testResults[0]?.testRunId !== testRunId) {
       setLoading(true)
     }
     const resp = await getTestResults(testRunId, filter, skip, limit).then((data) =>
-      setTestResults(data.data)
+      testResultsState.setTestResults(data.data)
     )
     setLoading(false)
     return resp
@@ -37,7 +38,7 @@ const TestResultsList = observer((
 
    const loadMoreResults = async () => {
     await getTestResults(testRunId, filter, testResults.length, loadMoreSize).then((data) => {
-      setTestResults([...testResults, ...data.data])
+      testResultsState.setTestResults([...testResults, ...data.data])
     })
   }
 
@@ -48,7 +49,7 @@ const TestResultsList = observer((
 
     getTestResults(testRunId, filter, initialSkip, loadMoreSize).then(response => {
       if (response.data) {
-        setTestResults(response.data)
+        testResultsState.setTestResults(response.data)
       }
     })
   }
@@ -78,7 +79,6 @@ const TestResultsList = observer((
       testResults.map((testResult) => {
         return <TestResultCard
           testResult={testResult}
-          setSelectedTest={setSelectedTest}
           key={testResult.fullName}
           style={{padding: '15px', marginTop: '15px'}}
         />

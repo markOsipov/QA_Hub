@@ -10,7 +10,6 @@ import testResultsFilterState from "../../../../state/testResults/TestResultsFil
 
 
 const TestRunResultsOverview = observer(({testRun, filterAndLoad, updateTestRunInfo, ...props}) => {
-
   const opacity = '0.8'
 
   if (testRun == null) {

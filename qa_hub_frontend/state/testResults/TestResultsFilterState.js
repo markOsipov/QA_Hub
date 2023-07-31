@@ -5,7 +5,6 @@ class TestResultsFilterState {
   filterChanged = false
 
   setFilter(filter) {
-    console.log(filter)
     this.filter = filter
   }
 
