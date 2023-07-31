@@ -1,5 +1,6 @@
 import ResetPlate from "../components/settings/ResetPlate";
 import ProjectEditor from "../components/settings/projects/ProjectEditor";
+import CicdEditor from "../components/settings/cicdIntegrations/CicdEditor";
 import TmsEditor from "../components/settings/tmsIntegrations/TmsEditor";
 
 function Settings() {
@@ -9,6 +10,7 @@ function Settings() {
         <ResetPlate />
         <ProjectEditor />
         <TmsEditor />
+        <CicdEditor />
     </div>
 }
 

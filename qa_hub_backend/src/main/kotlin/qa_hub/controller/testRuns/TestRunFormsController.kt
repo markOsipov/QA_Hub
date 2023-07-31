@@ -1,4 +1,4 @@
-package qa_hub.controller
+package qa_hub.controller.testRuns
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity

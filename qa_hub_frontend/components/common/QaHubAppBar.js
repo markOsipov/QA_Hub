@@ -12,11 +12,14 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import ProjectSelector from "./ProjectSelector";
 import {useRouter} from "next/router";
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
+import {useEffect, useState} from "react";
 
 const pages = ['blocker', 'statistics', 'metrics', 'testRuns'];
 
 function QaHubAppBar() {
     const router = useRouter()
+
+    const label= router.asPath.split("?")[0]
 
     return (
         <AppBar position="static">
@@ -37,11 +40,11 @@ function QaHubAppBar() {
                         >
                             QA Hub
                         </Typography>
-                        <Typography>{router.asPath}</Typography>
+                        <Typography>{label}</Typography>
                     </div>
 
 
-                    <ProjectSelector style={{ marginLeft: "5px", marginRight: "20px" }}/>
+                    <ProjectSelector style={{ marginLeft: "12px", marginRight: "20px" }}/>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page) => (

@@ -16,10 +16,11 @@ export var customTheme = createTheme({
             textArea: 'rgba(255, 255, 255, 0.07)'
         },
         success: {
-            main: '#419036',
+            main: '#3e812a',
         },
         error: {
             main: '#c44849',
+            faded: 'rgba(196, 72, 73, 0.13)',
         },
         warning: {
             main: '#e88103',
@@ -30,10 +31,11 @@ export var customTheme = createTheme({
         },
 
         text: {
+            white: '#ffffff',
             primary: 'rgba(255, 255, 255, 0.75)',
             faded: 'rgba(255, 255, 255, 0.6)',
             disabled: 'rgba(255, 255, 255, 0.3)',
-            white: '#ffffff'
+            disabledMore: 'rgba(255, 255, 255, 0.2)'
         },
     },
 });

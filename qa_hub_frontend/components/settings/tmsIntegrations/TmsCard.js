@@ -7,6 +7,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {deleteTmsIntegration} from "../../../requests/TMSRequests";
 import EditTmsModal from "./EditTMSModal";
+import TextWithLabel from "../../primitives/TextWithLabel";
 
 export default function TmsCard({tms, updateTmsList, tmsTypes, tmsIntegrations, ...props}) {
     const [menuAnchor, setMenuAnchor] = useState(null);
@@ -75,25 +76,9 @@ export default function TmsCard({tms, updateTmsList, tmsTypes, tmsIntegrations, 
             </Menu>
         </div>
 
-        <div style={{display: "flex", width: "100%", marginBottom: "5px"}}>
-            <Typography style={{width: "100px"}}>Base URL</Typography>
-            <Typography>{tms.baseUrl}</Typography>
-        </div>
-
-        <div style={{display: "flex", width: "100%", marginBottom: "5px"}}>
-            <Typography style={{width: "100px"}}>Api token</Typography>
-            <Typography>{tms.apiToken}</Typography>
-        </div>
-
-        <div style={{display: "flex", width: "100%", marginBottom: "5px"}}>
-            <Typography style={{width: "100px"}}>Login</Typography>
-            <Typography>{tms.login}</Typography>
-        </div>
-
-        <div style={{display: "flex", width: "100%", marginBottom: "5px"}}>
-            <Typography style={{width: "100px"}}>Password</Typography>
-            <Typography>{tms.password}</Typography>
-        </div>
-
+        <TextWithLabel value={tms.baseUrl} label={"Base URL"} style={{margin: '15px 0 15px 0'}}/>
+        <TextWithLabel value={tms.apiToken} label={"Api token"} style={{margin: '20px 0 15px 0'}}/>
+        <TextWithLabel value={tms.login} label={"Login"} style={{margin: '20px 0 15px 0'}}/>
+        <TextWithLabel value={tms.password} label={"Password"} style={{margin: '20px 0 15px 0'}}/>
     </Card>
 }

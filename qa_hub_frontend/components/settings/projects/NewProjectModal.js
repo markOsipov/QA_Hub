@@ -7,6 +7,7 @@ import StyledTextField from "../../primitives/StyledTextField";
 import Button from "@mui/material/Button";
 import projectState from "../../../state/ProjectState";
 import {modalStyle} from "../../../styles/ModalStyle";
+import StyledSelect from "../../primitives/StyledSelect";
 
 function NewProjectModal({isOpen, setIsOpen}) {
     const defaultProjectValue = {
@@ -83,7 +84,7 @@ function NewProjectModal({isOpen, setIsOpen}) {
             <StyledTextField value={newProject.name}
                              size="small"
                              label="Project name"
-                             style={{minWidth: "300px", color: "white", margin: "8px"}}
+                             style={{minWidth: "450px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
                                  setNewProject({
@@ -93,9 +94,9 @@ function NewProjectModal({isOpen, setIsOpen}) {
                              }}
             />
 
-            <FormControl sx={{ minWidth: 300, margin: "8px" }} size="small">
+            <FormControl sx={{ minWidth: 450, margin: "8px" }} size="small">
                 <InputLabel style={{ color: "var(--faded-text-color)" }}>Platform</InputLabel>
-                <Select
+                <StyledSelect
                     value={newProject.platform || ''}
                     label="Platform"
                     onChange={selectPlatform}
@@ -105,13 +106,13 @@ function NewProjectModal({isOpen, setIsOpen}) {
                             <MenuItem key={platform.name} value={platform.name}>{platform.name}</MenuItem>
                         )
                     }
-                </Select>
+                </StyledSelect>
             </FormControl>
 
             <StyledTextField value={newProject.cicdPath}
                              size="small"
                              label="CI\CD path"
-                             style={{minWidth: "300px", color: "white", margin: "8px"}}
+                             style={{minWidth: "450px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange={(event) => {
                                  setNewProject({
@@ -123,7 +124,7 @@ function NewProjectModal({isOpen, setIsOpen}) {
             <StyledTextField value={newProject.cicdProjectId}
                              size="small"
                              label="CI\CD project id"
-                             style={{minWidth: "300px", color: "white", margin: "8px"}}
+                             style={{minWidth: "450px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange={(event) => {
                                  setNewProject({
@@ -136,7 +137,7 @@ function NewProjectModal({isOpen, setIsOpen}) {
             <StyledTextField value={newProject.tmsProjectId}
                              size="small"
                              label="TMS project id"
-                             style={{minWidth: "300px", color: "white", margin: "8px"}}
+                             style={{minWidth: "450px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange={(event) => {
                                  setNewProject({

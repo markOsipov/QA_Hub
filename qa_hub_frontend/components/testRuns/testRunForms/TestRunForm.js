@@ -2,7 +2,7 @@ import {observer} from "mobx-react-lite";
 import projectState from "../../../state/ProjectState";
 import {Paper} from "@mui/material";
 import {useState, useEffect} from "react";
-import {getTestRunForm} from "../../../requests/TestRunFormsRequests";
+import {getTestRunForm} from "../../../requests/testRuns/TestRunFormsRequests";
 import Typography from "@mui/material/Typography";
 import EditTestRunFormModal from "./configure/EditTestRunFormModal";
 import Button from "@mui/material/Button";
@@ -12,7 +12,7 @@ import "../../../utils/Extensions";
 import TestRunFormParam from "./TestRunFormParam";
 import SettingsIcon from '@mui/icons-material/Settings';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import {createNewTestRun} from "../../../requests/TestRunRequests";
+import {createNewTestRun} from "../../../requests/testRuns/TestRunRequests";
 
 const TestRunForm = observer(() => {
     let {selectedProject} = projectState
@@ -46,7 +46,7 @@ const TestRunForm = observer(() => {
         setIsEditTestRunFormModalOpen(true)
     }
 
-    return <Paper style={{padding: "15px"}}>
+    return <Paper>
         <EditTestRunFormModal isOpen={isEditTestRunFormModalOpen} setIsOpen={setIsEditTestRunFormModalOpen} params={paramConfigs} loadTestRunForm={loadTestRunForm}/>
 
         <Accordion>
@@ -81,10 +81,7 @@ const TestRunForm = observer(() => {
                             color="primary"
                             size="small"
                             onClick={() => {
-                                const projectId = projectState.getSelectedProjectFullInfo().cicdProjectId
-                                console.log(projectId)
-
-                                createNewTestRun(projectId, params)
+                                createNewTestRun(selectedProject, params)
                             }}
                             endIcon={<PlayArrowIcon />}
                     >Start</Button>

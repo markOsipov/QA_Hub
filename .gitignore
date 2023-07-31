@@ -23,3 +23,4 @@ out/
 .vscode/
 /.config/env
 /.config/
+/qa_hub_backend/src/main/resources/debug/

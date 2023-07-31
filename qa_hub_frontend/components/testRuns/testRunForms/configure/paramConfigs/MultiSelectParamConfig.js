@@ -4,6 +4,7 @@ import IconButton from "@mui/material/IconButton";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import {useEffect, useState} from "react";
+import StyledSelect from "../../../../primitives/StyledSelect";
 
 function MultiSelectParamConfig({editParamField, param}) {
     const separator = ", "
@@ -34,7 +35,7 @@ function MultiSelectParamConfig({editParamField, param}) {
     return <div>
         <FormControl style={{width: "483px", minWidth: "250px", marginTop: "15px"}}>
             <InputLabel style={{color: customTheme.palette.text.faded, position: "relative", top: "10px"}}>Default value</InputLabel>
-            <Select
+            <StyledSelect
                 value={values}
                 style={{backgroundColor: customTheme.palette.background.input}}
                 onChange={handleValueChange}
@@ -51,7 +52,7 @@ function MultiSelectParamConfig({editParamField, param}) {
                         </MenuItem>
                     ))
                 }
-            </Select>
+            </StyledSelect>
         </FormControl>
 
         <div style={{marginTop: "15px", display: "flex", flexDirection: "column", minWidth: "275px"}}>

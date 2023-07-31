@@ -17,12 +17,13 @@ import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import AddBlockedTestModal from "./AddBlockedTestModal";
 import TablePaginationActions from "../primitives/Table/TablePaginationActions";
+import blockerState from "../../state/BlockerState";
 
 
 const BlockedTestsTable = observer(() => {
     let {selectedProject} = projectState
+    let {blockedTests} = blockerState
 
-    const [blockedTests, setBlockedTests] = useState([])
     const [showFullName, setShowFullName] = useState(true)
     const [addBlockedTestModalOpen, setAddBlockedTestModalOpen] = useState(false)
 
@@ -30,14 +31,8 @@ const BlockedTestsTable = observer(() => {
     const [rowsPerPage, setRowsPerPage] = useState(20)
 
     useEffect(() => {
-        updateBlockedTestsList()
+        blockerState.updateBlockedTests(selectedProject)
     }, [selectedProject])
-
-    function updateBlockedTestsList() {
-        getBlockedTests(selectedProject).then(blockedTestsResponse => {
-            setBlockedTests(blockedTestsResponse.data)
-        })
-    }
 
     function handleOpenAddBlockedTestModal() {
         setAddBlockedTestModalOpen(true)
@@ -54,7 +49,7 @@ const BlockedTestsTable = observer(() => {
 
     return <div>
         <Paper elevation={3} style={{margin: "15px", maxHeight: "calc(100vh - 165px)", overflowY: "auto", minWidth: "35vw" }}>
-            <AddBlockedTestModal isOpen={addBlockedTestModalOpen} setIsOpen={setAddBlockedTestModalOpen} updateBlockedTestsList={updateBlockedTestsList} />
+            <AddBlockedTestModal isOpen={addBlockedTestModalOpen} setIsOpen={setAddBlockedTestModalOpen} />
             <TableContainer style={{minWidth: "max-content"}}>
                 <Table size="small" stickyHeader >
                     <TableHead style={{ height: "60px" }}>
@@ -66,7 +61,7 @@ const BlockedTestsTable = observer(() => {
                             <StyledTableCell style={{width: "200px"}} align='center'><label style={{position: "relative", left: "-25px"}}>Team</label></StyledTableCell>
                             <FullNameTableHeaderCell style={{width: "600px"}} showFullName={showFullName} setShowFullName={setShowFullName}/>
                             <StyledTableCell style={{minWidth: "400px"}} align='center'><label style={{position: "relative", left: "-25px"}}>Comment</label></StyledTableCell>
-                            <StyledTableCell style={{width: "120px"}} align='center'><label style={{position: "relative", left: "-25px"}}>Issue</label></StyledTableCell>
+                            <StyledTableCell style={{width: "180px"}} align='center'><label style={{position: "relative", left: "-25px"}}>Issue</label></StyledTableCell>
                             <StyledTableCell style={{width: "150px"}} align='center'>Block date</StyledTableCell>
                         </StyledTableRow>
                     </TableHead>
@@ -82,7 +77,6 @@ const BlockedTestsTable = observer(() => {
                                         blockedTestForRow={blockedTest}
                                         showFullName={showFullName}
                                         setShowFullName={setShowFullName}
-                                        updateBlockedTestsList={updateBlockedTestsList}
                                     />
                                 }
                             )
@@ -90,7 +84,7 @@ const BlockedTestsTable = observer(() => {
                     </TableBody>
                     <TableFooter>
                         <TableRow>
-                            <StyledTableCell style={{borderBottom: "1px solid rgba(224, 224, 224, 1)", maxWidth: "50px"}} spanCol={3}>
+                            <StyledTableCell style={{borderBottom: "1px solid rgba(224, 224, 224, 1)", maxWidth: "50px"}} colspan={3}>
                                 <Button variant="contained"
                                         color="error"
                                         startIcon={<AddIcon />}

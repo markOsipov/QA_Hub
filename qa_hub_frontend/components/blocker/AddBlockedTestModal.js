@@ -3,11 +3,12 @@ import Typography from "@mui/material/Typography";
 import {useEffect, useState} from "react";
 import useSWR from "swr";
 import Button from "@mui/material/Button";
-import {blockTest} from "../../requests/BlockerRequests";
 import StyledTextField from "../primitives/StyledTextField";
 import projectState from "../../state/ProjectState";
+import {observer} from "mobx-react-lite";
+import blockerState from "../../state/BlockerState";
 
-function AddBlockedTestModal({isOpen, setIsOpen, updateBlockedTestsList}) {
+const AddBlockedTestModal = observer(({isOpen, setIsOpen}) => {
     const defaultBlockedTestValue = {
         fullName: "",
         testcaseId: "",
@@ -32,10 +33,8 @@ function AddBlockedTestModal({isOpen, setIsOpen, updateBlockedTestsList}) {
         if (newBlockedTest.fullName.length == 0) {
             alert("Full name should not be empty")
         } else {
-            blockTest(newBlockedTest).then(() => {
-                updateBlockedTestsList()
-                setIsOpen(false)
-            })
+            blockerState.blockTest(newBlockedTest)
+            setIsOpen(false)
         }
     }
 
@@ -121,6 +120,6 @@ function AddBlockedTestModal({isOpen, setIsOpen, updateBlockedTestsList}) {
             >Block test</Button>
         </Box>
     </Modal>
-}
+})
 
 export default AddBlockedTestModal;
