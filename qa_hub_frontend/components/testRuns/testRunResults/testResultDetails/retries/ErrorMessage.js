@@ -3,7 +3,10 @@ import {createRef, useEffect, useState} from "react";
 import {ListItemIcon, ListItemText, Menu, MenuItem} from "@mui/material";
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import WarningIcon from '@mui/icons-material/Warning';
-export default function ErrorMessage({ message, testResults, setTestResults, filter, setFilter, setFilterChanged, ...props }) {
+import {observer} from "mobx-react-lite";
+import testResultsFilterState from "../../../../../state/testResults/TestResultsFilterState";
+const ErrorMessage = observer(({ message, testResults, setTestResults, ...props }) => {
+  const {filter} = testResultsFilterState
   const ref = createRef()
   const [anchorEl, setAnchorEl] = useState(null)
   const menuOpen = Boolean(anchorEl);
@@ -22,8 +25,8 @@ export default function ErrorMessage({ message, testResults, setTestResults, fil
   }
 
   const handleAddToFilterClick = () => {
-    setFilter({...filter, message: selectedText || message})
-    setFilterChanged(true)
+    testResultsFilterState.setFilter({...filter, message: selectedText || message})
+    testResultsFilterState.setFilterChanged(true)
   }
 
   const closeMenu = () => {
@@ -97,4 +100,6 @@ export default function ErrorMessage({ message, testResults, setTestResults, fil
       >{message}</label>
     </div>
   </div>
-}
+})
+
+export default ErrorMessage

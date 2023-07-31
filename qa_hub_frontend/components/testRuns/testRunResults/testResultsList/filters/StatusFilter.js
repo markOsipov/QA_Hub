@@ -4,15 +4,18 @@ import {Checkbox, ListItemText, MenuItem} from "@mui/material";
 import {useEffect, useState} from "react";
 import StyledInputLabel from "../../../../primitives/StyledInputLabel";
 import StyledFormControl from "../../../../primitives/StyledFormControl";
+import testResultsFilterState from "../../../../../state/testResults/TestResultsFilterState";
+import {observer} from "mobx-react-lite";
 
-export default function StatusFilter({filter, setFilter,setFilterChanged, ...props}) {
+const StatusFilter = observer(({...props}) => {
+  const {filter } = testResultsFilterState
   const separator = ", "
   const options = ["WAITING", "PROCESSING", "SUCCESS", "FAILURE"]
 
   const [statuses, setStatuses] = useState(filter.statuses || [])
 
   useEffect(() => {
-    setFilter({
+    testResultsFilterState.setFilter({
       ...filter, statuses: statuses
     })
   }, [statuses])
@@ -26,7 +29,7 @@ export default function StatusFilter({filter, setFilter,setFilterChanged, ...pro
     setStatuses(
       typeof value === 'string' ? value.split(',') : value,
     )
-    setFilterChanged(true)
+    testResultsFilterState.setFilterChanged(true)
   }
 
   return <StyledFormControl size={"tiny"} style={{ width: 'min-content', ...props.style}}>
@@ -48,4 +51,6 @@ export default function StatusFilter({filter, setFilter,setFilterChanged, ...pro
       }
     </StyledSelect>
   </StyledFormControl>
-}
+})
+
+export default StatusFilter

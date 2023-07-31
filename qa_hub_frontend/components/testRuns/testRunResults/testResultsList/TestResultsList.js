@@ -6,14 +6,17 @@ import LoadMoreTests from "./LoadMoreTests";
 import TestResultsFilter from "./filters/TestResultsFilter";
 import StyledTextField from "../../../primitives/StyledTextField";
 import {getCookie, setCookie} from "../../../../utils/CookieHelper";
+import testResultsFilterState from "../../../../state/testResults/TestResultsFilterState";
+import {observer} from "mobx-react-lite";
 
-export default function TestResultsList(
+const TestResultsList = observer((
   {
-    testsCount, testRunId, testResults, setTestResults, setSelectedTest,
-    filter, setFilter, filterChanged, setFilterChanged, runners,
+    testsCount, testRunId, testResults, setTestResults, setSelectedTest, runners,
     ...props
   }
-) {
+) => {
+  const {filter } = testResultsFilterState
+
   const loadMoreCookie = "testResultsLoadCount"
   const initialLoadSize = getCookie(loadMoreCookie) || 50
   const initialSkip = 0
@@ -41,7 +44,7 @@ export default function TestResultsList(
   function filterAndLoad(filter) {
     const filterValue = filter || {}
 
-    setFilter(filterValue)
+    testResultsFilterState.setFilter(filterValue)
 
     getTestResults(testRunId, filter, initialSkip, loadMoreSize).then(response => {
       if (response.data) {
@@ -68,11 +71,7 @@ export default function TestResultsList(
 
   return <Paper style={{padding: '15px', ...props.style}}>
     <TestResultsFilter
-      filter={filter}
-      setFilter={setFilter}
       filterAndLoad={filterAndLoad}
-      filterChanged={filterChanged}
-      setFilterChanged={setFilterChanged}
       runners={runners}
     />
     {
@@ -111,4 +110,6 @@ export default function TestResultsList(
       </div>
     </div>
   </Paper>
-}
+})
+
+export default TestResultsList

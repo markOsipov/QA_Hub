@@ -5,16 +5,17 @@ import TestRunResultsOverview from "../../components/testRuns/testRunResults/tes
 import TestResultsList from "../../components/testRuns/testRunResults/testResultsList/TestResultsList";
 import TestResultDetails from "../../components/testRuns/testRunResults/testResultDetails/TestResultDetails";
 import {getSingleTestResult} from "../../requests/testResults/TestResultsRequests";
+import {observer} from "mobx-react-lite";
+import testResultsFilterState from "../../state/testResults/TestResultsFilterState";
 
-export default function TestRunPage() {
+const TestRunPage = observer(() => {
   const router = useRouter()
 
   const [testRun, setTestRun] = useState(null)
   const [selectedTest, setSelectedTest] = useState(null)
   const [testResults, setTestResults] = useState([])
 
-  const [filter, setFilter] = useState({})
-  const [filterChanged, setFilterChanged] = useState(false)
+  const {filter } = testResultsFilterState
 
   const loadTestResultFromUrl = (testRunId) => {
     const identifier = router.query.test
@@ -55,9 +56,6 @@ export default function TestRunPage() {
   return <div style={{padding: "15px"}}>
     <TestRunResultsOverview
       testRun={testRun}
-      filter={filter}
-      setFilter={setFilter}
-      setFilterChanged={setFilterChanged}
       updateTestRunInfo={updateTestRunInfo}
     />
 
@@ -68,10 +66,6 @@ export default function TestRunPage() {
         setTestResults={setTestResults}
         testRunId={testRun.testRunId}
         setSelectedTest={setSelectedTest}
-        filter={filter}
-        setFilter={setFilter}
-        filterChanged={filterChanged}
-        setFilterChanged={setFilterChanged}
         runners={testRun.runners || []}
         style={{width: "550px", minWidth: '370px', maxWidth: '70%', overflowX: 'auto', resize: 'horizontal'}}
       />
@@ -79,11 +73,10 @@ export default function TestRunPage() {
         testResult={selectedTest}
         testResults={testResults}
         setTestResults={setTestResults}
-        filter={filter}
-        setFilter={setFilter}
-        setFilterChanged={setFilterChanged}
         style={{marginLeft: '15px', overflowX: 'auto', width: 'min-content', flexGrow:'1.1'}}
       />
     </div>
   </div>
-}
+})
+
+export default TestRunPage

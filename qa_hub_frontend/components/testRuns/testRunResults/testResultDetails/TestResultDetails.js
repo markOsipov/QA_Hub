@@ -3,8 +3,10 @@ import TestRetriesTabs from "./retries/TestRetriesTabs";
 import TextWithLabel from "../../../primitives/TextWithLabel";
 import Typography from "@mui/material/Typography";
 import TestStatusWithRetries from "../../../common/TestStatusWithRetries";
+import {observer} from "mobx-react-lite";
+import testResultsFilterState from "../../../../state/testResults/TestResultsFilterState";
 
-export default function TestResultDetails({ testResult, testResults, setTestResults, filter, setFilter, setFilterChanged, ...props }) {
+const TestResultDetails = observer(({ testResult, testResults, setTestResults, ...props }) => {
   const renderContent = () => {
     if (testResult == null) {
       return <div>Not selected</div>
@@ -47,9 +49,6 @@ export default function TestResultDetails({ testResult, testResults, setTestResu
           testResult={testResult}
           testResults={testResults}
           setTestResults={setTestResults}
-          filter={filter}
-          setFilter={setFilter}
-          setFilterChanged={setFilterChanged}
           style={{marginTop: '30px'}}
         />
       </div>
@@ -65,4 +64,5 @@ export default function TestResultDetails({ testResult, testResults, setTestResu
       renderContent()
     }
   </Paper>
-}
+})
+export default TestResultDetails

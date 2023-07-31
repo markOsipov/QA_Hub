@@ -11,8 +11,10 @@ import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
 import StyledTooltip from "../../../../primitives/StyledTooltip";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import AppleIcon from '@mui/icons-material/Apple';
+import {observer} from "mobx-react-lite";
+import testResultsFilter from "../../testResultsList/filters/TestResultsFilter";
 
-export default function RetryTab({retry, testResult, isLastRetry, testResults, setTestResults, filter, setFilter, setFilterChanged, ...props}) {
+const RetryTab = observer(({retry, testResult, isLastRetry, testResults, setTestResults, ...props}) => {
   const [selectedStep, setSelectedStep] = useState(null)
 
   let lastResult = retry.statusHistory[retry.statusHistory.length - 1]
@@ -27,9 +29,6 @@ export default function RetryTab({retry, testResult, isLastRetry, testResults, s
           message={lastResult.message}
           testResults={testResults}
           setTestResults={setTestResults}
-          filter={filter}
-          setFilter={setFilter}
-          setFilterChanged={setFilterChanged}
           style={{width: '50%'}}
         />
         {
@@ -89,4 +88,6 @@ export default function RetryTab({retry, testResult, isLastRetry, testResults, s
       </AccordionDetails>
     </Accordion>
   </div>
-}
+})
+
+export default RetryTab

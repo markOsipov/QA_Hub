@@ -3,7 +3,10 @@ import {customTheme} from "../../../../../styles/CustomTheme";
 import StyledTooltip from "../../../../primitives/StyledTooltip";
 import SyncIcon from "@mui/icons-material/Sync";
 import {useState} from "react";
-export default function RetriesFilter({filter, setFilter, setFilterChanged, ...props}) {
+import {observer} from "mobx-react-lite";
+import testResultsFilterState from "../../../../../state/testResults/TestResultsFilterState";
+const RetriesFilter = observer(({...props}) => {
+  const {filter } = testResultsFilterState
   const [hovered, setHovered] = useState(false)
 
   const retriesStyle = {
@@ -40,11 +43,11 @@ export default function RetriesFilter({filter, setFilter, setFilterChanged, ...p
 
   const handleIconClick = () => {
     if (filter.retries === true) {
-      setFilter({ ...filter, retries: false })
+      testResultsFilterState.setFilter({ ...filter, retries: false })
     } else if (filter.retries === false) {
-      setFilter({ ...filter, retries: null })
-    } else setFilter({ ...filter, retries: true })
-    setFilterChanged(true)
+      testResultsFilterState.setFilter({ ...filter, retries: null })
+    } else testResultsFilterState.setFilter({ ...filter, retries: true })
+    testResultsFilterState.setFilterChanged(true)
   }
 
   return <StyledTooltip title={getTooltipText()} enterDelay={800}>
@@ -80,12 +83,11 @@ export default function RetriesFilter({filter, setFilter, setFilterChanged, ...p
           height: '25px',
           width: '25px',
           borderRadius: '5px',
-
-
           color: customTheme.palette.text.white
         }}
       />
     </div>
   </StyledTooltip>
-}
+})
 
+export default RetriesFilter
