@@ -1,18 +1,18 @@
 import {Box, FormControl, InputLabel, MenuItem, Modal, Select} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {useEffect, useState} from "react";
-import StyledTextField from "../../primitives/StyledTextField";
+import StyledTextField from "../../../primitives/StyledTextField";
 import Button from "@mui/material/Button";
-import {updateTmsIntegration} from "../../../requests/TMSRequests";
-import {modalStyle} from "../../../styles/ModalStyle";
-import StyledSelect from "../../primitives/StyledSelect";
+import {updateCicdIntegration} from "../../../../requests/integrations/CICDRequests";
+import {modalStyle} from "../../../../styles/ModalStyle";
+import StyledSelect from "../../../primitives/StyledSelect";
 
-function EditTmsModal({isOpen, setIsOpen, updateTmsList, tmsTypes, tmsIntegrations, tms }) {
-    const [currentTms, setCurrentTms] = useState(tms)
+function EditCicdModal({isOpen, setIsOpen, updateCicdList, cicdTypes, cicdIntegrations, cicd }) {
+    const [currentCicd, setCurrentCicd] = useState(cicd)
 
     useEffect(() => {
         if (isOpen) {
-            setCurrentTms(tms)
+            setCurrentCicd(cicd)
         }
     }, [isOpen])
 
@@ -21,21 +21,21 @@ function EditTmsModal({isOpen, setIsOpen, updateTmsList, tmsTypes, tmsIntegratio
         setIsOpen(!confirm("Close modal window?"));
     }
 
-    const selectTms = (event) => {
-        setCurrentTms({
-            ...currentTms,
-            tmsType: event.target.value
+    const selectCicd = (event) => {
+        setCurrentCicd({
+            ...currentCicd,
+            cicdType: event.target.value
         })
     }
 
-    const handleUpdateTmsButtonClick = () => {
-        if (tmsIntegrations.find(tms => {
-            return tms.tmsType === currentTms.tmsType && tms["_id"] !== currentTms["_id"]
+    const handleUpdateCicdButtonClick = () => {
+        if (cicdIntegrations.find(cicd => {
+            return cicd.cicdType === currentCicd.cicdType && cicd["_id"] !== currentCicd["_id"]
         })) {
-            alert("A TMS with the same type already exists")
+            alert("A CICD with the same type already exists")
         } else {
-            updateTmsIntegration(currentTms).then(() => {
-                updateTmsList()
+            updateCicdIntegration(currentCicd).then(() => {
+                updateCicdList()
                 setIsOpen(false)
             })
         }
@@ -50,71 +50,71 @@ function EditTmsModal({isOpen, setIsOpen, updateTmsList, tmsTypes, tmsIntegratio
     >
         <Box sx={modalStyle}>
             <Typography id="modal-modal-title" variant="h6" component="h2" style={{marginBottom: "10px"}}>
-                Editing TMS Integration
+                Editing CICD Integration
             </Typography>
 
             <FormControl sx={{ minWidth: 400, margin: "8px" }} size="small">
-                <InputLabel style={{ color: "var(--faded-text-color)" }}>TMS Type</InputLabel>
+                <InputLabel style={{ color: "var(--faded-text-color)" }}>CICD Type</InputLabel>
                 <StyledSelect
-                    value={currentTms.tmsType || ''}
-                    label="Tms type"
-                    onChange={selectTms}
+                    value={currentCicd.cicdType || ''}
+                    label="Cicd type"
+                    onChange={selectCicd}
                 >
                     {
-                        (tmsTypes).map((tms) =>
-                            <MenuItem key={tms.tmsName} value={tms.tmsName}>{tms.tmsName}</MenuItem>
+                        (cicdTypes).map((cicd) =>
+                            <MenuItem key={cicd.cicdName} value={cicd.cicdName}>{cicd.cicdName}</MenuItem>
                         )
                     }
                 </StyledSelect>
             </FormControl>
 
-            <StyledTextField value={currentTms.baseUrl}
+            <StyledTextField value={currentCicd.baseUrl}
                              size="small"
                              label="Base URL"
                              style={{minWidth: "400px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
-                                 setCurrentTms({
-                                     ...currentTms,
+                                 setCurrentCicd({
+                                     ...currentCicd,
                                      baseUrl: event.target.value
                                  })
                              }}
             />
 
-            <StyledTextField value={currentTms.apiToken}
+            <StyledTextField value={currentCicd.apiToken}
                              size="small"
                              label="Api Token"
                              style={{minWidth: "400px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
-                                 setCurrentTms({
-                                     ...currentTms,
+                                 setCurrentCicd({
+                                     ...currentCicd,
                                      apiToken: event.target.value
                                  })
                              }}
             />
 
-            <StyledTextField value={currentTms.login}
+            <StyledTextField value={currentCicd.login}
                              size="small"
                              label="Login"
-                             style={{minWidth: "400px", color: "white", margin: "8px"}}
+                             style={{minWidth: "300px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
-                                 setCurrentTms({
-                                     ...currentTms,
+                                 setCurrentCicd({
+                                     ...currentCicd,
                                      login: event.target.value
                                  })
                              }}
             />
 
-            <StyledTextField value={currentTms.password}
+            <StyledTextField value={currentCicd.password}
                              size="small"
                              label="Password"
                              style={{minWidth: "400px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
-                                 setCurrentTms({
-                                     ...currentTms,
+                                 setCurrentCicd({
+                                     ...currentCicd,
                                      password: event.target.value
                                  })
                              }}
@@ -123,11 +123,11 @@ function EditTmsModal({isOpen, setIsOpen, updateTmsList, tmsTypes, tmsIntegratio
 
             <Button variant="contained"
                     color="error"
-                    onClick={handleUpdateTmsButtonClick}
+                    onClick={handleUpdateCicdButtonClick}
                     style={{margin: "12px 8px 0 8px"}}
             >Save changes</Button>
         </Box>
     </Modal>
 }
 
-export default EditTmsModal;
+export default EditCicdModal;

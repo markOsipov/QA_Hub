@@ -1,27 +1,27 @@
 import {Box, FormControl, InputLabel, MenuItem, Modal, Select, TextField} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {useEffect, useState} from "react";
-import StyledTextField from "../../primitives/StyledTextField";
+import StyledTextField from "../../../primitives/StyledTextField";
 import Button from "@mui/material/Button";
-import {addCicdIntegration} from "../../../requests/CICDRequests";
-import {modalStyle} from "../../../styles/ModalStyle";
-import StyledSelect from "../../primitives/StyledSelect";
+import {addTmsIntegration} from "../../../../requests/integrations/TMSRequests";
+import {modalStyle} from "../../../../styles/ModalStyle";
+import StyledSelect from "../../../primitives/StyledSelect";
 
-function NewCicdModal({isOpen, setIsOpen, updateCicdList, cicdTypes, cicdIntegrations}) {
-    const defaultCicdValue = {
-        cicdType: "",
+function NewTmsModal({isOpen, setIsOpen, updateTmsList, tmsTypes, tmsIntegrations}) {
+    const defaultTmsValue = {
+        tmsType: "",
         baseUrl: "",
         apiToken: "",
         login: "",
         password: ""
     }
 
-    const [newCicd, setNewCicd] = useState(defaultCicdValue)
+    const [newTms, setNewTms] = useState(defaultTmsValue)
 
 
     useEffect(() => {
         if (isOpen) {
-            setNewCicd(defaultCicdValue)
+            setNewTms(defaultTmsValue)
         }
     }, [isOpen])
 
@@ -30,19 +30,19 @@ function NewCicdModal({isOpen, setIsOpen, updateCicdList, cicdTypes, cicdIntegra
         setIsOpen(!confirm("Close modal window?"));
     }
 
-    const selectCicd = (event) => {
-        setNewCicd({
-            ...newCicd,
-            cicdType: event.target.value
+    const selectTms = (event) => {
+        setNewTms({
+            ...newTms,
+            tmsType: event.target.value
         })
     }
 
-    const handleAddCicdButtonClick = () => {
-        if (cicdIntegrations.map(cicd => { return cicd.cicdType }).includes(newCicd.cicdType)) {
-            alert("A CICD with the same type already exists")
+    const handleAddTmsButtonClick = () => {
+        if (tmsIntegrations.map(tms => { return tms.tmsType }).includes(newTms.tmsType)) {
+            alert("A TMS with the same type already exists")
         } else {
-            addCicdIntegration(newCicd).then(() => {
-                updateCicdList()
+            addTmsIntegration(newTms).then(() => {
+                updateTmsList()
                 setIsOpen(false)
             })
         }
@@ -56,71 +56,71 @@ function NewCicdModal({isOpen, setIsOpen, updateCicdList, cicdTypes, cicdIntegra
     >
         <Box sx={modalStyle}>
             <Typography id="modal-modal-title" variant="h6" component="h2" style={{marginBottom: "10px"}}>
-                Adding new CICD
+                Adding new TMS
             </Typography>
 
             <FormControl sx={{ minWidth: 400, margin: "8px" }} size="small">
-                <InputLabel style={{ color: "var(--faded-text-color)" }}>CICD Type</InputLabel>
+                <InputLabel style={{ color: "var(--faded-text-color)" }}>TMS Type</InputLabel>
                 <StyledSelect
-                    value={newCicd.cicdType || ''}
-                    label="Cicd type"
-                    onChange={selectCicd}
+                    value={newTms.tmsType || ''}
+                    label="Tms type"
+                    onChange={selectTms}
                 >
                     {
-                        cicdTypes.map((cicd) =>
-                            <MenuItem key={cicd.cicdName} value={cicd.cicdName}>{cicd.cicdName}</MenuItem>
+                        tmsTypes.map((tms) =>
+                            <MenuItem key={tms.tmsName} value={tms.tmsName}>{tms.tmsName}</MenuItem>
                         )
                     }
                 </StyledSelect>
             </FormControl>
 
-            <StyledTextField value={newCicd.baseUrl}
+            <StyledTextField value={newTms.baseUrl}
                              size="small"
                              label="Base URL"
                              style={{minWidth: "400px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
-                                 setNewCicd({
-                                     ...newCicd,
+                                 setNewTms({
+                                     ...newTms,
                                      baseUrl: event.target.value
                                  })
                              }}
             />
 
-            <StyledTextField value={newCicd.apiToken}
+            <StyledTextField value={newTms.apiToken}
                              size="small"
                              label="Api Token"
                              style={{minWidth: "400px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
-                                 setNewCicd({
-                                     ...newCicd,
+                                 setNewTms({
+                                     ...newTms,
                                      apiToken: event.target.value
                                  })
                              }}
             />
 
-            <StyledTextField value={newCicd.login}
+            <StyledTextField value={newTms.login}
                              size="small"
                              label="Login"
                              style={{minWidth: "400px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
-                                 setNewCicd({
-                                     ...newCicd,
+                                 setNewTms({
+                                     ...newTms,
                                      login: event.target.value
                                  })
                              }}
             />
 
-            <StyledTextField value={newCicd.password}
+            <StyledTextField value={newTms.password}
                              size="small"
                              label="Password"
                              style={{minWidth: "400px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
-                                 setNewCicd({
-                                     ...newCicd,
+                                 setNewTms({
+                                     ...newTms,
                                      password: event.target.value
                                  })
                              }}
@@ -129,11 +129,11 @@ function NewCicdModal({isOpen, setIsOpen, updateCicdList, cicdTypes, cicdIntegra
 
             <Button variant="contained"
                     color="error"
-                    onClick={handleAddCicdButtonClick}
+                    onClick={handleAddTmsButtonClick}
                     style={{margin: "12px 8px 0 8px"}}
-            >Add CICD</Button>
+            >Add TMS</Button>
         </Box>
     </Modal>
 }
 
-export default NewCicdModal;
+export default NewTmsModal;

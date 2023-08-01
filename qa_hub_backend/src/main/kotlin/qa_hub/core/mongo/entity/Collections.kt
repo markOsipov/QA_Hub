@@ -1,10 +1,10 @@
 package qa_hub.core.mongo.entity
 
 enum class Collections(val collectionName: String) {
-    BLOCKED_TESTS("blockedTests"),
-    CICD_INTEGRATIONS("cicdIntegrations"),
     PROJECTS("projects"),
     QA_HUB_CONFIG("qaHubConfig"),
+
+    BLOCKED_TESTS("blockedTests"),
     TESTCASES("testcases"),
     TEST_LOGS("testLogs"),
     TEST_QA_REVIEWS("testQaReviews"),
@@ -14,5 +14,8 @@ enum class Collections(val collectionName: String) {
     TEST_RUN_FORMS("testRunForms"),
     TEST_RUNS("testRuns"),
     TEST_STEPS("testSteps"),
+
+    CICD_INTEGRATIONS("cicdIntegrations"),
+    TASK_TRACKER_INTEGRATIONS("taskTrackerIntegrations"),
     TMS_INTEGRATIONS("tmsIntegrations");
 }

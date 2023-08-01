@@ -1,18 +1,27 @@
-import {Box, FormControl, InputLabel, MenuItem, Modal, Select} from "@mui/material";
+import {Box, FormControl, InputLabel, MenuItem, Modal, Select, TextField} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {useEffect, useState} from "react";
-import StyledTextField from "../../primitives/StyledTextField";
+import StyledTextField from "../../../primitives/StyledTextField";
 import Button from "@mui/material/Button";
-import {updateCicdIntegration} from "../../../requests/CICDRequests";
-import {modalStyle} from "../../../styles/ModalStyle";
-import StyledSelect from "../../primitives/StyledSelect";
+import {modalStyle} from "../../../../styles/ModalStyle";
+import StyledSelect from "../../../primitives/StyledSelect";
+import {customTheme} from "../../../../styles/CustomTheme";
+import {addTaskTrackerIntegration} from "../../../../requests/integrations/TaskTrackerRequests";
 
-function EditCicdModal({isOpen, setIsOpen, updateCicdList, cicdTypes, cicdIntegrations, cicd }) {
-    const [currentCicd, setCurrentCicd] = useState(cicd)
+function NewTaskTrackerModal({isOpen, setIsOpen, updateIntegrations, types, integrations}) {
+    const defaultValue = {
+        type: "",
+        baseUrl: "",
+        apiToken: "",
+        login: "",
+        password: ""
+    }
+
+    const [newIntegration, setNewIntegration] = useState(defaultValue)
 
     useEffect(() => {
         if (isOpen) {
-            setCurrentCicd(cicd)
+            setNewIntegration(defaultValue)
         }
     }, [isOpen])
 
@@ -21,26 +30,23 @@ function EditCicdModal({isOpen, setIsOpen, updateCicdList, cicdTypes, cicdIntegr
         setIsOpen(!confirm("Close modal window?"));
     }
 
-    const selectCicd = (event) => {
-        setCurrentCicd({
-            ...currentCicd,
-            cicdType: event.target.value
+    const selectType = (event) => {
+        setNewIntegration({
+            ...newIntegration,
+            type: event.target.value
         })
     }
 
-    const handleUpdateCicdButtonClick = () => {
-        if (cicdIntegrations.find(cicd => {
-            return cicd.cicdType === currentCicd.cicdType && cicd["_id"] !== currentCicd["_id"]
-        })) {
-            alert("A CICD with the same type already exists")
+    const handleAddButtonClick = () => {
+        if (integrations.map(integration => { return integration.type }).includes(newIntegration.type)) {
+            alert("An integration with the same type already exists")
         } else {
-            updateCicdIntegration(currentCicd).then(() => {
-                updateCicdList()
+            addTaskTrackerIntegration(newIntegration).then(() => {
+                updateIntegrations()
                 setIsOpen(false)
             })
         }
     }
-
 
     return <Modal
         open={isOpen}
@@ -50,71 +56,71 @@ function EditCicdModal({isOpen, setIsOpen, updateCicdList, cicdTypes, cicdIntegr
     >
         <Box sx={modalStyle}>
             <Typography id="modal-modal-title" variant="h6" component="h2" style={{marginBottom: "10px"}}>
-                Editing CICD Integration
+                Adding new Integration
             </Typography>
 
             <FormControl sx={{ minWidth: 400, margin: "8px" }} size="small">
-                <InputLabel style={{ color: "var(--faded-text-color)" }}>CICD Type</InputLabel>
+                <InputLabel style={{ color: customTheme.palette.text.faded }}>Type</InputLabel>
                 <StyledSelect
-                    value={currentCicd.cicdType || ''}
-                    label="Cicd type"
-                    onChange={selectCicd}
+                    value={newIntegration.type || ''}
+                    label="Type"
+                    onChange={selectType}
                 >
                     {
-                        (cicdTypes).map((cicd) =>
-                            <MenuItem key={cicd.cicdName} value={cicd.cicdName}>{cicd.cicdName}</MenuItem>
+                        types.map((type) =>
+                            <MenuItem key={type.name} value={type.name}>{type.name}</MenuItem>
                         )
                     }
                 </StyledSelect>
             </FormControl>
 
-            <StyledTextField value={currentCicd.baseUrl}
+            <StyledTextField value={newIntegration.baseUrl}
                              size="small"
                              label="Base URL"
                              style={{minWidth: "400px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
-                                 setCurrentCicd({
-                                     ...currentCicd,
+                                 setNewIntegration({
+                                     ...newIntegration,
                                      baseUrl: event.target.value
                                  })
                              }}
             />
 
-            <StyledTextField value={currentCicd.apiToken}
+            <StyledTextField value={newIntegration.apiToken}
                              size="small"
                              label="Api Token"
                              style={{minWidth: "400px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
-                                 setCurrentCicd({
-                                     ...currentCicd,
+                                 setNewIntegration({
+                                     ...newIntegration,
                                      apiToken: event.target.value
                                  })
                              }}
             />
 
-            <StyledTextField value={currentCicd.login}
+            <StyledTextField value={newIntegration.login}
                              size="small"
                              label="Login"
-                             style={{minWidth: "300px", color: "white", margin: "8px"}}
+                             style={{minWidth: "400px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
-                                 setCurrentCicd({
-                                     ...currentCicd,
+                                 setNewIntegration({
+                                     ...newIntegration,
                                      login: event.target.value
                                  })
                              }}
             />
 
-            <StyledTextField value={currentCicd.password}
+            <StyledTextField value={newIntegration.password}
                              size="small"
                              label="Password"
                              style={{minWidth: "400px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
-                                 setCurrentCicd({
-                                     ...currentCicd,
+                                 setNewIntegration({
+                                     ...newIntegration,
                                      password: event.target.value
                                  })
                              }}
@@ -123,11 +129,11 @@ function EditCicdModal({isOpen, setIsOpen, updateCicdList, cicdTypes, cicdIntegr
 
             <Button variant="contained"
                     color="error"
-                    onClick={handleUpdateCicdButtonClick}
+                    onClick={handleAddButtonClick}
                     style={{margin: "12px 8px 0 8px"}}
-            >Save changes</Button>
+            >Add Integration</Button>
         </Box>
     </Modal>
 }
 
-export default EditCicdModal;
+export default NewTaskTrackerModal;

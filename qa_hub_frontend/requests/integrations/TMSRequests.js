@@ -1,10 +1,10 @@
 import axios from "axios";
-import process from "../next.config";
+import process from "../../next.config";
 
-export function getCicdTypes() {
+export function getTmsTypes() {
     const config = {
         method: 'get',
-        url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat("/api/cicd/types"),
+        url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat("/api/tms/types"),
         headers: {
             'Content-Type': 'application/json'
         }
@@ -13,10 +13,10 @@ export function getCicdTypes() {
     return axios(config)
 }
 
-export function getCicdIntegrations() {
+export function getTmsIntegrations() {
     const config = {
         method: 'get',
-        url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat("/api/cicd/integrations"),
+        url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat("/api/tms/integrations"),
         headers: {
             'Content-Type': 'application/json'
         }
@@ -25,36 +25,36 @@ export function getCicdIntegrations() {
     return axios(config)
 }
 
-export function addCicdIntegration(cicd) {
+export function addTmsIntegration(tms) {
     const config = {
         method: 'post',
-        url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat("/api/cicd/integrations/add"),
+        url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat("/api/tms/integrations/add"),
         headers: {
             'Content-Type': 'application/json'
         },
-        data: cicd
+        data: tms
     }
 
     return axios(config)
 }
 
-export function updateCicdIntegration(cicd) {
+export function updateTmsIntegration(tms) {
     const config = {
         method: 'post',
-        url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat("/api/cicd/integrations/update"),
+        url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat("/api/tms/integrations/update"),
         headers: {
             'Content-Type': 'application/json'
         },
-        data: cicd
+        data: tms
     }
 
     return axios(config)
 }
 
-export function deleteCicdIntegration(cicdId) {
+export function deleteTmsIntegration(tmsId) {
     const config = {
         method: 'post',
-        url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat(`/api/cicd/integrations/delete/${cicdId}`),
+        url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat(`/api/tms/integrations/delete/${tmsId}`),
         headers: {
             'Content-Type': 'application/json'
         }

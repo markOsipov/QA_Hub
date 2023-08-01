@@ -3,10 +3,10 @@ package qa_hub.controller.integrations
 import com.mongodb.client.result.DeleteResult
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
-import qa_hub.service.tms.TmsService
-import qa_hub.service.tms.entity.TmsInfo
-import qa_hub.service.tms.entity.TmsType
-import qa_hub.service.tms.entity.TmsTypes
+import qa_hub.service.integrations.tms.TmsService
+import qa_hub.service.integrations.tms.entity.TmsInfo
+import qa_hub.service.integrations.tms.entity.TmsType
+import qa_hub.service.integrations.tms.entity.TmsTypes
 import java.util.*
 
 @RestController

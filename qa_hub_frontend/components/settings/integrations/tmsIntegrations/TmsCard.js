@@ -5,14 +5,14 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Typography from "@mui/material/Typography";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {deleteCicdIntegration} from "../../../requests/CicdRequests";
-import EditCicdModal from "./EditCicdModal";
-import TextWithLabel from "../../primitives/TextWithLabel";
+import {deleteTmsIntegration} from "../../../../requests/integrations/TMSRequests";
+import EditTmsModal from "./EditTMSModal";
+import TextWithLabel from "../../../primitives/TextWithLabel";
 
-export default function CicdCard({cicd, updateCicdList, cicdTypes, cicdIntegrations, ...props}) {
+export default function TmsCard({tms, updateTmsList, tmsTypes, tmsIntegrations, ...props}) {
     const [menuAnchor, setMenuAnchor] = useState(null);
     const [showMoreButton, setShowMoreButton] = useState(false)
-    const [isEditCicdModalOpen, setIsEditCicdModalOpen] = useState(false);
+    const [isEditTmsModalOpen, setIsEditTmsModalOpen] = useState(false);
 
     const menuOpen = Boolean(menuAnchor);
 
@@ -24,15 +24,15 @@ export default function CicdCard({cicd, updateCicdList, cicdTypes, cicdIntegrati
         setMenuAnchor(null);
     };
 
-    const handleDeleteCicd = () => {
-        deleteCicdIntegration(cicd["_id"]).then( () => {
-                updateCicdList()
+    const handleDeleteTms = () => {
+        deleteTmsIntegration(tms["_id"]).then( () => {
+                updateTmsList()
             }
         )
     }
 
-    const handleEditCicd = () => {
-        setIsEditCicdModalOpen(true)
+    const handleEditTms = () => {
+        setIsEditTmsModalOpen(true)
         handleCloseMenu();
     }
 
@@ -49,9 +49,9 @@ export default function CicdCard({cicd, updateCicdList, cicdTypes, cicdIntegrati
                 </IconButton>
             )
         }
-        <EditCicdModal isOpen={isEditCicdModalOpen} setIsOpen={setIsEditCicdModalOpen} updateCicdList={updateCicdList} cicdTypes={cicdTypes} cicdIntegrations={cicdIntegrations} cicd={cicd}/>
+        <EditTmsModal isOpen={isEditTmsModalOpen} setIsOpen={setIsEditTmsModalOpen} updateTmsList={updateTmsList} tmsTypes={tmsTypes} tmsIntegrations={tmsIntegrations} tms={tms}/>
         <div style={{display: "flex", marginBottom: "10px"}}>
-            <Typography variant="h6" style={{minWidth: "max-content"}}>{cicd.cicdType}</Typography>
+            <Typography variant="h6" style={{minWidth: "max-content"}}>{tms.tmsType}</Typography>
             <div style={{width: "100%", flexGrow: "2"}}></div>
             <Menu
                 anchorEl={menuAnchor}
@@ -61,13 +61,13 @@ export default function CicdCard({cicd, updateCicdList, cicdTypes, cicdIntegrati
                     'aria-labelledby': 'basic-button',
                 }}
             >
-                <MenuItem onClick={handleEditCicd}>
+                <MenuItem onClick={handleEditTms}>
                     <ListItemIcon>
                         <EditIcon fontSize="small" style={{color: "var(--primary-text-color)"}}/>
                     </ListItemIcon>
                     <ListItemText>Edit</ListItemText>
                 </MenuItem>
-                <MenuItem onClick={handleDeleteCicd}>
+                <MenuItem onClick={handleDeleteTms}>
                     <ListItemIcon>
                         <DeleteIcon fontSize="small" style={{color: "var(--primary-text-color)"}}/>
                     </ListItemIcon>
@@ -76,10 +76,9 @@ export default function CicdCard({cicd, updateCicdList, cicdTypes, cicdIntegrati
             </Menu>
         </div>
 
-        <TextWithLabel value={cicd.baseUrl} label={"Base URL"} style={{margin: '15px 0 15px 0'}}/>
-        <TextWithLabel value={cicd.apiToken} label={"Api token"} style={{margin: '20px 0 15px 0'}}/>
-        <TextWithLabel value={cicd.login} label={"Login"} style={{margin: '20px 0 15px 0'}}/>
-        <TextWithLabel value={cicd.password} label={"Password"} style={{margin: '20px 0 15px 0'}}/>
-
+        <TextWithLabel value={tms.baseUrl} label={"Base URL"} style={{margin: '15px 0 15px 0'}}/>
+        <TextWithLabel value={tms.apiToken} label={"Api token"} style={{margin: '20px 0 15px 0'}}/>
+        <TextWithLabel value={tms.login} label={"Login"} style={{margin: '20px 0 15px 0'}}/>
+        <TextWithLabel value={tms.password} label={"Password"} style={{margin: '20px 0 15px 0'}}/>
     </Card>
 }

@@ -1,4 +1,4 @@
-package qa_hub.service.cicd
+package qa_hub.service.integrations.cicd
 
 import com.mongodb.client.result.DeleteResult
 import kotlinx.coroutines.runBlocking
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
 import qa_hub.core.mongo.QaHubMongoClient
 import qa_hub.core.mongo.entity.Collections
 import qa_hub.core.mongo.utils.setCurrentPropertyValues
-import qa_hub.service.cicd.entity.CicdInfo
+import qa_hub.service.integrations.cicd.entity.CicdInfo
 
 @Service
 class CicdService {

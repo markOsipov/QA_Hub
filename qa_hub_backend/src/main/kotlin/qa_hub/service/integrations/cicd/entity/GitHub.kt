@@ -1,4 +1,4 @@
-package qa_hub.service.cicd.entity
+package qa_hub.service.integrations.cicd.entity
 
 class GitHub(cicdInfo: CicdInfo): CicdIntegrationAbstract(cicdInfo) {
     override fun startJob() {

@@ -5,14 +5,14 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Typography from "@mui/material/Typography";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {deleteTmsIntegration} from "../../../requests/TMSRequests";
-import EditTmsModal from "./EditTMSModal";
-import TextWithLabel from "../../primitives/TextWithLabel";
+import EditTaskTrackerModal from "./EditTaskTrackerModal";
+import TextWithLabel from "../../../primitives/TextWithLabel";
+import {deleteTaskTrackerIntegration} from "../../../../requests/integrations/TaskTrackerRequests";
 
-export default function TmsCard({tms, updateTmsList, tmsTypes, tmsIntegrations, ...props}) {
+export default function TaskTrackerCard({integration, updateIntegrations, types, integrations, ...props}) {
     const [menuAnchor, setMenuAnchor] = useState(null);
     const [showMoreButton, setShowMoreButton] = useState(false)
-    const [isEditTmsModalOpen, setIsEditTmsModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
     const menuOpen = Boolean(menuAnchor);
 
@@ -24,15 +24,14 @@ export default function TmsCard({tms, updateTmsList, tmsTypes, tmsIntegrations, 
         setMenuAnchor(null);
     };
 
-    const handleDeleteTms = () => {
-        deleteTmsIntegration(tms["_id"]).then( () => {
-                updateTmsList()
-            }
-        )
+    const handleDelete = () => {
+        deleteTaskTrackerIntegration(integration["_id"]).then(() => {
+            updateIntegrations()
+        })
     }
 
-    const handleEditTms = () => {
-        setIsEditTmsModalOpen(true)
+    const handleEdit = () => {
+        setIsEditModalOpen(true)
         handleCloseMenu();
     }
 
@@ -49,9 +48,9 @@ export default function TmsCard({tms, updateTmsList, tmsTypes, tmsIntegrations, 
                 </IconButton>
             )
         }
-        <EditTmsModal isOpen={isEditTmsModalOpen} setIsOpen={setIsEditTmsModalOpen} updateTmsList={updateTmsList} tmsTypes={tmsTypes} tmsIntegrations={tmsIntegrations} tms={tms}/>
+        <EditTaskTrackerModal isOpen={isEditModalOpen} setIsOpen={setIsEditModalOpen} updateIntegrations={updateIntegrations} types={types} integrations={integrations} integration={integration}/>
         <div style={{display: "flex", marginBottom: "10px"}}>
-            <Typography variant="h6" style={{minWidth: "max-content"}}>{tms.tmsType}</Typography>
+            <Typography variant="h6" style={{minWidth: "max-content"}}>{integration.type}</Typography>
             <div style={{width: "100%", flexGrow: "2"}}></div>
             <Menu
                 anchorEl={menuAnchor}
@@ -61,13 +60,13 @@ export default function TmsCard({tms, updateTmsList, tmsTypes, tmsIntegrations, 
                     'aria-labelledby': 'basic-button',
                 }}
             >
-                <MenuItem onClick={handleEditTms}>
+                <MenuItem onClick={handleEdit}>
                     <ListItemIcon>
                         <EditIcon fontSize="small" style={{color: "var(--primary-text-color)"}}/>
                     </ListItemIcon>
                     <ListItemText>Edit</ListItemText>
                 </MenuItem>
-                <MenuItem onClick={handleDeleteTms}>
+                <MenuItem onClick={handleDelete}>
                     <ListItemIcon>
                         <DeleteIcon fontSize="small" style={{color: "var(--primary-text-color)"}}/>
                     </ListItemIcon>
@@ -76,9 +75,10 @@ export default function TmsCard({tms, updateTmsList, tmsTypes, tmsIntegrations, 
             </Menu>
         </div>
 
-        <TextWithLabel value={tms.baseUrl} label={"Base URL"} style={{margin: '15px 0 15px 0'}}/>
-        <TextWithLabel value={tms.apiToken} label={"Api token"} style={{margin: '20px 0 15px 0'}}/>
-        <TextWithLabel value={tms.login} label={"Login"} style={{margin: '20px 0 15px 0'}}/>
-        <TextWithLabel value={tms.password} label={"Password"} style={{margin: '20px 0 15px 0'}}/>
+        <TextWithLabel value={integration.baseUrl} label={"Base URL"} style={{margin: '15px 0 15px 0'}}/>
+        <TextWithLabel value={integration.apiToken} label={"Api token"} style={{margin: '20px 0 15px 0'}}/>
+        <TextWithLabel value={integration.login} label={"Login"} style={{margin: '20px 0 15px 0'}}/>
+        <TextWithLabel value={integration.password} label={"Password"} style={{margin: '20px 0 15px 0'}}/>
+
     </Card>
 }

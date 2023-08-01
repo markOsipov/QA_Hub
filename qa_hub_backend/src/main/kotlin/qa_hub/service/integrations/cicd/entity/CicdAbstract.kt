@@ -1,4 +1,4 @@
-package qa_hub.service.cicd.entity
+package qa_hub.service.integrations.cicd.entity
 
 data class CicdType(
     val cicdName: String,

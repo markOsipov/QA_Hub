@@ -1,27 +1,18 @@
-import {Box, FormControl, InputLabel, MenuItem, Modal, Select, TextField} from "@mui/material";
+import {Box, FormControl, InputLabel, MenuItem, Modal, Select} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {useEffect, useState} from "react";
-import StyledTextField from "../../primitives/StyledTextField";
+import StyledTextField from "../../../primitives/StyledTextField";
 import Button from "@mui/material/Button";
-import {addTmsIntegration} from "../../../requests/TMSRequests";
-import {modalStyle} from "../../../styles/ModalStyle";
-import StyledSelect from "../../primitives/StyledSelect";
+import {updateTmsIntegration} from "../../../../requests/integrations/TMSRequests";
+import {modalStyle} from "../../../../styles/ModalStyle";
+import StyledSelect from "../../../primitives/StyledSelect";
 
-function NewTmsModal({isOpen, setIsOpen, updateTmsList, tmsTypes, tmsIntegrations}) {
-    const defaultTmsValue = {
-        tmsType: "",
-        baseUrl: "",
-        apiToken: "",
-        login: "",
-        password: ""
-    }
-
-    const [newTms, setNewTms] = useState(defaultTmsValue)
-
+function EditTmsModal({isOpen, setIsOpen, updateTmsList, tmsTypes, tmsIntegrations, tms }) {
+    const [currentTms, setCurrentTms] = useState(tms)
 
     useEffect(() => {
         if (isOpen) {
-            setNewTms(defaultTmsValue)
+            setCurrentTms(tms)
         }
     }, [isOpen])
 
@@ -31,22 +22,25 @@ function NewTmsModal({isOpen, setIsOpen, updateTmsList, tmsTypes, tmsIntegration
     }
 
     const selectTms = (event) => {
-        setNewTms({
-            ...newTms,
+        setCurrentTms({
+            ...currentTms,
             tmsType: event.target.value
         })
     }
 
-    const handleAddTmsButtonClick = () => {
-        if (tmsIntegrations.map(tms => { return tms.tmsType }).includes(newTms.tmsType)) {
+    const handleUpdateTmsButtonClick = () => {
+        if (tmsIntegrations.find(tms => {
+            return tms.tmsType === currentTms.tmsType && tms["_id"] !== currentTms["_id"]
+        })) {
             alert("A TMS with the same type already exists")
         } else {
-            addTmsIntegration(newTms).then(() => {
+            updateTmsIntegration(currentTms).then(() => {
                 updateTmsList()
                 setIsOpen(false)
             })
         }
     }
+
 
     return <Modal
         open={isOpen}
@@ -56,71 +50,71 @@ function NewTmsModal({isOpen, setIsOpen, updateTmsList, tmsTypes, tmsIntegration
     >
         <Box sx={modalStyle}>
             <Typography id="modal-modal-title" variant="h6" component="h2" style={{marginBottom: "10px"}}>
-                Adding new TMS
+                Editing TMS Integration
             </Typography>
 
             <FormControl sx={{ minWidth: 400, margin: "8px" }} size="small">
                 <InputLabel style={{ color: "var(--faded-text-color)" }}>TMS Type</InputLabel>
                 <StyledSelect
-                    value={newTms.tmsType || ''}
+                    value={currentTms.tmsType || ''}
                     label="Tms type"
                     onChange={selectTms}
                 >
                     {
-                        tmsTypes.map((tms) =>
+                        (tmsTypes).map((tms) =>
                             <MenuItem key={tms.tmsName} value={tms.tmsName}>{tms.tmsName}</MenuItem>
                         )
                     }
                 </StyledSelect>
             </FormControl>
 
-            <StyledTextField value={newTms.baseUrl}
+            <StyledTextField value={currentTms.baseUrl}
                              size="small"
                              label="Base URL"
                              style={{minWidth: "400px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
-                                 setNewTms({
-                                     ...newTms,
+                                 setCurrentTms({
+                                     ...currentTms,
                                      baseUrl: event.target.value
                                  })
                              }}
             />
 
-            <StyledTextField value={newTms.apiToken}
+            <StyledTextField value={currentTms.apiToken}
                              size="small"
                              label="Api Token"
                              style={{minWidth: "400px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
-                                 setNewTms({
-                                     ...newTms,
+                                 setCurrentTms({
+                                     ...currentTms,
                                      apiToken: event.target.value
                                  })
                              }}
             />
 
-            <StyledTextField value={newTms.login}
+            <StyledTextField value={currentTms.login}
                              size="small"
                              label="Login"
                              style={{minWidth: "400px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
-                                 setNewTms({
-                                     ...newTms,
+                                 setCurrentTms({
+                                     ...currentTms,
                                      login: event.target.value
                                  })
                              }}
             />
 
-            <StyledTextField value={newTms.password}
+            <StyledTextField value={currentTms.password}
                              size="small"
                              label="Password"
                              style={{minWidth: "400px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange ={(event) => {
-                                 setNewTms({
-                                     ...newTms,
+                                 setCurrentTms({
+                                     ...currentTms,
                                      password: event.target.value
                                  })
                              }}
@@ -129,11 +123,11 @@ function NewTmsModal({isOpen, setIsOpen, updateTmsList, tmsTypes, tmsIntegration
 
             <Button variant="contained"
                     color="error"
-                    onClick={handleAddTmsButtonClick}
+                    onClick={handleUpdateTmsButtonClick}
                     style={{margin: "12px 8px 0 8px"}}
-            >Add TMS</Button>
+            >Save changes</Button>
         </Box>
     </Modal>
 }
 
-export default NewTmsModal;
+export default EditTmsModal;

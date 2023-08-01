@@ -4,9 +4,9 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import {useEffect, useState} from "react";
-import StyledAccordionSummary from "../../primitives/StyledAccordeonSummary";
+import StyledAccordionSummary from "../../../primitives/StyledAccordeonSummary";
 import useSWR from "swr";
-import {getTmsIntegrations, getTmsTypes} from "../../../requests/TMSRequests";
+import {getTmsIntegrations, getTmsTypes} from "../../../../requests/integrations/TMSRequests";
 import TmsCard from "./TmsCard";
 import NewTmsModal from "./NewTmsModal";
 

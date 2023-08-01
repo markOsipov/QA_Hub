@@ -1,7 +1,6 @@
-package qa_hub.service.tms
+package qa_hub.service.integrations.tms
 
 import com.mongodb.client.result.DeleteResult
-import com.mongodb.client.result.UpdateResult
 import kotlinx.coroutines.runBlocking
 import org.litote.kmongo.eq
 import org.litote.kmongo.set
@@ -11,9 +10,7 @@ import org.springframework.stereotype.Service
 import qa_hub.core.mongo.QaHubMongoClient
 import qa_hub.core.mongo.entity.Collections.TMS_INTEGRATIONS
 import qa_hub.core.mongo.utils.setCurrentPropertyValues
-import qa_hub.entity.Project
-import qa_hub.service.tms.entity.TmsInfo
-import qa_hub.service.tms.entity.TmsType
+import qa_hub.service.integrations.tms.entity.TmsInfo
 
 @Service
 class TmsService {

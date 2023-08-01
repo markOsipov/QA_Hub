@@ -1,4 +1,4 @@
-package qa_hub.service.tms.entity
+package qa_hub.service.integrations.tms.entity
 
 data class TmsType(
     val tmsName: String,
