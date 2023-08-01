@@ -3,38 +3,26 @@ import {Accordion, AccordionDetails, Card} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import StyledAccordionSummary from "../../../primitives/StyledAccordeonSummary";
 import useSWR from "swr";
 import {getCicdIntegrations, getCicdTypes} from "../../../../requests/integrations/CICDRequests";
 import CicdCard from "./CicdCard";
 import NewCicdModal from "./NewCicdModal";
+import integrationsState from "../../../../state/IntegrationsState";
 
 const CicdEditor = observer(() => {
     const [isNewCicdModalOpen, setIsNewCicdModalOpen] = useState(false)
 
-    const [cicdTypes, setCicdTypes] = useState([])
-    const [cicdIntegrations, setCicdIntegrations] = useState([])
-
-    let cicdTypesResult = useSWR('getCicdTypes', getCicdTypes
-    ,{
-        revalidateOnFocus: false,
-    })
-    useEffect(() => {
-        if (cicdTypesResult?.data?.data) {
-            setCicdTypes(cicdTypesResult.data.data)
-        }
-    }, [cicdTypesResult])
+    const {cicdTypes, cicdIntegrations} = integrationsState
 
     function updateCicdList() {
         getCicdIntegrations().then((data) => {
             if(data.data != null) {
-                setCicdIntegrations(data.data)
+                integrationsState.setCicdIntegrations(data.data)
             }
         })
     }
-
-    let { data, error } = useSWR("getCicdIntegrations", updateCicdList, { refreshInterval: 60000 })
 
     const handleOpen = () => setIsNewCicdModalOpen(true);
 

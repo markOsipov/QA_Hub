@@ -1,7 +1,7 @@
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import {Card, ListItemIcon, ListItemText, Menu, MenuItem} from "@mui/material";
+import {Accordion, AccordionDetails, Card, ListItemIcon, ListItemText, Menu, MenuItem} from "@mui/material";
 import {useState} from "react";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -9,6 +9,8 @@ import {deleteProject} from "../../../requests/ProjectRequests";
 import projectState from "../../../state/ProjectState";
 import EditProjectModal from "./EditProjectModal";
 import TextWithLabel from "../../primitives/TextWithLabel";
+import StyledAccordionSummary from "../../primitives/StyledAccordeonSummary";
+import {customTheme} from "../../../styles/CustomTheme";
 
 export default function ProjectCard({project, ...props}) {
     const [menuAnchor, setMenuAnchor] = useState(null);
@@ -77,9 +79,44 @@ export default function ProjectCard({project, ...props}) {
         </div>
 
         <TextWithLabel label={'Platform'} value={project.platform} style={{margin: '15px 0 15px 0'}}></TextWithLabel>
-        <TextWithLabel label={'Cicd project'} value={project.cicdProjectId} style={{margin: '15px 0 15px 0'}}></TextWithLabel>
-        <TextWithLabel label={'Cicd path'} value={project.cicdPath} style={{margin: '15px 0 15px 0'}}></TextWithLabel>
-        <TextWithLabel label={'Tms project'} value={project.tmsProjectId} style={{margin: '15px 0 15px 0'}}></TextWithLabel>
+        {
+            project.cicd &&
+            <Accordion style={{backgroundColor: "unset", border: `1px solid ${customTheme.palette.text.disabled}`, borderRadius: '4px'}}>
+                <StyledAccordionSummary>
+                    <Typography>CICD</Typography>
+                </StyledAccordionSummary>
+                <AccordionDetails>
+                    <TextWithLabel label={'Type'} value={project.cicd.type} style={{marginTop: '10px'}}></TextWithLabel>
+                    <TextWithLabel label={'Project'} value={project.cicd.project} style={{marginTop: '20px'}}></TextWithLabel>
+                    <TextWithLabel label={'Path'} value={project.cicdPath} style={{marginTop: '20px'}}></TextWithLabel>
+                </AccordionDetails>
+            </Accordion>
+        }
+
+        {
+          project.tms &&
+          <Accordion style={{backgroundColor: "unset", border: `1px solid ${customTheme.palette.text.disabled}`, borderRadius: '4px', marginTop: '15px'}}>
+              <StyledAccordionSummary>
+                  <Typography>TMS</Typography>
+              </StyledAccordionSummary>
+              <AccordionDetails>
+                  <TextWithLabel label={'Type'} value={project.tms.type} style={{marginTop: '10px'}}></TextWithLabel>
+                  <TextWithLabel label={'Project'} value={project.tms.project} style={{marginTop: '20px'}}></TextWithLabel>
+              </AccordionDetails>
+          </Accordion>
+        }
+
+        {
+          project.taskTracker &&
+          <Accordion style={{backgroundColor: "unset", border: `1px solid ${customTheme.palette.text.disabled}`, borderRadius: '4px', marginTop: '15px'}}>
+              <StyledAccordionSummary>
+                  <Typography>Task tracker</Typography>
+              </StyledAccordionSummary>
+              <AccordionDetails>
+                  <TextWithLabel label={'Type'} value={project.taskTracker.type}></TextWithLabel>
+              </AccordionDetails>
+          </Accordion>
+        }
 
     </Card>
 }

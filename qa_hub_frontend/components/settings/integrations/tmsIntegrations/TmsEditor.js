@@ -9,32 +9,20 @@ import useSWR from "swr";
 import {getTmsIntegrations, getTmsTypes} from "../../../../requests/integrations/TMSRequests";
 import TmsCard from "./TmsCard";
 import NewTmsModal from "./NewTmsModal";
+import integrationsState from "../../../../state/IntegrationsState";
 
 const TmsEditor = observer(() => {
     const [isNewTmsModalOpen, setIsNewTmsModalOpen] = useState(false)
 
-    const [tmsTypes, setTmsTypes] = useState([])
-    const [tmsIntegrations, setTmsIntegrations] = useState([])
-
-    let tmsTypesResult = useSWR('getTmsTypes', getTmsTypes
-    ,{
-        revalidateOnFocus: false,
-    })
-    useEffect(() => {
-        if (tmsTypesResult?.data?.data) {
-            setTmsTypes(tmsTypesResult.data.data)
-        }
-    }, [tmsTypesResult])
+    const {tmsTypes, tmsIntegrations} = integrationsState
 
     function updateTmsList() {
         getTmsIntegrations().then((data) => {
             if(data.data != null) {
-                setTmsIntegrations(data.data)
+                integrationsState.setTmsIntegrations(data.data)
             }
         })
     }
-
-    let { data, error } = useSWR("getTmsIntegrations", updateTmsList, { refreshInterval: 60000 })
 
     const handleOpen = () => setIsNewTmsModalOpen(true);
 

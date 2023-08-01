@@ -8,34 +8,18 @@ import StyledAccordionSummary from "../../../primitives/StyledAccordeonSummary";
 import TaskTrackerCard from "./TaskTrackerCard";
 import NewTaskTrackerModal from "./NewTaskTrackerModal";
 import {getTaskTrackerIntegrations, getTaskTrackerTypes} from "../../../../requests/integrations/TaskTrackerRequests";
+import integrationsState from "../../../../state/IntegrationsState";
 
 const TaskTrackerEditor = observer(() => {
     const [isNewModalOpen, setIsNewModalOpen] = useState(false)
 
-    const [types, setTypes] = useState([])
-    const [integrations, setIntegrations] = useState([])
+    const {taskTrackerTypes, taskTrackerIntegrations} = integrationsState
 
-
-    useEffect(() => {
-        updateTypes()
-    }, [])
-
-    useEffect(() => {
-        updateIntegrations()
-    }, [])
-
-    const updateTypes = () => {
-        getTaskTrackerTypes().then((data => {
-            if (data?.data) {
-                setTypes(data.data)
-            }
-        }))
-    }
 
     const updateIntegrations = () => {
         getTaskTrackerIntegrations().then((data => {
             if (data?.data) {
-                setIntegrations(data.data)
+                integrationsState.setTaskTrackerIntegrations(data.data)
             }
         }))
     }
@@ -43,7 +27,7 @@ const TaskTrackerEditor = observer(() => {
     const handleOpen = () => setIsNewModalOpen(true);
 
     return <Card style={{marginTop: "15px", display: "grid"}}>
-        <NewTaskTrackerModal isOpen={isNewModalOpen} setIsOpen={setIsNewModalOpen} updateIntegrations={updateIntegrations} types={types} integrations={integrations}/>
+        <NewTaskTrackerModal isOpen={isNewModalOpen} setIsOpen={setIsNewModalOpen} updateIntegrations={updateIntegrations} types={taskTrackerTypes} integrations={taskTrackerIntegrations}/>
         <Accordion>
             <StyledAccordionSummary
                 style={{maxWidth: "max-content"}}
@@ -55,8 +39,8 @@ const TaskTrackerEditor = observer(() => {
             <AccordionDetails>
                 <div style={{display: "flex", flexWrap:"wrap"}}>
                     {
-                        integrations.map(integration =>
-                            <TaskTrackerCard key={integration._id} integration={integration} updateIntegrations={updateIntegrations} types={types} integrations={integrations}/>
+                        taskTrackerIntegrations.map(integration =>
+                            <TaskTrackerCard key={integration._id} integration={integration} updateIntegrations={updateIntegrations} types={taskTrackerTypes} integrations={taskTrackerIntegrations}/>
                         )
                     }
                 </div>

@@ -24,10 +24,25 @@ enum class Platforms(val platform: Platform) {
 
 data class Project(
     var _id: String? = null,
-    val name: String,                        //gitlab or other cicd project name
+    val name: String,
     val platform: String,                    //used to define separator and build full test name correctly
     val separator: String = Platforms.getSeparator(platform),
-    val cicdPath: String =      "/",         // path to the project in gitlab or other cicd
-    val cicdProjectId: String = "/",         // id project in gitlab or other cicd
-    val tmsProjectId: String =  "/",         // id project in testRail or other tms
+    val cicd: ProjectCicdInfo? = ProjectCicdInfo(),
+    val tms: ProjectTmsInfo? = ProjectTmsInfo(),
+    val taskTracker: ProjectTaskTrackerInfo? = ProjectTaskTrackerInfo()
+)
+
+data class ProjectCicdInfo(
+    val type: String = "",
+    val path: String = "",
+    val project: String = ""
+)
+
+data class ProjectTmsInfo(
+    val type: String = "",
+    val project: String = ""
+)
+
+data class ProjectTaskTrackerInfo(
+    val type: String = ""
 )
