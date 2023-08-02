@@ -8,6 +8,8 @@ import qa_hub.core.mongo.QaHubMongoClient
 import qa_hub.core.mongo.entity.Collections
 import qa_hub.core.utils.DateTimeUtils.currentEpoch
 import qa_hub.entity.Project
+import qa_hub.entity.ProjectCicdInfo
+import qa_hub.entity.ProjectTmsInfo
 import qa_hub.service.integrations.cicd.entity.CicdInfo
 import qa_hub.service.integrations.taskTrackers.TaskTrackerInfo
 import qa_hub.service.integrations.tms.entity.TmsInfo
@@ -22,12 +24,14 @@ data class ProjectTaskTrackerIntegrationsInfo(
 data class ProjectCicdIntegrationsInfo(
     val project: String,
     val lastUpdate: Long,
+    val projectCicdInfo: ProjectCicdInfo?,
     val cicdInfo: CicdInfo?,
 )
 
 data class ProjectTmsIntegrationsInfo(
     val project: String,
     val lastUpdate: Long,
+    val projectTmsInfo: ProjectTmsInfo?,
     val tmsInfo: TmsInfo?
 )
 
@@ -67,6 +71,7 @@ class ProjectIntegrationsService {
             project = project,
             lastUpdate = currentEpoch(),
             cicdInfo = cicdInfo,
+            projectCicdInfo = projectInfo?.cicd
         )
 
         projectsCicdIntegrations[project] = projectIntegrationsInfo
@@ -84,6 +89,7 @@ class ProjectIntegrationsService {
             project = project,
             lastUpdate = currentEpoch(),
             tmsInfo = tmsInfo,
+            projectTmsInfo = projectInfo?.tms
         )
 
         projectsTmsIntegrations[project] = projectIntegrationsInfo

@@ -10,6 +10,7 @@ import {useState} from "react";
 import {observer} from "mobx-react-lite";
 import blockerState from "../../state/BlockerState";
 import TaskStatusCell from "./TaskStatusCell";
+import TestcaseIdCell from "./TestcaseIdCell";
 
 const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, setShowFullName }) => {
     const [blockedTest, setBlockedTest] = useState(blockedTestForRow)
@@ -77,10 +78,10 @@ const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, 
             />
         </StyledTableCell>
 
-        <EditableTableCell content={blockedTest.testcaseId}
-                           onChangeCallback={ handleTestcaseIdChange }
-                           onBlurCallback={ handleTestcaseEditFinish }
-                           textArea
+        <TestcaseIdCell
+          blockedTest={blockedTest}
+          onChangeCallback={ handleTestcaseIdChange }
+          onBlurCallback={ handleTestcaseEditFinish }
         />
 
         <StyledTableCell style={{color: "var(--faded-text-color)"}}> {

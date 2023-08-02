@@ -25,6 +25,18 @@ export function getTaskTrackerIntegration(project) {
     return axios(config)
 }
 
+export function getTaskTmsIntegration(project) {
+    const config = {
+        method: 'get',
+        url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat("/api/tms/" + project),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+
+    return axios(config)
+}
+
 export function getTaskStatus(project, task) {
     const config = {
         method: 'get',

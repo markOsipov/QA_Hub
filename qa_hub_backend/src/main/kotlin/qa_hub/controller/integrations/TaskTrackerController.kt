@@ -50,9 +50,7 @@ class TaskTrackerController {
     @GetMapping("/{project}")
     fun getProjectTaskTracker(@PathVariable project: String): ProjectTaskTrackerIntegrationsInfo? {
         return try {
-            val info = projectIntegrationsService.getProjectTaskTrackerInt(project)
-
-            info
+            projectIntegrationsService.getProjectTaskTrackerInt(project)
         } catch (e: Exception) {
             null
         }

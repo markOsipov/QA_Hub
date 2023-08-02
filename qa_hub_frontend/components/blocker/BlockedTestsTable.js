@@ -9,7 +9,7 @@ import {StyledTableRow} from "../primitives/Table/StyledTableRow";
 import {StyledTableCell} from "../primitives/Table/StyledTableCell";
 import {observer} from "mobx-react-lite";
 import projectState from "../../state/ProjectState";
-import {getTaskTrackerIntegration} from "../../requests/BlockerRequests";
+import {getTaskTmsIntegration, getTaskTrackerIntegration} from "../../requests/BlockerRequests";
 import {useState, useEffect} from "react";
 import FullNameTableHeaderCell from "./FullNameTableHeaderCell";
 import BlockedTestTableRow from "./BlockedTestTableRow";
@@ -37,6 +37,12 @@ const BlockedTestsTable = observer(() => {
     useEffect(() => {
         getTaskTrackerIntegration(selectedProject).then(data => {
             blockerState.setTaskTrackerInfo(data?.data?.taskTrackerInfo || {})
+        })
+    }, [selectedProject])
+
+    useEffect(() => {
+        getTaskTmsIntegration(selectedProject).then(data => {
+            blockerState.setTmsInfo(data?.data || {})
         })
     }, [selectedProject])
 

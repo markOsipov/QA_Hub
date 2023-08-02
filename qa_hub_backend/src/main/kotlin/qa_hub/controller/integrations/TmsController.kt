@@ -7,6 +7,8 @@ import qa_hub.service.integrations.tms.TmsService
 import qa_hub.service.integrations.tms.entity.TmsInfo
 import qa_hub.service.integrations.tms.entity.TmsType
 import qa_hub.service.integrations.tms.entity.TmsTypes
+import qa_hub.service.utils.ProjectIntegrationsService
+import qa_hub.service.utils.ProjectTmsIntegrationsInfo
 import java.util.*
 
 @RestController
@@ -14,6 +16,9 @@ import java.util.*
 class TmsController {
     @Autowired
     lateinit var tmsService: TmsService
+
+    @Autowired
+    lateinit var projectIntegrationsService: ProjectIntegrationsService
 
     @GetMapping("/types")
     fun getTmsTypes(): List<TmsType> {
@@ -40,5 +45,14 @@ class TmsController {
     @PostMapping("/integrations/delete/{id}")
     fun deleteTmsIntegration(@PathVariable("id") id: String): DeleteResult {
         return tmsService.deleteTmsIntegration(id)
+    }
+
+    @GetMapping("/{project}")
+    fun getProjectTms(@PathVariable project: String): ProjectTmsIntegrationsInfo? {
+        return try {
+            projectIntegrationsService.getProjectTmsInt(project)
+        } catch (e: Exception) {
+            null
+        }
     }
 }
