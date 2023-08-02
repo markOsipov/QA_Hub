@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import qa_hub.service.integrations.taskTrackers.TaskStatusResponse
 
 @RestController
 @RequestMapping("/api/blocker")
@@ -30,6 +31,14 @@ class BlockedTestsController {
         return blockedTestsService.getBlockedTestsForProject(project)
     }
 
+    @GetMapping("/{project}/taskStatus/{task}")
+    fun getTaskStatus(
+        @PathVariable project: String,
+        @PathVariable task: String
+    ): TaskStatusResponse? {
+        return blockedTestsService.getTaskStatus(project, task)
+    }
+
     @PostMapping("/block")
     fun blockTest(@RequestBody body: BlockedTest): UpdateResult {
         return blockedTestsService.blockTest(body)
@@ -44,4 +53,6 @@ class BlockedTestsController {
     fun editBlockedTest(@RequestBody body: BlockedTest): UpdateResult {
         return blockedTestsService.editBlockedTest(body)
     }
+
+
 }

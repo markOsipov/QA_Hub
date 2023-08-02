@@ -10,9 +10,12 @@ import org.litote.kmongo.*
 import org.litote.kmongo.util.KMongoUtil.idFilterQuery
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import qa_hub.core.mongo.entity.Collections.BLOCKED_TESTS
+import qa_hub.core.mongo.entity.Collections.*
 import qa_hub.core.utils.DateTimeUtils.formatDate
 import qa_hub.entity.Platforms
+import qa_hub.entity.Project
+import qa_hub.service.integrations.taskTrackers.TaskStatusResponse
+import qa_hub.service.integrations.taskTrackers.TaskTrackerInfo
 
 @Service
 class BlockedTestsService {
@@ -26,6 +29,14 @@ class BlockedTestsService {
         mongoClient.db.getCollection<BlockedTest>(BLOCKED_TESTS.collectionName)
     }
 
+    private val taskTrackerIntegrationCollection by lazy {
+        mongoClient.db.getCollection<TaskTrackerInfo>(TASK_TRACKER_INTEGRATIONS.collectionName)
+    }
+
+    private val projectCollection by lazy {
+        mongoClient.db.getCollection<Project>(PROJECTS.collectionName)
+    }
+
     fun getBlockedTests(): List<BlockedTest> = runBlocking {
         blockedTestsCollection.find().toList()
     }
@@ -34,6 +45,15 @@ class BlockedTestsService {
         blockedTestsCollection
             .find(BlockedTest::project.eq(project))
             .toList()
+    }
+
+    fun getTaskStatus(project: String, task: String): TaskStatusResponse? = runBlocking {
+        val projectInfo = projectCollection.findOne(Project::name eq project)
+        val taskTrackerService = taskTrackerIntegrationCollection
+            .findOne(TaskTrackerInfo::type eq projectInfo?.taskTracker?.type)
+            ?.getService()
+
+        return@runBlocking taskTrackerService?.getTaskStatus(task)
     }
 
     fun blockTest(blockedTest: BlockedTest): UpdateResult = runBlocking {

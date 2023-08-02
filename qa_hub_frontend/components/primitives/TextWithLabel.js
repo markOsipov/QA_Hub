@@ -38,6 +38,7 @@ export default function TextWithLabel ({value, label, labelStyle, valueStyle, ..
       fontSize: props.style?.fontSize || '14px',
       paddingTop: label ? '4px' : '1px',
       paddingBottom: label ? '4px' : '1px',
+      overflowX: 'hidden',
       ...valueStyle
     }}>{value}</label>
   </div>

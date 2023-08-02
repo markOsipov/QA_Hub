@@ -33,7 +33,7 @@ const TaskTrackerEditor = observer(() => {
                 style={{maxWidth: "max-content"}}
                 aria-controls="panel1a-content"
             >
-                <Typography variant="h5" style={{marginBottom: "15px", marginLeft: "15px", marginTop: "15px"}}>Task tracker Integrations</Typography>
+                <Typography variant="h5" style={{marginBottom: "15px", marginLeft: "15px", marginTop: "15px"}}>Task trackers</Typography>
             </StyledAccordionSummary>
 
             <AccordionDetails>
@@ -49,7 +49,7 @@ const TaskTrackerEditor = observer(() => {
                             color="error"
                             startIcon={<AddIcon />}
                             onClick={handleOpen}
-                    >Add Integration</Button>
+                    >Add task tracker</Button>
                 </div>
             </AccordionDetails>
         </Accordion>

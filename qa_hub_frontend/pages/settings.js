@@ -63,8 +63,8 @@ const Settings = observer(() => {
     return <div style={{padding: "15px"}}>
         <ResetPlate />
         <ProjectEditor />
-        <TmsEditor />
         <CicdEditor />
+        <TmsEditor />
         <TaskTrackerEditor />
     </div>
 })
