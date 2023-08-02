@@ -22,8 +22,8 @@ export default function TaskStatusCell({blockedTest, onChangeCallback, onBlurCal
   return <EditableTableCell
     contentText={blockedTest.jiraIssue}
     contentStyle={{
-      maxWidth: '60px',
-      minWidth: '60px',
+      maxWidth: '65px',
+      minWidth: '65px',
       justifyContent: 'end'
     }}
     afterContent={<StatusElement status={status} color={color} style={{flexGrow: '1.1', maxWidth: '50%', minWidth: 'max-content'}}/>}
