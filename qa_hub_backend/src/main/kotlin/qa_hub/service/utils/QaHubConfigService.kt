@@ -1,4 +1,4 @@
-package qa_hub.service
+package qa_hub.service.utils
 
 import kotlinx.coroutines.runBlocking
 import org.litote.kmongo.eq

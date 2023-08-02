@@ -1,4 +1,4 @@
-package qa_hub.service
+package qa_hub.service.utils
 
 import com.google.gson.Gson
 import com.mongodb.client.model.UpdateOptions
@@ -11,8 +11,6 @@ import org.bson.Document
 import org.litote.kmongo.coroutine.toList
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import org.springframework.web.bind.annotation.RequestBody
-import qa_hub.controller.utils.MongoProxyController
 import qa_hub.core.mongo.QaHubMongoClient
 import java.lang.Exception
 

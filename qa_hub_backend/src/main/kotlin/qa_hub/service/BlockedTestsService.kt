@@ -16,6 +16,8 @@ import qa_hub.entity.Platforms
 import qa_hub.entity.Project
 import qa_hub.service.integrations.taskTrackers.TaskStatusResponse
 import qa_hub.service.integrations.taskTrackers.TaskTrackerInfo
+import qa_hub.service.utils.ProjectIntegrationsService
+import qa_hub.service.utils.ProjectService
 
 @Service
 class BlockedTestsService {
@@ -24,6 +26,9 @@ class BlockedTestsService {
 
     @Autowired
     lateinit var projectService: ProjectService
+
+    @Autowired
+    lateinit var projectIntegrationsService: ProjectIntegrationsService
 
     private val blockedTestsCollection by lazy {
         mongoClient.db.getCollection<BlockedTest>(BLOCKED_TESTS.collectionName)
@@ -48,10 +53,10 @@ class BlockedTestsService {
     }
 
     fun getTaskStatus(project: String, task: String): TaskStatusResponse? = runBlocking {
-        val projectInfo = projectCollection.findOne(Project::name eq project)
-        val taskTrackerService = taskTrackerIntegrationCollection
-            .findOne(TaskTrackerInfo::type eq projectInfo?.taskTracker?.type)
-            ?.getService()
+        val taskTrackerInfo = projectIntegrationsService
+            .getProjectTaskTrackerInt(project)
+
+        val taskTrackerService = taskTrackerInfo.taskTrackerInfo?.getService()
 
         return@runBlocking taskTrackerService?.getTaskStatus(task)
     }

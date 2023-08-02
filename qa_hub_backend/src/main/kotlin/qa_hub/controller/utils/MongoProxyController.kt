@@ -3,15 +3,13 @@ package qa_hub.controller.utils
 import com.mongodb.client.result.DeleteResult
 import com.mongodb.client.result.UpdateResult
 import org.bson.Document
-import org.bson.types.ObjectId
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.core.convert.converter.Converter
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import qa_hub.service.MongoProxyService
-import qa_hub.service.MongoProxyService.MongoRequest
+import qa_hub.service.utils.MongoProxyService
+import qa_hub.service.utils.MongoProxyService.MongoRequest
 
 
 @RestController

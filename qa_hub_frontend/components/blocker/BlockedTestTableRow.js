@@ -9,6 +9,7 @@ import FullNameTableCell from "./FullNameTableCell";
 import {useState} from "react";
 import {observer} from "mobx-react-lite";
 import blockerState from "../../state/BlockerState";
+import TaskStatusCell from "./TaskStatusCell";
 
 const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, setShowFullName }) => {
     const [blockedTest, setBlockedTest] = useState(blockedTestForRow)
@@ -105,11 +106,10 @@ const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, 
 
         />
 
-        <EditableTableCell contentText={blockedTest.jiraIssue}
-                           onChangeCallback={ handleJiraIssueChange }
-                           onBlurCallback={ handleTestcaseEditFinish }
-                           textArea
-        />
+        <TaskStatusCell blockedTest={blockedTest}
+                        onChangeCallback={ handleJiraIssueChange }
+                        onBlurCallback={ handleTestcaseEditFinish }/>
+
 
         <StyledTableCell align="center">{blockedTest.blockDate}</StyledTableCell>
     </StyledTableRow>

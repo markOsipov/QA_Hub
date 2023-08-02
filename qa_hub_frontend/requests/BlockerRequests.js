@@ -13,6 +13,18 @@ export function getBlockedTests(project) {
     return axios(config)
 }
 
+export function getTaskStatus(project, task) {
+    const config = {
+        method: 'get',
+        url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat(`/api/blocker/${project}/taskStatus/${task}`),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+
+    return axios(config)
+}
+
 export function unblockTest(blockedTest) {
     const config = {
         method: 'post',

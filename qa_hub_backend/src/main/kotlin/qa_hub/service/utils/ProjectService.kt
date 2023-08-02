@@ -1,4 +1,4 @@
-package qa_hub.service
+package qa_hub.service.utils
 
 import com.mongodb.client.result.DeleteResult
 import kotlinx.coroutines.runBlocking
