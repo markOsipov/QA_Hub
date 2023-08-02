@@ -2,13 +2,14 @@ import EditableTableCell from "../primitives/Table/EditableTableCell";
 import {customTheme} from "../../styles/CustomTheme";
 import {useEffect, useState} from "react";
 import {getTaskStatus} from "../../requests/BlockerRequests";
+import {observer} from "mobx-react-lite";
+import blockerState from "../../state/BlockerState";
 
 const defaultStatus = "unknown"
-export default function TaskStatusCell({blockedTest, onChangeCallback, onBlurCallback, ...props}) {
-
-
+const TaskStatusCell = observer(({blockedTest, onChangeCallback, onBlurCallback, ...props}) => {
   const [status, setStatus] = useState(defaultStatus)
   const [color, setColor] = useState(null)
+  const {taskTrackerInfo} = blockerState
 
   useEffect(() => {
     getTaskStatus(blockedTest.project, blockedTest.jiraIssue).then((data) => {
@@ -20,10 +21,11 @@ export default function TaskStatusCell({blockedTest, onChangeCallback, onBlurCal
 
 
   return <EditableTableCell
-    contentText={blockedTest.jiraIssue}
+    value={blockedTest.jiraIssue}
+    content={<TaskLink blockedTest={blockedTest} taskUrl={taskTrackerInfo.taskUrl}/>}
     contentStyle={{
-      maxWidth: '65px',
-      minWidth: '65px',
+      maxWidth: '80px',
+      minWidth: '80px',
       justifyContent: 'end'
     }}
     afterContent={<StatusElement status={status} color={color} style={{flexGrow: '1.1', maxWidth: '50%', minWidth: 'max-content'}}/>}
@@ -31,6 +33,27 @@ export default function TaskStatusCell({blockedTest, onChangeCallback, onBlurCal
     onBlurCallback={ onBlurCallback }
     {...props}
   />
+})
+
+export default TaskStatusCell
+
+function TaskLink({blockedTest, taskUrl, ...props}) {
+  const [hover, setHover] = useState(false)
+
+  return <a
+    href={`${taskUrl}/${blockedTest.jiraIssue}`}
+    target={'_blank'}
+    rel="noreferrer"
+    style={{
+      padding: '5px',
+      backgroundColor: hover && `rgba(255, 255, 255, 0.1)`,
+      ...props.style
+    }}
+    onMouseOver={() => {setHover(true)}}
+    onMouseLeave={() => {setHover(false)}}
+  >
+    {blockedTest.jiraIssue}
+  </a>
 }
 
 function StatusElement({status, color, ...props}) {

@@ -3,6 +3,7 @@ import {blockTest, editBlockedTest, getBlockedTests, unblockTest} from "../reque
 
 class BlockerState {
   blockedTests = []
+  taskTrackerInfo = {}
 
   setBlockedTests(blockedTests) {
     this.blockedTests = blockedTests
@@ -38,6 +39,15 @@ class BlockerState {
         this.updateBlockedTests(blockedTest.project)
       }
     })
+  }
+
+  setTaskTrackerInfo(taskTrackerInfo) {
+    let taskUrl = taskTrackerInfo.baseUrl
+    if (taskTrackerInfo?.type === "Jira") {
+      taskUrl += "/browse"
+    }
+
+    this.taskTrackerInfo = { ...taskTrackerInfo, taskUrl: taskUrl}
   }
 
   constructor() {

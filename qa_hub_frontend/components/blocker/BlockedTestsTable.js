@@ -9,7 +9,7 @@ import {StyledTableRow} from "../primitives/Table/StyledTableRow";
 import {StyledTableCell} from "../primitives/Table/StyledTableCell";
 import {observer} from "mobx-react-lite";
 import projectState from "../../state/ProjectState";
-import {getBlockedTests} from "../../requests/BlockerRequests";
+import {getTaskTrackerIntegration} from "../../requests/BlockerRequests";
 import {useState, useEffect} from "react";
 import FullNameTableHeaderCell from "./FullNameTableHeaderCell";
 import BlockedTestTableRow from "./BlockedTestTableRow";
@@ -34,6 +34,12 @@ const BlockedTestsTable = observer(() => {
         blockerState.updateBlockedTests(selectedProject)
     }, [selectedProject])
 
+    useEffect(() => {
+        getTaskTrackerIntegration(selectedProject).then(data => {
+            blockerState.setTaskTrackerInfo(data?.data?.taskTrackerInfo || {})
+        })
+    }, [selectedProject])
+
     function handleOpenAddBlockedTestModal() {
         setAddBlockedTestModalOpen(true)
     }
@@ -50,7 +56,7 @@ const BlockedTestsTable = observer(() => {
     return <div>
         <Paper elevation={3} style={{margin: "15px", maxHeight: "calc(100vh - 165px)", overflowY: "auto", minWidth: "35vw" }}>
             <AddBlockedTestModal isOpen={addBlockedTestModalOpen} setIsOpen={setAddBlockedTestModalOpen} />
-            <TableContainer style={{minWidth: "max-content"}}>
+            <TableContainer style={{}}>
                 <Table size="small" stickyHeader >
                     <TableHead style={{ height: "60px" }}>
                         <StyledTableRow>
@@ -84,7 +90,7 @@ const BlockedTestsTable = observer(() => {
                     </TableBody>
                     <TableFooter>
                         <TableRow>
-                            <StyledTableCell style={{borderBottom: "1px solid rgba(224, 224, 224, 1)", maxWidth: "50px"}} colspan={3}>
+                            <StyledTableCell style={{borderBottom: "1px solid rgba(224, 224, 224, 1)", maxWidth: "50px"}} colSpan={3}>
                                 <Button variant="contained"
                                         color="error"
                                         startIcon={<AddIcon />}

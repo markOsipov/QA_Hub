@@ -56,7 +56,7 @@ class BlockedTestsService {
         val taskTrackerInfo = projectIntegrationsService
             .getProjectTaskTrackerInt(project)
 
-        val taskTrackerService = taskTrackerInfo.taskTrackerInfo?.getService()
+        val taskTrackerService = taskTrackerInfo.taskTrackerInfo?.taskTrackerService()
 
         return@runBlocking taskTrackerService?.getTaskStatus(task)
     }

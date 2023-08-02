@@ -26,7 +26,7 @@ class TaskTrackerInfo(
     val login: String? = null,
     val password: String? = null,
 ) {
-    fun getService(): TaskTrackerIntegrationAbstract? {
+    fun taskTrackerService(): TaskTrackerIntegrationAbstract? {
         return when (type) {
             TaskTrackerTypes.JIRA.type.name -> JiraService(this)
             else -> null

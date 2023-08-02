@@ -77,7 +77,7 @@ const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, 
             />
         </StyledTableCell>
 
-        <EditableTableCell contentText={blockedTest.testcaseId}
+        <EditableTableCell content={blockedTest.testcaseId}
                            onChangeCallback={ handleTestcaseIdChange }
                            onBlurCallback={ handleTestcaseEditFinish }
                            textArea
@@ -99,7 +99,7 @@ const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, 
         />
 
         <EditableTableCell align="left"
-                           contentText={blockedTest.comment}
+                           content={blockedTest.comment}
                            onChangeCallback={ handleCommentChange }
                            onBlurCallback={handleTestcaseEditFinish}
                            textArea
