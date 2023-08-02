@@ -21,8 +21,8 @@ export default function EditableTableCell({ contentText, afterContent, onChangeC
 
     const readOnlyContent = <div style={{display: "flex", alignItems: "center", position: 'relative'}}>
         <div style={{display: 'flex', flexGrow: '1.1', alignItems: 'center'}}>
-            <div style={{display: 'flex', ...contentStyle}}>
-                <label>{ contentText }</label>
+            <div style={{display: 'flex', maxWidth: 'min-content', ...contentStyle}}>
+                <label style={{}}>{ contentText }</label>
             </div>
             { afterContent }
         </div>
