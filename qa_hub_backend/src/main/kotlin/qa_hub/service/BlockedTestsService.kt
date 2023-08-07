@@ -46,9 +46,17 @@ class BlockedTestsService {
         blockedTestsCollection.find().toList()
     }
 
-    fun getBlockedTestsForProject(project: String): List<BlockedTest> = runBlocking {
+    fun getBlockedTestsForProject(project: String, skipTrials: Boolean = false): List<BlockedTest> = runBlocking {
+        val filter = mutableListOf(BlockedTest::project.eq(project))
+
+        if(skipTrials) {
+            filter.add(
+                BlockedTest::allowTrialRuns eq false
+            )
+        }
+
         blockedTestsCollection
-            .find(BlockedTest::project.eq(project))
+            .find(*filter.toTypedArray())
             .toList()
     }
 
