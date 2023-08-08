@@ -61,7 +61,7 @@ class TestRunController {
     }
 
     @GetMapping("/nextTest/{testRunId}")
-    suspend fun getNextTest(@PathVariable testRunId: String,
+    fun getNextTest(@PathVariable testRunId: String,
                     @RequestParam("simulatorId", required = false, defaultValue = "") simulatorId: String,
                     @RequestParam("runner", required = false, defaultValue = "") runner: String
     ): NextTestResponse {
