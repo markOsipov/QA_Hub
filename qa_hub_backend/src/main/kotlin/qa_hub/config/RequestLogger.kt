@@ -32,7 +32,9 @@ class LoggingFilterBean : GenericFilterBean() {
             builder.append("")
             builder.append("Parameters: $parameters")
             //builder.append(headersToString(request.headerNames.toList(), request::getHeader))
-            builder.append("\nBody: ${String(request.contentAsByteArray).toPrettyJson()}")
+            try {
+                builder.append("\nBody: ${String(request.contentAsByteArray).toPrettyJson()}")
+            } catch (e: Exception) {}
 
             log.info("Request ${request.method} ${request.servletPath}\n$builder")
         }
