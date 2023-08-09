@@ -18,11 +18,15 @@ import javax.servlet.http.HttpServletResponse
 @Component
 class LoggingFilterBean : GenericFilterBean() {
     override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
-        val requestWrapper = requestWrapper(request)
-        val responseWrapper = responseWrapper(response)
-        chain.doFilter(requestWrapper, responseWrapper)
-        logRequest(requestWrapper)
-        logResponse(responseWrapper)
+        try {
+            val requestWrapper = requestWrapper(request)
+            val responseWrapper = responseWrapper(response)
+            chain.doFilter(requestWrapper, responseWrapper)
+            logRequest(requestWrapper)
+            logResponse(responseWrapper)
+        } catch (e: Exception) {
+            error(e)
+        }
     }
 
     private fun logRequest(request: ContentCachingRequestWrapper) {
