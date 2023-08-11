@@ -4,7 +4,11 @@ import {createRef, useState} from "react";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import {Menu, MenuItem} from "@mui/material";
 import ComputerIcon from "@mui/icons-material/Computer";
-export default function DeviceFilter({filter, setFilter, setFilterChanged, runners, ...props}) {
+import testResultsFilterState from "../../../../../state/testResults/TestResultsFilterState";
+import {observer} from "mobx-react-lite";
+const DeviceFilter = observer(({runners, ...props}) => {
+  const {filter} = testResultsFilterState
+
   const [hovered, setHovered] = useState(false)
   const ref = createRef()
   const [anchorEl, setAnchorEl] = useState(null)
@@ -39,12 +43,9 @@ export default function DeviceFilter({filter, setFilter, setFilterChanged, runne
 
   return <>
     <FilterMenu
-      filter={filter}
-      setFilter={setFilter}
       runners={runners}
       anchorEl={anchorEl}
       setAnchorEl={setAnchorEl}
-      setFilterChanged={setFilterChanged}
     />
 
     <StyledTooltip title={getTooltipText()} enterDelay={800}>
@@ -86,10 +87,12 @@ export default function DeviceFilter({filter, setFilter, setFilterChanged, runne
       </div>
     </StyledTooltip>
     </>
-}
+})
 
 
-function FilterMenu({filter, setFilter, runners, anchorEl, setAnchorEl, setFilterChanged, ...props}) {
+const FilterMenu = observer(({ runners, anchorEl, setAnchorEl, ...props}) => {
+  const {filter, setFilter, setFilterChanged } = testResultsFilterState
+
   const menuOpen = Boolean(anchorEl);
   const closeMenu = () => {
     setAnchorEl(null)
@@ -105,21 +108,19 @@ function FilterMenu({filter, setFilter, runners, anchorEl, setAnchorEl, setFilte
         runners.map((runner, index) => {
           return <RunnerMenuItem
             key={index}
-            filter={filter}
-            setFilter={setFilter}
             runner={runner}
             anchorEl={anchorEl}
             setAnchorEl={setAnchorEl}
-            setFilterChanged={setFilterChanged}
             style={{marginTop: index > 0 && '14px'}}
           />
         })
       }
     </div>
   </Menu>
-}
+})
 
-function RunnerMenuItem({filter, setFilter, runner, anchorEl, setAnchorEl, setFilterChanged, ...props}) {
+const RunnerMenuItem = observer(({runner, anchorEl, setAnchorEl, ...props})  => {
+  const {filter} = testResultsFilterState
   const [hovered, setHovered] = useState(false)
 
   const getStyle = () => {
@@ -137,11 +138,11 @@ function RunnerMenuItem({filter, setFilter, runner, anchorEl, setAnchorEl, setFi
   }
   const filterByRunner = () => {
     if (filter.runner === runner.name) {
-      setFilter({ ...filter, deviceId: null, runner: null })
+      testResultsFilterState.setFilter({ ...filter, deviceId: null, runner: null })
     } else {
-      setFilter({ ...filter, deviceId: null, runner: runner.name })
+      testResultsFilterState.setFilter({ ...filter, deviceId: null, runner: runner.name })
     }
-    setFilterChanged(true)
+    testResultsFilterState.setFilterChanged(true)
   }
 
   return <div style={{...props.style}}>
@@ -167,27 +168,25 @@ function RunnerMenuItem({filter, setFilter, runner, anchorEl, setAnchorEl, setFi
             key={index}
             simulator={simulator}
             runner={runner}
-            filter={filter}
-            setFilter={setFilter}
-            setFilterChanged={setFilterChanged}
             style={{marginLeft: '18px'}}
           />
         })
       }
     </div>
   </div>
-}
+})
 
-function SimulatorMenuItem({runner, simulator, filter, setFilter, setFilterChanged, ...props}) {
+const SimulatorMenuItem = observer(({runner, simulator, ...props}) => {
+  const {filter } = testResultsFilterState
   const [hovered, setHovered] = useState(false)
 
   const filterBySimulator = () => {
     if (filter.deviceId === simulator) {
-      setFilter({ ...filter, deviceId: null, runner: null })
+      testResultsFilterState.setFilter({ ...filter, deviceId: null, runner: null })
     } else {
-      setFilter({ ...filter, deviceId: simulator, runner: null })
+      testResultsFilterState.setFilter({ ...filter, deviceId: simulator, runner: null })
     }
-    setFilterChanged(true)
+    testResultsFilterState.setFilterChanged(true)
   }
 
   const getStyle = () => {
@@ -220,4 +219,5 @@ function SimulatorMenuItem({runner, simulator, filter, setFilter, setFilterChang
       <PhoneIphoneIcon />
       <label>{simulator}</label>
   </div>
-}
+})
+export default DeviceFilter

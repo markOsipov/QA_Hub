@@ -1,57 +1,113 @@
-import {Paper} from "@mui/material";
+import {Accordion, AccordionDetails, Paper} from "@mui/material";
 import TestRetriesTabs from "./retries/TestRetriesTabs";
 import TextWithLabel from "../../../primitives/TextWithLabel";
 import Typography from "@mui/material/Typography";
 import TestStatusWithRetries from "../../../common/TestStatusWithRetries";
+import {observer} from "mobx-react-lite";
+import testResultsState from "../../../../state/testResults/TestResultsState";
+import ErrorMessage from "./retries/ErrorMessage";
+import QaResolutionPanel from "./retries/QaResolutionPanel";
+import StyledAccordionSummary from "../../../primitives/StyledAccordeonSummary";
+import StyledTooltip from "../../../primitives/StyledTooltip";
+import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
+import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
+import AppleIcon from "@mui/icons-material/Apple";
 
-export default function TestResultDetails({ testResult, testResults, setTestResults, filter, setFilter, setFilterChanged, ...props }) {
+const TestResultDetails = observer(({ ...props }) => {
+  const {  selectedTest } = testResultsState
   const renderContent = () => {
-    if (testResult == null) {
+    if (selectedTest == null) {
       return <div>Not selected</div>
     } else {
-      return <div style={{padding: '2px 2px'}}>
-        <div style={{display: 'flex', marginLeft: '8px'}}>
-          <TextWithLabel
-            style={{
-              fontSize: "12px",
-              width: "max-content",
-              padding: "5px 6px",
-              minHeight: 'unset',
-              minWidth: '70px',
-              display: 'grid',
-              justifyItems: 'center',
-              height: 'min-content',
-              position: 'relative',
-              top: '15px',
-              marginRight: '7px'
-            }}
-            label={'TestcaseId'}
-            value={testResult.testcaseId}
-            labelStyle={{ justifySelf: 'center'}}
-          />
-          <div style={{maxWidth: 'min-content', overflowX: 'hidden', position: 'relative', marginLeft: '15px', top: '-1px'}}>
-            <Typography variant={'h6'} style={{marginLeft: '15px', width: 'max-content'}}>{getShortName(testResult)}</Typography>
-            <Typography variant={'h6'} style={{marginLeft: '15px', width: 'max-content', fontSize: '14px', opacity: '0.5'}}>{testResult.fullName}</Typography>
-          </div>
-          <TestStatusWithRetries
-            status={testResult.status}
-            retries={testResult.retries}
-            style={{
-              position: 'relative',
-              top: '12px',
-              marginLeft: '25px'
-          }}/>
-        </div>
+      return <div>
+        <Paper style={{padding: '15px 10px'}}>
+          <div style={{padding: '2px 2px'}}>
+            <div style={{display: 'flex', marginLeft: '8px'}}>
+              <TextWithLabel
+                style={{
+                  fontSize: "12px",
+                  width: "max-content",
+                  padding: "5px 6px",
+                  minHeight: 'unset',
+                  minWidth: '70px',
+                  display: 'grid',
+                  justifyItems: 'center',
+                  height: 'min-content',
+                  position: 'relative',
+                  top: '15px',
+                  marginRight: '7px'
+                }}
+                label={'TestcaseId'}
+                value={selectedTest.testcaseId}
+                labelStyle={{ justifySelf: 'center'}}
+              />
+              <div style={{maxWidth: 'min-content', overflowX: 'hidden', position: 'relative', marginLeft: '15px', top: '-1px'}}>
+                <Typography variant={'h6'} style={{marginLeft: '15px', width: 'max-content'}}>{getShortName(selectedTest)}</Typography>
+                <Typography variant={'h6'} style={{marginLeft: '15px', width: 'max-content', fontSize: '14px', opacity: '0.5'}}>{selectedTest.fullName}</Typography>
+              </div>
+              <TestStatusWithRetries
+                status={selectedTest.status}
+                retries={selectedTest.retries}
+                style={{
+                  position: 'relative',
+                  top: '12px',
+                  marginLeft: '25px'
+              }}/>
+            </div>
 
-        <TestRetriesTabs
-          testResult={testResult}
-          testResults={testResults}
-          setTestResults={setTestResults}
-          filter={filter}
-          setFilter={setFilter}
-          setFilterChanged={setFilterChanged}
-          style={{marginTop: '30px'}}
-        />
+            {
+              selectedTest.message != null &&
+              <div style={{display: "flex", marginTop: '15px'}}>
+                <ErrorMessage
+                  message={selectedTest.message}
+                  style={{width: '50%'}}
+                />
+                {
+                  selectedTest && selectedTest.status === "FAILURE" &&
+                  <QaResolutionPanel testResult={selectedTest} style={{marginLeft: '30px'}}/>
+                }
+              </div>
+            }
+
+            <div style={{display: 'flex', marginTop: '25px', marginLeft: '5px'}}>
+              <StyledTooltip title={'Duration'}>
+                <div style={{display: 'flex', alignItems: 'center'}}>
+                  <AccessTimeFilledIcon />
+                  <label style={{marginLeft: '5px'}}>{ Number.parseInt(selectedTest.duration) }s</label>
+                </div>
+              </StyledTooltip>
+
+              <StyledTooltip title={'Device model'}>
+                <div style={{display: 'flex', alignItems: 'center', marginLeft: '20px'}}>
+                  <PhoneIphoneIcon />
+                  <label style={{marginLeft: '5px'}}>{ selectedTest.device }</label>
+                </div>
+              </StyledTooltip>
+
+              <StyledTooltip title={'Runtime'}>
+                <div style={{display: 'flex', alignItems: 'center', marginLeft: '20px'}}>
+                  <AppleIcon />
+                  <label style={{marginLeft: '5px'}}>{ selectedTest.deviceRuntime }</label>
+                </div>
+              </StyledTooltip>
+            </div>
+
+          </div>
+        </Paper>
+
+        <Accordion style={{ marginTop: '15px'}}>
+          <StyledAccordionSummary
+            style={{maxWidth: "max-content"}}
+            aria-controls="panel1a-content"
+          >
+            <Typography variant="h5" style={{marginBottom: "5px", marginTop: "5px"}}>Details</Typography>
+          </StyledAccordionSummary>
+
+          <AccordionDetails style={{padding: '15px 10px'}}>
+            <TestRetriesTabs/>
+          </AccordionDetails>
+        </Accordion>
+
       </div>
     }
   }
@@ -60,9 +116,10 @@ export default function TestResultDetails({ testResult, testResults, setTestResu
     return testResult.fullName.substring(testResult.fullName.lastIndexOf(".") + 1)
   }
 
-  return <Paper style={{padding: '15px 10px', ...props.style}}>
+  return <div style={{...props.style}}>
     {
       renderContent()
     }
-  </Paper>
-}
+  </div>
+})
+export default TestResultDetails

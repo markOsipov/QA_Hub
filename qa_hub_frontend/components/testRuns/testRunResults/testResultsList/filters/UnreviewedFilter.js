@@ -2,7 +2,10 @@ import BugReportIcon from '@mui/icons-material/BugReport';
 import {customTheme} from "../../../../../styles/CustomTheme";
 import StyledTooltip from "../../../../primitives/StyledTooltip";
 import {useState} from "react";
-export default function UnreviewedFilter({filter, setFilter, setFilterChanged, ...props}) {
+import {observer} from "mobx-react-lite";
+import testResultsFilterState from "../../../../../state/testResults/TestResultsFilterState";
+const UnreviewedFilter = observer(({...props}) => {
+  const {filter } = testResultsFilterState
   const [hovered, setHovered] = useState(false)
 
   const turnedOnUnreviewedStyle = {
@@ -39,11 +42,11 @@ export default function UnreviewedFilter({filter, setFilter, setFilterChanged, .
 
   const handleIconClick = () => {
     if (filter.unreviewed === true) {
-      setFilter({ ...filter, unreviewed: false })
+      testResultsFilterState.setFilter({ ...filter, unreviewed: false })
     } else if (filter.unreviewed === false) {
-      setFilter({ ...filter, unreviewed: null })
-    } else setFilter({ ...filter, unreviewed: true })
-    setFilterChanged(true)
+      testResultsFilterState.setFilter({ ...filter, unreviewed: null })
+    } else testResultsFilterState.setFilter({ ...filter, unreviewed: true })
+    testResultsFilterState.setFilterChanged(true)
   }
 
   return <StyledTooltip title={getTooltipText()} enterDelay={800}>
@@ -85,5 +88,6 @@ export default function UnreviewedFilter({filter, setFilter, setFilterChanged, .
       />
     </div>
   </StyledTooltip>
-}
+})
 
+export default UnreviewedFilter

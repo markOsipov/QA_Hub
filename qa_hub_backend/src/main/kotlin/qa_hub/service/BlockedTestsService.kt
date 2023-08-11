@@ -10,9 +10,14 @@ import org.litote.kmongo.*
 import org.litote.kmongo.util.KMongoUtil.idFilterQuery
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import qa_hub.core.mongo.entity.Collections.BLOCKED_TESTS
+import qa_hub.core.mongo.entity.Collections.*
 import qa_hub.core.utils.DateTimeUtils.formatDate
 import qa_hub.entity.Platforms
+import qa_hub.entity.Project
+import qa_hub.service.integrations.taskTrackers.TaskStatusResponse
+import qa_hub.service.integrations.taskTrackers.TaskTrackerInfo
+import qa_hub.service.utils.ProjectIntegrationsService
+import qa_hub.service.utils.ProjectService
 
 @Service
 class BlockedTestsService {
@@ -22,18 +27,46 @@ class BlockedTestsService {
     @Autowired
     lateinit var projectService: ProjectService
 
+    @Autowired
+    lateinit var projectIntegrationsService: ProjectIntegrationsService
+
     private val blockedTestsCollection by lazy {
         mongoClient.db.getCollection<BlockedTest>(BLOCKED_TESTS.collectionName)
+    }
+
+    private val taskTrackerIntegrationCollection by lazy {
+        mongoClient.db.getCollection<TaskTrackerInfo>(TASK_TRACKER_INTEGRATIONS.collectionName)
+    }
+
+    private val projectCollection by lazy {
+        mongoClient.db.getCollection<Project>(PROJECTS.collectionName)
     }
 
     fun getBlockedTests(): List<BlockedTest> = runBlocking {
         blockedTestsCollection.find().toList()
     }
 
-    fun getBlockedTestsForProject(project: String): List<BlockedTest> = runBlocking {
+    fun getBlockedTestsForProject(project: String, skipTrials: Boolean = false): List<BlockedTest> = runBlocking {
+        val filter = mutableListOf(BlockedTest::project.eq(project))
+
+        if(skipTrials) {
+            filter.add(
+                BlockedTest::allowTrialRuns eq false
+            )
+        }
+
         blockedTestsCollection
-            .find(BlockedTest::project.eq(project))
+            .find(*filter.toTypedArray())
             .toList()
+    }
+
+    fun getTaskStatus(project: String, task: String): TaskStatusResponse? = runBlocking {
+        val taskTrackerInfo = projectIntegrationsService
+            .getProjectTaskTrackerInt(project)
+
+        val taskTrackerService = taskTrackerInfo.taskTrackerInfo?.taskTrackerService()
+
+        return@runBlocking taskTrackerService?.getTaskStatus(task)
     }
 
     fun blockTest(blockedTest: BlockedTest): UpdateResult = runBlocking {

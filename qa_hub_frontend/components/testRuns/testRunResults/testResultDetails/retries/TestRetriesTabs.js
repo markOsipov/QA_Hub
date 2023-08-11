@@ -6,20 +6,24 @@ import TabPanel from '@mui/lab/TabPanel';
 import {useEffect, useState} from "react";
 import {getTestRetries} from "../../../../../requests/testResults/TestResultsRequests";
 import RetryTab from "./RetryTab";
-export default function TestRetriesTabs({ testResult, testResults, setTestResults, filter, setFilter, setFilterChanged, ...props }) {
-
+import testResultsFilter from "../../testResultsList/filters/TestResultsFilter";
+import {observer} from "mobx-react-lite";
+import testResultsFilterState from "../../../../../state/testResults/TestResultsFilterState";
+import testResultsState from "../../../../../state/testResults/TestResultsState";
+const TestRetriesTabs = observer(({ ...props }) => {
+  const {selectedTest} = testResultsState
   const [tabValue, setTabValue] = useState('0');
   const [retries, setRetries] = useState([])
 
   useEffect(() => {
-    getTestRetries(testResult.testRunId, testResult.fullName).then((data) => {
+    getTestRetries(selectedTest.testRunId, selectedTest.fullName).then((data) => {
       setRetries(data.data)
     })
-  }, [testResult.testRunId, testResult.fullName])
+  }, [selectedTest.testRunId, selectedTest.fullName])
 
   useEffect(() => {
     setTabValue('0')
-  },[testResult.testRunId, testResult.fullName])
+  },[selectedTest.testRunId, selectedTest.fullName])
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
@@ -42,17 +46,13 @@ export default function TestRetriesTabs({ testResult, testResults, setTestResult
           return <TabPanel  key={`RetryPanel${retry.retry}`} value={String(retries.length - index - 1)} style={{padding: '24px 5px 0px 5px'}}>
             <RetryTab
               retry={retry}
-              testResult={testResult}
               isLastRetry={retries.length - index - 1 === 0 }
-              testResults={testResults}
-              setTestResults={setTestResults}
-              filter={filter}
-              setFilter={setFilter}
-              setFilterChanged={setFilterChanged}
             />
           </TabPanel>
         })
       }
     </TabContext>
   </Box>
-}
+})
+
+export default TestRetriesTabs

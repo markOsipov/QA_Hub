@@ -3,7 +3,13 @@ import {createRef, useEffect, useState} from "react";
 import {ListItemIcon, ListItemText, Menu, MenuItem} from "@mui/material";
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import WarningIcon from '@mui/icons-material/Warning';
-export default function ErrorMessage({ message, testResults, setTestResults, filter, setFilter, setFilterChanged, ...props }) {
+import {observer} from "mobx-react-lite";
+import testResultsFilterState from "../../../../../state/testResults/TestResultsFilterState";
+import testResultsState from "../../../../../state/testResults/TestResultsState";
+import {countTestResults} from "../../../../../requests/testResults/TestResultsRequests";
+const ErrorMessage = observer(({ message, ...props }) => {
+  const {filter} = testResultsFilterState
+  const {selectedTest, testResults} = testResultsState
   const ref = createRef()
   const [anchorEl, setAnchorEl] = useState(null)
   const menuOpen = Boolean(anchorEl);
@@ -22,8 +28,8 @@ export default function ErrorMessage({ message, testResults, setTestResults, fil
   }
 
   const handleAddToFilterClick = () => {
-    setFilter({...filter, message: selectedText || message})
-    setFilterChanged(true)
+    testResultsFilterState.setFilter({...filter, message: selectedText || message})
+    testResultsFilterState.setFilterChanged(true)
   }
 
   const closeMenu = () => {
@@ -33,9 +39,9 @@ export default function ErrorMessage({ message, testResults, setTestResults, fil
 
   useEffect(() => {
     if (menuOpen) {
-      setTestsWithSimilarError(testResults.filter(el => {
-        return el.message?.includes(selectedText || message)
-      }).length)
+      countTestResults(selectedTest.testRunId, {message: selectedText || message}).then((data) => {
+        setTestsWithSimilarError(data.data.count)
+      })
     }
   }, [menuOpen])
 
@@ -74,7 +80,7 @@ export default function ErrorMessage({ message, testResults, setTestResults, fil
       <div style={{padding: '0 10px 10px 10px'}}>
         <div style={{display: 'flex', alignItems: 'center'}}>
           <WarningIcon style={{ color: customTheme.palette.error.main }}/>
-          <label style={{marginLeft: '4px'}}>Similar errors: { testsWithSimilarError - 1 }</label>
+          <label style={{marginLeft: '4px'}}>Similar errors: { testsWithSimilarError }</label>
         </div>
 
         { selectedText &&
@@ -93,8 +99,10 @@ export default function ErrorMessage({ message, testResults, setTestResults, fil
       </MenuItem>
     </Menu>
     <div onMouseUp={() => { setAnchorEl(ref.current) }}>
-      <label ref={ref}    style={{whiteSpace: 'break-spaces', cursor: 'pointer'}}
+      <label ref={ref} style={{whiteSpace: 'break-spaces', cursor: 'pointer'}}
       >{message}</label>
     </div>
   </div>
-}
+})
+
+export default ErrorMessage

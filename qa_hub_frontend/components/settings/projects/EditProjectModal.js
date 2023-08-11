@@ -8,6 +8,9 @@ import Button from "@mui/material/Button";
 import projectState from "../../../state/ProjectState";
 import {modalStyle} from "../../../styles/ModalStyle";
 import StyledSelect from "../../primitives/StyledSelect";
+import ProjectCICDForm from "./components/ProjectCICDForm";
+import ProjectTMSForm from "./components/ProjectTMSForm";
+import ProjectTaskTrackerForm from "./components/ProjectTaskTrackerForm";
 
 function NewProjectModal({isOpen, setIsOpen, project}) {
     const [currentProject, setCurrentProject] = useState(project)
@@ -43,14 +46,10 @@ function NewProjectModal({isOpen, setIsOpen, project}) {
     }
 
     const handleUpdateProjectButtonClick = () => {
-        if (projectState.projects.includes(currentProject.name)) {
-            alert("A project with the same name already exists")
-        } else {
-            updateProject(currentProject).then(() => {
-                projectState.updateProjects()
-                setIsOpen(false)
-            })
-        }
+        updateProject(currentProject).then(() => {
+            projectState.updateProjects()
+            setIsOpen(false)
+        })
     }
 
     if (error) {
@@ -67,15 +66,15 @@ function NewProjectModal({isOpen, setIsOpen, project}) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
     >
-        <Box sx={modalStyle}>
-            <Typography id="modal-modal-title" variant="h6" component="h2" style={{marginBottom: "10px"}}>
+        <Box sx={{...modalStyle, minWidth: '550px'}}>
+            <Typography id="modal-modal-title" variant="h6" component="h2" style={{marginBottom: "20px"}}>
                 Editing project
             </Typography>
 
             <StyledTextField value={currentProject.name}
                              size="small"
                              label="Project name"
-                             style={{minWidth: "300px", color: "white", margin: "8px"}}
+                             style={{minWidth: "100%", color: "white", marginBottom: "16px"}}
                              autoComplete='off'
                              onChange ={(event) => {
                                  setCurrentProject({
@@ -85,7 +84,7 @@ function NewProjectModal({isOpen, setIsOpen, project}) {
                              }}
             />
 
-            <FormControl sx={{ minWidth: 450, margin: "8px" }} size="small">
+            <FormControl sx={{ minWidth: "100%", marginBottom: "8px" }} size="small">
                 <InputLabel style={{ color: "var(--faded-text-color)" }}>Platform</InputLabel>
                 <StyledSelect
                     value={currentProject.platform || ''}
@@ -100,48 +99,14 @@ function NewProjectModal({isOpen, setIsOpen, project}) {
                 </StyledSelect>
             </FormControl>
 
-            <StyledTextField value={currentProject.cicdPath}
-                             size="small"
-                             label="CI\CD path"
-                             style={{minWidth: "450px", color: "white", margin: "8px"}}
-                             autoComplete='off'
-                             onChange={(event) => {
-                                 setCurrentProject({
-                                     ...currentProject,
-                                     cicdPath: event.target.value
-                                 })
-                             }}
-            />
-            <StyledTextField value={currentProject.cicdProjectId}
-                             size="small"
-                             label="CI\CD project id"
-                             style={{minWidth: "450px", color: "white", margin: "8px"}}
-                             autoComplete='off'
-                             onChange={(event) => {
-                                 setCurrentProject({
-                                     ...currentProject,
-                                     cicdProjectId: event.target.value
-                                 })
-                             }}
-            />
-
-            <StyledTextField value={currentProject.tmsProjectId}
-                             size="small"
-                             label="TMS project id"
-                             style={{minWidth: "450px", color: "white", margin: "8px"}}
-                             autoComplete='off'
-                             onChange={(event) => {
-                                 setCurrentProject({
-                                     ...currentProject,
-                                     tmsProjectId: event.target.value
-                                 })
-                             }}
-            />
+            <ProjectCICDForm project={currentProject} setProject={setCurrentProject} style={{marginTop: '20px'}}/>
+            <ProjectTMSForm project={currentProject} setProject={setCurrentProject} style={{marginTop: '10px'}} />
+            <ProjectTaskTrackerForm project={currentProject} setProject={setCurrentProject} style={{marginTop: '10px'}}/>
 
             <Button variant="contained"
                     color="error"
                     onClick={handleUpdateProjectButtonClick}
-                    style={{margin: "12px 8px 0 8px"}}
+                    style={{marginTop: "20px"}}
             >Save changes</Button>
         </Box>
     </Modal>

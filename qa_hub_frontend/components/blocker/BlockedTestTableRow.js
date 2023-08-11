@@ -9,6 +9,8 @@ import FullNameTableCell from "./FullNameTableCell";
 import {useState} from "react";
 import {observer} from "mobx-react-lite";
 import blockerState from "../../state/BlockerState";
+import TaskStatusCell from "./TaskStatusCell";
+import TestcaseIdCell from "./TestcaseIdCell";
 
 const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, setShowFullName }) => {
     const [blockedTest, setBlockedTest] = useState(blockedTestForRow)
@@ -76,10 +78,10 @@ const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, 
             />
         </StyledTableCell>
 
-        <EditableTableCell contentText={blockedTest.testcaseId}
-                           onChangeCallback={ handleTestcaseIdChange }
-                           onBlurCallback={ handleTestcaseEditFinish }
-                           textArea
+        <TestcaseIdCell
+          blockedTest={blockedTest}
+          onChangeCallback={ handleTestcaseIdChange }
+          onBlurCallback={ handleTestcaseEditFinish }
         />
 
         <StyledTableCell style={{color: "var(--faded-text-color)"}}> {
@@ -98,18 +100,17 @@ const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, 
         />
 
         <EditableTableCell align="left"
-                           contentText={blockedTest.comment}
+                           content={blockedTest.comment}
                            onChangeCallback={ handleCommentChange }
                            onBlurCallback={handleTestcaseEditFinish}
                            textArea
 
         />
 
-        <EditableTableCell contentText={blockedTest.jiraIssue}
-                           onChangeCallback={ handleJiraIssueChange }
-                           onBlurCallback={ handleTestcaseEditFinish }
-                           textArea
-        />
+        <TaskStatusCell blockedTest={blockedTest}
+                        onChangeCallback={ handleJiraIssueChange }
+                        onBlurCallback={ handleTestcaseEditFinish }/>
+
 
         <StyledTableCell align="center">{blockedTest.blockDate}</StyledTableCell>
     </StyledTableRow>

@@ -11,8 +11,12 @@ import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
 import StyledTooltip from "../../../../primitives/StyledTooltip";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import AppleIcon from '@mui/icons-material/Apple';
+import {observer} from "mobx-react-lite";
+import testResultsFilter from "../../testResultsList/filters/TestResultsFilter";
+import testResultsState from "../../../../../state/testResults/TestResultsState";
 
-export default function RetryTab({retry, testResult, isLastRetry, testResults, setTestResults, filter, setFilter, setFilterChanged, ...props}) {
+const RetryTab = observer(({retry, isLastRetry, ...props}) => {
+  const {selectedTest} = testResultsState
   const [selectedStep, setSelectedStep] = useState(null)
 
   let lastResult = retry.statusHistory[retry.statusHistory.length - 1]
@@ -25,17 +29,8 @@ export default function RetryTab({retry, testResult, isLastRetry, testResults, s
       <div style={{display: "flex", marginTop: '15px'}}>
         <ErrorMessage
           message={lastResult.message}
-          testResults={testResults}
-          setTestResults={setTestResults}
-          filter={filter}
-          setFilter={setFilter}
-          setFilterChanged={setFilterChanged}
           style={{width: '50%'}}
         />
-        {
-          isLastRetry && lastResult.status === "FAILURE" &&
-          <QaResolutionPanel testResult={testResult} style={{marginLeft: '30px'}}/>
-        }
       </div>
     }
 
@@ -62,31 +57,21 @@ export default function RetryTab({retry, testResult, isLastRetry, testResults, s
       </StyledTooltip>
     </div>
 
-
-    <Accordion style={{ marginTop: '25px', backgroundColor: 'rgba(0, 0, 0, 0.07)', borderRadius: '12px'}}>
-      <StyledAccordionSummary
-        style={{maxWidth: "max-content"}}
-        aria-controls="panel1a-content"
-      >
-        <Typography variant="h5" style={{marginBottom: "5px", marginTop: "5px"}}>Test logs</Typography>
-      </StyledAccordionSummary>
-
-      <AccordionDetails >
-        <div style={{display: 'flex'}}>
-          <StepsPanel
-            style={{width: '40%', minWidth: '100px', resize: 'horizontal', overflowX: 'auto'}}
-            retry={retry}
-            selectedStep={selectedStep}
-            setSelectedStep={setSelectedStep}
-          />
-          <LogsPanel
-            style={{width: 'min-content', flexGrow: '1.1', marginLeft: '15px'}}
-            retry={retry}
-            selectedStep={selectedStep}
-            setSelectedStep={setSelectedStep}
-          />
-        </div>
-      </AccordionDetails>
-    </Accordion>
+    <div style={{display: 'flex', marginTop: '45px'}}>
+      <StepsPanel
+        style={{width: '40%', minWidth: '100px', resize: 'horizontal', overflowX: 'auto'}}
+        retry={retry}
+        selectedStep={selectedStep}
+        setSelectedStep={setSelectedStep}
+      />
+      <LogsPanel
+        style={{width: 'min-content', flexGrow: '1.1', marginLeft: '15px'}}
+        retry={retry}
+        selectedStep={selectedStep}
+        setSelectedStep={setSelectedStep}
+      />
+    </div>
   </div>
-}
+})
+
+export default RetryTab

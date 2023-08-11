@@ -6,14 +6,14 @@ import LoadMoreTests from "./LoadMoreTests";
 import TestResultsFilter from "./filters/TestResultsFilter";
 import StyledTextField from "../../../primitives/StyledTextField";
 import {getCookie, setCookie} from "../../../../utils/CookieHelper";
+import testResultsFilterState from "../../../../state/testResults/TestResultsFilterState";
+import {observer} from "mobx-react-lite";
+import testResultsState from "../../../../state/testResults/TestResultsState";
 
-export default function TestResultsList(
-  {
-    testsCount, testRunId, testResults, setTestResults, setSelectedTest,
-    filter, setFilter, filterChanged, setFilterChanged, runners,
-    ...props
-  }
-) {
+const TestResultsList = observer(({  testRun, ...props}) => {
+  const { filter } = testResultsFilterState
+  const { testResults} = testResultsState
+
   const loadMoreCookie = "testResultsLoadCount"
   const initialLoadSize = getCookie(loadMoreCookie) || 50
   const initialSkip = 0
@@ -21,12 +21,16 @@ export default function TestResultsList(
   const [loadMoreSize, setLoadMoreSize] = useState(initialLoadSize)
   const [loading, setLoading] = useState(false)
 
+  const testsCount = testRun?.tests?.testsCount
+  const testRunId = testRun.testRunId
+  const runners = testRun.runners || []
+
   async function updateTestResults(skip, limit) {
     if (testResults[0]?.testRunId !== testRunId) {
       setLoading(true)
     }
     const resp = await getTestResults(testRunId, filter, skip, limit).then((data) =>
-      setTestResults(data.data)
+      testResultsState.setTestResults(data.data)
     )
     setLoading(false)
     return resp
@@ -34,18 +38,18 @@ export default function TestResultsList(
 
    const loadMoreResults = async () => {
     await getTestResults(testRunId, filter, testResults.length, loadMoreSize).then((data) => {
-      setTestResults([...testResults, ...data.data])
+      testResultsState.setTestResults([...testResults, ...data.data])
     })
   }
 
   function filterAndLoad(filter) {
     const filterValue = filter || {}
 
-    setFilter(filterValue)
+    testResultsFilterState.setFilter(filterValue)
 
     getTestResults(testRunId, filter, initialSkip, loadMoreSize).then(response => {
       if (response.data) {
-        setTestResults(response.data)
+        testResultsState.setTestResults(response.data)
       }
     })
   }
@@ -68,18 +72,13 @@ export default function TestResultsList(
 
   return <Paper style={{padding: '15px', ...props.style}}>
     <TestResultsFilter
-      filter={filter}
-      setFilter={setFilter}
       filterAndLoad={filterAndLoad}
-      filterChanged={filterChanged}
-      setFilterChanged={setFilterChanged}
       runners={runners}
     />
     {
       testResults.map((testResult) => {
         return <TestResultCard
           testResult={testResult}
-          setSelectedTest={setSelectedTest}
           key={testResult.fullName}
           style={{padding: '15px', marginTop: '15px'}}
         />
@@ -111,4 +110,6 @@ export default function TestResultsList(
       </div>
     </div>
   </Paper>
-}
+})
+
+export default TestResultsList

@@ -15,32 +15,42 @@ AutoFocusTextField.propTypes = {
     variant: PropTypes.string,
     onBlur: PropTypes.func
 };
-export default function EditableTableCell({ contentText, onChangeCallback, onBlurCallback, textArea, ...props }) {
+export default function EditableTableCell({ content, value, afterContent, onChangeCallback, onBlurCallback, textArea, contentStyle,  ...props }) {
     const [showEditIcon, setShowEditIcon] = useState(false)
     const [editStarted, setEditStarted] = useState(false)
 
-    const readOnlyContent = <div style={{display: "flex", alignItems: "center"}}>
-        <label style={{ flexGrow: "1", width: "100%" }}>{ contentText }</label>
-        { showEditIcon &&
-            <IconButton
+    const handleDoubleClick = () => {
+        if (!editStarted) {
+            setEditStarted(true)
+        }
+    }
+
+    const readOnlyContent = <div style={{display: "flex", alignItems: "center", position: 'relative'}} onDoubleClick={handleDoubleClick}>
+        <div style={{display: 'flex', alignItems: 'center', position: 'relative'}}>
+            <div style={{display: 'flex', maxWidth: 'min-content', ...contentStyle}}>
+                <label style={{}}>{ content }</label>
+            </div>
+            { afterContent }
+
+            { showEditIcon &&
+              <IconButton
                 className="hover-highlight clickable"
-                style={{ color: "white", padding: "5px", borderRadius: "2px" }}
+                style={{ color: "white", padding: "5px", borderRadius: "2px", position: 'absolute', left: 'calc(100% + 15px)', top: 'calc(50% - 14px)' }}
                 onClick={ () => { setEditStarted(true)}}
-            >
-                <EditIcon style={{ width: "18px", height: "18px"}}/>
-            </IconButton>
-        }
-        {
-            !showEditIcon && <div style={{width: "50px"}}></div>
-        }
+              >
+                  <EditIcon style={{ width: "18px", height: "18px"}}/>
+              </IconButton>
+            }
+        </div>
+
     </div>
 
     let editableContent
 
     if (textArea) {
         editableContent = <AutoFocusTextArea
-            style={{resize: "both", width: "100%", padding: "10px", font: "inherit" }}
-            value={contentText}
+            style={{resize: "vertical", width: "100%", padding: "10px", font: "inherit" }}
+            value={value || content}
             onChange={onChangeCallback}
             onBlur={() => { setEditStarted(false); onBlurCallback()}}
         />
@@ -49,17 +59,19 @@ export default function EditableTableCell({ contentText, onChangeCallback, onBlu
             id="standard-basic"
             size="small"
             variant="standard"
-            value={contentText}
+            value={value || content}
             style={{width: "100%"}}
             onChange={onChangeCallback}
             onBlur={() => { setEditStarted(false); onBlurCallback() }}
         />
     }
 
-    return <StyledTableCell onMouseEnter={ () => { setShowEditIcon(true)} }
-                            onMouseLeave={ () => { setShowEditIcon(false)} }
-                            {...props}
+    return <StyledTableCell
+      style={{...props.style}}
+      onMouseEnter={ () => { setShowEditIcon(true)} }
+      onMouseLeave={ () => { setShowEditIcon(false)} }
+      {...props}
     >
-        { editStarted ? editableContent : readOnlyContent }
+            { editStarted ? editableContent : readOnlyContent }
     </StyledTableCell>
 }

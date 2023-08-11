@@ -4,15 +4,17 @@ import {Card} from "@mui/material";
 import {useState} from "react";
 import TestStatusWithRetries from "../../../common/TestStatusWithRetries";
 import {useRouter} from "next/router";
+import testResultsState from "../../../../state/testResults/TestResultsState";
+import {observer} from "mobx-react-lite";
 
-export default function TestResultCard({testResult, setSelectedTest, ...props}) {
+const TestResultCard = observer(({testResult, ...props}) => {
   const router = useRouter()
   const [isHovering, setIsHovered] = useState(false);
   const onMouseEnter = () => setIsHovered(true);
   const onMouseLeave = () => setIsHovered(false);
 
   const handleTestResultCardClick = () => {
-    setSelectedTest(testResult)
+    testResultsState.setSelectedTest(testResult)
     router.query.test = (testResult.testcaseId != null && testResult.testcaseId.length > 0) ? testResult.testcaseId : testResult.fullName
     router.replace(router)
   }
@@ -63,4 +65,6 @@ export default function TestResultCard({testResult, setSelectedTest, ...props}) 
 
     </div>
   </Card>
-}
+})
+
+export default TestResultCard

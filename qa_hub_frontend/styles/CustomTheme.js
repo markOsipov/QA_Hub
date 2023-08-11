@@ -23,7 +23,7 @@ export var customTheme = createTheme({
             faded: 'rgba(196, 72, 73, 0.13)',
         },
         warning: {
-            main: '#e88103',
+            main: '#cf9f05',
         },
         table: {
             header: '#3b3b3b',

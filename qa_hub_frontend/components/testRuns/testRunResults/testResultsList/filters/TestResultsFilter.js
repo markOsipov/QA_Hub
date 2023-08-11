@@ -7,26 +7,29 @@ import RetriesFilter from "./RetriesFilter";
 import ErrorFilter from "./ErrorFilter";
 import DeviceFilter from "./DeviceFilter";
 import CustomIconButton from "../../../../primitives/CustomIconButton";
+import testResultsFilterState from "../../../../../state/testResults/TestResultsFilterState";
+import {observer} from "mobx-react-lite";
 
-export default function TestResultsFilter({ filter, setFilter, filterAndLoad, filterChanged, setFilterChanged, runners, ...props }) {
+const TestResultsFilter = observer(({filterAndLoad, runners, ...props }) => {
+  const {filter,  filterChanged } = testResultsFilterState
   const handleSearchButtonClick = () => {
     filterAndLoad(filter)
-    setFilterChanged(false)
+    testResultsFilterState.setFilterChanged(false)
   }
 
   const handleClearButtonClick = () => {
     filterAndLoad({})
-    setFilterChanged(false)
+    testResultsFilterState.setFilterChanged(false)
   }
 
   return <div style={{overflowX: 'auto', ...props.style}}>
     <div style={{display: 'flex', alignItems: 'center', minWidth: 'max-content', paddingTop: '6px'}}>
       <div style={{flexGrow: '1.1'}}></div>
-      <DeviceFilter filter={filter} setFilter={setFilter} setFilterChanged={setFilterChanged} style={{marginLeft: '5px'}} runners={runners}/>
-      <ErrorFilter filter={filter} setFilter={setFilter} setFilterChanged={setFilterChanged} style={{marginLeft: '5px'}}/>
-      <RetriesFilter filter={filter} setFilter={setFilter} setFilterChanged={setFilterChanged} style={{marginLeft: '5px'}}/>
-      <UnreviewedFilter filter={filter} setFilter={setFilter} setFilterChanged={setFilterChanged} style={{marginLeft: '5px'}}/>
-      <StatusFilter filter={filter} setFilter={setFilter} setFilterChanged={setFilterChanged} style={{marginLeft: '5px'}} />
+      <DeviceFilter style={{marginLeft: '5px'}} runners={runners}/>
+      <ErrorFilter style={{marginLeft: '5px'}}/>
+      <RetriesFilter style={{marginLeft: '5px'}}/>
+      <UnreviewedFilter style={{marginLeft: '5px'}}/>
+      <StatusFilter style={{marginLeft: '5px'}} />
 
 
       <div style={{position:'relative'}}>
@@ -55,4 +58,6 @@ export default function TestResultsFilter({ filter, setFilter, filterAndLoad, fi
       />
     </div>
   </div>
-}
+})
+
+export default TestResultsFilter

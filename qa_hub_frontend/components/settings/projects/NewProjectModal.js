@@ -1,31 +1,37 @@
-import {Box, FormControl, InputLabel, MenuItem, Modal, Select, TextField} from "@mui/material";
+import {
+    Accordion,
+    AccordionDetails,
+    Box,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    Modal,
+} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {useEffect, useState} from "react";
-import useSWR from "swr";
-import {createProject, loadPlatforms, loadProjects} from "../../../requests/ProjectRequests";
+import {createProject, loadPlatforms} from "../../../requests/ProjectRequests";
 import StyledTextField from "../../primitives/StyledTextField";
 import Button from "@mui/material/Button";
 import projectState from "../../../state/ProjectState";
 import {modalStyle} from "../../../styles/ModalStyle";
 import StyledSelect from "../../primitives/StyledSelect";
+import StyledAccordionSummary from "../../primitives/StyledAccordeonSummary";
+import integrationsState from "../../../state/IntegrationsState";
+import ProjectCICDForm from "./components/ProjectCICDForm";
+import ProjectTMSForm from "./components/ProjectTMSForm";
+import ProjectTaskTrackerForm from "./components/ProjectTaskTrackerForm";
 
 function NewProjectModal({isOpen, setIsOpen}) {
     const defaultProjectValue = {
         name: "",
         platform: "",
-        cicdPath: "",
-        cicdProjectId: "",
-        tmsProjectId: ""
+        cicd: {},
+        tms: {},
+        taskTracking: {}
     }
 
     const [newProject, setNewProject] = useState(defaultProjectValue)
     const [platforms, setPlatforms] = useState([])
-
-    let {data, error} = useSWR('loadPlatforms', async () => {
-        return await loadPlatforms()
-    }, {
-        revalidateOnFocus: false,
-    })
 
     useEffect(() => {
         if (isOpen) {
@@ -34,10 +40,12 @@ function NewProjectModal({isOpen, setIsOpen}) {
     }, [isOpen])
 
     useEffect(() => {
-        if (data?.data) {
-            setPlatforms(data?.data)
-        }
-    }, [data])
+        loadPlatforms().then(data => {
+            if (data?.data) {
+                setPlatforms(data?.data)
+            }
+        })
+    }, [])
 
     const handleClose = () => {
         setIsOpen(!confirm("Close modal window?"));
@@ -61,30 +69,21 @@ function NewProjectModal({isOpen, setIsOpen}) {
         }
     }
 
-
-    if (error) {
-        return <>Failed to load platforms info</>
-    }
-
-    if (!data) {
-        return <>Loading platform info</>
-    }
-
     return <Modal
         open={isOpen}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
     >
-        <Box sx={modalStyle}>
-            <Typography id="modal-modal-title" variant="h6" component="h2" style={{marginBottom: "10px"}}>
+        <Box sx={{...modalStyle, minWidth: '550px'}}>
+            <Typography id="modal-modal-title" variant="h6" component="h2" style={{marginBottom: "20px"}}>
                 Adding new project
             </Typography>
 
             <StyledTextField value={newProject.name}
                              size="small"
                              label="Project name"
-                             style={{minWidth: "450px", color: "white", margin: "8px"}}
+                             style={{minWidth: "100%", color: "white", marginBottom: "16px"}}
                              autoComplete='off'
                              onChange ={(event) => {
                                  setNewProject({
@@ -94,7 +93,7 @@ function NewProjectModal({isOpen, setIsOpen}) {
                              }}
             />
 
-            <FormControl sx={{ minWidth: 450, margin: "8px" }} size="small">
+            <FormControl sx={{ minWidth: "100%", marginBottom: "8px" }} size="small">
                 <InputLabel style={{ color: "var(--faded-text-color)" }}>Platform</InputLabel>
                 <StyledSelect
                     value={newProject.platform || ''}
@@ -109,48 +108,14 @@ function NewProjectModal({isOpen, setIsOpen}) {
                 </StyledSelect>
             </FormControl>
 
-            <StyledTextField value={newProject.cicdPath}
-                             size="small"
-                             label="CI\CD path"
-                             style={{minWidth: "450px", color: "white", margin: "8px"}}
-                             autoComplete='off'
-                             onChange={(event) => {
-                                 setNewProject({
-                                     ...newProject,
-                                     cicdPath: event.target.value
-                                 })
-                             }}
-            />
-            <StyledTextField value={newProject.cicdProjectId}
-                             size="small"
-                             label="CI\CD project id"
-                             style={{minWidth: "450px", color: "white", margin: "8px"}}
-                             autoComplete='off'
-                             onChange={(event) => {
-                                 setNewProject({
-                                     ...newProject,
-                                     cicdProjectId: event.target.value
-                                 })
-                             }}
-            />
-
-            <StyledTextField value={newProject.tmsProjectId}
-                             size="small"
-                             label="TMS project id"
-                             style={{minWidth: "450px", color: "white", margin: "8px"}}
-                             autoComplete='off'
-                             onChange={(event) => {
-                                 setNewProject({
-                                     ...newProject,
-                                     tmsProjectId: event.target.value
-                                 })
-                             }}
-            />
+            <ProjectCICDForm project={newProject} setProject={setNewProject} style={{marginTop: '20px'}}/>
+            <ProjectTMSForm project={newProject} setProject={setNewProject} style={{marginTop: '10px'}} />
+            <ProjectTaskTrackerForm project={newProject} setProject={setNewProject} style={{marginTop: '10px'}}/>
 
             <Button variant="contained"
                     color="error"
                     onClick={handleAddProjectButtonClick}
-                    style={{margin: "12px 8px 0 8px"}}
+                    style={{marginTop: "20px"}}
             >Add project</Button>
         </Box>
     </Modal>

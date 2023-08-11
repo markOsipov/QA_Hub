@@ -3,7 +3,11 @@ import StyledTooltip from "../../../../primitives/StyledTooltip";
 import ReportIcon from '@mui/icons-material/Report';
 import {useState} from "react";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-export default function ErrorFilter({filter, setFilter, setFilterChanged, ...props}) {
+import testResultsFilterState from "../../../../../state/testResults/TestResultsFilterState";
+import {observer} from "mobx-react-lite";
+const ErrorFilter = observer(({...props}) => {
+  const {filter } = testResultsFilterState
+
   const filterStyle = {
     color: customTheme.palette.text.white,
     border: `1px solid ${customTheme.palette.text.white}`,
@@ -17,8 +21,8 @@ export default function ErrorFilter({filter, setFilter, setFilterChanged, ...pro
   }
 
   const handleIconClick = () => {
-    setFilter({ ...filter, message: null})
-    setFilterChanged(true)
+    testResultsFilterState.setFilter({ ...filter, message: null})
+    testResultsFilterState.setFilterChanged(true)
   }
   if (!filter.message) return null
 
@@ -44,4 +48,6 @@ export default function ErrorFilter({filter, setFilter, setFilterChanged, ...pro
       <ReportIcon style={{height: '23px', width: '23px',}}/>
     </div>
   </StyledTooltip>
-}
+})
+
+export default ErrorFilter

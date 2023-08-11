@@ -5,9 +5,11 @@ import TestResultsPlate from "../../testRunList/testRun/elements/TestResultsPlat
 import TimingsPlate from "../../testRunList/testRun/elements/timings/TimingsPlate";
 import TestRunConfig from "./TestRunConfig";
 import TestRunActionsOnPage from "./TestRunActionsOnPage";
+import {observer} from "mobx-react-lite";
+import testResultsFilterState from "../../../../state/testResults/TestResultsFilterState";
 
 
-export default function TestRunResultsOverview({testRun, filter, setFilter, setFilterChanged, filterAndLoad, updateTestRunInfo, ...props}) {
+const TestRunResultsOverview = observer(({testRun, filterAndLoad, updateTestRunInfo, ...props}) => {
   const opacity = '0.8'
 
   if (testRun == null) {
@@ -76,4 +78,6 @@ export default function TestRunResultsOverview({testRun, filter, setFilter, setF
       </div>
     </Paper>
   </div>
-}
+})
+
+export default TestRunResultsOverview

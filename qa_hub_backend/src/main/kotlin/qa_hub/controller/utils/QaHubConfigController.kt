@@ -19,8 +19,8 @@ import qa_hub.entity.Project
 import qa_hub.entity.QaHubConfig
 import qa_hub.entity.QaHubTestcase
 import qa_hub.service.BlockedTestsService
-import qa_hub.service.ProjectService
-import qa_hub.service.QaHubConfigService
+import qa_hub.service.utils.ProjectService
+import qa_hub.service.utils.QaHubConfigService
 import qa_hub.service.TestcaseService
 import kotlin.random.Random
 import kotlin.random.nextInt
