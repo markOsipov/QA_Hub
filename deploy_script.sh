@@ -8,13 +8,13 @@
 #Give this script rights to be executed: chmod +x <file_name>
 
 #Your local sudo password
-LOCAL_PASSWORD=VWfXjmCp445
+LOCAL_PASSWORD=example
 
 #Docker credentials
 DOCKER_APP_PATH=/Applications/Docker.app
-DOCKER_LOGIN=dev@lowkeychat.com
-DOCKER_PASSWORD=kisbef-towja9-rasRuv
-DOCKER_SPACE=teamlowkey
+DOCKER_LOGIN=docker_login
+DOCKER_PASSWORD=password
+DOCKER_SPACE=example
 
 #Target host credentials
 REMOTE_IP="123.123.123.123"
