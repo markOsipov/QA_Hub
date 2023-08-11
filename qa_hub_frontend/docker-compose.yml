@@ -9,7 +9,7 @@ services:
     ports:
       - '3000:3000'
     environment:
-      - NEXT_PUBLIC_QA_HUB_BACKEND=http://127.0.0.1:8080
+      - NEXT_PUBLIC_QA_HUB_BACKEND=$NEXT_PUBLIC_QA_HUB_BACKEND
     networks: # Networks to join (Services on the same network can communicate with each other using their name)
       - qa_hub_network
     volumes:
