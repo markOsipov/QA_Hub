@@ -67,7 +67,7 @@ sudo docker-compose up -d
 
 
 # Important
-Some files has been marked as unchangable (could be deploy script or config files)
+Some files have been marked as unchangeable (could be deploy-script or config files)
 To make them trackable again:
 git update-index ---no-assume-unchanged ./path/to/file
 
