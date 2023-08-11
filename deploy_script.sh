@@ -18,8 +18,8 @@ DOCKER_SPACE=example
 
 #Target host credentials
 REMOTE_IP="123.123.123.123"
-REMOTE_USER=devops3
-REMOTE_PASSWORD=lowkey
+REMOTE_USER=user
+REMOTE_PASSWORD=password
 
 #ENVs passing into containers
 ENV_MONGO_QA_HUB_HOST='mongodb://23.123.123.123:27017'
