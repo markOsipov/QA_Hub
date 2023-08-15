@@ -2,7 +2,6 @@ package qa_hub.service
 
 import kotlinx.coroutines.*
 import org.litote.kmongo.*
-import org.litote.kmongo.coroutine.aggregate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import qa_hub.core.mongo.QaHubMongoClient
@@ -283,23 +282,9 @@ class TestRunService {
         }
     }
 
-    private fun getActualTestsCount(testRunId: String) = runBlocking {
-        val filter = TestResult::testRunId eq testRunId
 
-        val totalCount = testResultsCollection.countDocuments(filter).toInt()
-        val successCount = testResultsCollection.countDocuments(
-            and(filter, TestResult::status eq TestStatus.SUCCESS.status)
-        ).toInt()
-        val failedCount = testResultsCollection.countDocuments(
-            and(filter, TestResult::status eq TestStatus.FAILURE.status)
-        ).toInt()
 
-        return@runBlocking TestRunTests(
-            testsCount = totalCount,
-            failsCount = failedCount,
-            successCount = successCount,
-        )
-    }
+
 
     fun finishTestRun(
         testRunId: String,
@@ -308,7 +293,7 @@ class TestRunService {
     ): TestRun = runBlocking {
         var testRun = getTestRun(testRunId)!!
 
-        val testsCount = getActualTestsCount(testRunId)
+        val testsCount = testResultsService.getActualTestsCount(testRunId)
         val endDate = currentDateTimeUtc()
 
         val status = if (hasError) {

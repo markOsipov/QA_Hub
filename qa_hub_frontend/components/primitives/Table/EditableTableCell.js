@@ -27,7 +27,7 @@ export default function EditableTableCell({ content, value, afterContent, onChan
 
     const readOnlyContent = <div style={{display: "flex", alignItems: "center", position: 'relative'}} onDoubleClick={handleDoubleClick}>
         <div style={{display: 'flex', alignItems: 'center', position: 'relative'}}>
-            <div style={{display: 'flex', maxWidth: 'min-content', ...contentStyle}}>
+            <div style={{display: 'flex', maxWidth: 'max-content', ...contentStyle}}>
                 <label style={{}}>{ content }</label>
             </div>
             { afterContent }
@@ -42,7 +42,6 @@ export default function EditableTableCell({ content, value, afterContent, onChan
               </IconButton>
             }
         </div>
-
     </div>
 
     let editableContent

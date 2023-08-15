@@ -104,7 +104,6 @@ const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, 
                            onChangeCallback={ handleCommentChange }
                            onBlurCallback={handleTestcaseEditFinish}
                            textArea
-
         />
 
         <TaskStatusCell blockedTest={blockedTest}

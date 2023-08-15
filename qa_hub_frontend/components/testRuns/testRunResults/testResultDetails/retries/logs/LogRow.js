@@ -19,9 +19,9 @@ export default function LogRow({ line, index, selectedLogRow, ...props }) {
       style={{
         whiteSpace: 'break-spaces',
         fontFamily: 'monospace',
-        width: '100%',
         backgroundColor: index === selectedLogRow && 'yellow',
         color: index === selectedLogRow && 'black',
+        lineBreak: 'anywhere'
       }}
     >{line}</label>
   </div>
