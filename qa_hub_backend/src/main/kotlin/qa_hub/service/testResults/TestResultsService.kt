@@ -18,8 +18,6 @@ class TestResultsService {
     @Autowired
     lateinit var mongoClient: QaHubMongoClient
 
-    @Autowired
-    lateinit var testRunService: TestRunService
 
     private val testResultsCollection by lazy {
         mongoClient.db.getCollection<TestResult>(Collections.TEST_RESULTS.collectionName)
@@ -27,6 +25,10 @@ class TestResultsService {
 
     private val testResultsRetriesCollection by lazy {
         mongoClient.db.getCollection<TestResultRetry>(Collections.TEST_RESULTS_RETRIES.collectionName)
+    }
+
+    private val testRunCollection by lazy {
+        mongoClient.db.getCollection<TestRun>(Collections.TEST_RUNS.collectionName)
     }
 
     fun findSingleResult(testRunId: String, identifier: String): TestResult? = runBlocking {
@@ -145,6 +147,35 @@ class TestResultsService {
         ).toList()
     }
 
+    suspend fun updateActualTestsCount(testRunId: String) {
+        val testsCount = getActualTestsCount(testRunId)
+
+        testRunCollection.updateOne(
+            TestRun::testRunId eq testRunId,
+            set(
+                TestRun::tests setTo testsCount
+            )
+        )
+    }
+
+    fun getActualTestsCount(testRunId: String) = runBlocking {
+        val filter = TestResult::testRunId eq testRunId
+
+        val totalCount = testResultsCollection.countDocuments(filter).toInt()
+        val successCount = testResultsCollection.countDocuments(
+            and(filter, TestResult::status eq TestStatus.SUCCESS.status)
+        ).toInt()
+        val failedCount = testResultsCollection.countDocuments(
+            and(filter, TestResult::status eq TestStatus.FAILURE.status)
+        ).toInt()
+
+        return@runBlocking TestRunTests(
+            testsCount = totalCount,
+            failsCount = failedCount,
+            successCount = successCount,
+        )
+    }
+
     fun updateTestResult(testResult: TestResult): UpdateResult = runBlocking {
         val skipProperties = mutableListOf("_id", "testRunId", "fullName")
         if (testResult.status != TestStatus.PROCESSING.status) {
@@ -166,7 +197,7 @@ class TestResultsService {
         )
 
         launch {
-            testRunService.updateActualTestsCount(testResult.testRunId)
+            updateActualTestsCount(testResult.testRunId)
         }
 
         result
