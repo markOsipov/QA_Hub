@@ -11,11 +11,15 @@ import qa_hub.core.mongo.QaHubMongoClient
 import qa_hub.core.mongo.entity.Collections
 import qa_hub.core.mongo.utils.setCurrentPropertyValues
 import qa_hub.entity.testRun.*
+import qa_hub.service.TestRunService
 
 @Service
 class TestResultsService {
     @Autowired
     lateinit var mongoClient: QaHubMongoClient
+
+    @Autowired
+    lateinit var testRunService: TestRunService
 
     private val testResultsCollection by lazy {
         mongoClient.db.getCollection<TestResult>(Collections.TEST_RESULTS.collectionName)
@@ -151,7 +155,7 @@ class TestResultsService {
             updateRetriesInfo(testResult)
         }
 
-        testResultsCollection.updateOne(
+        val result = testResultsCollection.updateOne(
             and(
                 TestResult::testRunId eq testResult.testRunId,
                 TestResult::fullName eq testResult.fullName
@@ -160,6 +164,12 @@ class TestResultsService {
                 *(testResult.setCurrentPropertyValues(skipProperties))
             )
         )
+
+        launch {
+            testRunService.updateActualTestsCount(testResult.testRunId)
+        }
+
+        result
     }
 
     private suspend fun updateRetriesInfo(testResult: TestResult) {

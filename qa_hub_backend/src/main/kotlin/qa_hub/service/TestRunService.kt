@@ -283,6 +283,17 @@ class TestRunService {
         }
     }
 
+    suspend fun updateActualTestsCount(testRunId: String) {
+        val testsCount = getActualTestsCount(testRunId)
+
+        testRunCollection.updateOne(
+            TestRun::testRunId eq testRunId,
+            set(
+                TestRun::tests setTo testsCount
+            )
+        )
+    }
+
     private fun getActualTestsCount(testRunId: String) = runBlocking {
         val filter = TestResult::testRunId eq testRunId
 
