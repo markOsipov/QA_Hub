@@ -28,7 +28,6 @@ const TestRunResultsOverview = observer(({testRun, filterAndLoad, updateTestRunI
                 alignItems: 'center',
                 width: 'min-content'
               }}
-
             >
               <TextWithLabel
                 value={testRun.testRunId}
@@ -52,7 +51,7 @@ const TestRunResultsOverview = observer(({testRun, filterAndLoad, updateTestRunI
                             alignItems: 'end',
                             justifyItems: 'start',
                             position: 'relative',
-                            marginTop: '45px',
+                            marginTop: '28px',
                             opacity: opacity
                           }}
             />
@@ -64,7 +63,7 @@ const TestRunResultsOverview = observer(({testRun, filterAndLoad, updateTestRunI
 
               {
                 testRun.config !== null &&
-                <TestRunConfig testRun={testRun} style={{marginLeft: '50px', position: 'relative', top: '13px'}}/>
+                <TestRunConfig testRun={testRun} style={{marginLeft: '50px', position: 'relative', top: '8px'}}/>
               }
             </div>
 

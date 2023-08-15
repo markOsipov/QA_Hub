@@ -23,7 +23,7 @@ export default function TestRunsFilter({ filter, setFilter, loadTestRuns, filter
       <Button variant="contained"
               color="primary"
               size="small"
-              onClick={loadTestRuns}
+              onClick={() => {filterAndLoad(filter)}}
               style={{height: 'min-content', marginLeft: '20px'}}
               endIcon={<SearchIcon />}
       >Search</Button>

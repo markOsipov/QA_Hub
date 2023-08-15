@@ -1,7 +1,7 @@
 import {Card} from "@mui/material";
 import {useState} from "react";
 
-export default function LoadMoreTests({ loadMoreSize, loadMoreResults, ...props }) {
+export default function LoadMoreTestsButton ({loadMoreSize, loadMoreResults, ...props }) {
   const [isHovered, setIsHovered] = useState(false)
 
   return <Card
