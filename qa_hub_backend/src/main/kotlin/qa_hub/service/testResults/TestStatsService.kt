@@ -52,6 +52,7 @@ class TestStatsService {
     fun getStatsForProject(request: TestStatsRequest): List<TestStats> = runBlocking {
         val filteredTestRuns = getFilteredTestRuns(request.project, request.filter)
 
+        //default kmongo functions have bugs + do not support some of mongo operators
         val pipeline: MutableList<String> = mutableListOf(
             """
                 {
