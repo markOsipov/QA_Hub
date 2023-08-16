@@ -28,8 +28,7 @@ data class TestStats(
     var avgDuration: Int,
     var avgRetries: Double,
     var lastRun: String? = null,
-    var lastSuccess: String? = null,
-    var results: MutableList<TestResult> = mutableListOf(),
+    var lastSuccess: String? = null
 )
 
 class TestStatsComparator(
