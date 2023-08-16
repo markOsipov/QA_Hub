@@ -2,8 +2,8 @@ package qa_hub.entity.testRun
 
 data class TestStatsRequest(
     val project: String,
-    val filter: TestResultsFilter?,
-    val pagination: Pagination = Pagination()
+    val filter: TestResultsFilter? = null,
+    val pagination: Pagination? = null
 )
 data class TestResultsFilter(
     val branch: String?,
@@ -11,14 +11,15 @@ data class TestResultsFilter(
     val takeLast: Int?
 )
 
-
 data class TestStats(
+    var _id: String,
     var fullName: String,
-    var totalRuns: Int? = null,
-    var successRuns: Int? = null,
-    var successRate: Double? = null,
-    var averageDuration: Int? = null,
-    var averageRetries: Double? = null,
+    var totalRuns: Int,
+    var successRuns: Int,
+    var successRate: Double,
+    var avgDuration: Int,
+    var avgRetries: Double,
     var lastRun: String? = null,
     var lastSuccess: String? = null,
+    var results: MutableList<TestResult> = mutableListOf()
 )

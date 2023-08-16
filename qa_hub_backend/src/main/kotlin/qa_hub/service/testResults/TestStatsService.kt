@@ -51,27 +51,11 @@ class TestStatsService {
         testRunsCollection.aggregate<TestRun>(request).toList()
     }
 
-    data class TestStatElement(
-        val _id: String,
-        val avgRetries: Double,
-        val avgDuration: Int,
-        val totalRuns: Int,
-        val successRuns: Int,
-        val successRate: Double?,
-        val results: MutableList<TestResult> = mutableListOf()
-    )
-
-    data class TestStatResult(
-        val duration: Double?,
-        val status: String,
-        val retries: Int?
-    )
-
-    fun getStatsForProject(project: String, filter: TestResultsFilter?): List<TestStats> = runBlocking {
-        val filteredTestRuns = getFilteredTestRuns(project, filter)
+    fun getStatsForProject(request: TestStatsRequest): List<TestStats> = runBlocking {
+        val filteredTestRuns = getFilteredTestRuns(request.project, request.filter)
         val filteredTestRunIds = filteredTestRuns.map { it.testRunId }
 
-        val groupedTestResults = testResultsCollection.aggregate<TestStatElement>(
+        val groupedTestResults = testResultsCollection.aggregate<TestStats>(
             listOf(
                 match(
                    TestResult::testRunId `in` filteredTestRunIds,
@@ -79,44 +63,40 @@ class TestStatsService {
                 ),
                 group(
                    TestResult::fullName,
-                   TestStatElement::avgRetries avg TestResult::retries,
-                   TestStatElement::avgDuration avg TestResult::duration,
-                   TestStatElement::totalRuns sum 1,
-                   TestStatElement::successRuns sum cond(
+                    TestStats::fullName first TestResult::fullName,
+                    TestStats::avgRetries avg TestResult::retries,
+                    TestStats::avgDuration avg TestResult::duration,
+                    TestStats::totalRuns sum 1,
+                    TestStats::successRuns sum cond(
                        TestResult::status eq TestStatus.SUCCESS.status, 1, 0
-                   ),
-                   TestStatElement::results push "${"$$"}ROOT"
-                )
+                    ),
+//                    TestStats::results push "${"$$"}ROOT"
+                ),
+                skip(request.pagination?.skip ?: 0),
+                limit(request.pagination?.limit ?: 50)
             )
         ).toList()
 
         val result = mutableListOf<TestStats>()
-        groupedTestResults.forEach { testStatsElement ->
+        groupedTestResults.forEach { testStats ->
             val lastRun = filteredTestRuns.firstOrNull {
-               it.testRunId == testStatsElement.results.firstOrNull { result -> result.testRunId == it.testRunId }?.testRunId
+               it.testRunId == testStats.results.firstOrNull { result -> result.testRunId == it.testRunId }?.testRunId
             }?.timeMetrics?.created
 
             val lastSuccess = filteredTestRuns.firstOrNull {
-                it.testRunId == testStatsElement.results.firstOrNull {
+                it.testRunId == testStats.results.firstOrNull {
                     result -> result.testRunId == it.testRunId && result.status == TestStatus.SUCCESS.status
                 }?.testRunId
             }?.timeMetrics?.created
 
-            val successRate = (testStatsElement.successRuns.toDouble() / testStatsElement.totalRuns.toDouble())
+            val successRate = (testStats.successRuns.toDouble() / testStats.totalRuns.toDouble())
                 .toBigDecimal()
                 .setScale(2, RoundingMode.CEILING)
                 .toDouble()
 
-            val testStats = TestStats(
-                fullName = testStatsElement._id,
-                totalRuns = testStatsElement.totalRuns,
-                successRuns = testStatsElement.successRuns,
-                successRate = successRate,
-                averageDuration = testStatsElement.avgDuration,
-                averageRetries = testStatsElement.avgRetries,
-                lastRun = lastRun,
-                lastSuccess = lastSuccess
-            )
+            testStats.successRate = successRate
+            testStats.lastRun = lastRun
+            testStats.lastSuccess = lastSuccess
 
             result.add(testStats)
         }
