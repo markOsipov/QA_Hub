@@ -50,9 +50,11 @@ class TestRunController {
         val testRun = testRunService.createTestRun(body)
 
         val paramsMap = mutableMapOf<String, String>()
+
         body.params.forEach {
             paramsMap[it.name] = it.value
         }
+        paramsMap["TEST_RUN_ID"] = testRun.testRunId
 
         testRunService.startJob(
             testRun = testRun,
