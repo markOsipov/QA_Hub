@@ -88,7 +88,7 @@ export default function TestRunCard({testRun, filter, setFilter, filterAndLoad, 
                         alignItems: 'end',
                         justifyItems: 'start',
                         position: 'relative',
-                        marginTop: '45px',
+                        marginTop: '28px',
                         opacity: opacity
                       }}
         />
@@ -110,7 +110,7 @@ export default function TestRunCard({testRun, filter, setFilter, filterAndLoad, 
         {
           testRun.config !== null &&
           <TestRunConfigFilterable
-            style={{marginLeft: '80px', position: 'relative', top: '13px'}}
+            style={{marginLeft: '80px', position: 'relative', top: '8px'}}
             testRun={testRun}
             filter={filter || {}}
             setFilter={setFilter}

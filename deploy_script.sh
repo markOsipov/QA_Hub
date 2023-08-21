@@ -33,8 +33,8 @@ SCRIPT_DIR=$(dirname "$(realpath $0)")
 function build_and_push_image() {
     DOCKER_IMAGE=$1
     echo "\nBUILDING DOCKER IMAGE $DOCKER_IMAGE" && sudo docker-compose build 1>/dev/null
-    echo "SETTING THE TAG" && sudo docker tag qa_hub_backend:latest $DOCKER_SPACE/qa_hub_backend:latest 1>/dev/null
-    echo "PUSHING THE IMAGE" && sudo docker push $DOCKER_SPACE/qa_hub_backend:latest 1>/dev/null
+    echo "SETTING THE TAG" && sudo docker tag $DOCKER_IMAGE:latest $DOCKER_SPACE/$DOCKER_IMAGE:latest 1>/dev/null
+    echo "PUSHING THE IMAGE" && sudo docker push $DOCKER_SPACE/$DOCKER_IMAGE:latest 1>/dev/null
     echo "DOCKER IMAGE $DOCKER_IMAGE HAS BEEN UPDATED"
 }
 

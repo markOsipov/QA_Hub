@@ -13,6 +13,7 @@ object DateTimeUtils {
     ): String {
        return date.format(formatter)
     }
+
     fun currentDateTimeUtc(): String {
         return ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT )
     }

@@ -1,21 +1,23 @@
-import {Card, Paper} from "@mui/material";
+import {Paper} from "@mui/material";
 import TestResultCard from "./TestResultCard";
 import {useEffect, useState} from "react";
 import {getTestResults} from "../../../../requests/testResults/TestResultsRequests";
-import LoadMoreTests from "./LoadMoreTests";
 import TestResultsFilter from "./filters/TestResultsFilter";
-import StyledTextField from "../../../primitives/StyledTextField";
-import {getCookie, setCookie} from "../../../../utils/CookieHelper";
 import testResultsFilterState from "../../../../state/testResults/TestResultsFilterState";
 import {observer} from "mobx-react-lite";
 import testResultsState from "../../../../state/testResults/TestResultsState";
+
+import StyledTextField from "../../../primitives/StyledTextField";
+import LoadMoreTestsButton from "./LoadMoreTestsButton";
+import {getCookie} from "../../../../utils/CookieHelper";
 
 const TestResultsList = observer(({  testRun, ...props}) => {
   const { filter } = testResultsFilterState
   const { testResults} = testResultsState
 
   const loadMoreCookie = "testResultsLoadCount"
-  const initialLoadSize = getCookie(loadMoreCookie) || 50
+  const defaultLoadSize = 50
+  const initialLoadSize = Number.parseInt(getCookie(loadMoreCookie)) || defaultLoadSize
   const initialSkip = 0
 
   const [loadMoreSize, setLoadMoreSize] = useState(initialLoadSize)
@@ -36,7 +38,7 @@ const TestResultsList = observer(({  testRun, ...props}) => {
     return resp
   }
 
-   const loadMoreResults = async () => {
+  const loadMoreResults = async () => {
     await getTestResults(testRunId, filter, testResults.length, loadMoreSize).then((data) => {
       testResultsState.setTestResults([...testResults, ...data.data])
     })
@@ -86,7 +88,7 @@ const TestResultsList = observer(({  testRun, ...props}) => {
     }
 
     { testsCount > testResults.length &&
-      <LoadMoreTests
+      <LoadMoreTestsButton
         loadMoreSize={loadMoreSize}
         loadMoreResults={loadMoreResults}
         style={{marginTop: '25px'}}
@@ -105,6 +107,7 @@ const TestResultsList = observer(({  testRun, ...props}) => {
             onChange={updateLoadMoreCount}
             onBlur={saveCurrentLoadCount}
             style={{width: 'min-content', minWidth: '50px'}}
+            type={'number'}
           />
         </div>
       </div>
