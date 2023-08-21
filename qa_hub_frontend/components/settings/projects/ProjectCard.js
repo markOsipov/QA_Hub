@@ -88,7 +88,8 @@ export default function ProjectCard({project, ...props}) {
                 <AccordionDetails>
                     <TextWithLabel label={'Type'} value={project.cicd.type} style={{marginTop: '10px'}}></TextWithLabel>
                     <TextWithLabel label={'Project'} value={project.cicd.project} style={{marginTop: '20px'}}></TextWithLabel>
-                    <TextWithLabel label={'Path'} value={project.cicdPath} style={{marginTop: '20px'}}></TextWithLabel>
+                    <TextWithLabel label={'Path'} value={project.cicd.path} style={{marginTop: '20px'}}></TextWithLabel>
+                    <TextWithLabel label={'JobId'} value={project.cicd.jobId} style={{marginTop: '20px'}}></TextWithLabel>
                 </AccordionDetails>
             </Accordion>
         }

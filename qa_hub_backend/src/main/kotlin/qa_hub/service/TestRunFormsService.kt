@@ -13,11 +13,15 @@ import qa_hub.core.mongo.QaHubMongoClient
 import qa_hub.core.mongo.entity.Collections.TEST_RUN_FORMS
 import qa_hub.entity.StartTestRunForm
 import qa_hub.entity.TestRunFormParams
+import qa_hub.service.utils.ProjectIntegrationsService
 
 @Service
 class TestRunFormsService {
     @Autowired
     lateinit var mongoClient: QaHubMongoClient
+
+    @Autowired
+    lateinit var projectIntegrationsService: ProjectIntegrationsService
 
     private val testRunFormsCollection by lazy {
         mongoClient.db.getCollection<StartTestRunForm>(TEST_RUN_FORMS.collectionName)
@@ -52,5 +56,13 @@ class TestRunFormsService {
         testRunFormsCollection.deleteOne(
             StartTestRunForm::project.eq(project)
         )
+    }
+
+    fun getBranches(project: String): List<String> = runBlocking {
+        val cicdInfo = projectIntegrationsService.getProjectCicdInt(project)
+
+        val cicdService = cicdInfo.cicdInfo?.cicdService()
+
+        return@runBlocking cicdService?.getBranches(cicdInfo.projectCicdInfo!!) ?: listOf()
     }
 }

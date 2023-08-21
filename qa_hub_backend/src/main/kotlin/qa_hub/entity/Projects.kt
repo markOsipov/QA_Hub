@@ -35,7 +35,8 @@ data class Project(
 data class ProjectCicdInfo(
     val type: String = "",
     val path: String = "",
-    val project: String = ""
+    val project: String = "",
+    val jobId: String = ""
 )
 
 data class ProjectTmsInfo(

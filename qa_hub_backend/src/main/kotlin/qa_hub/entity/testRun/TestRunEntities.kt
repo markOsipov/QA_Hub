@@ -6,6 +6,7 @@ data class TestRunRequestParam(
 
 open class CreateTestRunRequest(
     var project: String,
+    var branch: String,
     var params: MutableList<TestRunRequestParam> = mutableListOf(),
 )
 
@@ -30,8 +31,9 @@ open class StartTestRunRequest(
     var tags: MutableList<String> = mutableListOf(),
 
     var runner: String? = null,
-    var simulators: List<String> = listOf()
-): CreateTestRunRequest(project, params)
+    var simulators: List<String> = listOf(),
+    var cicdJobId: String? = null
+): CreateTestRunRequest(project, config.branch, params)
 
 data class TestRun(
     var testRunId: String,
@@ -44,6 +46,7 @@ data class TestRun(
     var tags: MutableList<String> = mutableListOf(),
     var runners: List<TestRunRunner> = listOf(),
 
+    var cicdJobId: String? = null,
     var allureLaunchId: String? = null
 )
 
