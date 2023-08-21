@@ -29,7 +29,7 @@ const TestRunForm = observer(() => {
     const [isEditTestRunFormModalOpen, setIsEditTestRunFormModalOpen] = useState(false);
     const [paramConfigs, setParamConfigs] = useState([])
     const [params, setParams] =  useState([])
-    const [branch, setBranch] =  useState(["dev"])
+    const [branch, setBranch] =  useState("dev")
 
     function loadTestRunForm() {
         getTestRunForm(selectedProject).then(response => {
