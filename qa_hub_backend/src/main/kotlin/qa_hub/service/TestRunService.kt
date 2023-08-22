@@ -141,12 +141,13 @@ class TestRunService {
             testRun.config = startTestRunRequest.config
             testRun.tests = TestRunTests(testsCount = startTestRunRequest.testList.size, 0, 0)
             testRun.cicdJobId = startTestRunRequest.cicdJobId
+            testRun.params = startTestRunRequest.params
 
             testRunCollection.updateOne(
                 TestRun::testRunId eq testRun.testRunId,
                 combine(
                     set(
-                        *(testRun.setCurrentPropertyValues(skipProperties = listOf("_id", "testRunId", "runners", "params", "projectId")))
+                        *(testRun.setCurrentPropertyValues(skipProperties = listOf("_id", "testRunId", "runners", "projectId")))
                     ),
                     push(TestRun::runners, runner)
                 )
