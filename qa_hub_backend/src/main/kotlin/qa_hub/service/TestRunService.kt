@@ -147,7 +147,7 @@ class TestRunService {
                 TestRun::testRunId eq testRun.testRunId,
                 combine(
                     set(
-                        *(testRun.setCurrentPropertyValues(skipProperties = listOf("_id", "testRunId", "runners", "projectId")))
+                        *(testRun.setCurrentPropertyValues(skipProperties = listOf("_id", "params", "testRunId", "runners", "projectId")))
                     ),
                     push(TestRun::runners, runner)
                 )
