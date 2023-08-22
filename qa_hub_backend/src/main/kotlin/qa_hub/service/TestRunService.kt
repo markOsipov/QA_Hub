@@ -292,16 +292,22 @@ class TestRunService {
         }
     }
 
-    fun startJob(testRun: TestRun, branch: String, params: Map<String, String>) {
+    fun startJob(testRun: TestRun, branch: String) {
         val cicdInfo = projectIntegrationsService.getProjectCicdInt(testRun.project)
         val cicdService = cicdInfo.cicdInfo?.cicdService()
+
+        val paramsMap = mutableMapOf<String, String>()
+        testRun.params.forEach {
+            paramsMap[it.name] = it.value
+        }
+        paramsMap["TEST_RUN_ID"] = testRun.testRunId
 
         cicdService?.startJob(
             cicdInfo.projectCicdInfo!!,
             cicdInfo.projectCicdInfo.jobId,
             StartJobRequest(
                 gitRef = branch,
-                params = params
+                params = paramsMap
             )
         )
     }
@@ -384,11 +390,13 @@ class TestRunService {
     fun startRerun(testRunId: String) = runBlocking {
         val testRun = testRunCollection.findOne(TestRun::testRunId eq testRunId)!!
 
-        createTestRun(CreateTestRunRequest(
+        val newTestRun = createTestRun(CreateTestRunRequest(
             testRun.project,
             testRun.config!!.branch,
             testRun.params
         ))
+
+        startJob(newTestRun, newTestRun.config!!.branch)
     }
 
     fun deleteTestRun(testRunId: String) = runBlocking {

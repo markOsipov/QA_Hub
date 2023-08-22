@@ -48,19 +48,7 @@ class TestRunController {
     @PostMapping("/create")
     fun createTestRun(@RequestBody body: CreateTestRunRequest): TestRun {
         val testRun = testRunService.createTestRun(body)
-
-        val paramsMap = mutableMapOf<String, String>()
-
-        body.params.forEach {
-            paramsMap[it.name] = it.value
-        }
-        paramsMap["TEST_RUN_ID"] = testRun.testRunId
-
-        testRunService.startJob(
-            testRun = testRun,
-            branch = body.branch,
-            params = paramsMap
-        )
+        testRunService.startJob(testRun, body.branch)
 
         return testRun
     }
