@@ -72,6 +72,21 @@ const ProjectCICDForm = observer(({project, setProject, ...props}) => {
                          })
                        }}
       />
+      <StyledTextField value={project.cicd?.jobId || ""}
+                       size="small"
+                       label="Path"
+                       style={{color: "white", margin: "8px"}}
+                       autoComplete='off'
+                       onChange={(event) => {
+                         setProject({
+                           ...project,
+                           cicd: {
+                             ...project.cicd || {},
+                             jobId: event.target.value || ""
+                           }
+                         })
+                       }}
+      />
     </AccordionDetails>
   </Accordion>
 })

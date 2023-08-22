@@ -10,7 +10,7 @@ import qa_hub.core.utils.DateTimeUtils.currentEpoch
 import qa_hub.entity.Project
 import qa_hub.entity.ProjectCicdInfo
 import qa_hub.entity.ProjectTmsInfo
-import qa_hub.service.integrations.cicd.entity.CicdInfo
+import qa_hub.service.integrations.cicd.CicdInfo
 import qa_hub.service.integrations.taskTrackers.TaskTrackerInfo
 import qa_hub.service.integrations.tms.entity.TmsInfo
 
@@ -40,7 +40,7 @@ class ProjectIntegrationsService {
     @Autowired
     lateinit var mongoClient: QaHubMongoClient
 
-    val maxTimeSeconds = 1 * 60 * 60
+    private val maxTimeSeconds = 1 * 60 * 60
 
     private val taskTrackerIntegrationCollection by lazy {
         mongoClient.db.getCollection<TaskTrackerInfo>(Collections.TASK_TRACKER_INTEGRATIONS.collectionName)

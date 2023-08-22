@@ -1,6 +1,6 @@
 import {observer} from "mobx-react-lite";
 import projectState from "../../../state/ProjectState";
-import {Paper} from "@mui/material";
+import {FormControl, Input, Paper} from "@mui/material";
 import {useState, useEffect} from "react";
 import {getTestRunForm} from "../../../requests/testRuns/TestRunFormsRequests";
 import Typography from "@mui/material/Typography";
@@ -13,6 +13,16 @@ import TestRunFormParam from "./TestRunFormParam";
 import SettingsIcon from '@mui/icons-material/Settings';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import {createNewTestRun} from "../../../requests/testRuns/TestRunRequests";
+import TextParam from "./paramTypes/TextParam";
+import {customTheme} from "../../../styles/CustomTheme";
+import StyledTooltip from "../../primitives/StyledTooltip";
+import ParamTypes from "./ParamTypes";
+import TextAreaParam from "./paramTypes/TextAreaParam";
+import SelectParam from "./paramTypes/SelectParam";
+import MultiSelectParam from "./paramTypes/MultiSelectParam";
+import BooleanParam from "./paramTypes/BooleanParam";
+import HelpIcon from "@mui/icons-material/Help";
+import BranchSelector from "./BranchSelector";
 
 const TestRunForm = observer(() => {
     let {selectedProject} = projectState
@@ -20,6 +30,7 @@ const TestRunForm = observer(() => {
     const [isEditTestRunFormModalOpen, setIsEditTestRunFormModalOpen] = useState(false);
     const [paramConfigs, setParamConfigs] = useState([])
     const [params, setParams] =  useState([])
+    const [branch, setBranch] =  useState("dev")
 
     function loadTestRunForm() {
         getTestRunForm(selectedProject).then(response => {
@@ -58,6 +69,7 @@ const TestRunForm = observer(() => {
             </StyledAccordionSummary>
 
             <AccordionDetails style={{marginTop: "20px", maxWidth: "1048px"}}>
+                <BranchSelector project={selectedProject} branch={branch} setBranch={setBranch}/>
                 {
                     paramConfigs.length === 0 ? <Typography>No params configured for this project</Typography> : null
                 }
@@ -81,7 +93,7 @@ const TestRunForm = observer(() => {
                             color="primary"
                             size="small"
                             onClick={() => {
-                                createNewTestRun(selectedProject, params)
+                                createNewTestRun(selectedProject, branch, params)
                             }}
                             endIcon={<PlayArrowIcon />}
                     >Start</Button>

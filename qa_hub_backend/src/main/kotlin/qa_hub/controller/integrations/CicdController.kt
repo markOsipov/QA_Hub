@@ -4,9 +4,9 @@ import com.mongodb.client.result.DeleteResult
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import qa_hub.service.integrations.cicd.CicdService
-import qa_hub.service.integrations.cicd.entity.CicdInfo
-import qa_hub.service.integrations.cicd.entity.CicdType
-import qa_hub.service.integrations.cicd.entity.CicdTypes
+import qa_hub.service.integrations.cicd.CicdInfo
+import qa_hub.service.integrations.cicd.CicdType
+import qa_hub.service.integrations.cicd.CicdTypes
 
 
 @RestController

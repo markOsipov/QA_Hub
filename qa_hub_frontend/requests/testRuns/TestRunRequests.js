@@ -1,7 +1,7 @@
 import process from "../../next.config";
 import axios from "axios";
 
-export function createNewTestRun(project, params) {
+export function createNewTestRun(project, branch, params) {
     const config = {
         method: 'post',
         url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat("/api/testRuns/create"),
@@ -9,8 +9,9 @@ export function createNewTestRun(project, params) {
             'Content-Type': 'application/json'
         },
         data: {
-           project: project,
-           params: params
+            project: project,
+            branch: branch,
+            params: params
         }
     }
 

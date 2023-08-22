@@ -47,7 +47,10 @@ class TestRunController {
 
     @PostMapping("/create")
     fun createTestRun(@RequestBody body: CreateTestRunRequest): TestRun {
-        return testRunService.createTestRun(body)
+        val testRun = testRunService.createTestRun(body)
+        testRunService.startJob(testRun, body.branch)
+
+        return testRun
     }
 
     @PostMapping("/start")
@@ -137,7 +140,7 @@ class TestRunController {
         val testList = tests.map{ TestListElement(fullName = it, testId = Random.nextInt(10000, 99999).toString()) }.toMutableList()
 
         val testRun = measure("CreateTestRun"){
-            testRunService.createTestRun(CreateTestRunRequest("Lowkey"))
+            testRunService.createTestRun(CreateTestRunRequest("Lowkey", "dev"))
         }
 
         runners.forEach {

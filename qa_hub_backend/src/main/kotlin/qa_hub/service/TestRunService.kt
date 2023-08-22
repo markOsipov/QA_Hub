@@ -10,9 +10,11 @@ import qa_hub.core.mongo.utils.setCurrentPropertyValues
 import qa_hub.entity.testRun.*
 import qa_hub.core.utils.DateTimeUtils.currentDateTimeUtc
 import qa_hub.core.utils.DateTimeUtils.currentEpoch
+import qa_hub.service.integrations.cicd.StartJobRequest
 import qa_hub.service.testResults.TestLogsService
 import qa_hub.service.testResults.TestResultsService
 import qa_hub.service.testResults.TestStepsService
+import qa_hub.service.utils.ProjectIntegrationsService
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import kotlin.random.Random
@@ -26,6 +28,8 @@ class TestRunService {
     @Autowired
     lateinit var testResultsService: TestResultsService
 
+    @Autowired
+    lateinit var projectIntegrationsService: ProjectIntegrationsService
 
     private val testRunCollection by lazy {
         mongoClient.db.getCollection<TestRun>(TEST_RUNS.collectionName)
@@ -136,12 +140,14 @@ class TestRunService {
             testRun.timeMetrics.started = startDate
             testRun.config = startTestRunRequest.config
             testRun.tests = TestRunTests(testsCount = startTestRunRequest.testList.size, 0, 0)
+            testRun.cicdJobId = startTestRunRequest.cicdJobId
+            testRun.params = startTestRunRequest.params
 
             testRunCollection.updateOne(
                 TestRun::testRunId eq testRun.testRunId,
                 combine(
                     set(
-                        *(testRun.setCurrentPropertyValues(skipProperties = listOf("_id", "testRunId", "runners", "params", "projectId")))
+                        *(testRun.setCurrentPropertyValues(skipProperties = listOf("_id", "testRunId", "runners", "projectId")))
                     ),
                     push(TestRun::runners, runner)
                 )
@@ -274,17 +280,38 @@ class TestRunService {
         try {
             val testRun = getTestRun(testRunId)
 
-            //TODO: Add CICD integration
-            //val gitlabProject = UtilsDataClass.getProject(testRun.project!!).gitLabId
-            //GitLabManager(gitlabTokenService).cancelRun(gitlabProject, testRunId.toInt())
+            if (testRun?.cicdJobId != null) {
+                val cicdInfo = projectIntegrationsService.getProjectCicdInt(testRun.project)
+
+                val cicdService = cicdInfo.cicdInfo?.cicdService()
+
+                cicdService?.stopJob(cicdInfo.projectCicdInfo!!, testRun.cicdJobId!!)
+            }
+
         } finally {
             finishTestRun(testRunId = testRunId, canceled = true)
         }
     }
 
+    fun startJob(testRun: TestRun, branch: String) {
+        val cicdInfo = projectIntegrationsService.getProjectCicdInt(testRun.project)
+        val cicdService = cicdInfo.cicdInfo?.cicdService()
 
+        val paramsMap = mutableMapOf<String, String>()
+        testRun.params.forEach {
+            paramsMap[it.name] = it.value
+        }
+        paramsMap["TEST_RUN_ID"] = testRun.testRunId
 
-
+        cicdService?.startJob(
+            cicdInfo.projectCicdInfo!!,
+            cicdInfo.projectCicdInfo.jobId,
+            StartJobRequest(
+                gitRef = branch,
+                params = paramsMap
+            )
+        )
+    }
 
     fun finishTestRun(
         testRunId: String,
@@ -364,10 +391,13 @@ class TestRunService {
     fun startRerun(testRunId: String) = runBlocking {
         val testRun = testRunCollection.findOne(TestRun::testRunId eq testRunId)!!
 
-        createTestRun(CreateTestRunRequest(
+        val newTestRun = createTestRun(CreateTestRunRequest(
             testRun.project,
+            testRun.config!!.branch,
             testRun.params
         ))
+
+        startJob(newTestRun, newTestRun.config!!.branch)
     }
 
     fun deleteTestRun(testRunId: String) = runBlocking {

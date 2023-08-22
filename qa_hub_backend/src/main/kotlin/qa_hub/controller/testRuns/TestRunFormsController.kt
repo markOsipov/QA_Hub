@@ -33,4 +33,9 @@ class TestRunFormsController {
     fun deleteTestRunForm(@RequestBody body: StartTestRunForm): ResponseEntity<*> {
         return ResponseEntity.ok(testRunFormsService.upsertTestRunForms(body))
     }
+
+    @GetMapping("/branches/{project}")
+    fun getBranches(@PathVariable project: String): List<String> {
+        return testRunFormsService.getBranches(project)
+    }
 }
