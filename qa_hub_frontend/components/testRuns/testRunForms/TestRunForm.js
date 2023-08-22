@@ -22,6 +22,7 @@ import SelectParam from "./paramTypes/SelectParam";
 import MultiSelectParam from "./paramTypes/MultiSelectParam";
 import BooleanParam from "./paramTypes/BooleanParam";
 import HelpIcon from "@mui/icons-material/Help";
+import BranchSelector from "./BranchSelector";
 
 const TestRunForm = observer(() => {
     let {selectedProject} = projectState
@@ -68,22 +69,7 @@ const TestRunForm = observer(() => {
             </StyledAccordionSummary>
 
             <AccordionDetails style={{marginTop: "20px", maxWidth: "1048px"}}>
-
-                {/*Branch selection draft*/}
-                <div style={{display: "flex", alignItems: "center", width: "max-content", marginBottom: "25px"}}>
-                    <div style={{width: "300px", display: "flex", justifyContent: "end"}}>
-                        <Typography style={{position: "relative", top: "1px"}}>BRANCH</Typography>
-                    </div>
-                    <div style={{minWidth: "50%", marginLeft: "15px"}}>
-                        <FormControl style={{width: "700px"}}>
-                            <Input style={{backgroundColor: customTheme.palette.background.input, paddingLeft:"10px", height: "36px"}}
-                                   value={branch}
-                                   onChange={(event) => {setBranch(event.target.value)}}
-                            />
-                        </FormControl>
-                    </div>
-                </div>
-
+                <BranchSelector project={selectedProject} branch={branch} setBranch={setBranch}/>
                 {
                     paramConfigs.length === 0 ? <Typography>No params configured for this project</Typography> : null
                 }

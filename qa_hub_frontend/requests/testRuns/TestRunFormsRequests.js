@@ -25,6 +25,18 @@ export function getTestRunForm(project) {
     return axios(config)
 }
 
+export function getBranches(project) {
+    const config = {
+        method: 'get',
+        url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat(`/api/testRunForms/branches/${project}`),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+
+    return axios(config)
+}
+
 export function upsertTestRunForm(testRunForm) {
     const config = {
         method: 'post',
