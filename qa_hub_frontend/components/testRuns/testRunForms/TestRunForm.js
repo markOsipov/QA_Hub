@@ -71,9 +71,6 @@ const TestRunForm = observer(() => {
             <AccordionDetails style={{marginTop: "20px", maxWidth: "1048px"}}>
                 <BranchSelector project={selectedProject} branch={branch} setBranch={setBranch}/>
                 {
-                    paramConfigs.length === 0 ? <Typography>No params configured for this project</Typography> : null
-                }
-                {
                     params.map((param, index) => {
                         return <TestRunFormParam key={"param_" + index } param={param} index={index} params={params} setParams={setParams} />
                     })

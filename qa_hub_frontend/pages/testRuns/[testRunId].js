@@ -6,14 +6,13 @@ import TestResultsList from "../../components/testRuns/testRunResults/testResult
 import TestResultDetails from "../../components/testRuns/testRunResults/testResultDetails/TestResultDetails";
 import {getSingleTestResult} from "../../requests/testResults/TestResultsRequests";
 import {observer} from "mobx-react-lite";
-import testResultsFilterState from "../../state/testResults/TestResultsFilterState";
 import testResultsState from "../../state/testResults/TestResultsState";
+import PushTestRunModal from "../../components/testRuns/pushTestRunModal/PushTestRunModal";
 
 const TestRunPage = observer(() => {
   const router = useRouter()
 
   const [testRun, setTestRun] = useState(null)
-
   const loadTestResultFromUrl = (testRunId) => {
     const identifier = router.query.test
 
@@ -51,6 +50,7 @@ const TestRunPage = observer(() => {
   }
 
   return <div style={{padding: "15px"}}>
+    <PushTestRunModal/>
     <TestRunResultsOverview
       testRun={testRun}
       updateTestRunInfo={updateTestRunInfo}

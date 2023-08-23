@@ -8,7 +8,15 @@ import BooleanParam from "./paramTypes/BooleanParam";
 import HelpIcon from "@mui/icons-material/Help";
 import {useState, useEffect} from "react";
 import StyledTooltip from "../../primitives/StyledTooltip";
-function TestRunFormParam({param, index, params, setParams, props}) {
+import {cut} from "../../../utils/Extensions";
+import CustomIconButton from "../../primitives/CustomIconButton";
+import {customTheme} from "../../../styles/CustomTheme";
+import ClearIcon from "@mui/icons-material/Clear";
+import LockIcon from "@mui/icons-material/Lock";
+import CancelIcon from '@mui/icons-material/Cancel';
+import BugReportIcon from '@mui/icons-material/BugReport';
+
+function TestRunFormParam({param, index, params, setParams, props, testRunId}) {
     const paramWidth = "700px"
 
     const [showHelp, setShowHelp] = useState(false)
@@ -44,12 +52,33 @@ function TestRunFormParam({param, index, params, setParams, props}) {
             }
         </div>
 
-        <div style={{minWidth: "100px"}}>
-            {
-                showHelp && param.description && <StyledTooltip title={param.description} placement="right">
-                    <HelpIcon style={{marginLeft: "8px"}}></HelpIcon>
-                </StyledTooltip>
-            }
+        <div style={{display: 'flex', minWidth: "100px"}}>
+            {/*<div style={{display: 'flex'}}>*/}
+            {/*    {*/}
+            {/*      param.role === "testList" && testRunId &&*/}
+            {/*      <CustomIconButton*/}
+            {/*        action={() => {}}*/}
+            {/*        color={customTheme.palette.error.main}*/}
+            {/*        icon={<BugReportIcon/>}*/}
+            {/*      />*/}
+            {/*    }*/}
+
+            {/*    {*/}
+            {/*      param.role === "testList" &&*/}
+            {/*      <CustomIconButton*/}
+            {/*        action={() => {}}*/}
+            {/*        color={customTheme.palette.error.main}*/}
+            {/*        icon={<LockIcon/>}*/}
+            {/*      />*/}
+            {/*    }*/}
+            {/*</div>*/}
+            <div>
+                {
+                  showHelp && param.description && <StyledTooltip title={param.description} placement="right">
+                      <HelpIcon style={{marginLeft: "8px"}}></HelpIcon>
+                  </StyledTooltip>
+                }
+            </div>
         </div>
     </div>
 

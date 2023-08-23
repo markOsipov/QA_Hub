@@ -24,7 +24,7 @@ import ParamTypes from "../ParamTypes";
 import StyledSelect from "../../../primitives/StyledSelect";
 
 function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
-    const paramRoles = ["testsList", "skipTestsList", "environment", "other"]
+    const paramRoles = ["testList", "skipTestList", "environment", "other"]
     const editParamField = (field, value) => {
         const newParams = params.slice()
         newParams[index] = {

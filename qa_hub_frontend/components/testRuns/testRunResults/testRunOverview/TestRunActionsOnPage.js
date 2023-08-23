@@ -6,14 +6,14 @@ import ReplayIcon from "@mui/icons-material/Replay";
 import StopIcon from "@mui/icons-material/Stop";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useRouter} from "next/router";
+import {observer} from "mobx-react-lite";
+import pushModalState from "../../../../state/testRuns/PushModalState";
 
-export default function TestRunActionsOnPage({testRun, updateTestRunInfo, ...props}) {
+const TestRunActionsOnPage = observer (({testRun, updateTestRunInfo, ...props}) => {
   const router = useRouter()
 
   const handleStartRerunClick = () => {
-    startRerun(testRun.testRunId).then(() => {
-      alert("New testrun has started")
-    })
+    pushModalState.open(testRun)
   }
   const handleDeleteTestRunClick = () => {
     if (confirm("This Testrun will be deleted. Are you sure?")) {
@@ -67,4 +67,6 @@ export default function TestRunActionsOnPage({testRun, updateTestRunInfo, ...pro
     </StyledTooltip>
 
   </div>
-}
+})
+
+export default TestRunActionsOnPage
