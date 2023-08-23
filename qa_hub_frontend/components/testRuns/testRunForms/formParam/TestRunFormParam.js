@@ -9,6 +9,7 @@ import HelpIcon from "@mui/icons-material/Help";
 import {useState, useEffect} from "react";
 import StyledTooltip from "../../../primitives/StyledTooltip";
 import FormParamActions from "./FormParamActions";
+import {cut} from "../../../../utils/Extensions";
 
 function TestRunFormParam({param, index, params, setParams, props, testRunId}) {
     const paramWidth = "700px"
@@ -27,7 +28,7 @@ function TestRunFormParam({param, index, params, setParams, props, testRunId}) {
     >
         <div style={{width: "300px", display: "flex", justifyContent: "end"}}>
             <StyledTooltip title={param.name} maxWidth={'none'}>
-                <Typography style={{position: "relative", top: "1px"}}>{param.name.cut(30)}</Typography>
+                <Typography style={{position: "relative", top: "1px"}}>{ cut(param.name, 30) }</Typography>
             </StyledTooltip>
         </div>
         <div style={{minWidth: "50%", marginLeft: "15px"}}>
