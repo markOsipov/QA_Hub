@@ -7,7 +7,7 @@ import {useEffect, useState} from "react";
 import {getTestRunForm} from "../../../requests/testRuns/TestRunFormsRequests";
 import {observer} from "mobx-react-lite";
 import BranchSelector from "../testRunForms/BranchSelector";
-import TestRunFormParam from "../testRunForms/TestRunFormParam";
+import TestRunFormParam from "../testRunForms/formParam/TestRunFormParam";
 import Button from "@mui/material/Button";
 import {createNewTestRun} from "../../../requests/testRuns/TestRunRequests";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
@@ -58,7 +58,7 @@ const PushTestRunModal = observer(() => {
       open={isOpen}
       onClose={handleClose}
     >
-      <Box sx={{...modalStyle, minWidth: '550px'}}>
+      <Box sx={{...modalStyle, minWidth: '650px'}}>
         Loading
       </Box>
     </Modal>
@@ -68,7 +68,7 @@ const PushTestRunModal = observer(() => {
     open={isOpen}
     onClose={handleClose}
   >
-    <Box sx={{...modalStyle, minWidth: '550px'}}>
+    <Box sx={{...modalStyle, minWidth: '650px'}}>
       <Typography id="modal-modal-title" variant="h6" component="h2" style={{marginBottom: "20px"}}>
         Start new testrun
       </Typography>
@@ -83,7 +83,7 @@ const PushTestRunModal = observer(() => {
         })
       }
 
-      <div style={{display: "flex", marginRight: '100px'}}>
+      <div style={{display: "flex", marginRight: '150px'}}>
 
 
         <div style={{flexGrow: "2"}}></div>

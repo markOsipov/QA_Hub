@@ -1,20 +1,14 @@
 import Typography from "@mui/material/Typography";
-import ParamTypes from "./ParamTypes";
-import TextParam from "./paramTypes/TextParam";
-import TextAreaParam from "./paramTypes/TextAreaParam";
-import SelectParam from "./paramTypes/SelectParam";
-import MultiSelectParam from "./paramTypes/MultiSelectParam";
-import BooleanParam from "./paramTypes/BooleanParam";
+import ParamTypes from "../ParamTypes";
+import TextParam from "../paramTypes/TextParam";
+import TextAreaParam from "../paramTypes/TextAreaParam";
+import SelectParam from "../paramTypes/SelectParam";
+import MultiSelectParam from "../paramTypes/MultiSelectParam";
+import BooleanParam from "../paramTypes/BooleanParam";
 import HelpIcon from "@mui/icons-material/Help";
 import {useState, useEffect} from "react";
-import StyledTooltip from "../../primitives/StyledTooltip";
-import {cut} from "../../../utils/Extensions";
-import CustomIconButton from "../../primitives/CustomIconButton";
-import {customTheme} from "../../../styles/CustomTheme";
-import ClearIcon from "@mui/icons-material/Clear";
-import LockIcon from "@mui/icons-material/Lock";
-import CancelIcon from '@mui/icons-material/Cancel';
-import BugReportIcon from '@mui/icons-material/BugReport';
+import StyledTooltip from "../../../primitives/StyledTooltip";
+import FormParamActions from "./FormParamActions";
 
 function TestRunFormParam({param, index, params, setParams, props, testRunId}) {
     const paramWidth = "700px"
@@ -52,26 +46,8 @@ function TestRunFormParam({param, index, params, setParams, props, testRunId}) {
             }
         </div>
 
-        <div style={{display: 'flex', minWidth: "100px"}}>
-            {/*<div style={{display: 'flex'}}>*/}
-            {/*    {*/}
-            {/*      param.role === "testList" && testRunId &&*/}
-            {/*      <CustomIconButton*/}
-            {/*        action={() => {}}*/}
-            {/*        color={customTheme.palette.error.main}*/}
-            {/*        icon={<BugReportIcon/>}*/}
-            {/*      />*/}
-            {/*    }*/}
-
-            {/*    {*/}
-            {/*      param.role === "testList" &&*/}
-            {/*      <CustomIconButton*/}
-            {/*        action={() => {}}*/}
-            {/*        color={customTheme.palette.error.main}*/}
-            {/*        icon={<LockIcon/>}*/}
-            {/*      />*/}
-            {/*    }*/}
-            {/*</div>*/}
+        <div style={{display: 'flex', minWidth: "150px"}}>
+            <FormParamActions param={param} testRunId={testRunId} index={index} setParamValue={setParamValue}/>
             <div>
                 {
                   showHelp && param.description && <StyledTooltip title={param.description} placement="right">

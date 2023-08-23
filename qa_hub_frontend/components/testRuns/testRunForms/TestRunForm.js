@@ -9,7 +9,7 @@ import Button from "@mui/material/Button";
 import StyledAccordionSummary from "../../primitives/StyledAccordeonSummary";
 import {Accordion, AccordionDetails, } from "@mui/material";
 import "../../../utils/Extensions";
-import TestRunFormParam from "./TestRunFormParam";
+import TestRunFormParam from "./formParam/TestRunFormParam";
 import SettingsIcon from '@mui/icons-material/Settings';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import {createNewTestRun} from "../../../requests/testRuns/TestRunRequests";
