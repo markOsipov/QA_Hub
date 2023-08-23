@@ -24,6 +24,7 @@ import ParamTypes from "../ParamTypes";
 import StyledSelect from "../../../primitives/StyledSelect";
 
 function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
+    const paramRoles = ["testsList", "skipTestsList", "environment", "other"]
     const editParamField = (field, value) => {
         const newParams = params.slice()
         newParams[index] = {
@@ -64,6 +65,22 @@ function ConfigureParamCard({param, index, params, setParams, paramTypes}) {
                     {
                         (paramTypes).map(paramType => (
                             <MenuItem key={paramType} value={paramType}>{paramType}</MenuItem>
+                        ))
+                    }
+                </StyledSelect>
+            </FormControl>
+
+            <FormControl style={{marginLeft: "15px", width: "170px"}}>
+                <InputLabel style={{color: customTheme.palette.text.faded, position: "relative", top: "10px"}}>Role</InputLabel>
+                <StyledSelect
+                  value={paramRoles.find(role => role === param.role) || ''}
+                  style={{backgroundColor: customTheme.palette.background.input}}
+                  onChange={(event) => editParamField("role", event.target.value)}
+                  size="small"
+                >
+                    {
+                        (paramRoles).map(paramRole => (
+                          <MenuItem key={paramRole} value={paramRole}>{paramRole}</MenuItem>
                         ))
                     }
                 </StyledSelect>
