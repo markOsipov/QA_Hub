@@ -10,6 +10,7 @@ import {useState, useEffect} from "react";
 import StyledTooltip from "../../../primitives/StyledTooltip";
 import FormParamActions from "./FormParamActions";
 import {cut} from "../../../../utils/Extensions";
+import {customTheme} from "../../../../styles/CustomTheme";
 
 function TestRunFormParam({param, index, params, setParams, props, testRunId}) {
     const paramWidth = "700px"
@@ -25,10 +26,11 @@ function TestRunFormParam({param, index, params, setParams, props, testRunId}) {
     return <div style={{display: "flex", alignItems: "center", width: "max-content", marginBottom: "25px"}} {...props}
                 onMouseOver={() => {setShowHelp(true)}}
                 onMouseLeave={() => {setShowHelp(false)}}
+                onBlur={() => {setShowHelp(false)}}
     >
         <div style={{width: "300px", display: "flex", justifyContent: "end"}}>
-            <StyledTooltip title={param.name} maxWidth={'none'}>
-                <Typography style={{position: "relative", top: "1px"}}>{ cut(param.name, 30) }</Typography>
+            <StyledTooltip title={param.name.length > 30 ? param.name : ""} maxWidth={'none'}>
+                <Typography style={{position: "relative", top: "1px", cursor: 'default'}}>{ cut(param.name, 30) }</Typography>
             </StyledTooltip>
         </div>
         <div style={{minWidth: "50%", marginLeft: "15px"}}>
@@ -52,7 +54,7 @@ function TestRunFormParam({param, index, params, setParams, props, testRunId}) {
             <div>
                 {
                   showHelp && param.description && <StyledTooltip title={param.description} placement="right">
-                      <HelpIcon style={{marginLeft: "8px"}}></HelpIcon>
+                      <HelpIcon style={{marginLeft: "8px", color: customTheme.palette.text.disabled}}></HelpIcon>
                   </StyledTooltip>
                 }
             </div>

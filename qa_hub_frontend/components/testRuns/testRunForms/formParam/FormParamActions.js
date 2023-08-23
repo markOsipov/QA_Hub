@@ -6,8 +6,9 @@ import {observer} from "mobx-react-lite";
 import blockerState from "../../../../state/BlockerState";
 import projectState from "../../../../state/ProjectState";
 import {getTestResults} from "../../../../requests/testResults/TestResultsRequests";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import RefreshIcon from '@mui/icons-material/Refresh';
+import StyledTooltip from "../../../primitives/StyledTooltip";
 
 const FormParamActions = observer(({param, index, testRunId, setParamValue}) => {
   const [loading, setLoading] = useState(false)
@@ -21,7 +22,7 @@ const FormParamActions = observer(({param, index, testRunId, setParamValue}) => 
 
         const blockedTests = blockerState.blockedTests
           .map(blockedTest => blockedTest.fullName)
-          .join(", \n")
+          .join("\n")
 
         setParamValue(index, blockedTests)
       }
@@ -51,20 +52,29 @@ const FormParamActions = observer(({param, index, testRunId, setParamValue}) => 
   return <div style={{display: 'flex', position: 'relative', top: '-2px'}}>
     {
       param.role === "testList" && testRunId &&
-      <CustomIconButton
-        action={addFailedTests}
-        color={customTheme.palette.error.main}
-        icon={<BugReportIcon/>}
-      />
+      <StyledTooltip title={"Add failed tests"}>
+        <div>
+          <CustomIconButton
+            action={addFailedTests}
+            color={customTheme.palette.error.main}
+            icon={<BugReportIcon/>}
+
+          />
+        </div>
+      </StyledTooltip>
     }
 
     {
       param.role === "testList" &&
-      <CustomIconButton
-        action={addBlockedTests}
-        color={customTheme.palette.error.main}
-        icon={<LockIcon/>}
-      />
+      <StyledTooltip title={"Add blocked tests"}>
+        <div>
+          <CustomIconButton
+            action={addBlockedTests}
+            color={customTheme.palette.error.main}
+            icon={<LockIcon/>}
+          />
+        </div>
+      </StyledTooltip>
     }
 
     {
