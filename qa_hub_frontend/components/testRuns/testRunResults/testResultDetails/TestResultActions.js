@@ -6,6 +6,7 @@ import StyledTooltip from "../../../primitives/StyledTooltip";
 import CustomIconButton from "../../../primitives/CustomIconButton";
 import {customTheme} from "../../../../styles/CustomTheme";
 import CloseIcon from '@mui/icons-material/Close';
+import {QaHubCookies, setCookie} from "../../../../utils/CookieHelper";
 
 const TestResultActions = observer(({ testResult, ...props}) => {
   const {selectedTests} = pushModalState
@@ -14,10 +15,10 @@ const TestResultActions = observer(({ testResult, ...props}) => {
       ...selectedTests,
       testResult.fullName
     ])
+    const arr = Array.from(set)
+    setCookie(QaHubCookies.testsForNextTestRun, arr)
 
-    pushModalState.setSelectedTests(
-      Array.from(set)
-    )
+    pushModalState.setSelectedTests(arr)
   }
   const handleRemoveClick = () => {
     const index = selectedTests.indexOf(testResult.fullName)

@@ -9,3 +9,11 @@ export function setCookie(key, value) {
 export function getCookie(key) {
     return cookie.get(key)
 }
+
+export const QaHubCookies = {
+    projects: 'projects',
+    testRunsLoadCount: 'testRunsLoadCount',
+    testResultsLoadCount: 'testResultsLoadCount',
+    selectedProject: 'selected-project',
+    testsForNextTestRun: 'testsForNextTestRun'
+}

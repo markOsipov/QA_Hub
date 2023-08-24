@@ -9,13 +9,13 @@ import testResultsState from "../../../../state/testResults/TestResultsState";
 
 import StyledTextField from "../../../primitives/StyledTextField";
 import LoadMoreTestsButton from "./LoadMoreTestsButton";
-import {getCookie} from "../../../../utils/CookieHelper";
+import {getCookie, QaHubCookies} from "../../../../utils/CookieHelper";
 
 const TestResultsList = observer(({  testRun, ...props}) => {
   const { filter } = testResultsFilterState
   const { testResults} = testResultsState
 
-  const loadMoreCookie = "testResultsLoadCount"
+  const loadMoreCookie = QaHubCookies.testResultsLoadCount
   const defaultLoadSize = 50
   const initialLoadSize = Number.parseInt(getCookie(loadMoreCookie)) || defaultLoadSize
   const initialSkip = 0
