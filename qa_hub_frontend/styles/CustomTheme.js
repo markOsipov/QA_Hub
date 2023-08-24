@@ -11,6 +11,7 @@ export var customTheme = createTheme({
         },
         background: {
             default: '#303030',
+            popup: 'rgb(86 86 86)',
             paper: '#424242',
             input: 'rgba(255, 255, 255, 0.1)',
             textArea: 'rgba(255, 255, 255, 0.07)'

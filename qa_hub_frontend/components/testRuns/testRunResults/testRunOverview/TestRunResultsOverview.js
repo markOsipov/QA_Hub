@@ -69,7 +69,7 @@ const TestRunResultsOverview = observer(({testRun, filterAndLoad, updateTestRunI
               }
             </div>
 
-          <div style={{position: 'absolute', right: '15px', bottom: '15px'}} >
+          <div style={{position: 'absolute', right: '12px', bottom: '12px'}} >
             <TestRunActionsOnPage
               testRun={testRun}
               updateTestRunInfo={updateTestRunInfo}

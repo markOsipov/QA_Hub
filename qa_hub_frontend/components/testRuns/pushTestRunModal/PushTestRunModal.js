@@ -18,7 +18,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 
 const PushTestRunModal = observer(() => {
   let {selectedProject} = projectState
-  let {isOpen, testRun} = pushModalState
+  let {isOpen, testRun, useSelectedTests, selectedTests} = pushModalState
 
   const [paramConfigs, setParamConfigs] = useState([])
   const [params, setParams] = useState([])
@@ -46,6 +46,10 @@ const PushTestRunModal = observer(() => {
       setParams(paramConfigs
         .map(paramConfig => {
           let initialParamValue = testRun?.params?.find(param => param.name === paramConfig.name)?.value
+
+          if (useSelectedTests && paramConfig.role === 'testList') {
+            initialParamValue = selectedTests.join("\n")
+          }
 
           return {...paramConfig, value: initialParamValue || paramConfig.defaultValue}
         })

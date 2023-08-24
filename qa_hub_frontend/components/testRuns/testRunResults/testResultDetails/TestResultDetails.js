@@ -12,6 +12,7 @@ import StyledTooltip from "../../../primitives/StyledTooltip";
 import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import AppleIcon from "@mui/icons-material/Apple";
+import TestResultActions from "./TestResultActions";
 
 const TestResultDetails = observer(({ ...props }) => {
   const {  selectedTest } = testResultsState
@@ -20,7 +21,7 @@ const TestResultDetails = observer(({ ...props }) => {
       return <div>Not selected</div>
     } else {
       return <div>
-        <Paper style={{padding: '15px 10px'}}>
+        <Paper style={{padding: '15px 10px', position: 'relative'}}>
           <div style={{padding: '2px 2px'}}>
             <div style={{display: 'flex', marginLeft: '8px'}}>
               <TextWithLabel
@@ -93,6 +94,8 @@ const TestResultDetails = observer(({ ...props }) => {
             </div>
 
           </div>
+
+          <TestResultActions testResult={selectedTest} style={{position: 'absolute', right: '10px', bottom: '10px'}}/>
         </Paper>
 
         <Accordion style={{ marginTop: '15px'}}>
