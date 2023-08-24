@@ -20,3 +20,9 @@ String.prototype.cut = function(maxSymbols) {
     }
     return this
 }
+export function cut(string, maxSymbols) {
+    if (string.length > maxSymbols) {
+        return string.slice(0, maxSymbols - 3) + "..."
+    }
+    return string
+}

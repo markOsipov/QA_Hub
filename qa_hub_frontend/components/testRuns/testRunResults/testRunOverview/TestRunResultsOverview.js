@@ -7,6 +7,8 @@ import TestRunConfig from "./TestRunConfig";
 import TestRunActionsOnPage from "./TestRunActionsOnPage";
 import {observer} from "mobx-react-lite";
 import testResultsFilterState from "../../../../state/testResults/TestResultsFilterState";
+import PushTestRunModal from "../../pushTestRunModal/PushTestRunModal";
+import {useState} from "react";
 
 
 const TestRunResultsOverview = observer(({testRun, filterAndLoad, updateTestRunInfo, ...props}) => {
@@ -67,7 +69,7 @@ const TestRunResultsOverview = observer(({testRun, filterAndLoad, updateTestRunI
               }
             </div>
 
-          <div style={{position: 'absolute', right: '15px', bottom: '15px'}} >
+          <div style={{position: 'absolute', right: '12px', bottom: '12px'}} >
             <TestRunActionsOnPage
               testRun={testRun}
               updateTestRunInfo={updateTestRunInfo}

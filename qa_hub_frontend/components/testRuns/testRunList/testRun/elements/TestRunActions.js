@@ -5,11 +5,12 @@ import {cancelTestRun, deleteTestRun, startRerun} from "../../../../../requests/
 import CustomIconButton from "../../../../primitives/CustomIconButton";
 import StyledTooltip from "../../../../primitives/StyledTooltip";
 import ReplayIcon from '@mui/icons-material/Replay';
-export default function TestRunActions({testRun, filter, filterAndLoad, ...props}) {
+import pushModalState from "../../../../../state/testRuns/PushModalState";
+import {observer} from "mobx-react-lite";
+
+const TestRunActions = observer(({testRun, filter, filterAndLoad, ...props}) => {
   const handleStartRerunClick = () => {
-    startRerun(testRun.testRunId).then(() => {
-      filterAndLoad(filter)
-    })
+    pushModalState.open(testRun)
   }
   const handleDeleteTestRunClick = () => {
     if (confirm("This Testrun will be deleted. Are you sure?")) {
@@ -62,4 +63,6 @@ export default function TestRunActions({testRun, filter, filterAndLoad, ...props
     </StyledTooltip>
 
   </div>
-}
+})
+
+export default TestRunActions

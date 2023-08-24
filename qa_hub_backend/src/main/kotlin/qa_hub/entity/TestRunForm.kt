@@ -22,6 +22,7 @@ enum class TestRunFormParams(val value: String) {
 data class StartTestRunParam(
     val name: String,
     val type: String? = TestRunFormParams.TEXT.value,
+    val role: String = "other",
     val defaultValue: String = "",
     val options: List<String> = listOf(),
     val description: String = "",

@@ -52,3 +52,12 @@ button + button {
 .Mui-disabled .MuiSvgIcon-root {
   color: var(--disabled-text-color)
 }
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

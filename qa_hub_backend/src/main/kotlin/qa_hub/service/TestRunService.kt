@@ -105,7 +105,7 @@ class TestRunService {
 
         testRunCollection.aggregate<TestRun>(query).toList()
     }
-    fun createTestRun(testRunRequest: CreateTestRunRequest): TestRun = runBlocking {
+    fun createTestRun(testRunRequest: CreateTestRunRequest, startJob: Boolean = true): TestRun = runBlocking {
         val testRun = TestRun(
             testRunId = currentEpoch().toString(),
             project = testRunRequest.project,
@@ -118,12 +118,18 @@ class TestRunService {
 
         testRunCollection.insertOne(testRun)
 
-        return@runBlocking getTestRun(testRun.testRunId)!!
+        val insertedTestRun = getTestRun(testRun.testRunId)!!
+
+        if (startJob) {
+            startJob(insertedTestRun, testRunRequest.branch)
+        }
+
+        return@runBlocking insertedTestRun
     }
 
     fun startTestRun(startTestRunRequest: StartTestRunRequest) = runBlocking {
         val testRun: TestRun = if (startTestRunRequest.testRunId.isNullOrBlank()) {
-            createTestRun(startTestRunRequest)
+            createTestRun(startTestRunRequest, false)
         } else {
             getTestRun(startTestRunRequest.testRunId!!)!!
         }
@@ -141,13 +147,12 @@ class TestRunService {
             testRun.config = startTestRunRequest.config
             testRun.tests = TestRunTests(testsCount = startTestRunRequest.testList.size, 0, 0)
             testRun.cicdJobId = startTestRunRequest.cicdJobId
-            testRun.params = startTestRunRequest.params
 
             testRunCollection.updateOne(
                 TestRun::testRunId eq testRun.testRunId,
                 combine(
                     set(
-                        *(testRun.setCurrentPropertyValues(skipProperties = listOf("_id", "testRunId", "runners", "projectId")))
+                        *(testRun.setCurrentPropertyValues(skipProperties = listOf("_id", "params", "testRunId", "runners", "projectId")))
                     ),
                     push(TestRun::runners, runner)
                 )
@@ -391,13 +396,11 @@ class TestRunService {
     fun startRerun(testRunId: String) = runBlocking {
         val testRun = testRunCollection.findOne(TestRun::testRunId eq testRunId)!!
 
-        val newTestRun = createTestRun(CreateTestRunRequest(
+        createTestRun(CreateTestRunRequest(
             testRun.project,
             testRun.config!!.branch,
             testRun.params
         ))
-
-        startJob(newTestRun, newTestRun.config!!.branch)
     }
 
     fun deleteTestRun(testRunId: String) = runBlocking {

@@ -6,14 +6,15 @@ import TestResultsList from "../../components/testRuns/testRunResults/testResult
 import TestResultDetails from "../../components/testRuns/testRunResults/testResultDetails/TestResultDetails";
 import {getSingleTestResult} from "../../requests/testResults/TestResultsRequests";
 import {observer} from "mobx-react-lite";
-import testResultsFilterState from "../../state/testResults/TestResultsFilterState";
 import testResultsState from "../../state/testResults/TestResultsState";
+import PushTestRunModal from "../../components/testRuns/pushTestRunModal/PushTestRunModal";
+import pushModalState from "../../state/testRuns/PushModalState";
+import PushTestRunPopup from "../../components/testRuns/pushTestRunModal/PushTestRunPopup";
 
 const TestRunPage = observer(() => {
   const router = useRouter()
 
   const [testRun, setTestRun] = useState(null)
-
   const loadTestResultFromUrl = (testRunId) => {
     const identifier = router.query.test
 
@@ -51,6 +52,8 @@ const TestRunPage = observer(() => {
   }
 
   return <div style={{padding: "15px"}}>
+    <PushTestRunModal/>
+
     <TestRunResultsOverview
       testRun={testRun}
       updateTestRunInfo={updateTestRunInfo}
@@ -65,6 +68,11 @@ const TestRunPage = observer(() => {
         style={{marginLeft: '15px', overflowX: 'auto', width: 'min-content', flexGrow:'1.1'}}
       />
     </div>
+
+    {
+      pushModalState.selectedTests?.length > 0 &&
+      <PushTestRunPopup testRun={testRun} style={{position: 'absolute', bottom: '30px', right: '30px'}}/>
+    }
   </div>
 })
 

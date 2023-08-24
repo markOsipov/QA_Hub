@@ -47,10 +47,7 @@ class TestRunController {
 
     @PostMapping("/create")
     fun createTestRun(@RequestBody body: CreateTestRunRequest): TestRun {
-        val testRun = testRunService.createTestRun(body)
-        testRunService.startJob(testRun, body.branch)
-
-        return testRun
+        return testRunService.createTestRun(body)
     }
 
     @PostMapping("/start")

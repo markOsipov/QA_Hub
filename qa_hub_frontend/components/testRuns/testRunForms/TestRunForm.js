@@ -9,7 +9,7 @@ import Button from "@mui/material/Button";
 import StyledAccordionSummary from "../../primitives/StyledAccordeonSummary";
 import {Accordion, AccordionDetails, } from "@mui/material";
 import "../../../utils/Extensions";
-import TestRunFormParam from "./TestRunFormParam";
+import TestRunFormParam from "./formParam/TestRunFormParam";
 import SettingsIcon from '@mui/icons-material/Settings';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import {createNewTestRun} from "../../../requests/testRuns/TestRunRequests";
@@ -70,9 +70,6 @@ const TestRunForm = observer(() => {
 
             <AccordionDetails style={{marginTop: "20px", maxWidth: "1048px"}}>
                 <BranchSelector project={selectedProject} branch={branch} setBranch={setBranch}/>
-                {
-                    paramConfigs.length === 0 ? <Typography>No params configured for this project</Typography> : null
-                }
                 {
                     params.map((param, index) => {
                         return <TestRunFormParam key={"param_" + index } param={param} index={index} params={params} setParams={setParams} />

@@ -6,7 +6,8 @@ import TestRunCard from "./testRun/TestRunCard";
 import TestRunsFilter from "./filters/TestRunsFilter";
 import StyledTextField from "../../primitives/StyledTextField";
 import LoadMoreTestRunsButton from "./LoadMoreTestRunsButtons";
-import {getCookie, setCookie} from "../../../utils/CookieHelper";
+import {getCookie, QaHubCookies, setCookie} from "../../../utils/CookieHelper";
+import PushTestRunModal from "../pushTestRunModal/PushTestRunModal";
 
 const TestRunList = observer(({...props}) => {
   let {selectedProject} = projectState
@@ -14,7 +15,7 @@ const TestRunList = observer(({...props}) => {
   let [testRuns, setTestRuns] = useState([])
   let [filter, setFilter] = useState({})
 
-  const loadMoreCookie = "testRunsLoadCount"
+  const loadMoreCookie = QaHubCookies.testRunsLoadCount
   const defaultLoadSize = 50
   const initialLoadSize = Number.parseInt(getCookie(loadMoreCookie)) || defaultLoadSize
   const initialSkip = 0
@@ -59,6 +60,7 @@ const TestRunList = observer(({...props}) => {
 
 
   return <div style={{...props.style}}>
+    <PushTestRunModal/>
     <TestRunsFilter filter={filter} setFilter={setFilter} filterAndLoad={filterAndLoad}/>
     <div style={{minWidth: 'max-content'}}>
     {
