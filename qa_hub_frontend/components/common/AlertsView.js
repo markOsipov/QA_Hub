@@ -69,7 +69,7 @@ const CustomAlert = observer(({ index, alert, ...props}) => {
     alertState.removeAlert(index)
   }
 
-  // setTimeout(closeAlert, 10000);
+  setTimeout(closeAlert, 10000);
 
   return <StyledAlert
     icon={<div style={{
