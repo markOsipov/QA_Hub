@@ -2,6 +2,7 @@ package qa_hub.service
 
 import kotlinx.coroutines.*
 import org.litote.kmongo.*
+import org.litote.kmongo.coroutine.aggregate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import qa_hub.core.mongo.QaHubMongoClient
@@ -241,18 +242,22 @@ class TestRunService {
         enlistInQueue(testRunId, queueTicket)
         waitForYourTurn(testRunId, queueTicket)
 
-        val nextTest = testResultsCollection.findOne(
-            and(
-                TestResult::testRunId eq testRunId,
-                or(
-                    TestResult::status eq TestStatus.WAITING.status,
-                    and(
-                        TestResult::status eq TestStatus.FAILURE.status,
-                        TestResult::retries lt (testRun.config?.retries ?: 1)
+        val nextTest = testResultsCollection.aggregate<TestResult>(
+            match(
+                and(
+                    TestResult::testRunId eq testRunId,
+                    or(
+                        TestResult::status eq TestStatus.WAITING.status,
+                        and(
+                            TestResult::status eq TestStatus.FAILURE.status,
+                            TestResult::retries lt (testRun.config?.retries ?: 1)
+                        )
                     )
                 )
-            )
-        )
+            ),
+            sort(descending(TestResult::status)),
+            limit(1)
+        ).toList().firstOrNull()
 
         if (nextTest != null) {
             nextTest.apply {

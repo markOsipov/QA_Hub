@@ -13,16 +13,8 @@ import TestRunFormParam from "./formParam/TestRunFormParam";
 import SettingsIcon from '@mui/icons-material/Settings';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import {createNewTestRun} from "../../../requests/testRuns/TestRunRequests";
-import TextParam from "./paramTypes/TextParam";
-import {customTheme} from "../../../styles/CustomTheme";
-import StyledTooltip from "../../primitives/StyledTooltip";
-import ParamTypes from "./ParamTypes";
-import TextAreaParam from "./paramTypes/TextAreaParam";
-import SelectParam from "./paramTypes/SelectParam";
-import MultiSelectParam from "./paramTypes/MultiSelectParam";
-import BooleanParam from "./paramTypes/BooleanParam";
-import HelpIcon from "@mui/icons-material/Help";
 import BranchSelector from "./BranchSelector";
+import alertState from "../../../state/AlertState";
 
 const TestRunForm = observer(() => {
     let {selectedProject} = projectState
@@ -57,6 +49,16 @@ const TestRunForm = observer(() => {
         setIsEditTestRunFormModalOpen(true)
     }
 
+    const handleStartNewTestRunClick = () => {
+        createNewTestRun(selectedProject, branch, params).then(response => {
+            if (response.status >= 400) {
+                alertState.showAlert("Failed to start new testrun", "error")
+            } else {
+                alertState.showAlert("New testrun has started", "success")
+            }
+        })
+    }
+
     return <Paper>
         <EditTestRunFormModal isOpen={isEditTestRunFormModalOpen} setIsOpen={setIsEditTestRunFormModalOpen} params={paramConfigs} loadTestRunForm={loadTestRunForm}/>
 
@@ -89,9 +91,7 @@ const TestRunForm = observer(() => {
                     <Button variant="contained"
                             color="primary"
                             size="small"
-                            onClick={() => {
-                                createNewTestRun(selectedProject, branch, params)
-                            }}
+                            onClick={handleStartNewTestRunClick}
                             endIcon={<PlayArrowIcon />}
                     >Start</Button>
 

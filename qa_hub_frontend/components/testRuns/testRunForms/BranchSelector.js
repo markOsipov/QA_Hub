@@ -11,7 +11,6 @@ export default function BranchSelector({ project, branch, setBranch, ...props })
   useEffect(() => {
     getBranches(project).then( response => {
       if (response.data) {
-        console.log(response.data)
         setBranches(response.data)
       }
     })
