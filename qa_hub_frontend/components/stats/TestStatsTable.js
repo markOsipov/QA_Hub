@@ -8,24 +8,17 @@ import {
   TablePagination,
   TableRow
 } from "@mui/material";
-import AddBlockedTestModal from "../blocker/AddBlockedTestModal";
 import {StyledTableRow} from "../primitives/Table/StyledTableRow";
 import {StyledTableCell} from "../primitives/Table/StyledTableCell";
-import FullNameTableHeaderCell from "../blocker/FullNameTableHeaderCell";
-import BlockedTestTableRow from "../blocker/BlockedTestTableRow";
-import Button from "@mui/material/Button";
-import AddIcon from "@mui/icons-material/Add";
-import TablePaginationActions from "../primitives/Table/TablePaginationActions";
 import {observer} from "mobx-react-lite";
 import projectState from "../../state/ProjectState";
 import blockerState from "../../state/BlockerState";
-import {useEffect} from "react";
-import LockIcon from '@mui/icons-material/Lock';
-import StyledTooltip from "../primitives/StyledTooltip";
-import {customTheme} from "../../styles/CustomTheme";
+import {useEffect, useState} from "react";
 import TestStatRow from "./TestStatRow";
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-const TestStatsTable = observer(({ testStats, ...props }) => {
+const TestStatsTable = observer(({ testStats, sort, sortTestStats, ...props }) => {
   const {selectedProject} = projectState
   const {blockedTests} = blockerState
 
@@ -41,12 +34,12 @@ const TestStatsTable = observer(({ testStats, ...props }) => {
               <StyledTableRow>
                 <StyledTableCell align='center' style={{width: "50px"}}>№</StyledTableCell>
                 <StyledTableCell style={{width: "50px"}}/>
-                <StyledTableCell align='left'>FullName</StyledTableCell>
-                <StyledTableCell align='center'>Avg Retries</StyledTableCell>
-                <StyledTableCell align='center'>Avg Duration(s)</StyledTableCell>
-                <StyledTableCell align='center'>Success Rate</StyledTableCell>
-                <StyledTableCell align='center'>Last run</StyledTableCell>
-                <StyledTableCell align='center'>Last success</StyledTableCell>
+                <SortableTableCell fieldName={"fullName"} sortTestStats={sortTestStats} sort={sort} align='left'>FullName</SortableTableCell>
+                <SortableTableCell fieldName={"avgRetries"} sortTestStats={sortTestStats} sort={sort} align='center'>Avg Retries</SortableTableCell>
+                <SortableTableCell fieldName={"avgDuration"} sortTestStats={sortTestStats} sort={sort} align='center'>Avg Duration(s)</SortableTableCell>
+                <SortableTableCell fieldName={"successRate"} sortTestStats={sortTestStats} sort={sort} align='center'>Success Rate</SortableTableCell>
+                <SortableTableCell fieldName={"lastRun"} sortTestStats={sortTestStats} sort={sort} align='center'>Last run</SortableTableCell>
+                <SortableTableCell fieldName={"lastSuccess"} sortTestStats={sortTestStats} sort={sort} align='center'>Last success</SortableTableCell>
               </StyledTableRow>
             </TableHead>
             <TableBody>
@@ -63,3 +56,48 @@ const TestStatsTable = observer(({ testStats, ...props }) => {
 })
 
 export default TestStatsTable
+
+function SortableTableCell({fieldName, sort, sortTestStats, ...props}) {
+  const [hovered, setHovered] = useState(false)
+  function changeSortOrder() {
+    let isAscending = true
+    if (sort?.fieldName === fieldName) {
+      isAscending = !sort?.isAscending
+    }
+
+    sortTestStats(fieldName, isAscending)
+  }
+
+  return <StyledTableCell
+    style={{
+      ...props.style
+    }}
+
+    {...props}
+  >
+    <div style={{display:'flex', justifyContent: props.align}}>
+      <div
+        style={{
+          display: 'flex',
+          backgroundColor: hovered && 'rgba(255, 255, 255, 0.07)',
+          cursor: 'pointer',
+          padding: '10px 20px'
+        }}
+        onClick={changeSortOrder}
+        onMouseOver={() => { setHovered(true) }}
+        onMouseLeave={() => { setHovered(false) }}
+        onBlur={() => { setHovered(false) }}
+      >
+        <label style={{ cursor: 'pointer' }}>{props.children}</label>
+        {
+          sort?.fieldName === fieldName && sort?.isAscending &&
+          <ArrowDropUpIcon/>
+        }
+        {
+          sort?.fieldName === fieldName && !sort?.isAscending &&
+          <ArrowDropDownIcon/>
+        }
+      </div>
+    </div>
+  </StyledTableCell>
+}

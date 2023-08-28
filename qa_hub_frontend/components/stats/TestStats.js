@@ -9,9 +9,12 @@ import TestStatsTable from "./TestStatsTable";
 const TestStats = observer (({...props}) => {
   let {selectedProject} = projectState
 
+  const defaultFilter = {}
+  const defaultSort = null
+
   let [testStats, setTestStats] = useState([])
-  let [filter, setFilter] = useState({})
-  let [sort, setSort] = useState(null)
+  let [filter, setFilter] = useState(defaultFilter)
+  let [sort, setSort] = useState(defaultSort)
 
   const loadMoreCookie = QaHubCookies.testStatsLoadCount
   const defaultLoadSize = 50
@@ -36,12 +39,25 @@ const TestStats = observer (({...props}) => {
     })
   }
 
-  function filterAndLoad(filter) {
+  function sortTestStats(fieldName, isAscending) {
+    const newSort = { fieldName: fieldName, isAscending: isAscending }
+    setSort(newSort)
+
+    filterAndLoad(filter, newSort)
+  }
+
+  function filterAndLoad(newFilter, newSort) {
     setLoading(true)
-    const filterValue = filter || {}
+
+    const filterValue = newFilter || filter || defaultFilter
+    const sortValue = newSort || sort || defaultSort
+
     setFilter(filterValue)
+    setSort(sortValue)
+
     setLastTestStatsLoaded(false)
-    getTestStats(selectedProject, filterValue, initialSkip, loadMoreSize, sort).then(response => {
+
+    getTestStats(selectedProject, filterValue, initialSkip, loadMoreSize, sortValue).then(response => {
       setLoading(false)
       if (response.data) {
         setTestStats(response.data)
@@ -64,7 +80,7 @@ const TestStats = observer (({...props}) => {
   return <div>
     <TestRunsFilter filter={filter} setFilter={setFilter} filterAndLoad={filterAndLoad} title={"Test stats by testruns"} loading={loading}/>
 
-    <TestStatsTable testStats={testStats}/>
+    <TestStatsTable testStats={testStats} sort={sort} sortTestStats={sortTestStats}/>
   </div>
 })
 

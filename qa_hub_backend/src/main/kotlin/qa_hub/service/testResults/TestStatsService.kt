@@ -110,7 +110,7 @@ class TestStatsService {
                 """
                     {
                         ${'$'}sort: {
-                            ${request.sort.fieldName}: ${if (request.sort.isAscending) 1 else 0}
+                            ${request.sort.fieldName}: ${if (request.sort.isAscending) 1 else -1}
                         }
                     }
                 """.trimIndent()
