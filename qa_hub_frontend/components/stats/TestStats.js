@@ -2,7 +2,6 @@ import {useEffect, useState} from "react";
 import {getCookie, QaHubCookies, setCookie} from "../../utils/CookieHelper";
 import projectState from "../../state/ProjectState";
 import {observer} from "mobx-react-lite";
-import {getTestRuns} from "../../requests/testRuns/TestRunRequests";
 import {getTestStats} from "../../requests/TestStatsRequests";
 import TestRunsFilter from "../testRuns/testRunList/filters/TestRunsFilter";
 import TestStatsTable from "./TestStatsTable";
@@ -22,7 +21,6 @@ const TestStats = observer (({...props}) => {
   const [loadMoreSize, setLoadMoreSize] = useState(initialLoadSize)
   const [lastTestStatsLoaded, setLastTestStatsLoaded] = useState(false)
   const [loading, setLoading] = useState(false)
-
 
   const loadTestStats = async () => {
     setLoading(true)
