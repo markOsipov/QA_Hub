@@ -13,3 +13,12 @@ export function getTimeMinutes(timestamp) {
 
     return  time.substring(0, time.lastIndexOf(":"))
 }
+
+export function daysBetween(date1, date2) {
+    const parsedDate1 = new Date(date1)
+    const parsedDate2 = date2 && new Date(date2) || new Date()
+
+    const coeff = (1000 * 3600 * 24)
+    const timediff = (parsedDate2.getTime() - parsedDate1.getTime()) / coeff
+    return Number.parseInt(timediff)
+}

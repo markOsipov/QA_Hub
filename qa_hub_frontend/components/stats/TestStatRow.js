@@ -5,7 +5,7 @@ import {observer} from "mobx-react-lite";
 import blockerState from "../../state/BlockerState";
 import LockIcon from "@mui/icons-material/Lock";
 import {customTheme} from "../../styles/CustomTheme";
-import {getDate} from "../../utils/DateTimeUtils";
+import {daysBetween, getDate} from "../../utils/DateTimeUtils";
 
 const TestStatRow = observer(({testStat, index, ...props}) => {
   const {blockedTests} = blockerState
@@ -51,16 +51,30 @@ const TestStatRow = observer(({testStat, index, ...props}) => {
           <div style={{backgroundColor: customTheme.palette.error.main, height: '100%', width: `${100 - successRate}%`}}></div>
         </div>
       </div>
-
-
     </StyledTableCell>
 
     <StyledTableCell align="center">
-      {testStat.lastRun && getDate(testStat.lastRun)}
+      <div style={{display: 'flex', justifyContent: 'center'}}>
+        <div style={{display: 'flex'}}>
+          <label>{testStat.lastRun && getDate(testStat.lastRun)}</label>
+          {
+            testStat.lastRun &&
+            <label style={{marginLeft: '10px', color: customTheme.palette.text.disabled}}>{ daysBetween(testStat.lastRun) } days</label>
+          }
+        </div>
+      </div>
     </StyledTableCell>
 
     <StyledTableCell align="center">
-      {testStat.lastSuccess && getDate(testStat.lastSuccess)}
+      <div style={{display: 'flex', justifyContent: 'center'}}>
+        <div style={{display: 'flex'}}>
+          <label>{testStat.lastSuccess && getDate(testStat.lastSuccess)}</label>
+          {
+            testStat.lastSuccess &&
+            <label style={{marginLeft: '10px', color: customTheme.palette.text.disabled}}>{ daysBetween(testStat.lastSuccess) } days</label>
+          }
+        </div>
+      </div>
     </StyledTableCell>
   </StyledTableRow>
 })
