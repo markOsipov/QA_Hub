@@ -14,6 +14,7 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import CustomIconButton from "../../primitives/CustomIconButton";
 import {customTheme} from "../../../styles/CustomTheme";
 import ClearIcon from "@mui/icons-material/Clear";
+import alertState from "../../../state/AlertState";
 
 
 const PushTestRunModal = observer(() => {
@@ -26,6 +27,18 @@ const PushTestRunModal = observer(() => {
 
   const handleClose = () => {
     pushModalState.setIsOpen(!confirm("Close modal window?"));
+  }
+
+  const handleStartNewTestRunClick = () => {
+    createNewTestRun(selectedProject, branch, params).then(response => {
+      if (response.status >= 400) {
+        alertState.showAlert("Failed to start new testrun", "error")
+
+      } else {
+        alertState.showAlert("New testrun has started", "success")
+        pushModalState.setIsOpen(false)
+      }
+    })
   }
 
   function loadTestRunForm() {
@@ -95,9 +108,7 @@ const PushTestRunModal = observer(() => {
         <Button variant="contained"
                 color="primary"
                 size="small"
-                onClick={() => {
-                  createNewTestRun(selectedProject, branch, params)
-                }}
+                onClick={handleStartNewTestRunClick}
                 endIcon={<PlayArrowIcon />}
         >Start</Button>
 

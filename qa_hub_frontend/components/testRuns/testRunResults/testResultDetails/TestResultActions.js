@@ -16,7 +16,6 @@ const TestResultActions = observer(({ testResult, ...props}) => {
       testResult.fullName
     ])
     const arr = Array.from(set)
-    setCookie(QaHubCookies.testsForNextTestRun, arr)
 
     pushModalState.setSelectedTests(arr)
   }

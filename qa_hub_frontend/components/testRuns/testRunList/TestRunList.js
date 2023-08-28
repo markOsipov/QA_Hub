@@ -64,10 +64,10 @@ const TestRunList = observer(({...props}) => {
     <TestRunsFilter filter={filter} setFilter={setFilter} filterAndLoad={filterAndLoad}/>
     <div style={{minWidth: 'max-content'}}>
     {
-      testRuns.map((testRun) => {
+      testRuns.map((testRun, index) => {
         return <TestRunCard
           testRun={testRun}
-          key={testRun.testRunId}
+          key={index}
           style={{marginTop: "15px", minWidth: 'max-content'}}
           filter={filter}
           setFilter={setFilter}

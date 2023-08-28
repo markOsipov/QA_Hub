@@ -8,6 +8,7 @@ import {loadProjects} from "../requests/ProjectRequests";
 import {useEffect} from "react";
 import { useRouter } from 'next/router'
 import GoToSettingsStub from "../components/stubs/GoToSettingsStub";
+import AlertsView from "../components/common/AlertsView";
 
 function MyApp({ Component, pageProps }) {
     let router = useRouter()
@@ -48,6 +49,7 @@ function MyApp({ Component, pageProps }) {
                 ) : (
                     <div style={{height: '91vh', minHeight: '91vh', overflowY: 'auto'}}>
                         <Component {...pageProps} />
+                        <AlertsView style={{position: "absolute", right: '30px', bottom: '20px'}}/>
                     </div>
                 )
             }

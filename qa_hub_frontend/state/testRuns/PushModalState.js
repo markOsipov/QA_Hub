@@ -1,5 +1,5 @@
 import {makeAutoObservable} from "mobx";
-import {getCookie, QaHubCookies} from "../../utils/CookieHelper";
+import {getCookie, QaHubCookies, setCookie} from "../../utils/CookieHelper";
 
 class PushModalState {
   isOpen = false
@@ -14,6 +14,7 @@ class PushModalState {
   }
 
   setSelectedTests(value) {
+    setCookie(QaHubCookies.testsForNextTestRun, value)
     this.selectedTests = value
   }
 
