@@ -47,7 +47,7 @@ function MyApp({ Component, pageProps }) {
                 shouldNavigateToSettings() ? (
                     <GoToSettingsStub />
                 ) : (
-                    <div style={{height: '91vh', minHeight: '91vh', overflowY: 'auto'}}>
+                    <div style={{height: 'calc(100vh - 65px)', minHeight: 'calc(100vh - 65px)', overflowY: 'auto'}}>
                         <Component {...pageProps} />
                         <AlertsView style={{position: "absolute", right: '30px', bottom: '20px'}}/>
                     </div>

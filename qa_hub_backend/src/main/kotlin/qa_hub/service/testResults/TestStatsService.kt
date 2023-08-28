@@ -50,10 +50,18 @@ class TestStatsService {
     }
 
     fun getStatsForProject(request: TestStatsRequest): List<TestStats> = runBlocking {
-        val filteredTestRuns = getFilteredTestRuns(request.project, request.filter)
+        val filteredTestRuns = getFilteredTestRuns(request.project, request.filter).sortedByDescending { it.timeMetrics.created }
+        val testRunIds = filteredTestRuns.map{ '"' + it.testRunId + '"'}
 
         //default kmongo functions have bugs + do not support some of mongo operators
         val pipeline: MutableList<String> = mutableListOf(
+            """
+                {
+                    ${'$'}match: {
+                        testRunId: { ${'$'}in: [${ testRunIds.joinToString(", ") }]}                            
+                    }
+                }
+            """.trimIndent(),
             """
                 {
                     ${'$'}group: {
