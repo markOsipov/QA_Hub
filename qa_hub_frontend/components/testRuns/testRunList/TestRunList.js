@@ -63,44 +63,44 @@ const TestRunList = observer(({...props}) => {
     <PushTestRunModal/>
     <TestRunsFilter filter={filter} setFilter={setFilter} filterAndLoad={filterAndLoad}/>
     <div style={{minWidth: 'max-content'}}>
-    {
-      testRuns.map((testRun, index) => {
-        return <TestRunCard
-          testRun={testRun}
-          key={index}
-          style={{marginTop: "15px", minWidth: 'max-content'}}
-          filter={filter}
-          setFilter={setFilter}
-          filterAndLoad={filterAndLoad}
-        />
-      })
-    }
-    {
-      !lastTestRunLoaded &&
-      <LoadMoreTestRunsButton
-        loadMoreSize={loadMoreSize}
-        loadMoreTestRuns={loadTestRuns}
-        style={{marginTop: '25px'}}
-      />
-    }
-    <div style={{marginTop: '11px', paddingLeft: '4px', opacity: '0.55'}}>
-      <div style={{display: 'flex'}}>
-        <label >{`Test runs loaded: ${testRuns.length}`}</label>
-        <div style={{flexGrow: '1.1'}}></div>
-
-        <div style={{display: 'flex', alignItems: 'center'}}>
-          <label style={{fontSize: '12px', marginRight: '5px'}}>Load count</label>
-          <StyledTextField
-            size={"tiny"}
-            value={loadMoreSize}
-            onChange={updateLoadMoreCount}
-            onBlur={saveCurrentLoadCount}
-            style={{width: 'min-content', minWidth: '50px'}}
-            type={'number'}
+      {
+        testRuns.map((testRun, index) => {
+          return <TestRunCard
+            testRun={testRun}
+            key={index}
+            style={{marginTop: "15px", minWidth: 'max-content'}}
+            filter={filter}
+            setFilter={setFilter}
+            filterAndLoad={filterAndLoad}
           />
+        })
+      }
+      {
+        !lastTestRunLoaded &&
+        <LoadMoreTestRunsButton
+          loadMoreSize={loadMoreSize}
+          loadMoreTestRuns={loadTestRuns}
+          style={{marginTop: '25px'}}
+        />
+      }
+      <div style={{marginTop: '11px', paddingLeft: '4px', opacity: '0.55'}}>
+        <div style={{display: 'flex'}}>
+          <label >{`Test runs loaded: ${testRuns.length}`}</label>
+          <div style={{flexGrow: '1.1'}}></div>
+
+          <div style={{display: 'flex', alignItems: 'center'}}>
+            <label style={{fontSize: '12px', marginRight: '5px'}}>Load count</label>
+            <StyledTextField
+              size={"tiny"}
+              value={loadMoreSize}
+              onChange={updateLoadMoreCount}
+              onBlur={saveCurrentLoadCount}
+              style={{width: 'min-content', minWidth: '50px'}}
+              type={'number'}
+            />
+          </div>
         </div>
       </div>
-    </div>
     </div>
   </div>
 })

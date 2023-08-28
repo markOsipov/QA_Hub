@@ -5,12 +5,18 @@ import {observer} from "mobx-react-lite";
 import {getTestStats} from "../../requests/TestStatsRequests";
 import TestRunsFilter from "../testRuns/testRunList/filters/TestRunsFilter";
 import TestStatsTable from "./TestStatsTable";
+import LoadMoreTestRunsButton from "../testRuns/testRunList/LoadMoreTestRunsButtons";
+import StyledTextField from "../primitives/StyledTextField";
+import LoadMoreTestStatsButton from "./LoadMoreTestStatsButton";
 
 const TestStats = observer (({...props}) => {
   let {selectedProject} = projectState
 
   const defaultFilter = {}
-  const defaultSort = null
+  const defaultSort = {
+    fieldName: 'fullName',
+    isAscending: true
+  }
 
   let [testStats, setTestStats] = useState([])
   let [filter, setFilter] = useState(defaultFilter)
@@ -78,9 +84,37 @@ const TestStats = observer (({...props}) => {
   }
 
   return <div>
-    <TestRunsFilter filter={filter} setFilter={setFilter} filterAndLoad={filterAndLoad} title={"Test stats by testruns"} loading={loading}/>
+    <TestRunsFilter filter={filter} setFilter={setFilter} filterAndLoad={filterAndLoad} title={"Test stats by testruns"} loading={loading} style={{margin: '10px'}}/>
 
-    <TestStatsTable testStats={testStats} sort={sort} sortTestStats={sortTestStats}/>
+    <div style={{maxHeight: 'calc(100vh - 165px)', overflowY: 'auto', marginLeft: '10px'}}>
+      <TestStatsTable testStats={testStats} sort={sort} sortTestStats={sortTestStats}/>
+      {
+        !lastTestStatsLoaded &&
+        <LoadMoreTestStatsButton
+          loadMoreSize={loadMoreSize}
+          loadMoreTestStats={loadTestStats}
+          style={{marginTop: '25px'}}
+        />
+      }
+      <div style={{marginTop: '11px', paddingLeft: '4px', opacity: '0.55'}}>
+        <div style={{display: 'flex'}}>
+          <label >{`Test stats loaded: ${testStats.length}`}</label>
+          <div style={{flexGrow: '1.1'}}></div>
+
+          <div style={{display: 'flex', alignItems: 'center'}}>
+            <label style={{fontSize: '12px', marginRight: '5px'}}>Load count</label>
+            <StyledTextField
+              size={"tiny"}
+              value={loadMoreSize}
+              onChange={updateLoadMoreCount}
+              onBlur={saveCurrentLoadCount}
+              style={{width: 'min-content', minWidth: '50px'}}
+              type={'number'}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 })
 

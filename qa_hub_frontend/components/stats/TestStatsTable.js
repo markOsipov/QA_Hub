@@ -27,7 +27,7 @@ const TestStatsTable = observer(({ testStats, sort, sortTestStats, ...props }) =
   }, [selectedProject])
 
   return <div style={{...props.style}}>
-      <Paper elevation={3} style={{marginTop: '10px', maxHeight: "calc(100vh - 165px)", overflowY: "auto", minWidth: "35vw" }}>
+      <Paper elevation={3}>
         <TableContainer style={{}}>
           <Table size="small" stickyHeader >
             <TableHead style={{ height: "60px" }}>
