@@ -93,8 +93,6 @@ class TestResultsService {
     fun countTestResults(testRunId: String, request: TestResultFilter?): CountResponse = runBlocking {
         val filter = mutableListOf(TestResult::testRunId eq testRunId)
 
-
-
         request?.let {
             if (it.deviceId != null) {
                 filter.add(TestResult::deviceId eq it.deviceId)

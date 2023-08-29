@@ -46,6 +46,7 @@ data class TestRun(
     var tags: MutableList<String> = mutableListOf(),
     var runners: List<TestRunRunner> = listOf(),
 
+    var startedByRunner: String? = null,
     var cicdJobId: String? = null,
     var allureLaunchId: String? = null
 )

@@ -129,20 +129,34 @@ class TestRunService {
     }
 
     fun startTestRun(startTestRunRequest: StartTestRunRequest) = runBlocking {
-        val testRun: TestRun = if (startTestRunRequest.testRunId.isNullOrBlank()) {
+        var testRun: TestRun = if (startTestRunRequest.testRunId.isNullOrBlank()) {
             createTestRun(startTestRunRequest, false)
         } else {
             getTestRun(startTestRunRequest.testRunId!!)!!
         }
         val startDate = currentDateTimeUtc()
-        val started = testRun.status == TestRunStatus.PROCESSING.status
         val runner = TestRunRunner(
             name = startTestRunRequest.runner ?: "Runner ${testRun.runners.size + 1}",
             simulators = startTestRunRequest.simulators,
             started = startDate
         )
 
-        if (!started) {
+        val notStarted = testRun.startedByRunner == null
+        //To make sure that no runners will start the same testrun and double the test queue and test results
+        if (notStarted) {
+            testRunCollection.updateOne(
+                and(
+                    TestRun::testRunId eq testRun.testRunId,
+                    TestRun::startedByRunner eq null
+                ),
+                set(
+                    TestRun::startedByRunner setTo runner.name
+                )
+            )
+        }
+
+        testRun = getTestRun(startTestRunRequest.testRunId!!)!!
+        if (testRun.startedByRunner == runner.name) {
             testRun.status = TestRunStatus.PROCESSING.status
             testRun.timeMetrics.started = startDate
             testRun.config = startTestRunRequest.config
