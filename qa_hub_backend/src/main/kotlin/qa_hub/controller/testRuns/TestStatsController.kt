@@ -2,7 +2,7 @@ package qa_hub.controller.testRuns
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
-import qa_hub.entity.testRun.TestHistory
+import qa_hub.entity.testRun.SingleTestStats
 import qa_hub.entity.testRun.TestHistoryRequest
 import qa_hub.entity.testRun.TestStats
 import qa_hub.entity.testRun.TestStatsRequest
@@ -26,7 +26,7 @@ class TestStatsController {
     }
 
     @PostMapping("/history")
-    fun getTestHistory(@RequestBody request: TestHistoryRequest): TestHistory {
+    fun getTestHistory(@RequestBody request: TestHistoryRequest): SingleTestStats {
         return testStatsService.getTestHistory(request)
     }
 

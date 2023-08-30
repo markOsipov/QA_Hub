@@ -16,11 +16,16 @@ data class TestHistoryRequest(
     val filter: TestResultsFilter? = null
 )
 
-data class TestHistory(
-    val project: String,
-    val fullName: String,
-    val stats: TestStats,
-    val history: List<TestResult>
+data class SingleTestStats(
+    var fullName: String,
+    var totalRuns: Int? = null,
+    var successRuns: Int? = null,
+    var successRate: Double,
+    var avgDuration: Int,
+    var avgRetries: Double,
+    var lastRun: String? = null,
+    var lastSuccess: String? = null,
+    var results: List<TestResult> = listOf()
 )
 
 data class Sort(

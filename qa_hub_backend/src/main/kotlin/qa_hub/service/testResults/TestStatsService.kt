@@ -221,7 +221,7 @@ class TestStatsService {
         )
     }
 
-    fun getTestHistory(request: TestHistoryRequest): TestHistory = runBlocking {
+    fun getTestHistory(request: TestHistoryRequest): SingleTestStats = runBlocking {
         val testRunIds = getFilteredTestRuns(request.project, request.filter)
             .map{ it.testRunId }
 
@@ -236,20 +236,55 @@ class TestStatsService {
                     )
                 )
             ),
+            """
+                {
+                    ${'$'}group: {
+                        _id: "${'$'}fullName",
+                        fullName: { ${'$'}first: "${'$'}fullName"},
+                        results: { ${'$'}push: "${"$$"}ROOT" },
+                        totalRuns: {${'$'}sum: 1},
+                        avgDuration: { ${'$'}avg: "${'$'}duration"},
+                        avgRetries: { ${'$'}avg: "${'$'}retries"},
+                        successRuns : {
+                             ${'$'}sum: {
+                                 ${'$'}cond: {
+                                    if: { ${'$'}eq: [ "${'$'}status", "SUCCESS" ] },
+                                    then: 1,
+                                    else: 0
+                                }
+                            } 
+                        },
+                        lastRun: {
+                            ${'$'}max: "${'$'}date"
+                        },
+                        lastSuccess: {
+                            ${'$'}max: {
+                               ${'$'}cond: {
+                                   if: { ${'$'}eq: [ "${'$'}status", "SUCCESS" ] },
+                                   then: "${'$'}date",
+                                   else: null
+                               }
+                           } 
+                        },
+                    }
+                }
+            """.trimIndent().bson,
+            """
+                {
+                    ${'$'}addFields: {
+                        "successRate" : {
+                            "${'$'}divide": ["${'$'}successRuns", "${'$'}totalRuns"]
+                        }
+                    }
+ 	            }
+            """.trimIndent().bson,
             sort(
                 descending(TestResult::date)
             )
         )
 
-        val testResults = testResultsCollection.aggregate<TestResult>(*pipeline.toTypedArray()).toList()
+        val testHistory = testResultsCollection.aggregate<SingleTestStats>(*pipeline.toTypedArray()).toList()
 
-        val testStats = calculateTestStats(testResults.first().fullName, testResults)
-
-        return@runBlocking TestHistory(
-            project = request.project,
-            fullName = testResults.first().fullName,
-            stats = testStats,
-            history = testResults
-        )
+        return@runBlocking testHistory.first()
     }
 }
