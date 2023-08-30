@@ -3,6 +3,7 @@ package qa_hub.service
 import kotlinx.coroutines.*
 import org.litote.kmongo.*
 import org.litote.kmongo.coroutine.aggregate
+import org.litote.kmongo.coroutine.updateOne
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import qa_hub.core.mongo.QaHubMongoClient
@@ -128,16 +129,41 @@ class TestRunService {
         return@runBlocking insertedTestRun
     }
 
-    fun startTestRun(startTestRunRequest: StartTestRunRequest) = runBlocking {
-        var testRun: TestRun = if (startTestRunRequest.testRunId.isNullOrBlank()) {
-            createTestRun(startTestRunRequest, false)
-        } else {
-            getTestRun(startTestRunRequest.testRunId!!)!!
-        }
+    fun createTestRunForJob(request: StartTestRunRequest): TestRun = runBlocking {
+        testRunCollection.updateOne(
+            TestRun::cicdJobId eq request.cicdJobId,
+            combine(
+                min(
+                  TestRun::testRunId, currentEpoch().toString()
+                ),
+                min(
+                    TestRun::timeMetrics / TestRunTimeMetrics::created, currentEpoch().toString()
+                ),
+                set(
+                    TestRun::project setTo request.project,
+                    TestRun::params setTo request.params,
+                    TestRun::status setTo TestRunStatus.CREATED.status
+                )
+            ),
+            upsert()
+        )
+
+        return@runBlocking testRunCollection.find(TestRun::cicdJobId eq request.cicdJobId).toList().first()
+    }
+
+    fun startTestRun(request: StartTestRunRequest) = runBlocking {
+        var testRun: TestRun = if (request.testRunId?.isNotEmpty() == true) {
+                getTestRun(request.testRunId!!)!!
+            } else if (request.cicdJobId?.isNotEmpty() == true) {
+                testRunCollection.findOne(TestRun::cicdJobId eq request.cicdJobId)?: createTestRunForJob(request)
+            } else {
+                createTestRun(request, false)
+            }
+
         val startDate = currentDateTimeUtc()
         val runner = TestRunRunner(
-            name = startTestRunRequest.runner ?: "Runner ${testRun.runners.size + 1}",
-            simulators = startTestRunRequest.simulators,
+            name = request.runner ?: "Runner ${testRun.runners.size + 1}",
+            simulators = request.simulators,
             started = startDate
         )
 
@@ -155,13 +181,13 @@ class TestRunService {
             )
         }
 
-        testRun = getTestRun(startTestRunRequest.testRunId!!)!!
+        testRun = getTestRun(testRun.testRunId)!!
         if (testRun.startedByRunner == runner.name) {
             testRun.status = TestRunStatus.PROCESSING.status
             testRun.timeMetrics.started = startDate
-            testRun.config = startTestRunRequest.config
-            testRun.tests = TestRunTests(testsCount = startTestRunRequest.testList.size, 0, 0)
-            testRun.cicdJobId = startTestRunRequest.cicdJobId
+            testRun.config = request.config
+            testRun.tests = TestRunTests(testsCount = request.testList.size, 0, 0)
+            testRun.cicdJobId = request.cicdJobId
 
             testRunCollection.updateOne(
                 TestRun::testRunId eq testRun.testRunId,
@@ -179,7 +205,7 @@ class TestRunService {
                 upsert()
             )
 
-            val updateTestResultRequests = startTestRunRequest.testList.map {
+            val updateTestResultRequests = request.testList.map {
                 TestResult(
                     testRunId = testRun.testRunId,
                     testcaseId = it.testId,
@@ -188,8 +214,9 @@ class TestRunService {
                     status = TestStatus.WAITING.status
                 )
             }
-
-            testResultsCollection.insertMany(updateTestResultRequests)
+            if (updateTestResultRequests.isNotEmpty()) {
+                testResultsCollection.insertMany(updateTestResultRequests)
+            }
         } else {
             testRunCollection.updateOne(
                 TestRun::testRunId eq testRun.testRunId,
@@ -375,7 +402,7 @@ class TestRunService {
 
     fun finishRunForRunner(
         testRunId: String,
-        hasError: Boolean = false,
+        runnerHasError: Boolean = false,
         runner: String
     ): TestRun = runBlocking {
         val endDate = currentDateTimeUtc()
@@ -384,7 +411,7 @@ class TestRunService {
             and(TestRun::testRunId eq testRunId, TestRun::runners / TestRunRunner::name eq runner),
             set(
                 TestRun::runners.posOp / TestRunRunner::finished setTo endDate,
-                TestRun::runners.posOp / TestRunRunner::withError setTo hasError
+                TestRun::runners.posOp / TestRunRunner::withError setTo runnerHasError
             )
         )
 
@@ -408,6 +435,10 @@ class TestRunService {
                 hasError = hasError
             )
         }
+
+        testQueueCollection.deleteMany(
+            TestQueue::testRunId eq testRunId
+        )
 
         return@runBlocking testRun
     }

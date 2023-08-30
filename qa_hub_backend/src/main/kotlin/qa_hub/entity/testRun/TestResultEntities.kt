@@ -31,6 +31,7 @@ data class TestResult(
     var duration: Double? = null,
     var status: String,
     var retries: Int = 0,
+    var date: String? = null,
 
     var message: String? = null,
     var runner: String = "unknown",
@@ -52,5 +53,7 @@ enum class TestStatus(val status: String) {
         fun isFinal(status: String): Boolean {
             return listOf(SUCCESS.status, FAILURE.status).contains(status)
         }
+
+        val finalStatuses = values().map { it.status }.filter { isFinal(it) }
     }
 }

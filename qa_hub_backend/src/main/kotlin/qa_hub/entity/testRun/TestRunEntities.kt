@@ -58,12 +58,18 @@ data class TestRunConfig(
     var retries: Int = 1,
     var parallelThreads: Int = 1
 )
-enum class TestRunStatus(val status: String) {
-    CREATED("CREATED"),
-    PROCESSING("PROCESSING"),
-    FINISHED("FINISHED"),
-    CANCELED("CANCELED"),
-    ERROR("ERROR")
+enum class TestRunStatus(val status: String, val isFinal: Boolean) {
+    CREATED("CREATED", false),
+    PROCESSING("PROCESSING", false),
+    FINISHED("FINISHED", true),
+    CANCELED("CANCELED", true),
+    ERROR("ERROR", true);
+
+    companion object {
+        val finalStatuses = values()
+            .filter { it.isFinal }
+            .map { it.status }
+    }
 }
 data class TestRunTimeMetrics(
     var created: String,

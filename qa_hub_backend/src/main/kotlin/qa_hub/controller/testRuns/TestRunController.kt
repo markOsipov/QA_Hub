@@ -2,7 +2,6 @@ package qa_hub.controller.testRuns
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.ClassPathResource
@@ -18,7 +17,6 @@ import java.io.InputStreamReader
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import kotlin.random.Random
-import kotlin.random.nextLong
 
 
 @RestController
@@ -80,7 +78,7 @@ class TestRunController {
         @RequestParam(required = false, defaultValue = "false") hasError: Boolean,
         @RequestParam(required = false, defaultValue = "") runner: String
     ): TestRun {
-        return testRunService.finishRunForRunner(testRunId = testRunId, hasError = hasError, runner = runner)
+        return testRunService.finishRunForRunner(testRunId = testRunId, runnerHasError = hasError, runner = runner)
     }
 
     @PostMapping("/delete/{testRunId}")

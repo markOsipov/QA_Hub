@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service
 import qa_hub.core.mongo.QaHubMongoClient
 import qa_hub.core.mongo.entity.Collections
 import qa_hub.core.mongo.utils.setCurrentPropertyValues
+import qa_hub.core.utils.DateTimeUtils
 import qa_hub.entity.testRun.*
 import qa_hub.service.TestRunService
 
@@ -180,6 +181,7 @@ class TestResultsService {
             skipProperties.add("retries")
         }
 
+        testResult.date = DateTimeUtils.currentDateTimeUtc()
         launch {
             updateRetriesInfo(testResult)
         }

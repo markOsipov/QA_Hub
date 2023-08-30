@@ -10,6 +10,19 @@ data class TestStatsRequest(
     val sort: Sort? = null
 )
 
+data class TestHistoryRequest(
+    val project: String,
+    val testcaseId: String,
+    val filter: TestResultsFilter? = null
+)
+
+data class TestHistory(
+    val project: String,
+    val fullName: String,
+    val stats: TestStats,
+    val history: List<TestResult>
+)
+
 data class Sort(
     val fieldName: String,
     val isAscending: Boolean = true
@@ -17,7 +30,8 @@ data class Sort(
 data class TestResultsFilter(
     val branch: String?,
     val tag: String?,
-    val takeLast: Int?
+    val takeLast: Int?,
+    val environment: String?
 )
 
 data class TestStats(
