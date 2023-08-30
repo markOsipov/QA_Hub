@@ -21,7 +21,7 @@ const ProjectTMSForm = observer(({project, setProject, ...props}) => {
     </StyledAccordionSummary>
     <AccordionDetails style={{display: 'grid'}}>
       <FormControl sx={{margin: "8px" }} size="small">
-        <InputLabel style={{ color: "var(--faded-text-color)" }}>Type</InputLabel>
+        <InputLabel style={{ color: customTheme.palette.text.faded }}>Type</InputLabel>
         <StyledSelect
           value={project.tms?.type || ""}
           label="Platform"

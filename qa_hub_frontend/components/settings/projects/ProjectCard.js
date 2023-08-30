@@ -65,13 +65,13 @@ export default function ProjectCard({project, ...props}) {
             >
                 <MenuItem onClick={handleEditProject}>
                     <ListItemIcon>
-                        <EditIcon fontSize="small" style={{color: "var(--primary-text-color)"}}/>
+                        <EditIcon fontSize="small" style={{color: customTheme.palette.text.primary}}/>
                     </ListItemIcon>
                     <ListItemText>Edit</ListItemText>
                 </MenuItem>
                 <MenuItem onClick={handleDeleteProject}>
                     <ListItemIcon>
-                        <DeleteIcon fontSize="small" style={{color: "var(--primary-text-color)"}}/>
+                        <DeleteIcon fontSize="small" style={{color: customTheme.palette.text.primary}}/>
                     </ListItemIcon>
                     <ListItemText>Delete</ListItemText>
                 </MenuItem>

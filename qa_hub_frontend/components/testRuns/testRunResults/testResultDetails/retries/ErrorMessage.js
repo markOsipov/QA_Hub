@@ -93,7 +93,7 @@ const ErrorMessage = observer(({ message, ...props }) => {
 
       <MenuItem onClick={handleAddToFilterClick}>
         <ListItemIcon>
-          <FilterAltIcon fontSize="small" style={{color: "var(--primary-text-color)"}}/>
+          <FilterAltIcon fontSize="small" style={{color: customTheme.palette.text.primary}}/>
         </ListItemIcon>
         <ListItemText>Add to filter</ListItemText>
       </MenuItem>

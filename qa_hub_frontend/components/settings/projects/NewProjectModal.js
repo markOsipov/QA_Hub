@@ -20,6 +20,7 @@ import integrationsState from "../../../state/IntegrationsState";
 import ProjectCICDForm from "./components/ProjectCICDForm";
 import ProjectTMSForm from "./components/ProjectTMSForm";
 import ProjectTaskTrackerForm from "./components/ProjectTaskTrackerForm";
+import {customTheme} from "../../../styles/CustomTheme";
 
 function NewProjectModal({isOpen, setIsOpen}) {
     const defaultProjectValue = {
@@ -94,7 +95,7 @@ function NewProjectModal({isOpen, setIsOpen}) {
             />
 
             <FormControl sx={{ minWidth: "100%", marginBottom: "8px" }} size="small">
-                <InputLabel style={{ color: "var(--faded-text-color)" }}>Platform</InputLabel>
+                <InputLabel style={{ color: customTheme.palette.text.faded }}>Platform</InputLabel>
                 <StyledSelect
                     value={newProject.platform || ''}
                     label="Platform"

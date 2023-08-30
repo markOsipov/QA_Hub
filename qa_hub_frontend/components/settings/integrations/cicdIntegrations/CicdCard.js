@@ -8,6 +8,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {deleteCicdIntegration} from "../../../../requests/integrations/CICDRequests";
 import EditCicdModal from "./EditCicdModal";
 import TextWithLabel from "../../../primitives/TextWithLabel";
+import {customTheme} from "../../../../styles/CustomTheme";
 
 export default function CicdCard({cicd, updateCicdList, cicdTypes, cicdIntegrations, ...props}) {
     const [menuAnchor, setMenuAnchor] = useState(null);
@@ -63,13 +64,13 @@ export default function CicdCard({cicd, updateCicdList, cicdTypes, cicdIntegrati
             >
                 <MenuItem onClick={handleEditCicd}>
                     <ListItemIcon>
-                        <EditIcon fontSize="small" style={{color: "var(--primary-text-color)"}}/>
+                        <EditIcon fontSize="small" style={{color: customTheme.palette.text.primary}}/>
                     </ListItemIcon>
                     <ListItemText>Edit</ListItemText>
                 </MenuItem>
                 <MenuItem onClick={handleDeleteCicd}>
                     <ListItemIcon>
-                        <DeleteIcon fontSize="small" style={{color: "var(--primary-text-color)"}}/>
+                        <DeleteIcon fontSize="small" style={{color: customTheme.palette.text.primary}}/>
                     </ListItemIcon>
                     <ListItemText>Delete</ListItemText>
                 </MenuItem>

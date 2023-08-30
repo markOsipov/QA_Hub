@@ -15,6 +15,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import IconButton from "@mui/material/IconButton";
 import SyncIcon from '@mui/icons-material/Sync';
 import StyledSelect from "../primitives/StyledSelect";
+import {customTheme} from "../../styles/CustomTheme";
 
 function LogViewer() {
     const logLevels = [
@@ -64,13 +65,11 @@ function LogViewer() {
     function getColors(logLevel){
         if (logLevel === "ERROR") {
             return {
-                backgroundColor: "rgba(255, 0, 0, 0.03)",
                 borderColor: "#d44e4f",
                 color: "#d44e4f"
             }
         } else if (logLevel === "WARN") {
             return {
-                backgroundColor: "rgba(255, 213, 0, 0.05)",
                 borderColor: "rgba(255, 213, 0, 1)",
                 color: "rgba(255, 213, 0, 1)"
             }
@@ -124,7 +123,7 @@ function LogViewer() {
         <Paper style={{padding: "15px", marginBottom: "15px", paddingTop: "0"}}>
             <div style={{display: "flex"}}>
                 <FormControl sx={{ m: 1, width: 300 }}>
-                    <InputLabel style={{color: "var(--faded-text-color)", position: "relative", top: "10px"}}>Log level</InputLabel>
+                    <InputLabel style={{color: customTheme.palette.text.faded, position: "relative", top: "10px"}}>Log level</InputLabel>
                     <StyledSelect
                         multiple
                         value={logFilter.level}
@@ -145,7 +144,7 @@ function LogViewer() {
 
                 <div style={{display: "grid", alignSelf: "end", padding: "10px"}}>
                     <FormControl variant="standard" style={{width: "200px"}}>
-                        <InputLabel style={{color: "var(--faded-text-color)", paddingLeft: "8px"}}>
+                        <InputLabel style={{color: customTheme.palette.text.faded, paddingLeft: "8px"}}>
                             Search
                         </InputLabel>
                         <Input style={{backgroundColor: "rgba(255, 255, 255, 0.15)", height: '33px', paddingLeft: "8px"}}
@@ -166,7 +165,7 @@ function LogViewer() {
                     <div style={{display: "flex"}}>
 
                         <FormControl style={{minWidth: "100px"}}>
-                            <InputLabel style={{color: "var(--faded-text-color)"}}>Lines count</InputLabel>
+                            <InputLabel style={{color: customTheme.palette.text.faded }}>Lines count</InputLabel>
                             <StyledSelect
                                 style={{backgroundColor: "rgba(255, 255, 255, 0.10)"}}
                                 value={linesCount}
@@ -183,7 +182,7 @@ function LogViewer() {
                         </FormControl>
 
                         <IconButton style={{
-                            backgroundColor: "var(--error-red-color)",
+                            backgroundColor: customTheme.palette.error.main,
                             width: "35px", height: "35px",
                             borderRadius: "14px",
                             marginLeft: "10px"
@@ -202,7 +201,7 @@ function LogViewer() {
                     <TableHead style={{ height: "60px" }}>
                         <StyledTableRow>
                             <StyledTableCell align='center' style={{maxWidth: "50px", width: "50px"}}>№</StyledTableCell>
-                            <StyledTableCell style={{minWidth: "200px"}} align='center'>Level</StyledTableCell>
+                            <StyledTableCell style={{minWidth: "150px"}} align='center'>Level</StyledTableCell>
                             <StyledTableCell style={{minWidth: "200px"}} align='center'>Date</StyledTableCell>
                             <StyledTableCell align='left'>Message</StyledTableCell>
                         </StyledTableRow>
@@ -212,7 +211,7 @@ function LogViewer() {
                             filteredLogs.map((logEntry, index) => {
                                     const colors = getColors(logEntry.level)
                                     const {date, time} = parseDate(logEntry.timestamp)
-                                    const messageLines = logEntry.message
+                                    const messageLines = (logEntry.message ?? "")
                                         .replace("\\", "")
                                         .split("\n")
 
@@ -228,30 +227,30 @@ function LogViewer() {
                                         }
                                     }
 
-                                    return <StyledTableRow key={index} style={colors}>
-                                        <StyledTableCell align="left">
-                                            <label style={{ padding: "5px 9px"}}>{index + 1}</label>
+                                    return <StyledTableRow key={index} style={{backgroundColor: 'rgba(0, 0, 0, 0.85)', ...colors, }}>
+                                        <StyledTableCell align="right" style={{padding: '0'}}>
+                                            <label style={{color: customTheme.palette.text.disabled}}>{index + 1}</label>
                                         </StyledTableCell>
 
-                                        <StyledTableCell align="center">
+                                        <StyledTableCell align="center" style={{padding: '0'}}>
                                             <div style={{padding: "7px"}}>
-                                                <label style={{border: "1px solid darkgray", borderRadius: "5px", padding: "5px", ...colors}}>{logEntry.level}</label>
+                                                <label style={{border: "1px solid darkgray", borderRadius: "5px", padding: "2px 5px", ...colors}}>{logEntry.level}</label>
                                             </div>
                                         </StyledTableCell>
 
-                                        <StyledTableCell align="center">
-                                            <div style={{display: "flex", flexDirection:"column"}}>
+                                        <StyledTableCell align="center" style={{padding: '0'}}>
+                                            <div style={{display: "flex"}}>
                                                 <label>{date}</label>
-                                                <label>{time}</label>
+                                                <label style={{marginLeft: '8px'}}>{time}</label>
                                             </div>
                                         </StyledTableCell>
 
-                                        <StyledTableCell style={{paddingTop: "10px", paddingBottom: "10px", width: "100%", paddingRight: "5px"}}>
+                                        <StyledTableCell style={{paddingTop: "10px", width: "100%", padding: "0"}}>
                                             <div style={{maxHeight: "300px", ...getStyle()}}>
                                                 <div style={{display: "flex", flexDirection: "column", whiteSpace: "pre-wrap", maxHeight: "300px", overflowY: "visible"}}>
                                                     {
                                                         messageLines.map((line, lineIndex) => {
-                                                            return <label key={index + "_" + lineIndex}>{line}</label>
+                                                            return <label key={index + "_" + lineIndex} style={{fontFamily: 'monospace'}}>{line}</label>
                                                         })
                                                     }
                                                 </div>

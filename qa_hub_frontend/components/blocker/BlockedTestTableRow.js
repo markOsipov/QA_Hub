@@ -84,7 +84,7 @@ const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, 
           onBlurCallback={ handleTestcaseEditFinish }
         />
 
-        <StyledTableCell style={{color: "var(--faded-text-color)"}}> {
+        <StyledTableCell style={{color: customTheme.palette.text.faded}}> {
           blockedTest.team && <label style={{border: "1px solid darkgray", borderRadius: "5px", padding: "5px"}}>{blockedTest.team}</label>
         }
 

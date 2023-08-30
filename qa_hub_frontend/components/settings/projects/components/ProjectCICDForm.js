@@ -21,7 +21,7 @@ const ProjectCICDForm = observer(({project, setProject, ...props}) => {
     </StyledAccordionSummary>
     <AccordionDetails style={{display: 'grid'}}>
       <FormControl style={{margin: "8px"}} size="small">
-        <InputLabel style={{ color: "var(--faded-text-color)" }}>Type</InputLabel>
+        <InputLabel style={{ color: customTheme.palette.text.faded }}>Type</InputLabel>
         <StyledSelect
           value={project.cicd?.type || ""}
           label="Type"

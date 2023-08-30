@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import {updateTmsIntegration} from "../../../../requests/integrations/TMSRequests";
 import {modalStyle} from "../../../../styles/ModalStyle";
 import StyledSelect from "../../../primitives/StyledSelect";
+import {customTheme} from "../../../../styles/CustomTheme";
 
 function EditTmsModal({isOpen, setIsOpen, updateTmsList, tmsTypes, tmsIntegrations, tms }) {
     const [currentTms, setCurrentTms] = useState(tms)
@@ -54,7 +55,7 @@ function EditTmsModal({isOpen, setIsOpen, updateTmsList, tmsTypes, tmsIntegratio
             </Typography>
 
             <FormControl sx={{ minWidth: 400, margin: "8px" }} size="small">
-                <InputLabel style={{ color: "var(--faded-text-color)" }}>TMS Type</InputLabel>
+                <InputLabel style={{ color: customTheme.palette.text.faded }}>TMS Type</InputLabel>
                 <StyledSelect
                     value={currentTms.tmsType || ''}
                     label="Tms type"
