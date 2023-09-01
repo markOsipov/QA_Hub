@@ -13,6 +13,7 @@ import qa_hub.entity.testRun.*
 import qa_hub.core.utils.DateTimeUtils.currentDateTimeUtc
 import qa_hub.core.utils.DateTimeUtils.currentEpoch
 import qa_hub.service.integrations.cicd.StartJobRequest
+import qa_hub.service.integrations.taskTrackers.TaskStatusResponse
 import qa_hub.service.testResults.TestLogsService
 import qa_hub.service.testResults.TestResultsService
 import qa_hub.service.testResults.TestStepsService
@@ -151,6 +152,19 @@ class TestRunService {
         return@runBlocking testRunCollection.find(TestRun::cicdJobId eq request.cicdJobId).toList().first()
     }
 
+    private fun startTestRunInTms(project: String): String? {
+        return try {
+            val prjTmsInt = projectIntegrationsService
+                .getProjectTmsInt(project)
+
+            val taskTrackerService = prjTmsInt.tmsInfo?.tmsService()
+
+            taskTrackerService?.startTestrun(prjTmsInt.projectTmsInfo!!.project)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
     fun startTestRun(request: StartTestRunRequest) = runBlocking {
         var testRun: TestRun = if (request.testRunId?.isNotEmpty() == true) {
                 getTestRun(request.testRunId!!)!!
@@ -183,6 +197,7 @@ class TestRunService {
 
         testRun = getTestRun(testRun.testRunId)!!
         if (testRun.startedByRunner == runner.name) {
+            testRun.allureLaunchId = startTestRunInTms(testRun.project)
             testRun.status = TestRunStatus.PROCESSING.status
             testRun.timeMetrics.started = startDate
             testRun.config = request.config
@@ -224,7 +239,15 @@ class TestRunService {
             )
         }
 
-        return@runBlocking getTestRun(testRun.testRunId)!!
+        var retries = 0
+        var result = getTestRun(testRun.testRunId)
+        while (result?.status != TestRunStatus.PROCESSING.status && retries < 10) {
+            delay(1000)
+            retries += 1
+            result = getTestRun(testRun.testRunId)
+        }
+
+        return@runBlocking result!!
     }
 
     fun getTestRun(testRunId: String): TestRun? = runBlocking {
