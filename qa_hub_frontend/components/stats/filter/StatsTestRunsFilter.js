@@ -1,28 +1,30 @@
-import {Checkbox, ListItemText, MenuItem, Paper} from "@mui/material";
+import {Paper} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import StatusFilter from "./StatusFilter";
-import SearchIcon from '@mui/icons-material/Search';
+import Loader from "../../common/Loader";
+import {customTheme} from "../../../styles/CustomTheme";
+import StatusFilter from "../../testRuns/testRunList/filters/StatusFilter";
+import TagFilter from "../../testRuns/testRunList/filters/TagFilter";
+import BranchFilter from "../../testRuns/testRunList/filters/BranchFilter";
+import CommitFilter from "../../testRuns/testRunList/filters/CommitFilter";
+import EnvironmentFilter from "../../testRuns/testRunList/filters/EnvironmentFilter";
 import Button from "@mui/material/Button";
-import CommitFilter from "./CommitFilter";
-import BranchFilter from "./BranchFilter";
-import EnvironmentFilter from "./EnvironmentFilter";
-import TagFilter from "./TagFilter";
-import Loader from "../../../common/Loader";
-import {customTheme} from "../../../../styles/CustomTheme";
-export default function TestRunsFilter({ filter, setFilter, loadTestRuns, filterAndLoad, loading, ...props }) {
+import SearchIcon from "@mui/icons-material/Search";
+import TakeLastFilter from "./TakeLastFilter";
+
+export default function StatsTestRunsFilter({ filter, setFilter, loadTestRuns, filterAndLoad, loading, ...props }) {
 
   return <Paper style={{padding: "15px", ...props.style}}>
     <div style={{display: 'flex', alignItems: 'center'}}>
-      <Typography variant={'h5'}>{"TestRuns"}</Typography>
+      <Typography variant={'h5'}>{"Test stats by testruns"}</Typography>
       <div style={{flexGrow: '1.1'}}></div>
       {
         loading &&
         <Loader style={{alignSelf: 'center', color: customTheme.palette.text.disabled}}/>
       }
-      <StatusFilter filter={filter} setFilter={setFilter} style={{marginLeft: '15px'}} />
+
       <TagFilter    filter={filter} setFilter={setFilter} style={{marginLeft: '15px', width: '120px'}}/>
       <BranchFilter filter={filter} setFilter={setFilter} style={{marginLeft: '15px'}}/>
-      <CommitFilter filter={filter} setFilter={setFilter} style={{marginLeft: '15px', width: '120px'}}/>
+      <TakeLastFilter filter={filter} setFilter={setFilter} style={{marginLeft: '15px'}} />
       <EnvironmentFilter filter={filter} setFilter={setFilter} style={{marginLeft: '15px', width: '120px'}}/>
 
       <Button variant="contained"

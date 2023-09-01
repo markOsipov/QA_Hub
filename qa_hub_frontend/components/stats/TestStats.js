@@ -3,11 +3,10 @@ import {getCookie, QaHubCookies, setCookie} from "../../utils/CookieHelper";
 import projectState from "../../state/ProjectState";
 import {observer} from "mobx-react-lite";
 import {getTestStats} from "../../requests/TestStatsRequests";
-import TestRunsFilter from "../testRuns/testRunList/filters/TestRunsFilter";
 import TestStatsTable from "./TestStatsTable";
-import LoadMoreTestRunsButton from "../testRuns/testRunList/LoadMoreTestRunsButtons";
 import StyledTextField from "../primitives/StyledTextField";
 import LoadMoreTestStatsButton from "./LoadMoreTestStatsButton";
+import StatsTestRunsFilter from "./filter/StatsTestRunsFilter";
 
 const TestStats = observer (({...props}) => {
   let {selectedProject} = projectState
@@ -84,7 +83,7 @@ const TestStats = observer (({...props}) => {
   }
 
   return <div>
-    <TestRunsFilter filter={filter} setFilter={setFilter} filterAndLoad={filterAndLoad} title={"Test stats by testruns"} loading={loading} style={{margin: '10px'}}/>
+    <StatsTestRunsFilter filter={filter} setFilter={setFilter} filterAndLoad={filterAndLoad} title={"Test stats by testruns"} loading={loading} style={{margin: '10px'}}/>
 
     <div style={{maxHeight: 'calc(100vh - 165px)', overflowY: 'auto', marginLeft: '10px'}}>
       <TestStatsTable testStats={testStats} sort={sort} sortTestStats={sortTestStats}/>
