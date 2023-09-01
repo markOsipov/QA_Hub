@@ -35,12 +35,13 @@ data class Sort(
 data class TestResultsFilter(
     val branch: String?,
     val tag: String?,
-    val takeLast: Int?,
+    var takeLast: Int?,
     val environment: String?
 )
 
 data class TestStats(
     var fullName: String,
+    var testcaseId: String? = null,
     var totalRuns: Int? = null,
     var successRuns: Int? = null,
     var successRate: Double,

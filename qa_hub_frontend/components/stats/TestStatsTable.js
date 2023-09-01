@@ -18,9 +18,8 @@ import TestStatRow from "./TestStatRow";
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-const TestStatsTable = observer(({ testStats, sort, sortTestStats, ...props }) => {
+const TestStatsTable = observer(({ testStats, sort, sortTestStats, openTestHistoryModal, ...props }) => {
   const {selectedProject} = projectState
-  const {blockedTests} = blockerState
 
   useEffect(() => {
     blockerState.updateBlockedTests(selectedProject)
@@ -45,7 +44,7 @@ const TestStatsTable = observer(({ testStats, sort, sortTestStats, ...props }) =
             <TableBody>
               {
                 testStats.map((testStat, index) => {
-                  return <TestStatRow key={index} testStat={testStat} index={index}/>
+                  return <TestStatRow key={index} testStat={testStat} index={index} openTestHistoryModal={openTestHistoryModal}/>
                 })
               }
             </TableBody>

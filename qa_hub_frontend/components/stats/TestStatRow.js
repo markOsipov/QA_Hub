@@ -7,11 +7,15 @@ import LockIcon from "@mui/icons-material/Lock";
 import {customTheme} from "../../styles/CustomTheme";
 import {daysBetween, getDate} from "../../utils/DateTimeUtils";
 
-const TestStatRow = observer(({testStat, index, ...props}) => {
+const TestStatRow = observer(({testStat, index, openTestHistoryModal, ...props}) => {
   const {blockedTests} = blockerState
 
   const isBlocked = blockedTests.findIndex((el) => { return el.fullName === testStat.fullName}) >= 0
   const successRate = Number.parseInt(testStat.successRate * 100)
+
+  const openTestHistory = () => {
+    openTestHistoryModal(testStat.fullName)
+  }
 
   return <StyledTableRow style={{height: '45px', ...props.style}} {...props}>
     <StyledTableCell align="center">
@@ -28,7 +32,7 @@ const TestStatRow = observer(({testStat, index, ...props}) => {
     </StyledTableCell>
 
     <StyledTableCell align="left">
-      {testStat.fullName}
+      <label onClick={openTestHistory}> {testStat.fullName}</label>
     </StyledTableCell>
 
     <StyledTableCell align="center">

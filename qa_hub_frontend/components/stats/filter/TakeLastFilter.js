@@ -17,7 +17,7 @@ export default function TakeLastFilter({filter, setFilter, ...props}) {
     <StyledTextField
       label="Max testruns"
       value={filter.takeLast || ''}
-      style={{backgroundColor: customTheme.palette.background.input, minWidth: '150px', ...props.style}}
+      style={{backgroundColor: customTheme.palette.background.input, minWidth: '120px', ...props.style}}
       onChange={handleBranchChange}
     />
   </StyledFormControl>

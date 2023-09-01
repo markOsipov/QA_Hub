@@ -22,10 +22,10 @@ export default function StatsTestRunsFilter({ filter, setFilter, loadTestRuns, f
         <Loader style={{alignSelf: 'center', color: customTheme.palette.text.disabled}}/>
       }
 
-      <TagFilter    filter={filter} setFilter={setFilter} style={{marginLeft: '15px', width: '120px'}}/>
+      <TagFilter filter={filter} setFilter={setFilter} style={{marginLeft: '15px', width: '120px'}}/>
       <BranchFilter filter={filter} setFilter={setFilter} style={{marginLeft: '15px'}}/>
-      <TakeLastFilter filter={filter} setFilter={setFilter} style={{marginLeft: '15px'}} />
       <EnvironmentFilter filter={filter} setFilter={setFilter} style={{marginLeft: '15px', width: '120px'}}/>
+      <TakeLastFilter filter={filter} setFilter={setFilter} style={{marginLeft: '15px', width: '100px'}} />
 
       <Button variant="contained"
               color="primary"

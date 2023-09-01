@@ -7,9 +7,31 @@ import TestStatsTable from "./TestStatsTable";
 import StyledTextField from "../primitives/StyledTextField";
 import LoadMoreTestStatsButton from "./LoadMoreTestStatsButton";
 import StatsTestRunsFilter from "./filter/StatsTestRunsFilter";
+import TestHistoryModal from "./testHistoryModal/TestHistoryModal";
+import {useRouter} from "next/router";
 
 const TestStats = observer (({...props}) => {
+  const router = useRouter()
   let {selectedProject} = projectState
+
+  const [testHistoryModalOpen, setTestHistoryModalOpen] = useState(router.query.testHistory != null)
+  const [selectedTestId, setSelectedTestId] = useState(router.query.testHistory || null)
+
+  const openTestHistoryModal = (fullName) => {
+    setSelectedTestId(fullName)
+    router.query.testHistory=fullName
+    router.replace(router)
+
+    setTestHistoryModalOpen(true)
+
+  }
+
+  const closeTestHistoryModal = (fullName) => {
+    setSelectedTestId(null)
+    delete router.query.testHistory
+    router.replace(router)
+    setTestHistoryModalOpen(false)
+  }
 
   const defaultFilter = {}
   const defaultSort = {
@@ -83,10 +105,11 @@ const TestStats = observer (({...props}) => {
   }
 
   return <div>
-    <StatsTestRunsFilter filter={filter} setFilter={setFilter} filterAndLoad={filterAndLoad} title={"Test stats by testruns"} loading={loading} style={{margin: '10px'}}/>
+    <TestHistoryModal isOpen={testHistoryModalOpen} onClose={closeTestHistoryModal} testcaseId={selectedTestId} />
+    <StatsTestRunsFilter filter={filter} setFilter={setFilter} filterAndLoad={filterAndLoad} loading={loading} style={{margin: '10px'}}/>
 
     <div style={{maxHeight: 'calc(100vh - 165px)', overflowY: 'auto', marginLeft: '10px'}}>
-      <TestStatsTable testStats={testStats} sort={sort} sortTestStats={sortTestStats}/>
+      <TestStatsTable testStats={testStats} sort={sort} sortTestStats={sortTestStats} openTestHistoryModal={openTestHistoryModal}/>
       {
         !lastTestStatsLoaded &&
         <LoadMoreTestStatsButton

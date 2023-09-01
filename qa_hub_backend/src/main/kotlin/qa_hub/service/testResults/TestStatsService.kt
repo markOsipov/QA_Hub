@@ -51,8 +51,8 @@ class TestStatsService {
             )
         )
 
-        if (filter?.takeLast != null && filter.takeLast > 0) {
-            request.add(limit(filter.takeLast))
+        if (filter?.takeLast != null && filter.takeLast!! > 0) {
+            request.add(limit(filter.takeLast!!))
         }
 
         request.add(sort(descending(TestRun::timeMetrics / TestRunTimeMetrics::created)))
@@ -78,6 +78,7 @@ class TestStatsService {
                     ${'$'}group: {
                         _id: "${'$'}fullName",
                         fullName: { ${'$'}first: "${'$'}fullName"},
+                        testcaseId: { ${'$'}last: "${'$'}testcaseId"},
                         results: { ${'$'}push: "${"$$"}ROOT" },
                         totalRuns: {${'$'}sum: 1},
                         avgDuration: { ${'$'}avg: "${'$'}duration"},
@@ -222,7 +223,12 @@ class TestStatsService {
     }
 
     fun getTestHistory(request: TestHistoryRequest): SingleTestStats = runBlocking {
-        val testRunIds = getFilteredTestRuns(request.project, request.filter)
+        val takeLast = (request.filter?.takeLast ?: 0) + 0
+        val filter = request.filter
+        filter?.let{
+            filter.takeLast = null
+        }
+        val testRunIds = getFilteredTestRuns(request.project, filter)
             .map{ it.testRunId }
 
         val pipeline = mutableListOf(
@@ -236,11 +242,13 @@ class TestStatsService {
                     )
                 )
             ),
+            sort(descending(TestResult::date)),
             """
                 {
                     ${'$'}group: {
                         _id: "${'$'}fullName",
                         fullName: { ${'$'}first: "${'$'}fullName"},
+                        testcaseId: { ${'$'}last: "${'$'}testcaseId"},
                         results: { ${'$'}push: "${"$$"}ROOT" },
                         totalRuns: {${'$'}sum: 1},
                         avgDuration: { ${'$'}avg: "${'$'}duration"},
@@ -282,6 +290,10 @@ class TestStatsService {
                 descending(TestResult::date)
             )
         )
+
+        if (takeLast > 0) {
+            pipeline.add(2, limit(takeLast))
+        }
 
         val testHistory = testResultsCollection.aggregate<SingleTestStats>(*pipeline.toTypedArray()).toList()
 
