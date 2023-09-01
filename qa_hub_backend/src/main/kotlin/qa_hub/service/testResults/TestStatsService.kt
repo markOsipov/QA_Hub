@@ -33,16 +33,16 @@ class TestStatsService {
             TestRun::status `in` TestRunStatus.finalStatuses
         )
 
-        filter?.branch?.let {
-            requestFilter.add(TestRun::config / TestRunConfig::branch eq filter.branch)
+        if (!filter?.branch.isNullOrEmpty()) {
+            requestFilter.add(TestRun::config / TestRunConfig::branch eq filter!!.branch)
         }
 
-        filter?.tag?.let {
-            requestFilter.add(TestRun::config / TestRunConfig::branch eq filter.branch)
+        if (!filter?.tag.isNullOrEmpty()) {
+            requestFilter.add(TestRun::tags contains filter!!.tag)
         }
 
-        filter?.environment?.let {
-            requestFilter.add(TestRun::config / TestRunConfig::environment eq filter.environment)
+        if (!filter?.environment.isNullOrEmpty()) {
+            requestFilter.add(TestRun::config / TestRunConfig::environment eq filter!!.environment)
         }
 
         val request = mutableListOf(
@@ -51,7 +51,7 @@ class TestStatsService {
             )
         )
 
-        filter?.takeLast?.let {
+        if (filter?.takeLast != null && filter.takeLast > 0) {
             request.add(limit(filter.takeLast))
         }
 
