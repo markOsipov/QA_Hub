@@ -6,7 +6,6 @@ import {useEffect, useState} from "react";
 import {observer} from "mobx-react-lite";
 import {getTestHistory, getTestStats} from "../../../requests/TestStatsRequests";
 import StatsTestRunsFilter from "../filter/StatsTestRunsFilter";
-import {getCookie, QaHubCookies} from "../../../utils/CookieHelper";
 import TestHistoryTable from "./TestHistoryTable";
 
 

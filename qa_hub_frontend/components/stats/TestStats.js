@@ -19,18 +19,18 @@ const TestStats = observer (({...props}) => {
 
   const openTestHistoryModal = (fullName) => {
     setSelectedTestId(fullName)
-    router.query.testHistory=fullName
-    router.replace(router)
-
-    setTestHistoryModalOpen(true)
-
+    router.query.testHistory = fullName
+    router.replace(router).then(() => {
+      setTestHistoryModalOpen(true)
+    })
   }
 
   const closeTestHistoryModal = (fullName) => {
     setSelectedTestId(null)
     delete router.query.testHistory
-    router.replace(router)
-    setTestHistoryModalOpen(false)
+    router.replace(router).then(() => {
+      setTestHistoryModalOpen(false)
+    })
   }
 
   const defaultFilter = {}
