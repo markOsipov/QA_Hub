@@ -7,12 +7,13 @@ import LockIcon from "@mui/icons-material/Lock";
 import {customTheme} from "../../styles/CustomTheme";
 import {daysBetween, getDate} from "../../utils/DateTimeUtils";
 import {useState} from "react";
+import TestStatSuccessRate from "./cells/TestStatSuccessRate";
+import DateWithDayDiff from "./cells/DateWithDayDiff";
 
 const TestStatRow = observer(({testStat, index, openTestHistoryModal, ...props}) => {
   const {blockedTests} = blockerState
 
   const isBlocked = blockedTests.findIndex((el) => { return el.fullName === testStat.fullName}) >= 0
-  const successRate = Number.parseInt(testStat.successRate * 100)
 
   const openTestHistory = () => {
     openTestHistoryModal(testStat.fullName)
@@ -45,41 +46,21 @@ const TestStatRow = observer(({testStat, index, openTestHistoryModal, ...props})
     </StyledTableCell>
 
     <StyledTableCell align="center">
-      <div style={{display: 'flex', flexDirection:'column', height: 'max-content'}}>
-        <div>
-          <label>{successRate}%</label>
-          <label style={{color: customTheme.palette.text.disabled, marginLeft: '12px'}}>{testStat.successRuns }/{testStat.totalRuns}</label>
-        </div>
-
-        <div style={{display: 'flex', width: '100px', height: '2px', alignSelf: 'center', marginTop: '3px'}}>
-          <div style={{backgroundColor: customTheme.palette.success.main, height: '100%', width: `${successRate}%`}}></div>
-          <div style={{backgroundColor: customTheme.palette.error.main, height: '100%', width: `${100 - successRate}%`}}></div>
-        </div>
+      <div style={{display: 'grid', justifyItems: 'center'}}>
+        <TestStatSuccessRate testStat={testStat}/>
       </div>
     </StyledTableCell>
 
     <StyledTableCell align="center">
-      <div style={{display: 'flex', justifyContent: 'center'}}>
-        <div style={{display: 'flex'}}>
-          <label>{testStat.lastRun && getDate(testStat.lastRun)}</label>
-          {
-            testStat.lastRun &&
-            <label style={{marginLeft: '10px', color: customTheme.palette.text.disabled}}>{ daysBetween(testStat.lastRun) } days</label>
-          }
-        </div>
-      </div>
+      {
+        testStat.lastRun && <DateWithDayDiff date={testStat.lastRun} />
+      }
     </StyledTableCell>
 
     <StyledTableCell align="center">
-      <div style={{display: 'flex', justifyContent: 'center'}}>
-        <div style={{display: 'flex'}}>
-          <label>{testStat.lastSuccess && getDate(testStat.lastSuccess)}</label>
-          {
-            testStat.lastSuccess &&
-            <label style={{marginLeft: '10px', color: customTheme.palette.text.disabled}}>{ daysBetween(testStat.lastSuccess) } days</label>
-          }
-        </div>
-      </div>
+      {
+        testStat.lastSuccess && <DateWithDayDiff date={testStat.lastSuccess} />
+      }
     </StyledTableCell>
   </StyledTableRow>
 })

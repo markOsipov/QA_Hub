@@ -1,11 +1,9 @@
 import {Paper, Table, TableBody, TableContainer, TableHead} from "@mui/material";
 import {StyledTableRow} from "../../primitives/Table/StyledTableRow";
 import {StyledTableCell} from "../../primitives/Table/StyledTableCell";
-import TestStatRow from "../TestStatRow";
-import {getDate, getDateTime, getTimeMinutes} from "../../../utils/DateTimeUtils";
+import {getDate, getTimeMinutes} from "../../../utils/DateTimeUtils";
 import {customTheme} from "../../../styles/CustomTheme";
 import TestStatusWithRetries from "../../common/TestStatusWithRetries";
-import ErrorMessage from "../../testRuns/testRunResults/testResultDetails/retries/ErrorMessage";
 import {useState} from "react";
 
 export default function TestHistoryTable({ testHistoryResults, ...props}) {
@@ -16,7 +14,7 @@ export default function TestHistoryTable({ testHistoryResults, ...props}) {
   return <Paper elevation={3} style={{...props.style, overflowY: 'auto'}}>
     <TableContainer>
       <Table size="small" stickyHeader >
-        <TableHead style={{ height: "60px" }}>
+        <TableHead style={{ height: "40px" }}>
           <StyledTableRow>
             <StyledTableCell align='center' style={{width: "40px"}}>№</StyledTableCell>
             <StyledTableCell align='center' style={{width: "110px"}}>Status</StyledTableCell>
@@ -33,7 +31,7 @@ export default function TestHistoryTable({ testHistoryResults, ...props}) {
             testHistoryResults.map((testResult, index) => {
               return <StyledTableRow key={index}>
                 <StyledTableCell align={'center'}>
-                  <label style={{color: customTheme.palette.text.disabled}}>{index}</label>
+                  <label style={{color: customTheme.palette.text.disabled}}>{index + 1}</label>
                 </StyledTableCell>
 
                 <StyledTableCell align={'center'}>
@@ -41,7 +39,18 @@ export default function TestHistoryTable({ testHistoryResults, ...props}) {
                 </StyledTableCell>
 
                 <StyledTableCell align={'center'}><TestHistoryTestRunId testResult={testResult}/></StyledTableCell>
-                <StyledTableCell align={'center'}>{testResult.retries}</StyledTableCell>
+                <StyledTableCell align={'center'}>
+                  <label style={{
+                    padding: '3px 6px',
+                    // color: testResult.retries == 2 ? customTheme.palette.background.default : customTheme.palette.text.primary ,
+                    backgroundColor: testResult.retries >= 3 ? customTheme.palette.error.main : testResult.retries >= 2 ? customTheme.palette.warning.main : 'unset',
+                    border: testResult.retries > 1 ? '1px solid' : '0px',
+                    borderRadius: '5px',
+                    borderColor: testResult.retries >= 3 ? customTheme.palette.error.main : testResult.retries >= 2 ? customTheme.palette.warning.main : customTheme.palette.text.primary
+                  }}>
+                    {testResult.retries}
+                  </label>
+                </StyledTableCell>
                 <StyledTableCell align={'center'}>{Number.parseInt(testResult.duration)}</StyledTableCell>
 
                 <StyledTableCell>
@@ -55,7 +64,7 @@ export default function TestHistoryTable({ testHistoryResults, ...props}) {
                         borderColor: customTheme.palette.error.main,
                         borderRadius: '10px',
                         backgroundColor: customTheme.palette.error.faded,
-                    }}
+                      }}
                     >{testResult.message}</div>
                   }
                 </StyledTableCell>
@@ -90,6 +99,5 @@ const TestHistoryTestRunId = ({testResult, ...props}) => {
     }}
   >
     <a href={testRunUrl.href} target={"_blank"} rel="noreferrer">{testResult.testRunId}</a>
-
   </label>
 }

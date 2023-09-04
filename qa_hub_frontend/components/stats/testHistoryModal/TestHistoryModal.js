@@ -7,6 +7,7 @@ import {observer} from "mobx-react-lite";
 import {getTestHistory, getTestStats} from "../../../requests/TestStatsRequests";
 import StatsTestRunsFilter from "../filter/StatsTestRunsFilter";
 import TestHistoryTable from "./TestHistoryTable";
+import TestHistoryStats from "./TestHistoryStats";
 
 
 const TestHistoryModal = observer(({isOpen, onClose, testcaseId}) => {
@@ -47,13 +48,15 @@ const TestHistoryModal = observer(({isOpen, onClose, testcaseId}) => {
     onClose={handleClose}
   >
     <Box sx={{...modalStyle, padding: '10px 15px', minWidth: '1500px'}}>
-      <Typography variant="h6" component="h2" style={{marginBottom: "5px"}}>
-        {testcaseId}
-      </Typography>
-
+      <div style={{display: 'flex', alignItems: 'center', margin: '10px 10px 15px 10px'}}>
+        <label style={{fontSize: '20px', marginRight: '20px', flexGrow: '1.1'}}>{testHistory.fullName || testcaseId}</label>
+        {
+          testHistory.results &&
+          <TestHistoryStats testHistory={testHistory}/>
+        }
+      </div>
       <StatsTestRunsFilter filter={filter} setFilter={setFilter} filterAndLoad={filterAndLoad} loading={loading} />
-
-      <TestHistoryTable testHistoryResults={testHistory.results || []} style={{ maxHeight: '80vh', minHeight: '50vh', marginTop:'10px'}}/>
+      <TestHistoryTable testHistoryResults={testHistory.results || []} style={{ maxHeight: 'calc(100vh - 210px)', minHeight: '50vh', marginTop:'10px'}}/>
 
     </Box>
   </Modal>

@@ -26,10 +26,10 @@ const TestStats = observer (({...props}) => {
   }
 
   const closeTestHistoryModal = (fullName) => {
-    setSelectedTestId(null)
     delete router.query.testHistory
     router.replace(router).then(() => {
       setTestHistoryModalOpen(false)
+      setSelectedTestId(null)
     })
   }
 
