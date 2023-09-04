@@ -4,9 +4,8 @@ import EditableTableCell from "../primitives/Table/EditableTableCell";
 import projectState from "../../state/ProjectState";
 import "../../utils/Extensions";
 
-export default function FullNameTableCell({ showFullName, setShowFullName, blockedTest, setBlockedTest, handleTestcaseEditFinish, ...props }) {
-    const [content, setContent] = useState(null)
-
+export default function FullNameTableCell({ showFullName, setShowFullName, blockedTest, setBlockedTest, handleTestcaseEditFinish, openTestHistoryModal, ...props }) {
+    const [hovered, setHovered] = useState(false)
     function handleFieldChange(event) {
         let separator = projectState.getSeparator()
         let newFullName
@@ -29,18 +28,27 @@ export default function FullNameTableCell({ showFullName, setShowFullName, block
         )
     }
 
-    useEffect(() => {
-        if (showFullName) {
-            setContent(blockedTest.fullName)
-        } else {
-            setContent(blockedTest.shortName)
+    return <EditableTableCell
+      style={{padding: "5px 9px"}}
+      value =  { showFullName ? blockedTest.fullName : blockedTest.shortName }
+      content={
+        <div
+            onClick={() => openTestHistoryModal(blockedTest.fullName)}
+            onMouseOver={() => {setHovered(true)}}
+            onMouseLeave={() => {setHovered(false)}}
+            onBlur={() => {setHovered(false)}}
+            style={{
+                cursor: 'pointer',
+                padding: '3px 7px',
+                backgroundColor: hovered && 'rgba(255, 255, 255, 0.07)'
+            }}
+        > {
+            showFullName ? blockedTest.fullName : blockedTest.shortName
         }
-    }, [blockedTest.fullName, blockedTest.shortName, showFullName])
-
-    return <EditableTableCell style={{padding: "5px 9px"}}
-                              content={content}
-                              onChangeCallback={handleFieldChange}
-                              onBlurCallback={handleTestcaseEditFinish}
-                              {...props}
-        />
+        </div>
+    }
+      onChangeCallback={handleFieldChange}
+      onBlurCallback={handleTestcaseEditFinish}
+      {...props}
+    />
 }

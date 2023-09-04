@@ -13,7 +13,7 @@ import TaskStatusCell from "./TaskStatusCell";
 import TestcaseIdCell from "./TestcaseIdCell";
 import DateWithDayDiff from "../stats/cells/DateWithDayDiff";
 
-const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, setShowFullName }) => {
+const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, setShowFullName, openTestHistoryModal }) => {
     const [blockedTest, setBlockedTest] = useState(blockedTestForRow)
 
     function handleUnblockButtonClick() {
@@ -97,6 +97,7 @@ const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, 
                            showFullName={showFullName}
                            setShowFullName={setShowFullName}
                            handleTestcaseEditFinish={ handleTestcaseEditFinish }
+                           openTestHistoryModal={openTestHistoryModal}
                            textArea
         />
 

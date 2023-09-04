@@ -18,17 +18,40 @@ import AddIcon from "@mui/icons-material/Add";
 import AddBlockedTestModal from "./AddBlockedTestModal";
 import TablePaginationActions from "../primitives/Table/TablePaginationActions";
 import blockerState from "../../state/BlockerState";
+import TestHistoryModal from "../stats/testHistoryModal/TestHistoryModal";
+import {useRouter} from "next/router";
 
 
 const BlockedTestsTable = observer(() => {
     let {selectedProject} = projectState
     let {blockedTests} = blockerState
 
+    const router = useRouter()
+
     const [showFullName, setShowFullName] = useState(true)
     const [addBlockedTestModalOpen, setAddBlockedTestModalOpen] = useState(false)
 
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(20)
+
+    const [testHistoryModalOpen, setTestHistoryModalOpen] = useState(router.query.testHistory != null)
+    const [selectedTestId, setSelectedTestId] = useState(router.query.testHistory || null)
+
+    const openTestHistoryModal = (fullName) => {
+        setSelectedTestId(fullName)
+        router.query.testHistory = fullName
+        router.replace(router).then(() => {
+            setTestHistoryModalOpen(true)
+        })
+    }
+
+    const closeTestHistoryModal = (fullName) => {
+        delete router.query.testHistory
+        router.replace(router).then(() => {
+            setTestHistoryModalOpen(false)
+            setSelectedTestId(null)
+        })
+    }
 
     useEffect(() => {
         blockerState.updateBlockedTests(selectedProject)
@@ -62,6 +85,7 @@ const BlockedTestsTable = observer(() => {
     return <div>
         <Paper elevation={3} style={{margin: "15px", maxHeight: "calc(100vh - 165px)", overflowY: "auto", minWidth: "35vw" }}>
             <AddBlockedTestModal isOpen={addBlockedTestModalOpen} setIsOpen={setAddBlockedTestModalOpen} />
+            <TestHistoryModal isOpen={testHistoryModalOpen} onClose={closeTestHistoryModal} testcaseId={selectedTestId} />
             <TableContainer style={{}}>
                 <Table size="small" stickyHeader >
                     <TableHead style={{ height: "60px" }}>
@@ -89,6 +113,7 @@ const BlockedTestsTable = observer(() => {
                                         blockedTestForRow={blockedTest}
                                         showFullName={showFullName}
                                         setShowFullName={setShowFullName}
+                                        openTestHistoryModal={openTestHistoryModal}
                                     />
                                 }
                             )
