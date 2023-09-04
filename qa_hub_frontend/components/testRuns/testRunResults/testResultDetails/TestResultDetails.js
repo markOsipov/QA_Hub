@@ -16,6 +16,11 @@ import TestResultActions from "./TestResultActions";
 import {useState} from "react";
 import {useRouter} from "next/router";
 import TestHistoryModal from "../../../stats/testHistoryModal/TestHistoryModal";
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import EqualizerIcon from '@mui/icons-material/Equalizer';
+import {customTheme} from "../../../../styles/CustomTheme";
+import alertState from "../../../../state/AlertState";
 
 const TestResultDetails = observer(({ ...props }) => {
   const router = useRouter()
@@ -146,25 +151,68 @@ const TestResultDetails = observer(({ ...props }) => {
   </div>
 })
 
-const TestResultShortName = ({testResult, action, ...props}) => {
+const TestResultShortName = observer(({testResult, action, ...props}) => {
   const [hovered, setHovered] = useState(false)
-  function getShortName(testResult) {
-    return testResult.fullName.substring(testResult.fullName.lastIndexOf(".") + 1)
+  const [nameHovered, setNameHovered] = useState(false)
+  const [copyIconHovered, setCopyIconHovered] = useState(false)
+  const shortName = testResult.fullName.substring(testResult.fullName.lastIndexOf(".") + 1)
+
+
+  function copyTestName() {
+    navigator.clipboard.writeText(shortName)
+    alertState.showAlert("Test short name has been copied", alertState.severities.success)
   }
 
-  return <Typography
-    variant={'h6'}
-    onClick={action}
+  return<div
+    style={{display: 'flex', alignItems: 'center'}}
     onMouseOver={() => setHovered(true)}
     onMouseLeave={() => setHovered(false)}
     onBlur={() => setHovered(false)}
-    style={{
-      cursor: "pointer",
-      padding: '0 10px',
-      backgroundColor: hovered && 'rgba(255, 255, 255, 0.09)',
-      width: 'max-content',
-      ...props.style
-    }}
-  >{getShortName(testResult)}</Typography>
-}
+  >
+    <Typography
+      variant={'h6'}
+      onClick={action}
+      onMouseOver={() => setNameHovered(true)}
+      onMouseLeave={() => setNameHovered(false)}
+      onBlur={() => setNameHovered(false)}
+      style={{
+         cursor: "pointer",
+         padding: '0 10px',
+         backgroundColor: nameHovered && 'rgba(255, 255, 255, 0.09)',
+        width: 'max-content',
+        ...props.style
+      }}
+    >{shortName}</Typography>
+    {
+      hovered &&
+      <div
+        style={{display: 'flex'}}
+      >
+        <div
+          style={{
+            backgroundColor: copyIconHovered && 'rgba(255, 255, 255, 0.09)',
+            padding: '3px',
+            display: 'grid',
+            alignItems: 'center',
+            justifyItems: 'center',
+            cursor: 'pointer'
+          }}
+          onClick={copyTestName}
+          onMouseOver={() => setCopyIconHovered(true)}
+          onMouseLeave={() => setCopyIconHovered(false)}
+          onBlur={() => setCopyIconHovered(false)}
+        >
+          <ContentCopyIcon
+            style={{
+              transform: 'scale(-1, 0.85)',
+              // padding: '10px',
+              color: customTheme.palette.text.disabled,
+              fontSize: '19px',
+            }}
+          />
+        </div>
+      </div>
+    }
+  </div>
+})
 export default TestResultDetails

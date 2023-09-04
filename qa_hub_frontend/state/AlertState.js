@@ -3,8 +3,14 @@ import {makeAutoObservable} from "mobx";
 class AlertState {
   alerts = []
 
+  severities = {
+    info: 'info',
+    success: 'success',
+    error: 'error',
+    warning: 'warning'
+  }
   showAlert(title, severity) {
-    this.alerts.push({ title: title, severity: severity || 'info' })
+    this.alerts.push({ title: title, severity: severity || this.severities.info })
   }
 
   setAlerts(alerts) {
