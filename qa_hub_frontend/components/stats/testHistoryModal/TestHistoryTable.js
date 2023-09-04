@@ -87,7 +87,7 @@ const TestHistoryTestRunId = ({testResult, ...props}) => {
   const testRunUrl = new URL(`${window.location.origin}/testRuns/${testResult.testRunId}`)
   testRunUrl.searchParams.append("test", testResult.testcaseId || testResult.fullName)
 
-  return <label
+  return <a
     onMouseOver={() => setHovered(true)}
     onMouseLeave={() => setHovered(false)}
     onBlur={() => setHovered(false)}
@@ -97,7 +97,6 @@ const TestHistoryTestRunId = ({testResult, ...props}) => {
       backgroundColor: hovered && 'rgba(255, 255, 255, 0.09)',
       ...props.style
     }}
-  >
-    <a href={testRunUrl.href} target={"_blank"} rel="noreferrer">{testResult.testRunId}</a>
-  </label>
+    href={testRunUrl.href} target={"_blank"} rel="noreferrer"
+  >{testResult.testRunId}</a>
 }
