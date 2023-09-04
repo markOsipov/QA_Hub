@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service
 import qa_hub.core.mongo.QaHubMongoClient
 import qa_hub.core.mongo.entity.Collections.TMS_INTEGRATIONS
 import qa_hub.core.mongo.utils.setCurrentPropertyValues
-import qa_hub.service.integrations.tms.entity.TmsInfo
 
 @Service
 class TmsService {

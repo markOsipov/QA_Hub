@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import {addCicdIntegration} from "../../../../requests/integrations/CICDRequests";
 import {modalStyle} from "../../../../styles/ModalStyle";
 import StyledSelect from "../../../primitives/StyledSelect";
+import {customTheme} from "../../../../styles/CustomTheme";
 
 function NewCicdModal({isOpen, setIsOpen, updateCicdList, cicdTypes, cicdIntegrations}) {
     const defaultCicdValue = {
@@ -60,7 +61,7 @@ function NewCicdModal({isOpen, setIsOpen, updateCicdList, cicdTypes, cicdIntegra
             </Typography>
 
             <FormControl sx={{ minWidth: 400, margin: "8px" }} size="small">
-                <InputLabel style={{ color: "var(--faded-text-color)" }}>CICD Type</InputLabel>
+                <InputLabel style={{ color: customTheme.palette.text.faded }}>CICD Type</InputLabel>
                 <StyledSelect
                     value={newCicd.cicdType || ''}
                     label="Cicd type"

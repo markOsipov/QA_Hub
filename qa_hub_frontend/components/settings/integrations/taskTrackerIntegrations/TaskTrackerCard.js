@@ -8,6 +8,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditTaskTrackerModal from "./EditTaskTrackerModal";
 import TextWithLabel from "../../../primitives/TextWithLabel";
 import {deleteTaskTrackerIntegration} from "../../../../requests/integrations/TaskTrackerRequests";
+import {customTheme} from "../../../../styles/CustomTheme";
 
 export default function TaskTrackerCard({integration, updateIntegrations, types, integrations, ...props}) {
     const [menuAnchor, setMenuAnchor] = useState(null);
@@ -62,13 +63,13 @@ export default function TaskTrackerCard({integration, updateIntegrations, types,
             >
                 <MenuItem onClick={handleEdit}>
                     <ListItemIcon>
-                        <EditIcon fontSize="small" style={{color: "var(--primary-text-color)"}}/>
+                        <EditIcon fontSize="small" style={{color: customTheme.palette.text.primary}}/>
                     </ListItemIcon>
                     <ListItemText>Edit</ListItemText>
                 </MenuItem>
                 <MenuItem onClick={handleDelete}>
                     <ListItemIcon>
-                        <DeleteIcon fontSize="small" style={{color: "var(--primary-text-color)"}}/>
+                        <DeleteIcon fontSize="small" style={{color: customTheme.palette.text.primary}}/>
                     </ListItemIcon>
                     <ListItemText>Delete</ListItemText>
                 </MenuItem>

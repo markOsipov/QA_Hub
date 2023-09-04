@@ -61,3 +61,7 @@ button + button {
     transform: rotate(360deg);
   }
 }
+
+.MuiBox-root:focus-visible {
+  outline: unset;
+}

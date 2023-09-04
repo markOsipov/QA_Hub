@@ -20,7 +20,7 @@ const AlertsView = observer(({...props}) => {
     return null
   }
 
-  return <Stack style={{...props.style}}  sx={{ width: '300px' }} spacing={1}>
+  return <Stack style={{...props.style}}  sx={{ width: '350px' }} spacing={1}>
     <div style={{width: '100%', display: 'flex'}}>
 
       <div style={{flexGrow: '1.1'}}></div>
@@ -47,15 +47,15 @@ const CustomAlert = observer(({ index, alert, ...props}) => {
 
   const iconStyle = {fontSize: '23px'}
   switch (alert.severity) {
-    case 'success':
+    case alertState.severities.success:
       backgroundColor = customTheme.palette.success.main
       icon = <CheckCircleIcon style={iconStyle}/>
       break;
-    case 'error':
+    case alertState.severities.error:
       backgroundColor = customTheme.palette.error.main
       icon = <CancelIcon style={iconStyle}/>
       break;
-    case 'warning':
+    case alertState.severities.warning:
       backgroundColor = customTheme.palette.warning.main
       icon = <WarningIcon style={iconStyle}/>
       break;

@@ -9,6 +9,7 @@ import {getTestResults} from "../../../../requests/testResults/TestResultsReques
 import {useState} from "react";
 import RefreshIcon from '@mui/icons-material/Refresh';
 import StyledTooltip from "../../../primitives/StyledTooltip";
+import Loader from "../../../common/Loader";
 
 const FormParamActions = observer(({param, index, testRunId, setParamValue}) => {
   const [loading, setLoading] = useState(false)
@@ -79,13 +80,7 @@ const FormParamActions = observer(({param, index, testRunId, setParamValue}) => 
 
     {
       loading &&
-      <RefreshIcon style={{
-        animation: "rotation 1.2s linear infinite",
-        fontSize: '25px',
-        color: customTheme.palette.text.faded,
-        marginLeft: '5px'
-
-      }}></RefreshIcon>
+      <Loader style={{marginLeft: '5px'}}/>
     }
   </div>
 })

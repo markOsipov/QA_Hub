@@ -8,6 +8,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {deleteTmsIntegration} from "../../../../requests/integrations/TMSRequests";
 import EditTmsModal from "./EditTMSModal";
 import TextWithLabel from "../../../primitives/TextWithLabel";
+import {customTheme} from "../../../../styles/CustomTheme";
 
 export default function TmsCard({tms, updateTmsList, tmsTypes, tmsIntegrations, ...props}) {
     const [menuAnchor, setMenuAnchor] = useState(null);
@@ -63,13 +64,13 @@ export default function TmsCard({tms, updateTmsList, tmsTypes, tmsIntegrations, 
             >
                 <MenuItem onClick={handleEditTms}>
                     <ListItemIcon>
-                        <EditIcon fontSize="small" style={{color: "var(--primary-text-color)"}}/>
+                        <EditIcon fontSize="small" style={{color: customTheme.palette.text.primary}}/>
                     </ListItemIcon>
                     <ListItemText>Edit</ListItemText>
                 </MenuItem>
                 <MenuItem onClick={handleDeleteTms}>
                     <ListItemIcon>
-                        <DeleteIcon fontSize="small" style={{color: "var(--primary-text-color)"}}/>
+                        <DeleteIcon fontSize="small" style={{color: customTheme.palette.text.primary}}/>
                     </ListItemIcon>
                     <ListItemText>Delete</ListItemText>
                 </MenuItem>

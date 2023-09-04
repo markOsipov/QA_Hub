@@ -25,6 +25,7 @@ export var customTheme = createTheme({
         },
         warning: {
             main: '#cf9f05',
+            faded: 'rgba(207,159,5,0.13)',
         },
         table: {
             header: '#3b3b3b',

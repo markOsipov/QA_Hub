@@ -10,6 +10,7 @@ import testResultsState from "../../state/testResults/TestResultsState";
 import PushTestRunModal from "../../components/testRuns/pushTestRunModal/PushTestRunModal";
 import pushModalState from "../../state/testRuns/PushModalState";
 import PushTestRunPopup from "../../components/testRuns/pushTestRunModal/PushTestRunPopup";
+import TestHistoryModal from "../../components/stats/testHistoryModal/TestHistoryModal";
 
 const TestRunPage = observer(() => {
   const router = useRouter()
@@ -53,6 +54,7 @@ const TestRunPage = observer(() => {
 
   return <div style={{padding: "15px"}}>
     <PushTestRunModal/>
+    {/*<TestHistoryModal isOpen={testHistoryModalOpen} onClose={closeTestHistoryModal} testcaseId={selectedTestId} />*/}
 
     <TestRunResultsOverview
       testRun={testRun}

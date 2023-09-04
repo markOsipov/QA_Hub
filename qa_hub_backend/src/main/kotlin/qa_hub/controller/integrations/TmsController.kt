@@ -4,9 +4,9 @@ import com.mongodb.client.result.DeleteResult
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import qa_hub.service.integrations.tms.TmsService
-import qa_hub.service.integrations.tms.entity.TmsInfo
-import qa_hub.service.integrations.tms.entity.TmsType
-import qa_hub.service.integrations.tms.entity.TmsTypes
+import qa_hub.service.integrations.tms.TmsInfo
+import qa_hub.service.integrations.tms.TmsType
+import qa_hub.service.integrations.tms.TmsTypes
 import qa_hub.service.utils.ProjectIntegrationsService
 import qa_hub.service.utils.ProjectTmsIntegrationsInfo
 import java.util.*

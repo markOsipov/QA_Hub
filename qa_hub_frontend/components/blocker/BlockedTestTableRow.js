@@ -11,8 +11,9 @@ import {observer} from "mobx-react-lite";
 import blockerState from "../../state/BlockerState";
 import TaskStatusCell from "./TaskStatusCell";
 import TestcaseIdCell from "./TestcaseIdCell";
+import DateWithDayDiff from "../stats/cells/DateWithDayDiff";
 
-const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, setShowFullName }) => {
+const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, setShowFullName, openTestHistoryModal }) => {
     const [blockedTest, setBlockedTest] = useState(blockedTestForRow)
 
     function handleUnblockButtonClick() {
@@ -84,7 +85,7 @@ const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, 
           onBlurCallback={ handleTestcaseEditFinish }
         />
 
-        <StyledTableCell style={{color: "var(--faded-text-color)"}}> {
+        <StyledTableCell style={{color: customTheme.palette.text.faded}}> {
           blockedTest.team && <label style={{border: "1px solid darkgray", borderRadius: "5px", padding: "5px"}}>{blockedTest.team}</label>
         }
 
@@ -96,6 +97,7 @@ const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, 
                            showFullName={showFullName}
                            setShowFullName={setShowFullName}
                            handleTestcaseEditFinish={ handleTestcaseEditFinish }
+                           openTestHistoryModal={openTestHistoryModal}
                            textArea
         />
 
@@ -111,7 +113,7 @@ const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, 
                         onBlurCallback={ handleTestcaseEditFinish }/>
 
 
-        <StyledTableCell align="center">{blockedTest.blockDate}</StyledTableCell>
+        <StyledTableCell align="center"><DateWithDayDiff date={blockedTest.blockDate}/></StyledTableCell>
     </StyledTableRow>
 })
 

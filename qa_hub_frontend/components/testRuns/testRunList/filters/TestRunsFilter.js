@@ -7,13 +7,18 @@ import CommitFilter from "./CommitFilter";
 import BranchFilter from "./BranchFilter";
 import EnvironmentFilter from "./EnvironmentFilter";
 import TagFilter from "./TagFilter";
-export default function TestRunsFilter({ filter, setFilter, loadTestRuns, filterAndLoad, ...props }) {
+import Loader from "../../../common/Loader";
+import {customTheme} from "../../../../styles/CustomTheme";
+export default function TestRunsFilter({ filter, setFilter, loadTestRuns, filterAndLoad, loading, ...props }) {
 
   return <Paper style={{padding: "15px", ...props.style}}>
     <div style={{display: 'flex', alignItems: 'center'}}>
-      <Typography variant={'h5'}>TestRuns </Typography>
+      <Typography variant={'h5'}>{"TestRuns"}</Typography>
       <div style={{flexGrow: '1.1'}}></div>
-
+      {
+        loading &&
+        <Loader style={{alignSelf: 'center', color: customTheme.palette.text.disabled}}/>
+      }
       <StatusFilter filter={filter} setFilter={setFilter} style={{marginLeft: '15px'}} />
       <TagFilter    filter={filter} setFilter={setFilter} style={{marginLeft: '15px', width: '120px'}}/>
       <BranchFilter filter={filter} setFilter={setFilter} style={{marginLeft: '15px'}}/>

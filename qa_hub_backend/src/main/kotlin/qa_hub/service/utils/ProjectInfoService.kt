@@ -12,7 +12,7 @@ import qa_hub.entity.ProjectCicdInfo
 import qa_hub.entity.ProjectTmsInfo
 import qa_hub.service.integrations.cicd.CicdInfo
 import qa_hub.service.integrations.taskTrackers.TaskTrackerInfo
-import qa_hub.service.integrations.tms.entity.TmsInfo
+import qa_hub.service.integrations.tms.TmsInfo
 
 
 data class ProjectTaskTrackerIntegrationsInfo(

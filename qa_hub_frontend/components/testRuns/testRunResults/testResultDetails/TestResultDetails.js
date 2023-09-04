@@ -13,14 +13,42 @@ import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import AppleIcon from "@mui/icons-material/Apple";
 import TestResultActions from "./TestResultActions";
+import {useState} from "react";
+import {useRouter} from "next/router";
+import TestHistoryModal from "../../../stats/testHistoryModal/TestHistoryModal";
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import {customTheme} from "../../../../styles/CustomTheme";
+import alertState from "../../../../state/AlertState";
+import {copyToClipboard} from "../../../../utils/CopyHelper";
 
 const TestResultDetails = observer(({ ...props }) => {
+  const router = useRouter()
   const {  selectedTest } = testResultsState
+
+  const [testHistoryModalOpen, setTestHistoryModalOpen] = useState(router.query.testHistory != null)
+  const [selectedTestId, setSelectedTestId] = useState(router.query.testHistory || null)
+
+  const openTestHistoryModal = (fullName) => {
+    setSelectedTestId(fullName)
+    router.query.testHistory = fullName
+    router.replace(router).then(() => {
+      setTestHistoryModalOpen(true)
+    })
+  }
+
+  const closeTestHistoryModal = (fullName) => {
+    delete router.query.testHistory
+    router.replace(router).then(() => {
+      setTestHistoryModalOpen(false)
+      setSelectedTestId(null)
+    })
+  }
   const renderContent = () => {
     if (selectedTest == null) {
       return <div>Not selected</div>
     } else {
       return <div>
+        <TestHistoryModal isOpen={testHistoryModalOpen} onClose={closeTestHistoryModal} testcaseId={selectedTestId} />
         <Paper style={{padding: '15px 10px', position: 'relative'}}>
           <div style={{padding: '2px 2px'}}>
             <div style={{display: 'flex', marginLeft: '8px'}}>
@@ -43,8 +71,8 @@ const TestResultDetails = observer(({ ...props }) => {
                 labelStyle={{ justifySelf: 'center'}}
               />
               <div style={{maxWidth: 'min-content', overflowX: 'hidden', position: 'relative', marginLeft: '15px', top: '-1px'}}>
-                <Typography variant={'h6'} style={{marginLeft: '15px', width: 'max-content'}}>{getShortName(selectedTest)}</Typography>
-                <Typography variant={'h6'} style={{marginLeft: '15px', width: 'max-content', fontSize: '14px', opacity: '0.5'}}>{selectedTest.fullName}</Typography>
+                <TestResultShortName testResult={selectedTest} action={() => openTestHistoryModal(selectedTest.fullName)} style={{marginLeft: '5px',}}/>
+                <TestResultFullName testResult={selectedTest} />
               </div>
               <TestStatusWithRetries
                 status={selectedTest.status}
@@ -52,7 +80,7 @@ const TestResultDetails = observer(({ ...props }) => {
                 style={{
                   position: 'relative',
                   top: '12px',
-                  marginLeft: '25px'
+                  marginLeft: '15px'
               }}/>
             </div>
 
@@ -115,14 +143,112 @@ const TestResultDetails = observer(({ ...props }) => {
     }
   }
 
-  function getShortName(testResult) {
-    return testResult.fullName.substring(testResult.fullName.lastIndexOf(".") + 1)
-  }
-
   return <div style={{...props.style}}>
     {
       renderContent()
     }
+  </div>
+})
+
+const TestResultShortName = observer(({testResult, action, ...props}) => {
+  const [nameHovered, setNameHovered] = useState(false)
+  const [copyIconHovered, setCopyIconHovered] = useState(false)
+  const shortName = testResult.fullName.substring(testResult.fullName.lastIndexOf(".") + 1)
+
+
+  function copyTestName() {
+    copyToClipboard(testResult.fullName)
+    alertState.showAlert("Test short name has been copied", alertState.severities.success)
+  }
+
+  return <div
+    style={{display: 'flex', alignItems: 'center'}}
+  >
+    <Typography
+      variant={'h6'}
+      onClick={action}
+      onMouseOver={() => setNameHovered(true)}
+      onMouseLeave={() => setNameHovered(false)}
+      onBlur={() => setNameHovered(false)}
+      style={{
+         cursor: "pointer",
+         padding: '0 10px',
+         backgroundColor: nameHovered && 'rgba(255, 255, 255, 0.09)',
+        width: 'max-content',
+        ...props.style
+      }}
+    >{shortName}</Typography>
+    {
+      <div
+        style={{display: 'flex', position: 'relative', left: '-6px'}}
+      >
+        <div
+          style={{
+            padding: '3px',
+            display: 'grid',
+            alignItems: 'center',
+            justifyItems: 'center',
+            cursor: 'pointer'
+          }}
+          onClick={copyTestName}
+          onMouseOver={() => setCopyIconHovered(true)}
+          onMouseLeave={() => setCopyIconHovered(false)}
+          onBlur={() => setCopyIconHovered(false)}
+        >
+          <ContentCopyIcon
+            style={{
+              transform: 'scale(-1, 0.8)',
+              color: copyIconHovered ? customTheme.palette.text.white : customTheme.palette.text.disabled,
+              fontSize: '18px',
+            }}
+          />
+        </div>
+      </div>
+    }
+  </div>
+})
+
+const TestResultFullName = observer(({testResult}) => {
+  const [copyIconHovered, setCopyIconHovered] = useState(false)
+  function copyFullTestName() {
+    copyToClipboard(testResult.fullName)
+    alertState.showAlert("Test full name has been copied", alertState.severities.success)
+  }
+
+  return <div
+    style={{display: 'flex', alignItems: 'center', position: 'relative'}}
+  >
+    <Typography variant={'h6'} style={{marginLeft: '15px', width: 'max-content', fontSize: '14px', opacity: '0.5', padding: '3px 0px'}}>{testResult.fullName}</Typography>
+    <div style={{minWidth: '30px'}}>
+      {
+        <div
+          style={{
+            marginLeft: '3px',
+            padding: '3px 0px',
+            display: 'grid',
+            alignItems: 'center',
+            justifyItems: 'center',
+            cursor: 'pointer',
+            position: 'relative',
+            top: '-2px',
+            width: '24px',
+            height: '24px'
+          }}
+          onClick={copyFullTestName}
+          onMouseOver={() => setCopyIconHovered(true)}
+          onMouseLeave={() => setCopyIconHovered(false)}
+          onBlur={() => setCopyIconHovered(false)}
+        >
+          <ContentCopyIcon
+            style={{
+              transform: 'scale(-1, 0.8)',
+              color: copyIconHovered ? customTheme.palette.text.white : customTheme.palette.text.disabled,
+              fontSize: '18px',
+            }}
+          />
+        </div>
+      }
+    </div>
   </div>
 })
 export default TestResultDetails

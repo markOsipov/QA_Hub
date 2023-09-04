@@ -14,6 +14,7 @@ export const QaHubCookies = {
     projects: 'projects',
     testRunsLoadCount: 'testRunsLoadCount',
     testResultsLoadCount: 'testResultsLoadCount',
+    testStatsLoadCount: 'testStatsLoadCount',
     selectedProject: 'selected-project',
     testsForNextTestRun: 'testsForNextTestRun'
 }

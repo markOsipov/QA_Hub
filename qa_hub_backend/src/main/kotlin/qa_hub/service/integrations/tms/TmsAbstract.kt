@@ -1,4 +1,9 @@
-package qa_hub.service.integrations.tms.entity
+package qa_hub.service.integrations.tms
+
+import qa_hub.service.integrations.taskTrackers.TaskTrackerIntegrationAbstract
+import qa_hub.service.integrations.taskTrackers.TaskTrackerTypes
+import qa_hub.service.integrations.taskTrackers.jira.JiraService
+import qa_hub.service.integrations.tms.allure.AllureService
 
 data class TmsType(
     val tmsName: String,
@@ -25,13 +30,21 @@ data class TmsInfo(
     val apiToken: String? = null,
     val login: String? = null,
     val password: String? = null,
-)
+) {
+    fun tmsService(): TmsIntegrationAbstract? {
+        return when (tmsType) {
+            TmsTypes.ALLURE.tmsType.tmsName -> AllureService(this)
+            else -> null
+        }
+    }
+}
 abstract class TmsIntegrationAbstract(val tmsInfo: TmsInfo) {
     abstract fun getProjects(): List<TmsProjectAbstract>
     abstract fun getProject(projectId: String): TmsProjectAbstract
     abstract fun getTestcases(projectId: String): List<TestcaseAbstract>
     abstract fun getTestcase(projectId: String, testcaseId: String): TestcaseAbstract
     abstract fun updateTestcase(projectId: String, testcaseId: String): TestcaseAbstract
+    abstract fun startTestrun(projectId: String): String
 }
 
 abstract class TmsProjectAbstract

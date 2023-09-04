@@ -1,18 +1,18 @@
 import '../styles/globals.css'
 import QaHubAppBar from "../components/common/QaHubAppBar";
 import {customTheme} from "../styles/CustomTheme";
-import {Card, ThemeProvider} from "@mui/material";
+import {ThemeProvider} from "@mui/material";
 import projectState from "../state/ProjectState";
 import useSWR from "swr";
 import {loadProjects} from "../requests/ProjectRequests";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import { useRouter } from 'next/router'
 import GoToSettingsStub from "../components/stubs/GoToSettingsStub";
 import AlertsView from "../components/common/AlertsView";
 
 function MyApp({ Component, pageProps }) {
     let router = useRouter()
-    let { data, error } = useSWR("loadProjects", loadProjects, { refreshInterval: 60000, revalidateOnFocus: false })
+    let { data, error } = useSWR("loadProjects", loadProjects, { refreshInterval: 0, revalidateOnFocus: false })
 
     useEffect(() => {
         if(data?.data) {
@@ -47,7 +47,7 @@ function MyApp({ Component, pageProps }) {
                 shouldNavigateToSettings() ? (
                     <GoToSettingsStub />
                 ) : (
-                    <div style={{height: '91vh', minHeight: '91vh', overflowY: 'auto'}}>
+                    <div style={{height: 'calc(100vh - 65px)', minHeight: 'calc(100vh - 65px)', overflowY: 'auto'}}>
                         <Component {...pageProps} />
                         <AlertsView style={{position: "absolute", right: '30px', bottom: '20px'}}/>
                     </div>

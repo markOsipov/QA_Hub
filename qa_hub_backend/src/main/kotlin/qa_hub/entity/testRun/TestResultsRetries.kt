@@ -20,7 +20,7 @@ class StatusHistoryItem(
     var attachments: MutableList<String> = mutableListOf()
 ) {
     constructor(testResult: TestResult): this(
-        date = currentDateTimeUtc(),
+        date = testResult.date ?: currentDateTimeUtc(),
         status = testResult.status,
         duration = testResult.duration,
         message = testResult.message,

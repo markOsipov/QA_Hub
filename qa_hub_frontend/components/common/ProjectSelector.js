@@ -2,6 +2,7 @@ import {observer} from "mobx-react-lite";
 import projectState from "../../state/ProjectState";
 import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import StyledSelect from "../primitives/StyledSelect";
+import {customTheme} from "../../styles/CustomTheme";
 
 const ProjectSelector = observer(({style}) => {
     function handleProjectChange(event) {
@@ -12,7 +13,7 @@ const ProjectSelector = observer(({style}) => {
 
     return(
         <FormControl style={{...style}}>
-            <InputLabel id="project-selector-label" style={{color: "var(--faded-text-color)"}}>Project</InputLabel>
+            <InputLabel id="project-selector-label" style={{color: customTheme.palette.text.faded}}>Project</InputLabel>
             <StyledSelect
                 id="project-selector"
                 value={projectState.selectedProject}

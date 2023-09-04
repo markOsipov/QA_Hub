@@ -1,10 +1,9 @@
 package qa_hub.controller.testRuns
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
+import qa_hub.entity.testRun.SingleTestStats
+import qa_hub.entity.testRun.TestHistoryRequest
 import qa_hub.entity.testRun.TestStats
 import qa_hub.entity.testRun.TestStatsRequest
 import qa_hub.service.testResults.TestStatsService
@@ -16,8 +15,19 @@ class TestStatsController {
     @Autowired
     lateinit var testStatsService: TestStatsService
 
-    @GetMapping("")
+    @PostMapping("")
     fun getStatsForProject(@RequestBody request: TestStatsRequest): List<TestStats> {
         return testStatsService.getStatsForProject(request)
     }
+
+    @PostMapping("/alt")
+    fun getStatsForProjectAlt(@RequestBody request: TestStatsRequest): List<TestStats> {
+        return testStatsService.getStatsForProjectAlt(request)
+    }
+
+    @PostMapping("/history")
+    fun getTestHistory(@RequestBody request: TestHistoryRequest): SingleTestStats {
+        return testStatsService.getTestHistory(request)
+    }
+
 }
