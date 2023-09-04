@@ -30,8 +30,8 @@ export default function FullNameTableCell({ showFullName, setShowFullName, block
 
     return <EditableTableCell
       style={{padding: "5px 9px"}}
-      value =  { showFullName ? blockedTest.fullName : blockedTest.shortName }
-      content={
+      value = { showFullName ? blockedTest.fullName : blockedTest.shortName }
+      content= {
         <div
             onClick={() => openTestHistoryModal(blockedTest.fullName)}
             onMouseOver={() => {setHovered(true)}}

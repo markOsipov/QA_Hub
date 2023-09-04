@@ -17,10 +17,9 @@ import {useState} from "react";
 import {useRouter} from "next/router";
 import TestHistoryModal from "../../../stats/testHistoryModal/TestHistoryModal";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import AssessmentIcon from '@mui/icons-material/Assessment';
-import EqualizerIcon from '@mui/icons-material/Equalizer';
 import {customTheme} from "../../../../styles/CustomTheme";
 import alertState from "../../../../state/AlertState";
+import {copyToClipboard} from "../../../../utils/CopyHelper";
 
 const TestResultDetails = observer(({ ...props }) => {
   const router = useRouter()
@@ -158,7 +157,7 @@ const TestResultShortName = observer(({testResult, action, ...props}) => {
 
 
   function copyTestName() {
-    navigator.clipboard.writeText(shortName)
+    copyToClipboard(testResult.fullName)
     alertState.showAlert("Test short name has been copied", alertState.severities.success)
   }
 
@@ -212,7 +211,7 @@ const TestResultShortName = observer(({testResult, action, ...props}) => {
 const TestResultFullName = observer(({testResult}) => {
   const [copyIconHovered, setCopyIconHovered] = useState(false)
   function copyFullTestName() {
-    navigator.clipboard.writeText(testResult.fullName)
+    copyToClipboard(testResult.fullName)
     alertState.showAlert("Test full name has been copied", alertState.severities.success)
   }
 
