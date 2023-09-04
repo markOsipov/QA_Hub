@@ -134,16 +134,20 @@ class TestRunService {
         testRunCollection.updateOne(
             TestRun::cicdJobId eq request.cicdJobId,
             combine(
-                min(
-                  TestRun::testRunId, currentEpoch().toString()
+                setOnInsert(
+                    TestRun::testRunId, currentEpoch().toString()
                 ),
-                min(
-                    TestRun::timeMetrics / TestRunTimeMetrics::created, currentEpoch().toString()
+                setOnInsert(
+                    TestRun::timeMetrics / TestRunTimeMetrics::created, currentDateTimeUtc()
                 ),
-                set(
-                    TestRun::project setTo request.project,
-                    TestRun::params setTo request.params,
-                    TestRun::status setTo TestRunStatus.CREATED.status
+                setOnInsert(
+                    TestRun::status,  TestRunStatus.CREATED.status
+                ),
+                setOnInsert(
+                    TestRun::project, request.project,
+                ),
+                setOnInsert(
+                    TestRun::params, request.params,
                 )
             ),
             upsert()
