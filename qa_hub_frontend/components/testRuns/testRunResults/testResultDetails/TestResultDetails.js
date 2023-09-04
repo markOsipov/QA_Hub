@@ -13,14 +13,38 @@ import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import AppleIcon from "@mui/icons-material/Apple";
 import TestResultActions from "./TestResultActions";
+import {useState} from "react";
+import {useRouter} from "next/router";
+import TestHistoryModal from "../../../stats/testHistoryModal/TestHistoryModal";
 
 const TestResultDetails = observer(({ ...props }) => {
+  const router = useRouter()
   const {  selectedTest } = testResultsState
+
+  const [testHistoryModalOpen, setTestHistoryModalOpen] = useState(router.query.testHistory != null)
+  const [selectedTestId, setSelectedTestId] = useState(router.query.testHistory || null)
+
+  const openTestHistoryModal = (fullName) => {
+    setSelectedTestId(fullName)
+    router.query.testHistory = fullName
+    router.replace(router).then(() => {
+      setTestHistoryModalOpen(true)
+    })
+  }
+
+  const closeTestHistoryModal = (fullName) => {
+    delete router.query.testHistory
+    router.replace(router).then(() => {
+      setTestHistoryModalOpen(false)
+      setSelectedTestId(null)
+    })
+  }
   const renderContent = () => {
     if (selectedTest == null) {
       return <div>Not selected</div>
     } else {
       return <div>
+        <TestHistoryModal isOpen={testHistoryModalOpen} onClose={closeTestHistoryModal} testcaseId={selectedTestId} />
         <Paper style={{padding: '15px 10px', position: 'relative'}}>
           <div style={{padding: '2px 2px'}}>
             <div style={{display: 'flex', marginLeft: '8px'}}>
@@ -43,7 +67,7 @@ const TestResultDetails = observer(({ ...props }) => {
                 labelStyle={{ justifySelf: 'center'}}
               />
               <div style={{maxWidth: 'min-content', overflowX: 'hidden', position: 'relative', marginLeft: '15px', top: '-1px'}}>
-                <Typography variant={'h6'} style={{marginLeft: '15px', width: 'max-content'}}>{getShortName(selectedTest)}</Typography>
+                <TestResultShortName testResult={selectedTest} action={() => openTestHistoryModal(selectedTest.fullName)} style={{marginLeft: '5px',}}/>
                 <Typography variant={'h6'} style={{marginLeft: '15px', width: 'max-content', fontSize: '14px', opacity: '0.5'}}>{selectedTest.fullName}</Typography>
               </div>
               <TestStatusWithRetries
@@ -115,14 +139,32 @@ const TestResultDetails = observer(({ ...props }) => {
     }
   }
 
-  function getShortName(testResult) {
-    return testResult.fullName.substring(testResult.fullName.lastIndexOf(".") + 1)
-  }
-
   return <div style={{...props.style}}>
     {
       renderContent()
     }
   </div>
 })
+
+const TestResultShortName = ({testResult, action, ...props}) => {
+  const [hovered, setHovered] = useState(false)
+  function getShortName(testResult) {
+    return testResult.fullName.substring(testResult.fullName.lastIndexOf(".") + 1)
+  }
+
+  return <Typography
+    variant={'h6'}
+    onClick={action}
+    onMouseOver={() => setHovered(true)}
+    onMouseLeave={() => setHovered(false)}
+    onBlur={() => setHovered(false)}
+    style={{
+      cursor: "pointer",
+      padding: '0 10px',
+      backgroundColor: hovered && 'rgba(255, 255, 255, 0.09)',
+      width: 'max-content',
+      ...props.style
+    }}
+  >{getShortName(testResult)}</Typography>
+}
 export default TestResultDetails
