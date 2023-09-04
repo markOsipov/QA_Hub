@@ -6,6 +6,7 @@ import blockerState from "../../state/BlockerState";
 import LockIcon from "@mui/icons-material/Lock";
 import {customTheme} from "../../styles/CustomTheme";
 import {daysBetween, getDate} from "../../utils/DateTimeUtils";
+import {useState} from "react";
 
 const TestStatRow = observer(({testStat, index, openTestHistoryModal, ...props}) => {
   const {blockedTests} = blockerState
@@ -32,7 +33,7 @@ const TestStatRow = observer(({testStat, index, openTestHistoryModal, ...props})
     </StyledTableCell>
 
     <StyledTableCell align="left">
-      <label onClick={openTestHistory}> {testStat.fullName}</label>
+      <TestStatsFullName fullName={testStat.fullName} action={openTestHistory} />
     </StyledTableCell>
 
     <StyledTableCell align="center">
@@ -83,4 +84,20 @@ const TestStatRow = observer(({testStat, index, openTestHistoryModal, ...props})
   </StyledTableRow>
 })
 
+const TestStatsFullName = ({fullName, action, ...props}) => {
+  const [hovered, setHovered] = useState(false)
+
+  return <label
+      onClick={action}
+      onMouseOver={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onBlur={() => setHovered(false)}
+      style={{
+        padding: '7px 12px',
+        cursor: "pointer",
+        backgroundColor: hovered && 'rgba(255, 255, 255, 0.09)',
+        ...props.style
+      }}
+    >{fullName}</label>
+}
 export default TestStatRow

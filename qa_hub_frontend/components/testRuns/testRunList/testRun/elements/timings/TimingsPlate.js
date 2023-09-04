@@ -1,7 +1,4 @@
-import TextWithLabel from "../../../../../primitives/TextWithLabel";
 import {getDate, getTime, getTimeMinutes} from "../../../../../../utils/DateTimeUtils";
-import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
-import StartedElement from "./DateView";
 import DateView from "./DateView";
 import DurationElement from "./DurationElement";
 export default function TimingsPlate ({testRun, ...props}) {

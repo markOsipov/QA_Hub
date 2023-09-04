@@ -6,6 +6,7 @@ import {getDate, getDateTime, getTimeMinutes} from "../../../utils/DateTimeUtils
 import {customTheme} from "../../../styles/CustomTheme";
 import TestStatusWithRetries from "../../common/TestStatusWithRetries";
 import ErrorMessage from "../../testRuns/testRunResults/testResultDetails/retries/ErrorMessage";
+import {useState} from "react";
 
 export default function TestHistoryTable({ testHistoryResults, ...props}) {
   if (testHistoryResults.length == 0) {
@@ -39,7 +40,7 @@ export default function TestHistoryTable({ testHistoryResults, ...props}) {
                   <TestStatusWithRetries status={testResult.status}></TestStatusWithRetries>
                 </StyledTableCell>
 
-                <StyledTableCell align={'center'}>{testResult.testRunId}</StyledTableCell>
+                <StyledTableCell align={'center'}><TestHistoryTestRunId testResult={testResult}/></StyledTableCell>
                 <StyledTableCell align={'center'}>{testResult.retries}</StyledTableCell>
                 <StyledTableCell align={'center'}>{Number.parseInt(testResult.duration)}</StyledTableCell>
 
@@ -70,4 +71,25 @@ export default function TestHistoryTable({ testHistoryResults, ...props}) {
       </Table>
     </TableContainer>
   </Paper>
+}
+
+const TestHistoryTestRunId = ({testResult, ...props}) => {
+  const [hovered, setHovered] = useState(false)
+  const testRunUrl = new URL(`${window.location.origin}/testRuns/${testResult.testRunId}`)
+  testRunUrl.searchParams.append("test", testResult.testcaseId || testResult.fullName)
+
+  return <label
+    onMouseOver={() => setHovered(true)}
+    onMouseLeave={() => setHovered(false)}
+    onBlur={() => setHovered(false)}
+    style={{
+      padding: '7px 12px',
+      cursor: "pointer",
+      backgroundColor: hovered && 'rgba(255, 255, 255, 0.09)',
+      ...props.style
+    }}
+  >
+    <a href={testRunUrl.href} target={"_blank"} rel="noreferrer">{testResult.testRunId}</a>
+
+  </label>
 }

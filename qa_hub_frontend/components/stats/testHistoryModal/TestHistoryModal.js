@@ -46,7 +46,7 @@ const TestHistoryModal = observer(({isOpen, onClose, testcaseId}) => {
     open={isOpen}
     onClose={handleClose}
   >
-    <Box sx={{...modalStyle, minWidth: '1500px'}}>
+    <Box sx={{...modalStyle, padding: '10px 15px', minWidth: '1500px'}}>
       <Typography variant="h6" component="h2" style={{marginBottom: "5px"}}>
         {testcaseId}
       </Typography>
