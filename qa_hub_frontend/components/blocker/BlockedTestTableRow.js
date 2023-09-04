@@ -11,6 +11,7 @@ import {observer} from "mobx-react-lite";
 import blockerState from "../../state/BlockerState";
 import TaskStatusCell from "./TaskStatusCell";
 import TestcaseIdCell from "./TestcaseIdCell";
+import DateWithDayDiff from "../stats/cells/DateWithDayDiff";
 
 const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, setShowFullName }) => {
     const [blockedTest, setBlockedTest] = useState(blockedTestForRow)
@@ -111,7 +112,7 @@ const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, 
                         onBlurCallback={ handleTestcaseEditFinish }/>
 
 
-        <StyledTableCell align="center">{blockedTest.blockDate}</StyledTableCell>
+        <StyledTableCell align="center"><DateWithDayDiff date={blockedTest.blockDate}/></StyledTableCell>
     </StyledTableRow>
 })
 

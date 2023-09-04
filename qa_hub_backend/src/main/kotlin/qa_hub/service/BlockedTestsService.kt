@@ -11,6 +11,7 @@ import org.litote.kmongo.util.KMongoUtil.idFilterQuery
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import qa_hub.core.mongo.entity.Collections.*
+import qa_hub.core.utils.DateTimeUtils.currentDateTimeUtc
 import qa_hub.core.utils.DateTimeUtils.formatDate
 import qa_hub.entity.Platforms
 import qa_hub.entity.Project
@@ -70,7 +71,7 @@ class BlockedTestsService {
     }
 
     fun blockTest(blockedTest: BlockedTest): UpdateResult = runBlocking {
-        blockedTest.blockDate = formatDate()
+        blockedTest.blockDate = currentDateTimeUtc()
 
         try {
             val separator = projectService.currentProjects.first { it.name == blockedTest.project }.separator

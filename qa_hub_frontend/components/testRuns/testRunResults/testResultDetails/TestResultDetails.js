@@ -81,7 +81,7 @@ const TestResultDetails = observer(({ ...props }) => {
                 style={{
                   position: 'relative',
                   top: '12px',
-                  marginLeft: '10px'
+                  marginLeft: '15px'
               }}/>
             </div>
 
