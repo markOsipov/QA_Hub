@@ -8,9 +8,11 @@ import StyledTextField from "../../primitives/StyledTextField";
 import LoadMoreTestRunsButton from "./LoadMoreTestRunsButtons";
 import {getCookie, QaHubCookies, setCookie} from "../../../utils/CookieHelper";
 import PushTestRunModal from "../pushTestRunModal/PushTestRunModal";
+import {useRouter} from "next/router";
 
 const TestRunList = observer(({...props}) => {
-  let {selectedProject} = projectState
+  const router = useRouter()
+  const project = projectState.selectedProject
 
   let [testRuns, setTestRuns] = useState([])
   let [filter, setFilter] = useState({})
@@ -23,9 +25,9 @@ const TestRunList = observer(({...props}) => {
   const [loadMoreSize, setLoadMoreSize] = useState(initialLoadSize)
   const [lastTestRunLoaded, setLastTestRunLoaded] = useState(false)
 
-  const loadTestRuns = async () => {
-    await getTestRuns(selectedProject, filter, testRuns.length, loadMoreSize).then((response) => {
-      if (response.data) {
+  const loadMoreTestRuns = async () => {
+    await getTestRuns(project, filter, testRuns.length, loadMoreSize).then((response) => {
+      if (response.data != null) {
         setTestRuns([...testRuns, ...response.data])
 
         if (response.data.length < loadMoreSize || response.data.length === 0) {
@@ -39,7 +41,7 @@ const TestRunList = observer(({...props}) => {
     const filterValue = filter || {}
     setFilter(filterValue)
     setLastTestRunLoaded(false)
-    getTestRuns(selectedProject, filterValue, initialSkip, loadMoreSize).then(response => {
+    getTestRuns(project, filterValue, initialSkip, loadMoreSize).then(response => {
       if (response.data) {
         setTestRuns(response.data)
       }
@@ -47,8 +49,16 @@ const TestRunList = observer(({...props}) => {
   }
 
   useEffect(() => {
-    loadTestRuns()
-  }, [selectedProject])
+    getTestRuns(project, filter, initialSkip, loadMoreSize).then((response) => {
+      if (response.data != null) {
+        setTestRuns([...response.data])
+
+        if (response.data.length < loadMoreSize || response.data.length === 0) {
+          setLastTestRunLoaded(true)
+        }
+      }
+    })
+  }, [project])
 
   const updateLoadMoreCount = (event) => {
     setLoadMoreSize(Number.parseInt(event.target.value))
@@ -79,7 +89,7 @@ const TestRunList = observer(({...props}) => {
         !lastTestRunLoaded &&
         <LoadMoreTestRunsButton
           loadMoreSize={loadMoreSize}
-          loadMoreTestRuns={loadTestRuns}
+          loadMoreTestRuns={loadMoreTestRuns}
           style={{marginTop: '25px'}}
         />
       }

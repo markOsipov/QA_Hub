@@ -1,4 +1,4 @@
-import BlockedTestsTable from "../components/blocker/BlockedTestsTable";
+import BlockedTestsTable from "../../components/blocker/BlockedTestsTable";
 
 function Blocker() {
     return (

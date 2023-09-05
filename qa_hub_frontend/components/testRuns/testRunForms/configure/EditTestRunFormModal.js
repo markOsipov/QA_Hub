@@ -10,9 +10,11 @@ import ConfigureParamCard from "./ConfigureParamCard";
 import IconButton from "@mui/material/IconButton";
 import {CloseIcon} from "next/dist/client/components/react-dev-overlay/internal/icons/CloseIcon";
 import {customTheme} from "../../../../styles/CustomTheme";
+import {useRouter} from "next/router";
 
 const EditTestRunFormModal = observer(({isOpen, setIsOpen, params, loadTestRunForm}) => {
-    let {selectedProject} = projectState
+    const router = useRouter()
+    let project = router.query.project
     const testRunFormParamsViewId = "edit-test-run-form-params"
 
     const [editedParams, setEditedParams] = useState(params)
@@ -65,7 +67,7 @@ const EditTestRunFormModal = observer(({isOpen, setIsOpen, params, loadTestRunFo
             alert("Parameter name couldn't be empty")
         } else {
             const body = {
-                project: selectedProject,
+                project: project,
                 params: editedParams
             }
 

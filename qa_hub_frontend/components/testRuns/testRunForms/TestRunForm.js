@@ -15,9 +15,11 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import {createNewTestRun} from "../../../requests/testRuns/TestRunRequests";
 import BranchSelector from "./BranchSelector";
 import alertState from "../../../state/AlertState";
+import {useRouter} from "next/router";
 
 const TestRunForm = observer(() => {
-    let {selectedProject} = projectState
+    const router = useRouter()
+    let project = router.query.project
 
     const [isEditTestRunFormModalOpen, setIsEditTestRunFormModalOpen] = useState(false);
     const [paramConfigs, setParamConfigs] = useState([])
@@ -25,7 +27,7 @@ const TestRunForm = observer(() => {
     const [branch, setBranch] =  useState("dev")
 
     function loadTestRunForm() {
-        getTestRunForm(selectedProject).then(response => {
+        getTestRunForm(project).then(response => {
             if (response.data?.params) {
                 setParamConfigs(response.data?.params)
             }
@@ -34,7 +36,7 @@ const TestRunForm = observer(() => {
 
     useEffect(() => {
         loadTestRunForm()
-    }, [selectedProject])
+    }, [project])
 
     useEffect(() => {
         setParams(paramConfigs
@@ -50,7 +52,7 @@ const TestRunForm = observer(() => {
     }
 
     const handleStartNewTestRunClick = () => {
-        createNewTestRun(selectedProject, branch, params).then(response => {
+        createNewTestRun(project, branch, params).then(response => {
             if (response.status >= 400) {
                 alertState.showAlert("Failed to start new testrun", "error")
             } else {
@@ -71,7 +73,7 @@ const TestRunForm = observer(() => {
             </StyledAccordionSummary>
 
             <AccordionDetails style={{marginTop: "20px", maxWidth: "1048px"}}>
-                <BranchSelector project={selectedProject} branch={branch} setBranch={setBranch}/>
+                <BranchSelector project={project} branch={branch} setBranch={setBranch}/>
                 {
                     params.map((param, index) => {
                         return <TestRunFormParam key={"param_" + index } param={param} index={index} params={params} setParams={setParams} />

@@ -4,7 +4,7 @@ import {loadProjects} from "../requests/ProjectRequests";
 
 class ProjectState {
     projects = getCookie(QaHubCookies.projects)                      //Project names only
-    projectsDetails = []                                //Projects full info.
+    projectsDetails = []                                      //Projects full info.
     selectedProject = getCookie(QaHubCookies.selectedProject)       //Current project name
 
     setProjects(projects) {
@@ -27,9 +27,11 @@ class ProjectState {
     }
 
     setSelectedProject(newProject) {
-        this.selectedProject = newProject
-        if (newProject) {
-            setCookie(QaHubCookies.selectedProject, newProject)
+        if (this.projects.includes(newProject)) {
+            this.selectedProject = newProject
+            if (newProject) {
+                setCookie(QaHubCookies.selectedProject, newProject)
+            }
         }
     }
 

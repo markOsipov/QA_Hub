@@ -22,7 +22,7 @@ export default function TestRunCard({testRun, filter, setFilter, filterAndLoad, 
 
 
   const handleTestRunCardClick = () => {
-     window.location.href = `/testRuns/${testRun.testRunId}`
+     window.location.href = `/${testRun.project}/testRuns/${testRun.testRunId}`
 
      //router.push(`testRuns/${testRun.testRunId}`) //got a bug, changes URL but doesn't render the new page
   }

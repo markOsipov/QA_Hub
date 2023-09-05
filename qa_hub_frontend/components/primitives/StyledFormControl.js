@@ -15,7 +15,9 @@ const StyledFormControl = styled((props) => (
   '& .MuiSelect-select, & .MuiInputBase-input': {
     padding: props.size === 'tiny' && '5px'
   },
-
+  '& .Mui-focused .MuiOutlinedInput-notchedOutline': {
+    border: `1px solid ${customTheme.palette.text.faded}`
+  },
 }));
 
 export default StyledFormControl
