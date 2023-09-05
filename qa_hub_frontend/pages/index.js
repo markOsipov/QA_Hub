@@ -1,7 +1,7 @@
-import HomePage from "../components/home/HomePage";
+import {useRouter} from "next/router";
 
-export default function Home() {
-  return (
-    <HomePage />
-  )
+export default function RootPage({...props}) {
+  const router = useRouter()
+  router.push("/projects")
+  return <></>
 }

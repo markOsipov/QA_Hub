@@ -6,11 +6,17 @@ import Stack from "@mui/material/Stack";
 import {useState} from "react";
 import {customTheme} from "../../styles/CustomTheme";
 import {useRouter} from "next/router";
+import GoToSettingsStub from "../stubs/GoToSettingsStub";
 
 const HomePage = observer(() => {
   const {projects} = projectState
 
+  if (projects.length === 0) {
+    return <GoToSettingsStub />
+  }
+
   return <div style={{padding:'10px'}}>
+
     <Typography variant={'h6'} style={{marginBottom: '10px'}}> QA Hub projects</Typography>
 
     <Stack spacing={1}>
@@ -28,7 +34,7 @@ const HomePageProjectCard = ({project, ...props}) => {
   const [hovered, setHovered] = useState(false)
 
   const handleProjectClick = () => {
-    router.push(`/${project}`)
+    router.push(`/projects/${project}`)
   }
 
   return <Card

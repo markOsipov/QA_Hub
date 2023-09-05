@@ -3,7 +3,7 @@ import {getCookie, QaHubCookies, setCookie} from "../utils/CookieHelper";
 import {loadProjects} from "../requests/ProjectRequests";
 
 class ProjectState {
-    projects = getCookie(QaHubCookies.projects)                      //Project names only
+    projects = getCookie(QaHubCookies.projects) || []                      //Project names only
     projectsDetails = []                                      //Projects full info.
     selectedProject = getCookie(QaHubCookies.selectedProject)       //Current project name
 

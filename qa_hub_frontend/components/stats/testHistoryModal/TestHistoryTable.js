@@ -5,6 +5,7 @@ import {getDate, getTimeMinutes} from "../../../utils/DateTimeUtils";
 import {customTheme} from "../../../styles/CustomTheme";
 import TestStatusWithRetries from "../../common/TestStatusWithRetries";
 import {useState} from "react";
+import {useRouter} from "next/router";
 
 export default function TestHistoryTable({ testHistoryResults, ...props}) {
   if (testHistoryResults.length == 0) {
@@ -83,8 +84,9 @@ export default function TestHistoryTable({ testHistoryResults, ...props}) {
 }
 
 const TestHistoryTestRunId = ({testResult, ...props}) => {
+  const router = useRouter()
   const [hovered, setHovered] = useState(false)
-  const testRunUrl = new URL(`${window.location.origin}/testRuns/${testResult.testRunId}`)
+  const testRunUrl = new URL(`${window.location.origin}/projects/${router.query.project}/testRuns/${testResult.testRunId}`)
   testRunUrl.searchParams.append("test", testResult.testcaseId || testResult.fullName)
 
   return <a

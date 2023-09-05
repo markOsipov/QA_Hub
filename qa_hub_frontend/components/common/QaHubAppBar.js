@@ -22,6 +22,7 @@ const pages = ['blocker', 'statistics', 'testRuns'];
 const QaHubAppBar = observer(() => {
   const router = useRouter()
   const project = projectState.selectedProject
+  const projects = projectState.projects
 
   const [labelElements, setLabelElements] = useState(
     router.asPath
@@ -69,7 +70,7 @@ const QaHubAppBar = observer(() => {
           </div>
 
           {
-            project != null &&
+            projects.length > 0 && project !== null && projects.includes(router.query.project) &&
             <div style={{display: 'flex', alignItems: 'center'}}>
               <ProjectSelector style={{ marginLeft: "12px", marginRight: "20px" }}/>
 
@@ -78,7 +79,7 @@ const QaHubAppBar = observer(() => {
                   <Button
                     key={page}
                     sx={{ my: 2, color: 'white', display: 'block' }}
-                    href={`/${project}/${page}`}
+                    href={`/projects/${project}/${page}`}
                   >
                     {page}
                   </Button>
