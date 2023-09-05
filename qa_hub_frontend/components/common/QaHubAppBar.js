@@ -72,7 +72,7 @@ const QaHubAppBar = observer(() => {
           {
             projects.length > 0 && project !== null &&
             <div style={{display: 'flex', alignItems: 'center', marginLeft: '20px'}}>
-              <ProjectSelector style={{ marginLeft: "12px", marginRight: "5px" }}/>
+              <ProjectSelector style={{ marginLeft: "12px", marginRight: "8px" }}/>
 
               <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                 {pages.map((page) => (
