@@ -8,9 +8,15 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {useRouter} from "next/router";
 import {observer} from "mobx-react-lite";
 import pushModalState from "../../../../state/testRuns/PushModalState";
+import Button from "@mui/material/Button";
+import projectIntegrationsState from "../../../../state/integrations/ProjectIntegrationsState";
+import GitHubIcon from '@mui/icons-material/GitHub';
 
 const TestRunActionsOnPage = observer (({testRun, updateTestRunInfo, ...props}) => {
   const router = useRouter()
+
+  const tmsType = projectIntegrationsState.tmsInt?.projectTmsInfo?.type
+  const cicdType = projectIntegrationsState.cicdInt?.projectCicdInfo?.type
 
   const handleStartRerunClick = () => {
     pushModalState.open(testRun)
@@ -33,6 +39,45 @@ const TestRunActionsOnPage = observer (({testRun, updateTestRunInfo, ...props}) 
   }
 
   return <div style={{display: 'flex', ...props.style}}>
+    {
+      testRun.allureLaunchId && tmsType &&
+
+      <StyledTooltip title={"Cicd Job"}>
+        <div style={{marginLeft: '5px'}}>
+          <Button
+            href={`${projectIntegrationsState.tmsInt.launchUrl}/${testRun.allureLaunchId}`}
+            target={'_blank'}
+            variant={'contained'}
+            size="small"
+            style={{
+              height: '25px',
+              backgroundColor: tmsType === 'Allure' ? customTheme.palette.integrations.allure : customTheme.palette.primary.main
+          }}
+          >{ tmsType }</Button>
+        </div>
+      </StyledTooltip>
+    }
+
+    {
+      testRun.cicdJobId && cicdType &&
+
+      <StyledTooltip title={"Cicd Job"}>
+        <div style={{marginLeft: '5px'}}>
+          <Button
+            href={`${projectIntegrationsState.cicdInt.jobUrl}/${testRun.cicdJobId}`}
+            target={'_blank'}
+            variant={'contained'}
+            size="small"
+            style={{
+              height: '25px',
+              backgroundColor: cicdType === 'GitHub' ? customTheme.palette.integrations.gitHub : customTheme.palette.primary.main
+            }}
+            startIcon={ cicdType === 'GitHub' && <GitHubIcon />}
+          >{ cicdType }</Button>
+        </div>
+      </StyledTooltip>
+    }
+
     <StyledTooltip title={"Rerun"}>
       <div>
         <CustomIconButton

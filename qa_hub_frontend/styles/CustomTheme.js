@@ -41,5 +41,10 @@ export var customTheme = createTheme({
             disabled: 'rgba(255, 255, 255, 0.3)',
             disabledMore: 'rgba(255, 255, 255, 0.2)'
         },
+
+        integrations: {
+            gitHub: 'rgba(0, 0, 0, 0.5)',
+            allure: 'rgb(26,165,77)'
+        }
     },
 });

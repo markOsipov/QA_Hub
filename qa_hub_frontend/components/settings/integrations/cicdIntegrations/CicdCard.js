@@ -78,6 +78,7 @@ export default function CicdCard({cicd, updateCicdList, cicdTypes, cicdIntegrati
         </div>
 
         <TextWithLabel value={cicd.baseUrl} label={"Base URL"} style={{margin: '15px 0 15px 0'}}/>
+        <TextWithLabel value={cicd.apiUrl} label={"Api URL"} style={{margin: '15px 0 15px 0'}}/>
         <TextWithLabel value={cicd.apiToken} label={"Api token"} style={{margin: '20px 0 15px 0'}}/>
         <TextWithLabel value={cicd.login} label={"Login"} style={{margin: '20px 0 15px 0'}}/>
         <TextWithLabel value={cicd.password} label={"Password"} style={{margin: '20px 0 15px 0'}}/>

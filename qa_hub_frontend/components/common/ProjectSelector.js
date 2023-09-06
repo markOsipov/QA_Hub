@@ -87,8 +87,12 @@ const ProjectSelector = observer(({style}) => {
     const project = cicdInt?.projectCicdInfo?.project
     const path = cicdInt?.projectCicdInfo?.path
 
-    if (cicdInt?.projectTmsInfo?.type === "GitHub") {
-      jobUrl = `${jobUrl}/${project}/${path}/actions/runs/`
+    console.log(JSON.stringify(cicdInt?.projectCicdInfo))
+
+    if (cicdInt?.projectCicdInfo?.type === "GitHub") {
+      jobUrl = `${jobUrl}/${path}/${project}/actions/runs`
+
+      jobUrl = jobUrl.replace(`//${project}`, `/${project}`)
     }
 
     return jobUrl
