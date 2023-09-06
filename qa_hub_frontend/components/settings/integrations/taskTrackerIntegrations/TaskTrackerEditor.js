@@ -49,6 +49,7 @@ const TaskTrackerEditor = observer(() => {
                             color="error"
                             startIcon={<AddIcon />}
                             onClick={handleOpen}
+                            size={"small"}
                     >Add task tracker</Button>
                 </div>
             </AccordionDetails>

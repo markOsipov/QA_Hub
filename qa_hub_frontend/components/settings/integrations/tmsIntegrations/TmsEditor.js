@@ -49,6 +49,7 @@ const TmsEditor = observer(() => {
                             color="error"
                             startIcon={<AddIcon />}
                             onClick={handleOpen}
+                            size={"small"}
                     >Add TMS</Button>
                 </div>
             </AccordionDetails>

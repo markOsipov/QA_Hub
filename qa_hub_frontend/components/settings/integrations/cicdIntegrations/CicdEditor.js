@@ -49,6 +49,7 @@ const CicdEditor = observer(() => {
                             color="error"
                             startIcon={<AddIcon />}
                             onClick={handleOpen}
+                            size={"small"}
                     >Add CICD</Button>
                 </div>
             </AccordionDetails>
