@@ -87,8 +87,6 @@ const ProjectSelector = observer(({style}) => {
     const project = cicdInt?.projectCicdInfo?.project
     const path = cicdInt?.projectCicdInfo?.path
 
-    console.log(JSON.stringify(cicdInt?.projectCicdInfo))
-
     if (cicdInt?.projectCicdInfo?.type === "GitHub") {
       jobUrl = `${jobUrl}/${path}/${project}/actions/runs`
 
