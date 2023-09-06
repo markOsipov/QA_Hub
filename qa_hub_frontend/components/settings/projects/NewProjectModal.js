@@ -16,7 +16,7 @@ import projectState from "../../../state/ProjectState";
 import {modalStyle} from "../../../styles/ModalStyle";
 import StyledSelect from "../../primitives/StyledSelect";
 import StyledAccordionSummary from "../../primitives/StyledAccordeonSummary";
-import integrationsState from "../../../state/IntegrationsState";
+import integrationsState from "../../../state/integrations/IntegrationsState";
 import ProjectCICDForm from "./components/ProjectCICDForm";
 import ProjectTMSForm from "./components/ProjectTMSForm";
 import ProjectTaskTrackerForm from "./components/ProjectTaskTrackerForm";

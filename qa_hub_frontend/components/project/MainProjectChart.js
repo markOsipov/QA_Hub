@@ -22,14 +22,15 @@ export default function MainProjectChart({project, ...props}) {
 
       setData(calculatedData)
 
-      const startDate = calculatedData[0].date
-      const endDate = calculatedData[calculatedData.length - 1].date
+      if (calculatedData.length > 0) {
+        const startDate = calculatedData[0].date
+        const endDate = calculatedData[calculatedData.length - 1].date
 
-      setDomain([dataMin => dataMin, () => endDate.getTime()])
-      setTicks(getTicks(startDate, endDate, 5))
-
+        setDomain([dataMin => dataMin, () => endDate.getTime()])
+        setTicks(getTicks(startDate, endDate, 5))
+      }
     })
-  }, [])
+  }, [project])
 
   const dateFormatter = date => {
     return getDate(date)

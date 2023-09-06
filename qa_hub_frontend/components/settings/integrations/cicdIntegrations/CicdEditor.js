@@ -9,7 +9,7 @@ import useSWR from "swr";
 import {getCicdIntegrations, getCicdTypes} from "../../../../requests/integrations/CICDRequests";
 import CicdCard from "./CicdCard";
 import NewCicdModal from "./NewCicdModal";
-import integrationsState from "../../../../state/IntegrationsState";
+import integrationsState from "../../../../state/integrations/IntegrationsState";
 
 const CicdEditor = observer(() => {
     const [isNewCicdModalOpen, setIsNewCicdModalOpen] = useState(false)

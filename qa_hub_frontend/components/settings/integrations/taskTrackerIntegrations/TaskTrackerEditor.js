@@ -8,7 +8,7 @@ import StyledAccordionSummary from "../../../primitives/StyledAccordeonSummary";
 import TaskTrackerCard from "./TaskTrackerCard";
 import NewTaskTrackerModal from "./NewTaskTrackerModal";
 import {getTaskTrackerIntegrations, getTaskTrackerTypes} from "../../../../requests/integrations/TaskTrackerRequests";
-import integrationsState from "../../../../state/IntegrationsState";
+import integrationsState from "../../../../state/integrations/IntegrationsState";
 
 const TaskTrackerEditor = observer(() => {
     const [isNewModalOpen, setIsNewModalOpen] = useState(false)

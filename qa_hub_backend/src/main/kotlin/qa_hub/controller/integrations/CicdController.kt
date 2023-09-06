@@ -7,6 +7,9 @@ import qa_hub.service.integrations.cicd.CicdService
 import qa_hub.service.integrations.cicd.CicdInfo
 import qa_hub.service.integrations.cicd.CicdType
 import qa_hub.service.integrations.cicd.CicdTypes
+import qa_hub.service.utils.ProjectCicdIntegrationsInfo
+import qa_hub.service.utils.ProjectIntegrationsService
+import qa_hub.service.utils.ProjectTaskTrackerIntegrationsInfo
 
 
 @RestController
@@ -14,6 +17,9 @@ import qa_hub.service.integrations.cicd.CicdTypes
 class CicdController {
     @Autowired
     lateinit var cicdService: CicdService
+
+    @Autowired
+    lateinit var projectIntegrationsService: ProjectIntegrationsService
 
     @GetMapping("/types")
     fun getTmsTypes(): List<CicdType> {
@@ -40,5 +46,14 @@ class CicdController {
     @PostMapping("/integrations/delete/{id}")
     fun deleteTmsIntegration(@PathVariable("id") id: String): DeleteResult {
         return cicdService.deleteCicdIntegration(id)
+    }
+
+    @GetMapping("/{project}")
+    fun getProjectTaskTracker(@PathVariable project: String): ProjectCicdIntegrationsInfo? {
+        return try {
+            projectIntegrationsService.getProjectCicdInt(project)
+        } catch (e: Exception) {
+            null
+        }
     }
 }

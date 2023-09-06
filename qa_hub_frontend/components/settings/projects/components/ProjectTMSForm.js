@@ -3,7 +3,7 @@ import {Accordion, AccordionDetails, FormControl, InputLabel, MenuItem} from "@m
 import StyledAccordionSummary from "../../../primitives/StyledAccordeonSummary";
 import Typography from "@mui/material/Typography";
 import StyledSelect from "../../../primitives/StyledSelect";
-import integrationsState from "../../../../state/IntegrationsState";
+import integrationsState from "../../../../state/integrations/IntegrationsState";
 import StyledTextField from "../../../primitives/StyledTextField";
 import {customTheme} from "../../../../styles/CustomTheme";
 

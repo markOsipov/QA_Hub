@@ -40,7 +40,7 @@ class ProjectIntegrationsService {
     @Autowired
     lateinit var mongoClient: QaHubMongoClient
 
-    private val maxTimeSeconds = 1 * 60 * 60
+    private val maxTimeSeconds = 1 * 10 * 60 //update every 10 min
 
     private val taskTrackerIntegrationCollection by lazy {
         mongoClient.db.getCollection<TaskTrackerInfo>(Collections.TASK_TRACKER_INTEGRATIONS.collectionName)
@@ -58,9 +58,9 @@ class ProjectIntegrationsService {
         mongoClient.db.getCollection<Project>(Collections.PROJECTS.collectionName)
     }
 
-    val projectsTmsIntegrations = mutableMapOf<String, ProjectTmsIntegrationsInfo>()
-    val projectsCicdIntegrations = mutableMapOf<String, ProjectCicdIntegrationsInfo>()
-    val projectsTaskTrackerIntegrations = mutableMapOf<String, ProjectTaskTrackerIntegrationsInfo>()
+    private val projectsTmsIntegrations = mutableMapOf<String, ProjectTmsIntegrationsInfo>()
+    private val projectsCicdIntegrations = mutableMapOf<String, ProjectCicdIntegrationsInfo>()
+    private val projectsTaskTrackerIntegrations = mutableMapOf<String, ProjectTaskTrackerIntegrationsInfo>()
     fun updateProjectCicdIntegrationsInfo(project: String): ProjectCicdIntegrationsInfo = runBlocking {
         val projectInfo = projectCollection.findOne(Project::name eq project)
 

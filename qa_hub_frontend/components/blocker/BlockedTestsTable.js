@@ -57,17 +57,6 @@ const BlockedTestsTable = observer(() => {
         blockerState.updateBlockedTests(project)
     }, [project])
 
-    useEffect(() => {
-        getTaskTrackerIntegration(project).then(data => {
-            blockerState.setTaskTrackerInfo(data?.data?.taskTrackerInfo || {})
-        })
-    }, [project])
-
-    useEffect(() => {
-        getTaskTmsIntegration(project).then(data => {
-            blockerState.setTmsInfo(data?.data || {})
-        })
-    }, [project])
 
     function handleOpenAddBlockedTestModal() {
         setAddBlockedTestModalOpen(true)
