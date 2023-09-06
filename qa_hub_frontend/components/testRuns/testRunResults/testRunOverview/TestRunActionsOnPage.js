@@ -42,7 +42,7 @@ const TestRunActionsOnPage = observer (({testRun, updateTestRunInfo, ...props}) 
     {
       testRun.allureLaunchId && tmsType &&
 
-      <StyledTooltip title={"Cicd Job"}>
+      <StyledTooltip title={`Testrun in ${tmsType}`}>
         <div style={{marginLeft: '5px'}}>
           <Button
             href={`${projectIntegrationsState.tmsInt.launchUrl}/${testRun.allureLaunchId}`}
@@ -61,7 +61,7 @@ const TestRunActionsOnPage = observer (({testRun, updateTestRunInfo, ...props}) 
     {
       testRun.cicdJobId && cicdType &&
 
-      <StyledTooltip title={"Cicd Job"}>
+      <StyledTooltip title={`Job in ${cicdType}`}>
         <div style={{marginLeft: '5px'}}>
           <Button
             href={`${projectIntegrationsState.cicdInt.jobUrl}/${testRun.cicdJobId}`}
