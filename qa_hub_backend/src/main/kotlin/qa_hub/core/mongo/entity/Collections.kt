@@ -15,6 +15,8 @@ enum class Collections(val collectionName: String) {
     TEST_RUNS("testRuns"),
     TEST_STEPS("testSteps"),
 
+    METRICS_MAIN("metricsMain"),
+
     CICD_INTEGRATIONS("cicdIntegrations"),
     TASK_TRACKER_INTEGRATIONS("taskTrackerIntegrations"),
     TMS_INTEGRATIONS("tmsIntegrations");

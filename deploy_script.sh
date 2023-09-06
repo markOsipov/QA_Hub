@@ -81,4 +81,6 @@ ssh $REMOTE_USER@$REMOTE_IP << EOF
     echo qa_hub_frontend HAS BEEN SUCCESSFULLY UPDATED || echo qa_hub_frontend HAS FAILED TO UPDATE
 
     exit
+
+    sudo docker rmi --force $(sudo docker images | grep qa_hub_ | grep none | awk '{print $3}') || true
 EOF

@@ -8,7 +8,7 @@ import {customTheme} from "../../styles/CustomTheme";
 import {useRouter} from "next/router";
 import GoToSettingsStub from "../stubs/GoToSettingsStub";
 
-const HomePage = observer(() => {
+const HomePageContent = observer(() => {
   const {projects} = projectState
 
   if (projects.length === 0) {
@@ -54,4 +54,4 @@ const HomePageProjectCard = ({project, ...props}) => {
   </Card>
 }
 
-export default HomePage
+export default HomePageContent

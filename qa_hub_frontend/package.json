@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "NEXT_PUBLIC_QA_HUB_BACKEND=http://127.0.0.1:8080 next dev",
+    "dev": "NEXT_PUBLIC_QA_HUB_BACKEND=http://192.168.255.138:8080 next dev",
     "build": "next build",
     "start": "next start",
     "start_local": "NEXT_PUBLIC_QA_HUB_BACKEND=http://127.0.0.1:8080 next start",
@@ -17,6 +17,7 @@
     "@mui/material": "^5.10.13",
     "@types/react": "^18.0.25",
     "axios": "^1.1.3",
+    "date-fns": "^2.30.0",
     "eslint": "8.27.0",
     "eslint-config-next": "13.0.2",
     "mobx": "^6.6.2",
@@ -27,6 +28,7 @@
     "react-dom": "18.2.0",
     "react-router-dom": "^6.5.0",
     "reactstrap": "^9.1.8",
+    "recharts": "^2.8.0",
     "swr": "^1.1.2",
     "universal-cookie": "^4.0.4"
   }

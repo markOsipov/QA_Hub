@@ -1,7 +1,6 @@
 package qa_hub.service.integrations.tms.allure
 
-import qa_hub.service.integrations.taskTrackers.jira.JiraClient
-import qa_hub.service.integrations.tms.TestcaseAbstract
+import qa_hub.service.integrations.tms.CommonTestcase
 import qa_hub.service.integrations.tms.TmsInfo
 import qa_hub.service.integrations.tms.TmsIntegrationAbstract
 import qa_hub.service.integrations.tms.TmsProjectAbstract
@@ -16,15 +15,15 @@ class AllureService(info: TmsInfo): TmsIntegrationAbstract(info) {
         TODO("Not yet implemented")
     }
 
-    override fun getTestcases(projectId: String): List<TestcaseAbstract> {
+    override fun getTestcases(projectId: String): List<CommonTestcase> {
+        return client.getTestcases(projectId.toInt())
+    }
+
+    override fun getTestcase(projectId: String, testcaseId: String): CommonTestcase {
         TODO("Not yet implemented")
     }
 
-    override fun getTestcase(projectId: String, testcaseId: String): TestcaseAbstract {
-        TODO("Not yet implemented")
-    }
-
-    override fun updateTestcase(projectId: String, testcaseId: String): TestcaseAbstract {
+    override fun updateTestcase(projectId: String, testcaseId: String): CommonTestcase {
         TODO("Not yet implemented")
     }
 

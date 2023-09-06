@@ -9,9 +9,12 @@ import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import qa_hub.service.integrations.tms.allure.entity.AllureCreateTestrunRequest
 import qa_hub.service.integrations.tms.allure.entity.AllureCreateTestrunResponse
+import qa_hub.service.integrations.tms.allure.entity.AllureTestcasesResponse
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
+import retrofit2.http.Query
 
 
 interface AllureHttpInterface {
@@ -46,4 +49,11 @@ interface AllureHttpInterface {
 
     @POST("/api/rs/launch")
     fun createTestRun(@Body request: AllureCreateTestrunRequest): Call<AllureCreateTestrunResponse>
+
+    @GET("/api/rs/testcase")
+    fun getTestcases(
+        @Query("projectId") projectId: Int,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Call<AllureTestcasesResponse>
 }
