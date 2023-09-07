@@ -16,7 +16,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import alertState from "../../../state/AlertState";
 
 
-const PushTestRunModal = observer(() => {
+const PushTestRunModal = observer(({reloadTestRuns}) => {
   let {isOpen, testRun, useSelectedTests, selectedTests} = pushModalState
 
   const [paramConfigs, setParamConfigs] = useState([])
@@ -31,9 +31,9 @@ const PushTestRunModal = observer(() => {
     createNewTestRun(testRun.project, branch, params).then(response => {
       if (response.status >= 400) {
         alertState.showAlert("Failed to start new testrun", "error")
-
       } else {
         alertState.showAlert("New testrun has started", "success")
+        reloadTestRuns()
         pushModalState.setIsOpen(false)
       }
     })

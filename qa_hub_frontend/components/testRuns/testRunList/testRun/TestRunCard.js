@@ -8,7 +8,7 @@ import {useEffect, useState} from "react";
 import TestRunConfigFilterable from "./elements/TestRunConfigFilterable";
 import TestRunActions from "./elements/TestRunActions";
 
-export default function TestRunCard({testRun, filter, setFilter, filterAndLoad, ...props }) {
+export default function TestRunCard({testRun, filter, setFilter, filterAndLoad, reloadTestRuns, ...props }) {
   const opacity = 0.6
 
   const [progressBarWidth, setProgressBarWidth] = useState(Math.max(window.innerWidth * 0.2, 200))

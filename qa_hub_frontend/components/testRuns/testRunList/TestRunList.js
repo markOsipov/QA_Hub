@@ -9,6 +9,7 @@ import LoadMoreTestRunsButton from "./LoadMoreTestRunsButtons";
 import {getCookie, QaHubCookies, setCookie} from "../../../utils/CookieHelper";
 import PushTestRunModal from "../pushTestRunModal/PushTestRunModal";
 import {useRouter} from "next/router";
+import TestRunForm from "../testRunForms/TestRunForm";
 
 const TestRunList = observer(({...props}) => {
   const router = useRouter()
@@ -44,20 +45,29 @@ const TestRunList = observer(({...props}) => {
     getTestRuns(project, filterValue, initialSkip, loadMoreSize).then(response => {
       if (response.data) {
         setTestRuns(response.data)
+
+        if (response.data.length < loadMoreSize || (response.data.length || 0) === 0) {
+          setLastTestRunLoaded(true)
+        }
+      }
+    })
+  }
+
+  function reloadTestRuns() {
+    setLastTestRunLoaded(false)
+    getTestRuns(project, filter, initialSkip, loadMoreSize).then((response) => {
+      if (response.data != null) {
+        setTestRuns(response.data)
+
+        if (response.data.length < loadMoreSize || (response.data.length || 0) === 0) {
+          setLastTestRunLoaded(true)
+        }
       }
     })
   }
 
   useEffect(() => {
-    getTestRuns(project, filter, initialSkip, loadMoreSize).then((response) => {
-      if (response.data != null) {
-        setTestRuns([...response.data])
-
-        if (response.data.length < loadMoreSize || response.data.length === 0) {
-          setLastTestRunLoaded(true)
-        }
-      }
-    })
+    reloadTestRuns()
   }, [project])
 
   const updateLoadMoreCount = (event) => {
@@ -70,8 +80,10 @@ const TestRunList = observer(({...props}) => {
 
 
   return <div style={{...props.style}}>
-    <PushTestRunModal/>
-    <TestRunsFilter filter={filter} setFilter={setFilter} filterAndLoad={filterAndLoad}/>
+    <PushTestRunModal reloadTestRuns={reloadTestRuns}/>
+
+    <TestRunForm reloadTestRuns={reloadTestRuns} />
+    <TestRunsFilter filter={filter} setFilter={setFilter} filterAndLoad={filterAndLoad} style={{marginTop: '10px'}}/>
     <div style={{minWidth: 'max-content'}}>
       {
         testRuns.map((testRun, index) => {

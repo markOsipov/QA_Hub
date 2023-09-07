@@ -17,7 +17,7 @@ import BranchSelector from "./BranchSelector";
 import alertState from "../../../state/AlertState";
 import {useRouter} from "next/router";
 
-const TestRunForm = observer(() => {
+const TestRunForm = observer(({reloadTestRuns}) => {
     const router = useRouter()
     let project = router.query.project
 
@@ -56,6 +56,7 @@ const TestRunForm = observer(() => {
             if (response.status >= 400) {
                 alertState.showAlert("Failed to start new testrun", "error")
             } else {
+                reloadTestRuns()
                 alertState.showAlert("New testrun has started", "success")
             }
         })
