@@ -5,8 +5,11 @@ import {useEffect, useState} from "react";
 import blockerState from "../../../../../state/BlockerState";
 import LockIcon from "@mui/icons-material/Lock";
 import projectState from "../../../../../state/ProjectState";
+import {useRouter} from "next/router";
 
 const BlockTestComponent = observer(({testResult, qaComment, ...props}) => {
+  const router = useRouter()
+  const project = router.query.project
   const [hovered, setHovered] = useState(false)
   const [isBlocked, setIsBlocked] = useState(false)
 
@@ -34,7 +37,7 @@ const BlockTestComponent = observer(({testResult, qaComment, ...props}) => {
         {
           fullName: testResult.fullName,
           testcaseId: testResult.testcaseId,
-          project: projectState.selectedProject,
+          project: project,
           comment: qaComment,
           jiraIssue: task,
         },

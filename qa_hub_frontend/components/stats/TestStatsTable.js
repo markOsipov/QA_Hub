@@ -17,13 +17,15 @@ import {useEffect, useState} from "react";
 import TestStatRow from "./TestStatRow";
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import {useRouter} from "next/router";
 
 const TestStatsTable = observer(({ testStats, sort, sortTestStats, openTestHistoryModal, ...props }) => {
-  const {selectedProject} = projectState
+  const router = useRouter()
+  const project = router.query.project
 
   useEffect(() => {
-    blockerState.updateBlockedTests(selectedProject)
-  }, [selectedProject])
+    blockerState.updateBlockedTests(project)
+  }, [project])
 
   return <div style={{...props.style}}>
       <Paper elevation={3}>

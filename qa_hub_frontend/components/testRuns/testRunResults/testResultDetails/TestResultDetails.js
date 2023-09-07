@@ -157,7 +157,7 @@ const TestResultShortName = observer(({testResult, action, ...props}) => {
 
 
   function copyTestName() {
-    copyToClipboard(testResult.fullName)
+    copyToClipboard(shortName)
     alertState.showAlert("Test short name has been copied", alertState.severities.success)
   }
 

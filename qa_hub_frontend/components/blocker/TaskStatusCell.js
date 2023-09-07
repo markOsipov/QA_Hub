@@ -3,13 +3,13 @@ import {customTheme} from "../../styles/CustomTheme";
 import {useEffect, useState} from "react";
 import {getTaskStatus} from "../../requests/BlockerRequests";
 import {observer} from "mobx-react-lite";
-import blockerState from "../../state/BlockerState";
+import projectIntegrationsState from "../../state/integrations/ProjectIntegrationsState";
 
 const defaultStatus = "unknown"
 const TaskStatusCell = observer(({blockedTest, onChangeCallback, onBlurCallback, ...props}) => {
   const [status, setStatus] = useState(defaultStatus)
   const [color, setColor] = useState(null)
-  const {taskTrackerInfo} = blockerState
+  const taskTrackerInfo = projectIntegrationsState.taskTrackerInt || {}
 
   useEffect(() => {
     getTaskStatus(blockedTest.project, blockedTest.jiraIssue).then((data) => {

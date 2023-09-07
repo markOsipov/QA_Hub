@@ -5,7 +5,7 @@ import TmsEditor from "../components/settings/integrations/tmsIntegrations/TmsEd
 import TaskTrackerEditor from "../components/settings/integrations/taskTrackerIntegrations/TaskTrackerEditor";
 import {useEffect} from "react";
 import {getCicdIntegrations, getCicdTypes} from "../requests/integrations/CICDRequests";
-import integrationsState from "../state/IntegrationsState";
+import integrationsState from "../state/integrations/IntegrationsState";
 import {observer} from "mobx-react-lite";
 import {getTaskTrackerIntegrations, getTaskTrackerTypes} from "../requests/integrations/TaskTrackerRequests";
 import {getTmsIntegrations, getTmsTypes} from "../requests/integrations/TMSRequests";
@@ -61,7 +61,7 @@ const Settings = observer(() => {
 
 
     return <div style={{padding: "15px"}}>
-        <ResetPlate />
+        {/*<ResetPlate />*/}
         <ProjectEditor />
         <CicdEditor />
         <TmsEditor />

@@ -13,70 +13,144 @@ import ProjectSelector from "./ProjectSelector";
 import {useRouter} from "next/router";
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import {useEffect, useState} from "react";
+import {observer} from "mobx-react-lite";
+import projectState from "../../state/ProjectState";
+import {customTheme} from "../../styles/CustomTheme";
 
-const pages = ['blocker', 'statistics', 'metrics', 'testRuns'];
+const pages = ['blocker', 'statistics', 'testRuns'];
 
-function QaHubAppBar() {
-    const router = useRouter()
+const QaHubAppBar = observer(() => {
+  const router = useRouter()
+  const project = projectState.selectedProject
+  const projects = projectState.projects
 
-    const label= router.asPath.split("?")[0]
+  const [labelElements, setLabelElements] = useState(
+    router.asPath
+      .split("?")[0]
+      .split("/")
+      .filter( el => el !== '' )
+  )
 
-    return (
-        <AppBar position="static">
-            <Container style={{maxWidth: "100vw", paddingLeft: "10px"}}>
-                <Toolbar disableGutters>
-                    <AdbIcon sx={{ display: { xs: 'none', md: 'flex', fontSize: "45px" }, mr: 1 }} />
-                    <div>
-                        <Typography
-                            variant="h6"
-                            noWrap
-                            component="a"
-                            href="/"
-                            sx={{
-                                mr: 2,
-                                display: { xs: 'none', md: 'flex' },
-                                fontWeight: 700,
-                            }}
-                        >
-                            QA Hub
-                        </Typography>
-                        <Typography>{label}</Typography>
-                    </div>
+  useEffect(() => {
+    const changeLabelElements = (e) => {
+      setLabelElements(
+        e.split("?")[0]
+        .split("/")
+        .filter(el => el !== '')
+      )
+    }
+    router.events.on("routeChangeStart", changeLabelElements);
 
+    return () => {
+      router.events.off("routeChangeStart", changeLabelElements);
+    };
+  }, [router.events]);
 
-                    <ProjectSelector style={{ marginLeft: "12px", marginRight: "20px" }}/>
+  return (
+    <AppBar position="static">
+      <Container style={{maxWidth: "100vw", paddingLeft: "10px"}}>
+        <Toolbar disableGutters>
+          <AdbIcon sx={{ display: { xs: 'none', md: 'flex', fontSize: "45px" }, mr: 1 }} />
+          <div>
+            <QAHubTitle style={{width: 'min-content'}}/>
+            <div style={{display: 'flex'}}>
 
-                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages.map((page) => (
-                            <Button
-                                key={page}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                                href={`/${page}`}
-                            >
-                                {page}
-                            </Button>
-                        ))}
-                    </Box>
+              {
+                labelElements.map((pathElement, index) => {
+                  return <div key={index} style={{display: 'flex'}}>
+                    <label style={{margin: '0 4px'}}>/</label>
+                    <LabelElement
+                      pathElement={pathElement}
+                      href={"/" + labelElements.slice(0, index + 1).join("/")}
+                    />
+                  </div>
+                })
+              }
+            </div>
+          </div>
 
-                    <Box>
-                        <Tooltip title="Open logs">
-                            <IconButton href="/logs">
-                                <TextSnippetIcon fontSize="large" style={{color: "white"}}/>
-                            </IconButton>
-                        </Tooltip>
-                    </Box>
+          {
+            projects.length > 0 && project !== null &&
+            <div style={{display: 'flex', alignItems: 'center', marginLeft: '20px'}}>
+              <ProjectSelector style={{ marginLeft: "20px", marginRight: "8px" }}/>
 
-                    <Box>
-                        <Tooltip title="Open settings">
-                            <IconButton href="/settings">
-                                <SettingsIcon fontSize="large" style={{color: "white"}}/>
-                            </IconButton>
-                        </Tooltip>
-                    </Box>
-                </Toolbar>
-            </Container>
-        </AppBar>
-    );
+              <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                {pages.map((page) => (
+                  <Button
+                    key={page}
+                    sx={{ my: 2, color: 'white', display: 'block' }}
+                    href={`/projects/${project}/${page}`}
+                  >
+                    {page}
+                  </Button>
+                ))}
+              </Box>
+            </div>
+          }
+
+          <div style={{flexGrow: '1'}}></div>
+
+          <Box>
+            <Tooltip title="Open logs">
+              <IconButton href="/logs">
+                <TextSnippetIcon fontSize="large" style={{color: "white"}}/>
+              </IconButton>
+            </Tooltip>
+          </Box>
+
+          <Box>
+            <Tooltip title="Open settings">
+              <IconButton href="/settings">
+                <SettingsIcon fontSize="large" style={{color: "white"}}/>
+              </IconButton>
+            </Tooltip>
+          </Box>
+        </Toolbar>
+      </Container>
+    </AppBar>
+  );
+})
+
+const LabelElement = ({pathElement, href, ...props}) => {
+  const [hovered, setHovered] = useState(false)
+  return <a
+    onMouseOver={() => {setHovered(true)}}
+    onMouseLeave={() => {setHovered(false)}}
+    onBlur={() => {setHovered(false)}}
+    href={href}
+    style={{
+      cursor: 'pointer',
+      textDecoration:  hovered && 'underline'
+    }}
+    {...props}
+  >{pathElement}</a>
+}
+
+const QAHubTitle=({...props}) => {
+  const [hovered, setHovered] = useState(false)
+
+  return <Typography
+    onMouseOver={() => {setHovered(true)}}
+    onMouseLeave={() => {setHovered(false)}}
+    onBlur={() => {setHovered(false)}}
+
+    variant="h6"
+    noWrap
+    component="a"
+    href="/"
+    sx={{
+      mr: 2,
+      display: { xs: 'none', md: 'flex' },
+      fontWeight: 700,
+    }}
+    style={{
+      padding: '0px 6px',
+      backgroundColor: hovered && customTheme.palette.background.hoverHighlight,
+      ...props.style
+    }}
+  >
+    QA Hub
+  </Typography>
 }
 
 export default QaHubAppBar;

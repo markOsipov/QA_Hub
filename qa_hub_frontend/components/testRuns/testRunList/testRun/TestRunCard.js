@@ -8,7 +8,7 @@ import {useEffect, useState} from "react";
 import TestRunConfigFilterable from "./elements/TestRunConfigFilterable";
 import TestRunActions from "./elements/TestRunActions";
 
-export default function TestRunCard({testRun, filter, setFilter, filterAndLoad, ...props }) {
+export default function TestRunCard({testRun, filter, setFilter, filterAndLoad, reloadTestRuns, ...props }) {
   const opacity = 0.6
 
   const [progressBarWidth, setProgressBarWidth] = useState(Math.max(window.innerWidth * 0.2, 200))
@@ -22,7 +22,7 @@ export default function TestRunCard({testRun, filter, setFilter, filterAndLoad, 
 
 
   const handleTestRunCardClick = () => {
-     window.location.href = `/testRuns/${testRun.testRunId}`
+     window.location.href = `/projects/${testRun.project}/testRuns/${testRun.testRunId}`
 
      //router.push(`testRuns/${testRun.testRunId}`) //got a bug, changes URL but doesn't render the new page
   }

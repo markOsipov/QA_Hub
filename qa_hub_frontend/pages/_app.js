@@ -36,23 +36,13 @@ function MyApp({ Component, pageProps }) {
         return <div>Error: {error}</div>
     }
 
-    function shouldNavigateToSettings() {
-        return (!projectState.projects || projectState.projects.length === 0) && !router.asPath.includes("/settings")
-    }
-
     return <div style={{ height: '100vh', overflow: 'hidden'}}>
         <ThemeProvider theme={customTheme}>
             <QaHubAppBar/>
-            {
-                shouldNavigateToSettings() ? (
-                    <GoToSettingsStub />
-                ) : (
-                    <div style={{height: 'calc(100vh - 65px)', minHeight: 'calc(100vh - 65px)', overflowY: 'auto'}}>
-                        <Component {...pageProps} />
-                        <AlertsView style={{position: "absolute", right: '30px', bottom: '20px'}}/>
-                    </div>
-                )
-            }
+            <div style={{height: 'calc(100vh - 65px)', minHeight: 'calc(100vh - 65px)', overflowY: 'auto'}}>
+                <Component {...pageProps} />
+                <AlertsView style={{position: "absolute", right: '30px', bottom: '20px'}}/>
+            </div>
         </ThemeProvider>
     </div>
 }

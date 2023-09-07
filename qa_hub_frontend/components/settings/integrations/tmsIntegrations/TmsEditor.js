@@ -9,7 +9,7 @@ import useSWR from "swr";
 import {getTmsIntegrations, getTmsTypes} from "../../../../requests/integrations/TMSRequests";
 import TmsCard from "./TmsCard";
 import NewTmsModal from "./NewTmsModal";
-import integrationsState from "../../../../state/IntegrationsState";
+import integrationsState from "../../../../state/integrations/IntegrationsState";
 
 const TmsEditor = observer(() => {
     const [isNewTmsModalOpen, setIsNewTmsModalOpen] = useState(false)
@@ -49,6 +49,7 @@ const TmsEditor = observer(() => {
                             color="error"
                             startIcon={<AddIcon />}
                             onClick={handleOpen}
+                            size={"small"}
                     >Add TMS</Button>
                 </div>
             </AccordionDetails>

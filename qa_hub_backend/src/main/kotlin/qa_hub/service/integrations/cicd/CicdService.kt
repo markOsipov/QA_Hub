@@ -10,11 +10,17 @@ import org.springframework.stereotype.Service
 import qa_hub.core.mongo.QaHubMongoClient
 import qa_hub.core.mongo.entity.Collections
 import qa_hub.core.mongo.utils.setCurrentPropertyValues
+import qa_hub.core.utils.DateTimeUtils
+import qa_hub.service.utils.ProjectIntegrationsService
+import qa_hub.service.utils.ProjectTmsIntegrationsInfo
 
 @Service
 class CicdService {
     @Autowired
     lateinit var mongoClient: QaHubMongoClient
+
+    @Autowired
+    lateinit var projectIntegrationsService: ProjectIntegrationsService
 
     private val cicdIntegrationsCollection by lazy {
         mongoClient.db.getCollection<CicdInfo>(Collections.CICD_INTEGRATIONS.collectionName)

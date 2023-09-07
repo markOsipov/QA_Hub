@@ -1,16 +1,16 @@
 import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
-import {getTestRun} from "../../requests/testRuns/TestRunRequests";
-import TestRunResultsOverview from "../../components/testRuns/testRunResults/testRunOverview/TestRunResultsOverview";
-import TestResultsList from "../../components/testRuns/testRunResults/testResultsList/TestResultsList";
-import TestResultDetails from "../../components/testRuns/testRunResults/testResultDetails/TestResultDetails";
-import {getSingleTestResult} from "../../requests/testResults/TestResultsRequests";
+import {getTestRun} from "../../../../requests/testRuns/TestRunRequests";
+import TestRunResultsOverview from "../../../../components/testRuns/testRunResults/testRunOverview/TestRunResultsOverview";
+import TestResultsList from "../../../../components/testRuns/testRunResults/testResultsList/TestResultsList";
+import TestResultDetails from "../../../../components/testRuns/testRunResults/testResultDetails/TestResultDetails";
+import {getSingleTestResult} from "../../../../requests/testResults/TestResultsRequests";
 import {observer} from "mobx-react-lite";
-import testResultsState from "../../state/testResults/TestResultsState";
-import PushTestRunModal from "../../components/testRuns/pushTestRunModal/PushTestRunModal";
-import pushModalState from "../../state/testRuns/PushModalState";
-import PushTestRunPopup from "../../components/testRuns/pushTestRunModal/PushTestRunPopup";
-import TestHistoryModal from "../../components/stats/testHistoryModal/TestHistoryModal";
+import testResultsState from "../../../../state/testResults/TestResultsState";
+import PushTestRunModal from "../../../../components/testRuns/pushTestRunModal/PushTestRunModal";
+import pushModalState from "../../../../state/testRuns/PushModalState";
+import PushTestRunPopup from "../../../../components/testRuns/pushTestRunModal/PushTestRunPopup";
+import TestHistoryModal from "../../../../components/stats/testHistoryModal/TestHistoryModal";
 
 const TestRunPage = observer(() => {
   const router = useRouter()
@@ -46,7 +46,7 @@ const TestRunPage = observer(() => {
     if (testRunId) {
       updateTestRunInfo(testRunId)
     }
-  }, [router.query])
+  }, [router.query.testRunId])
 
   if (!testRun) {
     return <div>Loading</div>

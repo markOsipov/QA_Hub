@@ -23,10 +23,10 @@ import {useRouter} from "next/router";
 
 
 const BlockedTestsTable = observer(() => {
-    let {selectedProject} = projectState
-    let {blockedTests} = blockerState
-
     const router = useRouter()
+
+    const project = router.query.project
+    let {blockedTests} = blockerState
 
     const [showFullName, setShowFullName] = useState(true)
     const [addBlockedTestModalOpen, setAddBlockedTestModalOpen] = useState(false)
@@ -54,20 +54,9 @@ const BlockedTestsTable = observer(() => {
     }
 
     useEffect(() => {
-        blockerState.updateBlockedTests(selectedProject)
-    }, [selectedProject])
+        blockerState.updateBlockedTests(project)
+    }, [project])
 
-    useEffect(() => {
-        getTaskTrackerIntegration(selectedProject).then(data => {
-            blockerState.setTaskTrackerInfo(data?.data?.taskTrackerInfo || {})
-        })
-    }, [selectedProject])
-
-    useEffect(() => {
-        getTaskTmsIntegration(selectedProject).then(data => {
-            blockerState.setTmsInfo(data?.data || {})
-        })
-    }, [selectedProject])
 
     function handleOpenAddBlockedTestModal() {
         setAddBlockedTestModalOpen(true)

@@ -1,7 +1,6 @@
 import {Box, Modal} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {modalStyle} from "../../../styles/ModalStyle";
-import projectState from "../../../state/ProjectState";
 import pushModalState from "../../../state/testRuns/PushModalState";
 import {useEffect, useState} from "react";
 import {getTestRunForm} from "../../../requests/testRuns/TestRunFormsRequests";
@@ -17,8 +16,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import alertState from "../../../state/AlertState";
 
 
-const PushTestRunModal = observer(() => {
-  let {selectedProject} = projectState
+const PushTestRunModal = observer(({reloadTestRuns}) => {
   let {isOpen, testRun, useSelectedTests, selectedTests} = pushModalState
 
   const [paramConfigs, setParamConfigs] = useState([])
@@ -30,19 +28,19 @@ const PushTestRunModal = observer(() => {
   }
 
   const handleStartNewTestRunClick = () => {
-    createNewTestRun(selectedProject, branch, params).then(response => {
+    createNewTestRun(testRun.project, branch, params).then(response => {
       if (response.status >= 400) {
         alertState.showAlert("Failed to start new testrun", "error")
-
       } else {
         alertState.showAlert("New testrun has started", "success")
+        reloadTestRuns()
         pushModalState.setIsOpen(false)
       }
     })
   }
 
   function loadTestRunForm() {
-    getTestRunForm(selectedProject).then(response => {
+    getTestRunForm(testRun.project).then(response => {
       if (response.data?.params) {
         setParamConfigs(response.data?.params)
       }
@@ -50,8 +48,10 @@ const PushTestRunModal = observer(() => {
   }
 
   useEffect(() => {
-    loadTestRunForm()
-  }, [selectedProject])
+    if (testRun != null) {
+      loadTestRunForm()
+    }
+  }, [testRun])
 
   useEffect(() => {
     if (testRun) {
@@ -90,7 +90,7 @@ const PushTestRunModal = observer(() => {
         Start new testrun
       </Typography>
 
-      <BranchSelector project={selectedProject} branch={branch} setBranch={setBranch}/>
+      <BranchSelector project={testRun.project} branch={branch} setBranch={setBranch}/>
 
       {
         params.map((param, index) => {

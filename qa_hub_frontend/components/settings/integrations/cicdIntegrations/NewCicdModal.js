@@ -88,6 +88,19 @@ function NewCicdModal({isOpen, setIsOpen, updateCicdList, cicdTypes, cicdIntegra
                              }}
             />
 
+            <StyledTextField value={newCicd.apiUrl}
+                             size="small"
+                             label="Api URL"
+                             style={{minWidth: "400px", color: "white", margin: "8px"}}
+                             autoComplete='off'
+                             onChange ={(event) => {
+                                 setNewCicd({
+                                     ...newCicd,
+                                     apiUrl: event.target.value
+                                 })
+                             }}
+            />
+
             <StyledTextField value={newCicd.apiToken}
                              size="small"
                              label="Api Token"

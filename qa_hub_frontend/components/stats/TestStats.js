@@ -12,7 +12,7 @@ import {useRouter} from "next/router";
 
 const TestStats = observer (({...props}) => {
   const router = useRouter()
-  let {selectedProject} = projectState
+  const project = router.query.project
 
   const [testHistoryModalOpen, setTestHistoryModalOpen] = useState(router.query.testHistory != null)
   const [selectedTestId, setSelectedTestId] = useState(router.query.testHistory || null)
@@ -54,7 +54,7 @@ const TestStats = observer (({...props}) => {
 
   const loadTestStats = async () => {
     setLoading(true)
-    await getTestStats(selectedProject, filter, testStats.length, loadMoreSize, sort).then((response) => {
+    await getTestStats(project, filter, testStats.length, loadMoreSize, sort).then((response) => {
       setLoading(false)
       if (response.data) {
         setTestStats([...testStats, ...response.data])
@@ -84,7 +84,7 @@ const TestStats = observer (({...props}) => {
 
     setLastTestStatsLoaded(false)
 
-    getTestStats(selectedProject, filterValue, initialSkip, loadMoreSize, sortValue).then(response => {
+    getTestStats(project, filterValue, initialSkip, loadMoreSize, sortValue).then(response => {
       setLoading(false)
       if (response.data) {
         setTestStats(response.data)
@@ -94,7 +94,7 @@ const TestStats = observer (({...props}) => {
 
   useEffect(() => {
     loadTestStats()
-  }, [selectedProject])
+  }, [project])
 
   const updateLoadMoreCount = (event) => {
     setLoadMoreSize(Number.parseInt(event.target.value))

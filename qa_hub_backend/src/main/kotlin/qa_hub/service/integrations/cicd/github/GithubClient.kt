@@ -3,8 +3,8 @@ package qa_hub.service.integrations.cicd.github
 import qa_hub.service.integrations.cicd.github.entity.GithubBranch
 import qa_hub.service.integrations.cicd.github.entity.StartWorkflowRequest
 
-class GithubClient(baseUrl: String, apiToken: String) {
-    private val githubService = GithubHttpInterface.getClient(baseUrl, apiToken)
+class GithubClient(apiUrl: String, apiToken: String) {
+    private val githubService = GithubHttpInterface.getClient(apiUrl, apiToken)
 
     fun getBranches(org: String, project: String): List<GithubBranch> {
         return githubService

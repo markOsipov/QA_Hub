@@ -8,10 +8,12 @@ import {getTestHistory, getTestStats} from "../../../requests/TestStatsRequests"
 import StatsTestRunsFilter from "../filter/StatsTestRunsFilter";
 import TestHistoryTable from "./TestHistoryTable";
 import TestHistoryStats from "./TestHistoryStats";
+import {useRouter} from "next/router";
 
 
 const TestHistoryModal = observer(({isOpen, onClose, testcaseId}) => {
-  const {selectedProject} = projectState
+  const router = useRouter()
+  const project = router.query.project
   const [testHistory, setTestHistory] = useState({})
 
   const defaultFilter = {}
@@ -35,7 +37,7 @@ const TestHistoryModal = observer(({isOpen, onClose, testcaseId}) => {
     const filterValue = newFilter || filter || defaultFilter
     setFilter(filterValue)
 
-    getTestHistory(selectedProject, testcaseId, filterValue).then(response => {
+    getTestHistory(project, testcaseId, filterValue).then(response => {
       setLoading(false)
       if (response.data) {
         setTestHistory(response.data)

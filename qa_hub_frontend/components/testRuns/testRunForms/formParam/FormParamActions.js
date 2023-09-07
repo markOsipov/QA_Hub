@@ -10,14 +10,17 @@ import {useState} from "react";
 import RefreshIcon from '@mui/icons-material/Refresh';
 import StyledTooltip from "../../../primitives/StyledTooltip";
 import Loader from "../../../common/Loader";
+import {useRouter} from "next/router";
 
 const FormParamActions = observer(({param, index, testRunId, setParamValue}) => {
   const [loading, setLoading] = useState(false)
+  const router = useRouter()
+  const project = router.query.project
   const addBlockedTests = () => {
     setLoading(true)
 
     blockerState.updateBlockedTests(
-      projectState.selectedProject,
+      project,
       () => {
         setLoading(false)
 

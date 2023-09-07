@@ -22,7 +22,7 @@ interface GithubHttpInterface {
             .setLenient()
             .create()
 
-        fun getClient(baseUrl: String, apiToken: String): GithubHttpInterface {
+        fun getClient(apiUrl: String, apiToken: String): GithubHttpInterface {
             val client = OkHttpClient.Builder()
                 .addInterceptor(HttpLoggingInterceptor().apply {
                     level = HttpLoggingInterceptor.Level.HEADERS
@@ -37,7 +37,7 @@ interface GithubHttpInterface {
                 }.build()
 
             val retrofit = Retrofit.Builder()
-                .baseUrl(baseUrl)
+                .baseUrl(apiUrl)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(client)
                 .build()

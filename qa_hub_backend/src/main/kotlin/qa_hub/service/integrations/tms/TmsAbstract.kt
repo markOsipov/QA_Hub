@@ -1,8 +1,5 @@
 package qa_hub.service.integrations.tms
 
-import qa_hub.service.integrations.taskTrackers.TaskTrackerIntegrationAbstract
-import qa_hub.service.integrations.taskTrackers.TaskTrackerTypes
-import qa_hub.service.integrations.taskTrackers.jira.JiraService
 import qa_hub.service.integrations.tms.allure.AllureService
 
 data class TmsType(
@@ -41,11 +38,15 @@ data class TmsInfo(
 abstract class TmsIntegrationAbstract(val tmsInfo: TmsInfo) {
     abstract fun getProjects(): List<TmsProjectAbstract>
     abstract fun getProject(projectId: String): TmsProjectAbstract
-    abstract fun getTestcases(projectId: String): List<TestcaseAbstract>
-    abstract fun getTestcase(projectId: String, testcaseId: String): TestcaseAbstract
-    abstract fun updateTestcase(projectId: String, testcaseId: String): TestcaseAbstract
+    abstract fun getTestcases(projectId: String): List<CommonTestcase>
+    abstract fun getTestcase(projectId: String, testcaseId: String): CommonTestcase
+    abstract fun updateTestcase(projectId: String, testcaseId: String): CommonTestcase
     abstract fun startTestrun(projectId: String): String
 }
 
 abstract class TmsProjectAbstract
-abstract class TestcaseAbstract
+class CommonTestcase(
+    val testcaseId: String,
+    val automated: Boolean,
+    val status: String
+)

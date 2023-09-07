@@ -7,7 +7,7 @@ import qa_hub.service.integrations.cicd.StartJobRequest
 import qa_hub.service.integrations.cicd.github.entity.StartWorkflowRequest
 
 class GitHubService(cicdInfo: CicdInfo): CicdIntegrationAbstract(cicdInfo) {
-    val client = GithubClient(cicdInfo.baseUrl, cicdInfo.apiToken!!)
+    val client = GithubClient(cicdInfo.apiUrl, cicdInfo.apiToken!!)
     override fun startJob(info: ProjectCicdInfo, jobId: String, startJobRequest: StartJobRequest) {
         client.startJob(info.path, info.project, jobId, StartWorkflowRequest(startJobRequest.gitRef, startJobRequest.params))
     }

@@ -24,6 +24,7 @@ data class CicdInfo(
     var _id: String? = null,
     val cicdType: String,
     val baseUrl: String,
+    val apiUrl: String,
     val apiToken: String? = null,
     val login: String? = null,
     val password: String? = null,

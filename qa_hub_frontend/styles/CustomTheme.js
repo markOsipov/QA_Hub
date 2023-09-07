@@ -14,7 +14,9 @@ export var customTheme = createTheme({
             popup: 'rgb(86 86 86)',
             paper: '#424242',
             input: 'rgba(255, 255, 255, 0.1)',
-            textArea: 'rgba(255, 255, 255, 0.07)'
+            textArea: 'rgba(255, 255, 255, 0.07)',
+
+            hoverHighlight: 'rgba(255, 255, 255, 0.1)'
         },
         success: {
             main: '#3e812a',
@@ -39,5 +41,10 @@ export var customTheme = createTheme({
             disabled: 'rgba(255, 255, 255, 0.3)',
             disabledMore: 'rgba(255, 255, 255, 0.2)'
         },
+
+        integrations: {
+            gitHub: 'rgba(0, 0, 0, 0.5)',
+            allure: 'rgb(26,165,77)'
+        }
     },
 });

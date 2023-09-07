@@ -34,6 +34,7 @@ const ProjectEditor = observer(() => {
                 <div style={{display: "flex", margin: "15px 15px 0 15px"}}>
                     <Button variant="contained"
                             color="error"
+                            size={"small"}
                             startIcon={<AddIcon />}
                             onClick={handleOpen}
                     >Add project</Button>

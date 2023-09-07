@@ -1,14 +1,14 @@
 import {observer} from "mobx-react-lite";
 import EditableTableCell from "../primitives/Table/EditableTableCell";
 import {useState} from "react";
-import blockerState from "../../state/BlockerState";
+import projectIntegrationsState from "../../state/integrations/ProjectIntegrationsState";
 
 const TestcaseIdCell = observer(({blockedTest, onChangeCallback, onBlurCallback, ...props}) => {
-  const {tmsInfo} = blockerState
+  const {tmsInt} = projectIntegrationsState
 
   return <EditableTableCell
     value={blockedTest.testcaseId}
-    content={<TestcaseUrl blockedTest={blockedTest} testcaseUrl={tmsInfo.testcaseUrl}/>}
+    content={<TestcaseUrl blockedTest={blockedTest} testcaseUrl={tmsInt.testcaseUrl}/>}
     onChangeCallback={ onChangeCallback }
     onBlurCallback={ onBlurCallback }
   />
