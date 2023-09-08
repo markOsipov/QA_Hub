@@ -10,6 +10,8 @@ import testResultsState from "../../../../state/testResults/TestResultsState";
 import StyledTextField from "../../../primitives/StyledTextField";
 import LoadMoreTestsButton from "./LoadMoreTestsButton";
 import {getCookie, QaHubCookies} from "../../../../utils/CookieHelper";
+import Typography from "@mui/material/Typography";
+import {customTheme} from "../../../../styles/CustomTheme";
 
 const TestResultsList = observer(({  testRun, ...props}) => {
   const { filter } = testResultsFilterState
@@ -22,6 +24,7 @@ const TestResultsList = observer(({  testRun, ...props}) => {
 
   const [loadMoreSize, setLoadMoreSize] = useState(initialLoadSize)
   const [loading, setLoading] = useState(false)
+  const [filterLoading, setFilterLoading] = useState(false)
 
   const testsCount = testRun?.tests?.testsCount
   const testRunId = testRun.testRunId
@@ -49,7 +52,9 @@ const TestResultsList = observer(({  testRun, ...props}) => {
 
     testResultsFilterState.setFilter(filterValue)
 
+    setFilterLoading(true)
     getTestResults(testRunId, filter, initialSkip, loadMoreSize).then(response => {
+      setFilterLoading(false)
       if (response.data) {
         testResultsState.setTestResults(response.data)
       }
@@ -69,12 +74,20 @@ const TestResultsList = observer(({  testRun, ...props}) => {
   }
 
   if (loading) {
-    return <Paper style={{padding: '15px', ...props.style}}>Loading test results</Paper>
+    return <Paper style={{
+      padding: '15px',
+      display: 'grid',
+      placeItems: 'center',
+      ...props.style
+    }}>
+      <Typography variant={'h5'} style={{color: customTheme.palette.text.disabled}}>Loading test results</Typography>
+    </Paper>
   }
 
   return <Paper style={{padding: '15px', ...props.style}}>
     <TestResultsFilter
       filterAndLoad={filterAndLoad}
+      filterLoading={filterLoading}
       runners={runners}
     />
     {
