@@ -104,7 +104,7 @@ class TestResultsService {
             }
 
             if (it.message != null) {
-                val specialCharacters = ".+*[]"
+                val specialCharacters = ".+*[]()"
                 var screenedMessage: String = it.message
 
                 specialCharacters.forEach { char ->
