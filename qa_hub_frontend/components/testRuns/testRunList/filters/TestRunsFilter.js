@@ -17,9 +17,9 @@ export default function TestRunsFilter({ filter, setFilter, loadTestRuns, filter
       <div style={{flexGrow: '1.1'}}></div>
       {
         loading &&
-        <Loader style={{alignSelf: 'center', color: customTheme.palette.text.disabled}}/>
+        <Loader style={{alignSelf: 'center', color: customTheme.palette.text.disabled, position: 'relative', top: '1px'}}/>
       }
-      <StatusFilter filter={filter} setFilter={setFilter} style={{marginLeft: '15px'}} />
+      <StatusFilter filter={filter} setFilter={setFilter} style={{marginLeft: '10px'}} />
       <TagFilter    filter={filter} setFilter={setFilter} style={{marginLeft: '15px', width: '120px'}}/>
       <BranchFilter filter={filter} setFilter={setFilter} style={{marginLeft: '15px'}}/>
       <CommitFilter filter={filter} setFilter={setFilter} style={{marginLeft: '15px', width: '120px'}}/>

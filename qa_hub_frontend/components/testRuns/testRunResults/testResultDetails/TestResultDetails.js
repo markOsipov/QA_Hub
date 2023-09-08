@@ -45,7 +45,9 @@ const TestResultDetails = observer(({ ...props }) => {
   }
   const renderContent = () => {
     if (selectedTest == null) {
-      return <div>Not selected</div>
+      return <div style={{display: 'grid', placeItems: 'center', height: 'calc(100vh - 300px)', width: '100%' }}>
+        <Typography variant={'h5'} style={{color: customTheme.palette.text.disabled}}>Not selected</Typography>
+      </div>
     } else {
       return <div>
         <TestHistoryModal isOpen={testHistoryModalOpen} onClose={closeTestHistoryModal} testcaseId={selectedTestId} />

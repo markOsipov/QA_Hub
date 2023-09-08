@@ -9,8 +9,10 @@ import DeviceFilter from "./DeviceFilter";
 import CustomIconButton from "../../../../primitives/CustomIconButton";
 import testResultsFilterState from "../../../../../state/testResults/TestResultsFilterState";
 import {observer} from "mobx-react-lite";
+import {useState} from "react";
+import Loader from "../../../../common/Loader";
 
-const TestResultsFilter = observer(({filterAndLoad, runners, ...props }) => {
+const TestResultsFilter = observer(({filterAndLoad, filterLoading, runners, ...props }) => {
   const {filter,  filterChanged } = testResultsFilterState
   const handleSearchButtonClick = () => {
     filterAndLoad(filter)
@@ -24,7 +26,14 @@ const TestResultsFilter = observer(({filterAndLoad, runners, ...props }) => {
 
   return <div style={{overflowX: 'auto', ...props.style}}>
     <div style={{display: 'flex', alignItems: 'center', minWidth: 'max-content', paddingTop: '6px'}}>
-      <div style={{flexGrow: '1.1'}}></div>
+      <div style={{flexGrow: '1'}}></div>
+
+      <div style={{overflow: 'hidden', position: 'relative', top: '1px'}}>
+        {
+          filterLoading && <Loader style={{color: customTheme.palette.text.disabled, marginRight: '1px'}}/>
+        }
+      </div>
+
       <DeviceFilter style={{marginLeft: '5px'}} runners={runners}/>
       <ErrorFilter style={{marginLeft: '5px'}}/>
       <RetriesFilter style={{marginLeft: '5px'}}/>

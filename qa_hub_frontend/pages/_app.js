@@ -1,39 +1,52 @@
 import '../styles/globals.css'
 import QaHubAppBar from "../components/common/QaHubAppBar";
 import {customTheme} from "../styles/CustomTheme";
-import {ThemeProvider} from "@mui/material";
+import {Card, ThemeProvider} from "@mui/material";
 import projectState from "../state/ProjectState";
-import useSWR from "swr";
 import {loadProjects} from "../requests/ProjectRequests";
 import {useEffect, useState} from "react";
-import { useRouter } from 'next/router'
-import GoToSettingsStub from "../components/stubs/GoToSettingsStub";
 import AlertsView from "../components/common/AlertsView";
+import Typography from "@mui/material/Typography";
+import {observer} from "mobx-react-lite";
 
-function MyApp({ Component, pageProps }) {
-    let router = useRouter()
-    let { data, error } = useSWR("loadProjects", loadProjects, { refreshInterval: 0, revalidateOnFocus: false })
+const MyApp = observer(({ Component, pageProps }) => {
+    const [data, setData] = useState(null)
 
     useEffect(() => {
-        if(data?.data) {
-            const newProjects = data.data.map(project => {
-                return project.name
-            })
-            projectState.setProjects(newProjects)
-            projectState.setProjectsDetails(data.data)
+        loadProjects().then(response => {
+            if (response.data) {
+                setData(response)
 
-            if (!projectState.selectedProject) {
-                projectState.setSelectedProject(newProjects[0])
+                const newProjects = response.data.map(project => {
+                    return project.name
+                })
+
+                projectState.setProjects(newProjects)
+                projectState.setProjectsDetails(response.data)
+
+                if (!projectState.selectedProject) {
+                    projectState.setSelectedProject(newProjects[0])
+                }
             }
-        }
-    }, [data])
+        })
 
-    if (data == null) {
-        return <div>Loading projects</div>
+    }, [])
+
+    const AppLoader = ({...props}) => {
+        return <div style={{
+            width: '100vw',
+            height: '100vh',
+            display: 'grid',
+            alignItems: 'center',
+            justifyItems: 'center',
+            ...props.style
+        }}>
+            <Typography variant={'h5'}>Loading . . .</Typography>
+        </div>
     }
 
-    if (error) {
-        return <div>Error: {error}</div>
+    if (data == null) {
+        return <AppLoader />
     }
 
     return <div style={{ height: '100vh', overflow: 'hidden'}}>
@@ -45,6 +58,6 @@ function MyApp({ Component, pageProps }) {
             </div>
         </ThemeProvider>
     </div>
-}
+})
 
 export default MyApp

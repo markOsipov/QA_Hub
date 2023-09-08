@@ -17,6 +17,7 @@ const TestRunList = observer(({...props}) => {
 
   let [testRuns, setTestRuns] = useState([])
   let [filter, setFilter] = useState({})
+  const [loading, setLoading] = useState(false)
 
   const loadMoreCookie = QaHubCookies.testRunsLoadCount
   const defaultLoadSize = 50
@@ -27,7 +28,9 @@ const TestRunList = observer(({...props}) => {
   const [lastTestRunLoaded, setLastTestRunLoaded] = useState(false)
 
   const loadMoreTestRuns = async () => {
+    setLoading(true)
     await getTestRuns(project, filter, testRuns.length, loadMoreSize).then((response) => {
+      setLoading(false)
       if (response.data != null) {
         setTestRuns([...testRuns, ...response.data])
 
@@ -42,7 +45,10 @@ const TestRunList = observer(({...props}) => {
     const filterValue = filter || {}
     setFilter(filterValue)
     setLastTestRunLoaded(false)
+
+    setLoading(true)
     getTestRuns(project, filterValue, initialSkip, loadMoreSize).then(response => {
+      setLoading(false)
       if (response.data) {
         setTestRuns(response.data)
 
@@ -55,7 +61,10 @@ const TestRunList = observer(({...props}) => {
 
   function reloadTestRuns() {
     setLastTestRunLoaded(false)
+
+    setLoading(true)
     getTestRuns(project, filter, initialSkip, loadMoreSize).then((response) => {
+      setLoading(false)
       if (response.data != null) {
         setTestRuns(response.data)
 
@@ -83,7 +92,7 @@ const TestRunList = observer(({...props}) => {
     <PushTestRunModal reloadTestRuns={reloadTestRuns}/>
 
     <TestRunForm reloadTestRuns={reloadTestRuns} />
-    <TestRunsFilter filter={filter} setFilter={setFilter} filterAndLoad={filterAndLoad} style={{marginTop: '10px'}}/>
+    <TestRunsFilter filter={filter} setFilter={setFilter} filterAndLoad={filterAndLoad} loading={loading} style={{marginTop: '10px'}}/>
     <div style={{minWidth: 'max-content'}}>
       {
         testRuns.map((testRun, index) => {
