@@ -8,6 +8,9 @@ import {useEffect, useState} from "react";
 import AlertsView from "../components/common/AlertsView";
 import Typography from "@mui/material/Typography";
 import {observer} from "mobx-react-lite";
+import Head from "next/head";
+import appState from "../state/AppState";
+import favicon from '../public/favicon.ico';
 
 const MyApp = observer(({ Component, pageProps }) => {
     const [data, setData] = useState(null)
@@ -41,6 +44,10 @@ const MyApp = observer(({ Component, pageProps }) => {
             justifyItems: 'center',
             ...props.style
         }}>
+            <Head>
+                <title>{appState.title || "QA Hub"}</title>\
+                <link rel="shortcut icon" href={favicon.src} />
+            </Head>
             <Typography variant={'h5'}>Loading . . .</Typography>
         </div>
     }
@@ -51,6 +58,10 @@ const MyApp = observer(({ Component, pageProps }) => {
 
     return <div style={{ height: '100vh', overflow: 'hidden'}}>
         <ThemeProvider theme={customTheme}>
+            <Head>
+                <title>{appState.title}</title>
+                <link rel="shortcut icon" href={favicon.src} />
+            </Head>
             <QaHubAppBar/>
             <div style={{height: 'calc(100vh - 65px)', minHeight: 'calc(100vh - 65px)', overflowY: 'auto'}}>
                 <Component {...pageProps} />

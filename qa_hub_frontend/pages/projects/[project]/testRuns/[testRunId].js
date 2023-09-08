@@ -11,6 +11,7 @@ import PushTestRunModal from "../../../../components/testRuns/pushTestRunModal/P
 import pushModalState from "../../../../state/testRuns/PushModalState";
 import PushTestRunPopup from "../../../../components/testRuns/pushTestRunModal/PushTestRunPopup";
 import TestHistoryModal from "../../../../components/stats/testHistoryModal/TestHistoryModal";
+import appState from "../../../../state/AppState";
 
 const TestRunPage = observer(() => {
   const router = useRouter()
@@ -51,6 +52,8 @@ const TestRunPage = observer(() => {
   if (!testRun) {
     return <div>Loading</div>
   }
+
+  appState.setTitle(`QA Hub: ${testRun.testRunId}`)
 
   return <div style={{padding: "15px"}}>
     <PushTestRunModal/>

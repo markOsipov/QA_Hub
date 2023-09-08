@@ -9,8 +9,11 @@ import integrationsState from "../state/integrations/IntegrationsState";
 import {observer} from "mobx-react-lite";
 import {getTaskTrackerIntegrations, getTaskTrackerTypes} from "../requests/integrations/TaskTrackerRequests";
 import {getTmsIntegrations, getTmsTypes} from "../requests/integrations/TMSRequests";
+import appState from "../state/AppState";
 
 const Settings = observer(() => {
+    appState.setTitle("QA Hub: Settings")
+
     useEffect(() => {
         getCicdTypes().then( data => {
             if (data?.data) {
