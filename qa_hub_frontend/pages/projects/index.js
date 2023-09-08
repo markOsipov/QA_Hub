@@ -1,6 +1,11 @@
 import HomePageContent from "../../components/home/HomePageContent";
+import {observer} from "mobx-react-lite";
+import appState from "../../state/AppState";
 
-export default function HomePage() {
+const HomePage = observer(() => {
+  appState.setTitle("QA Hub")
+
   return  <HomePageContent />
+})
 
-}
+export default HomePage
