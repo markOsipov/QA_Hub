@@ -3,7 +3,8 @@ import imagePopupState from "../../../../state/testRuns/ImagePopupState";
 import {useEffect, useRef, useState} from "react";
 import CloseIcon from '@mui/icons-material/Close';
 import {customTheme} from "../../../../styles/CustomTheme";
-import {tr} from "date-fns/locale";
+import DragAndDropView from "../../../common/DragAndDropView";
+import StyledTooltip from "../../../primitives/StyledTooltip";
 
 const ImagePopup = observer(() => {
   const ref = useRef(null)
@@ -25,16 +26,21 @@ const ImagePopup = observer(() => {
 
   const {imageSrc} = imagePopupState
 
-  return <div
-
-    onClick={() => {imagePopupState.close()}}
+  return <DragAndDropView
+    initialX={window.innerWidth / 2} initialY={window.innerHeight / 2 - stubHeight / 2}
     style={{
       position: 'absolute',
       maxWidth: '350px',
       height: 'max-content',
-      bottom: `max(calc(50vh - ${(height || stubHeight) / 2}px), 0px)`,
-      left: `calc(50vw + ${(width || stubWidth) / 2}px`,
-    }}>
+      width: 'max-content'
+      // bottom: `max(calc(50vh - ${(height || stubHeight) / 2}px), 0px)`,
+      // left: `calc(50vw + ${(width || stubWidth) / 2}px`,
+    }}
+  >
+    <div
+      onClick={() => {imagePopupState.close()}}
+
+    >
       <div style={{position: 'relative'}}>
         {
           <a
@@ -65,34 +71,36 @@ const ImagePopup = observer(() => {
             <label>Loading...</label>
           </div>
         }
-        <ClosePopupIcon action={() => {imagePopupState.close()}}/>
-
+        <ClosePopupIcon action={() => {imagePopupState.close()}} style={{opacity: '0.7'}}/>
       </div>
-
-  </div>
+    </div>
+  </DragAndDropView>
 })
 
-const ClosePopupIcon = ({action}) => {
+const ClosePopupIcon = ({action, ...props}) => {
   const [hovered, setHovered] = useState(false)
 
-  return  <div
-    style={{
-      position: 'absolute',
-      top: '-7px',
-      right: '-10px',
-      borderRadius: '15px',
-      backgroundColor: customTheme.palette.text.white,
-      boxShadow: hovered && '0 0 20px rgba(255, 255, 255, 0.7)',
-      placeItems: 'center',
-      display: 'grid',
-      cursor: "pointer"
-    }}
-    onClick={action}
-    onMouseOver={() => {setHovered(true)}}
-    onMouseLeave={() => {setHovered(false)}}
-    onMouseBlur={() => {setHovered(false)}}
-  >
-    <CloseIcon style={{color: 'black'}}/>
-  </div>
+  return <StyledTooltip title={'Close'}>
+    <div
+      style={{
+        position: 'absolute',
+        top: '-7px',
+        right: '-10px',
+        borderRadius: '15px',
+        backgroundColor: customTheme.palette.text.white,
+        boxShadow: hovered && '0 0 10px rgba(255, 255, 255, 0.6)',
+        placeItems: 'center',
+        display: 'grid',
+        cursor: "pointer",
+        ...props.style
+      }}
+      onClick={action}
+      onMouseOver={() => {setHovered(true)}}
+      onMouseLeave={() => {setHovered(false)}}
+      onBlur={() => {setHovered(false)}}
+    >
+      <CloseIcon style={{color: 'black'}}/>
+    </div>
+    </StyledTooltip>
 }
 export default ImagePopup
