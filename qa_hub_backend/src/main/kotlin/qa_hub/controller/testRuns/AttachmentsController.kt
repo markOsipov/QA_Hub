@@ -19,17 +19,18 @@ class AttachmentsController {
         @RequestParam project: String,
         @RequestParam testRunId: String,
         @RequestParam fullName: String,
-        @RequestParam image: MultipartFile
+        @RequestParam image: MultipartFile,
+        @RequestParam(required = false, defaultValue = "jpeg") extension: String
     ): TestResultAttachment {
         val path = "$imageDir/testruns/$project/$testRunId/$fullName"
         val directory = File(path)
         if (!directory.exists()) {
             directory.mkdirs()
         }
-        val fileName = "${UUID.randomUUID()}.png"
+        val fileName = "${UUID.randomUUID()}.$extension"
         val file = File("$path/$fileName")
 
-        val result = ImageIO.write(ImageIO.read(image.inputStream), "png", file)
+        val result = ImageIO.write(ImageIO.read(image.inputStream), extension, file)
 
         if (result) {
             return TestResultAttachment(
@@ -43,18 +44,25 @@ class AttachmentsController {
     }
 
 
-    @GetMapping("/images/{project}/{testRunId}/{fullName}/{fileName}", produces = [MediaType.IMAGE_PNG_VALUE])
+    @GetMapping("/images/{project}/{testRunId}/{fullName}/{fileName}", produces = [MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE])
     fun getAttachment(
         @PathVariable project: String,
         @PathVariable testRunId: String,
         @PathVariable fullName: String,
         @PathVariable fileName: String,
     ): ResponseEntity<ByteArray> {
+        val extension = fileName.substringAfterLast(".").lowercase()
+        val mediaType = if (extension == "png") {
+            MediaType.IMAGE_PNG
+        } else {
+            MediaType.IMAGE_JPEG
+        }
+
         val filePath = "$imageDir/testruns/$project/$testRunId/$fullName/$fileName"
         val file = File(filePath)
 
         return ResponseEntity.ok()
-            .contentType(MediaType.IMAGE_PNG)
+            .contentType(mediaType)
             .body(file.readBytes())
     }
 }
