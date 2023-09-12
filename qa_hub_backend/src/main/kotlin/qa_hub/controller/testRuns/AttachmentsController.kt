@@ -35,7 +35,7 @@ class AttachmentsController {
         if (result) {
             return TestResultAttachment(
                 type = AttachmentTypes.image,
-                path = path,
+                path = "/api/attachments/images/${project}/${testRunId}/${fullName}/${fileName}",
                 fileName = fileName
             )
         }
