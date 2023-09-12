@@ -10,6 +10,7 @@ Create database with name dbQaHub
 ENV_MONGO_QA_HUB_HOST  \
 ENV_MONGO_QA_HUB_LOGIN  \
 ENV_MONGO_QA_HUB_PASSWORD \
+ENV_IMAGE_DIR \
 
 used for local launch or for docker compose build
 

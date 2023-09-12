@@ -13,7 +13,7 @@ import javax.imageio.ImageIO
 @RestController
 @RequestMapping("/api/attachments")
 class AttachmentsController {
-
+    val imageDir = System.getenv("ENV_IMAGE_DIR") ?: "${System.getProperty("user.home")}/Images/QA_Hub"
     @PostMapping("/images")
     fun postAttachments(
         @RequestParam project: String,
@@ -21,8 +21,7 @@ class AttachmentsController {
         @RequestParam fullName: String,
         @RequestParam image: MultipartFile
     ): TestResultAttachment {
-        val userHomeDir = System.getProperty("user.home")
-        val path = "$userHomeDir/Images/QA_Hub/testruns/$project/$testRunId/$fullName"
+        val path = "$imageDir/testruns/$project/$testRunId/$fullName"
         val directory = File(path)
         if (!directory.exists()) {
             directory.mkdirs()
@@ -51,8 +50,7 @@ class AttachmentsController {
         @PathVariable fullName: String,
         @PathVariable fileName: String,
     ): ResponseEntity<ByteArray> {
-        val userHomeDir = System.getProperty("user.home")
-        val filePath = "$userHomeDir/Images/QA_Hub/testruns/$project/$testRunId/$fullName/$fileName"
+        val filePath = "$imageDir/testruns/$project/$testRunId/$fullName/$fileName"
         val file = File(filePath)
 
         return ResponseEntity.ok()
