@@ -23,6 +23,7 @@ import {copyToClipboard} from "../../../../utils/CopyHelper";
 import ImageIcon from '@mui/icons-material/Image';
 import process from "../../../../next.config";
 import ArticleIcon from '@mui/icons-material/Article';
+import imagePopupState from "../../../../state/testRuns/ImagePopupState";
 
 const TestResultDetails = observer(({ ...props }) => {
   const router = useRouter()
@@ -266,8 +267,20 @@ const TestResultFullName = observer(({testResult}) => {
 const AttachmentElement = ({attachment, ...props}) => {
   const [hovered, setHovered] = useState(false)
 
-  return <StyledTooltip title={'Attachment'}>
-      <a
+  const handleHover = () => {
+    setHovered(true)
+    // imagePopupState.open(`${process.env.NEXT_PUBLIC_QA_HUB_BACKEND}/${attachment.path}`)
+  }
+
+  const handleBlur = () => {
+    setHovered(false)
+    // imagePopupState.close()
+  }
+
+
+  return <>
+    <StyledTooltip title={'Attachment'}>
+      <div
         style={{
           display: 'flex',
           alignItems: 'center',
@@ -278,18 +291,18 @@ const AttachmentElement = ({attachment, ...props}) => {
           cursor: 'pointer',
           ...props.style
         }}
-        href={`${process.env.NEXT_PUBLIC_QA_HUB_BACKEND}/${attachment.path}`}
-        target={"_blank"}
-        onMouseOver={() => { setHovered(true)}}
-        onMouseLeave={() => { setHovered(false)}}
-        onBlur={() => { setHovered(false)}}
+        onClick={() => {imagePopupState.open(`${process.env.NEXT_PUBLIC_QA_HUB_BACKEND}/${attachment.path}`)}}
+        onMouseOver={handleHover}
+        onMouseLeave={handleBlur}
+        onBlur={handleBlur}
         rel="noreferrer">
         {
           attachment.type === 'image' ?   <ImageIcon /> : <ArticleIcon />
         }
         <label style={{marginLeft: '5px'}}>{attachment.type === 'image' ? 'Screenshot' : 'Attachment'}</label>
-      </a>
+      </div>
 
   </StyledTooltip>
+  </>
 }
 export default TestResultDetails

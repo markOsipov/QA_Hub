@@ -12,6 +12,9 @@ import pushModalState from "../../../../state/testRuns/PushModalState";
 import PushTestRunPopup from "../../../../components/testRuns/pushTestRunModal/PushTestRunPopup";
 import TestHistoryModal from "../../../../components/stats/testHistoryModal/TestHistoryModal";
 import appState from "../../../../state/AppState";
+import ImagePopup from "../../../../components/testRuns/testRunResults/testResultDetails/ImagePopup";
+import imagePopup from "../../../../components/testRuns/testRunResults/testResultDetails/ImagePopup";
+import imagePopupState from "../../../../state/testRuns/ImagePopupState";
 
 const TestRunPage = observer(() => {
   const router = useRouter()
@@ -77,6 +80,11 @@ const TestRunPage = observer(() => {
     {
       pushModalState.selectedTests?.length > 0 &&
       <PushTestRunPopup testRun={testRun} style={{position: 'absolute', bottom: '30px', right: '30px'}}/>
+    }
+
+    {
+      imagePopupState.isOpen &&
+      <ImagePopup style={{position: 'absolute'}}/>
     }
   </div>
 })
