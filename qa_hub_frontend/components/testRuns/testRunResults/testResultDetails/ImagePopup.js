@@ -30,7 +30,7 @@ const ImagePopup = observer(() => {
     onClick={() => {imagePopupState.close()}}
     style={{
       position: 'absolute',
-      maxWidth: '300px',
+      maxWidth: '350px',
       height: 'max-content',
       bottom: `max(calc(50vh - ${(height || stubHeight) / 2}px), 0px)`,
       left: `calc(50vw + ${(width || stubWidth) / 2}px`,
@@ -46,7 +46,7 @@ const ImagePopup = observer(() => {
             <img
               ref={ref}
               src={imageSrc}
-              style={{maxWidth: '100%'}}
+              style={{maxWidth: '100%', border: '1px solid', borderColor: customTheme.palette.text.disabled, borderRadius: '3px'}}
               onLoad={() => {setReady(true)}}
             ></img>
           </a>
