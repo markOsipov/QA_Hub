@@ -10,10 +10,8 @@ import testResultsState from "../../../../state/testResults/TestResultsState";
 import PushTestRunModal from "../../../../components/testRuns/pushTestRunModal/PushTestRunModal";
 import pushModalState from "../../../../state/testRuns/PushModalState";
 import PushTestRunPopup from "../../../../components/testRuns/pushTestRunModal/PushTestRunPopup";
-import TestHistoryModal from "../../../../components/stats/testHistoryModal/TestHistoryModal";
 import appState from "../../../../state/AppState";
 import ImagePopup from "../../../../components/testRuns/testRunResults/testResultDetails/ImagePopup";
-import imagePopup from "../../../../components/testRuns/testRunResults/testResultDetails/ImagePopup";
 import imagePopupState from "../../../../state/testRuns/ImagePopupState";
 
 const TestRunPage = observer(() => {
@@ -52,11 +50,13 @@ const TestRunPage = observer(() => {
     }
   }, [router.query.testRunId])
 
+  useEffect(() => {
+    appState.setTitle(`QA Hub: ${testRun?.testRunId || 'Test run'}`)
+  }, [testRun?.testRunId])
+
   if (!testRun) {
     return <div>Loading</div>
   }
-
-  appState.setTitle(`QA Hub: ${testRun.testRunId}`)
 
   return <div style={{padding: "15px"}}>
     <PushTestRunModal/>

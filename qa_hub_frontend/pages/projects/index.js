@@ -1,9 +1,13 @@
 import HomePageContent from "../../components/home/HomePageContent";
 import {observer} from "mobx-react-lite";
 import appState from "../../state/AppState";
+import {useEffect} from "react";
 
 const HomePage = observer(() => {
-  appState.setTitle("QA Hub")
+
+  useEffect(() => {
+    appState.setTitle("QA Hub")
+  }, [])
 
   return  <HomePageContent />
 })

@@ -4,12 +4,15 @@ import Typography from "@mui/material/Typography";
 import MainProjectChart from "../../../components/project/MainProjectChart";
 import {observer} from "mobx-react-lite";
 import appState from "../../../state/AppState";
+import {useEffect} from "react";
 
 const ProjectPage = observer(({...props}) => {
   const router = useRouter()
   const project = router.query.project
 
-  appState.setTitle(`QA Hub: ${project}`)
+  useEffect(() => {
+    appState.setTitle(`QA Hub: ${project}`)
+  }, [])
 
   return <Paper elevation={3} style={{padding: '15px', margin: '10px', ...props.style}}>
     <Typography variant={'h5'}>Project: {project}</Typography>

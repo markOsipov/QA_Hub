@@ -11,7 +11,6 @@ import AndroidIcon from '@mui/icons-material/Android';
 import AppleIcon from '@mui/icons-material/Apple';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import DragAndDropView from "../common/DragAndDropView";
 
 const HomePageContent = observer(() => {
   const {projectsDetails} = projectState
@@ -31,8 +30,6 @@ const HomePageContent = observer(() => {
         })
       }
     </Stack>
-
-    <DragAndDropView><label>CONTENT</label></DragAndDropView>
   </div>
 })
 

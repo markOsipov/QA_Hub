@@ -57,11 +57,11 @@ const MyApp = observer(({ Component, pageProps }) => {
     }
 
     return <div style={{ height: '100vh', overflow: 'hidden'}}>
+        <Head>
+            <title>{appState.title}</title>
+            <link rel="shortcut icon" href={favicon.src} />
+        </Head>
         <ThemeProvider theme={customTheme}>
-            <Head>
-                <title>{appState.title}</title>
-                <link rel="shortcut icon" href={favicon.src} />
-            </Head>
             <QaHubAppBar/>
             <div style={{height: 'calc(100vh - 65px)', minHeight: 'calc(100vh - 65px)', overflowY: 'auto'}}>
                 <Component {...pageProps} />
