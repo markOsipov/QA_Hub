@@ -14,6 +14,7 @@ import AppleIcon from '@mui/icons-material/Apple';
 import {observer} from "mobx-react-lite";
 import testResultsFilter from "../../testResultsList/filters/TestResultsFilter";
 import testResultsState from "../../../../../state/testResults/TestResultsState";
+import AttachmentElement from "../AttachmentElement";
 
 const RetryTab = observer(({retry, isLastRetry, ...props}) => {
   const {selectedTest} = testResultsState
@@ -55,6 +56,12 @@ const RetryTab = observer(({retry, isLastRetry, ...props}) => {
           <label style={{marginLeft: '5px'}}>{ lastResult.deviceRuntime }</label>
         </div>
       </StyledTooltip>
+
+      {
+        lastResult.attachments.map((attachment, index) => {
+          return <AttachmentElement key={index} attachment={attachment} />
+        })
+      }
     </div>
 
     <div style={{display: 'flex', marginTop: '45px'}}>

@@ -7,7 +7,7 @@ import {
   TextareaAutosize,
   useRadioGroup
 } from "@mui/material";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {getQaReview, postQaReview} from "../../../../../requests/testResults/TestReviewRequests";
 import SaveIcon from '@mui/icons-material/Save';
 import {styled} from "@mui/material/styles";
@@ -15,6 +15,7 @@ import {customTheme} from "../../../../../styles/CustomTheme";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from '@mui/icons-material/Edit';
 import BlockTestComponent from "./BlockTestComponent";
+import AutoFocusTextArea from "../../../../primitives/AutoFocusTextArea";
 export default function QaResolutionPanel({ testResult, ...props}) {
   const defaultReview = {
     testRunId: testResult.testRunId,
@@ -33,6 +34,7 @@ export default function QaResolutionPanel({ testResult, ...props}) {
   }
 
   useEffect(() => {
+    setEditing(false)
     refreshQaReview()
   }, [testResult.fullName, testResult.testRunId])
 
@@ -85,11 +87,12 @@ export default function QaResolutionPanel({ testResult, ...props}) {
         <ReviewFormControlLabel value="Bug" control={<Radio />} label="Bug" />
       </RadioGroup>
     </FormControl>
-    <div style={{display: 'flex', marginTop: '5px', alignItems: 'center'}}  onDoubleClick={handleDoubleClick}>
-      <TextareaAutosize
-        value={qaReview.qaComment}
+    <div style={{display: 'flex', marginTop: '5px', alignItems: 'center'}} onDoubleClick={handleDoubleClick}>
+      <AutoFocusTextArea
+        value={qaReview.qaComment || ""}
         onChange={(event) => {setQaReview({ ...qaReview, qaComment: event.target.value || "" })}}
         onKeyDown={handleShiftEnterKeysPressed}
+        onBlur={() => { updateComment(); console.log("Updated") }}
         disabled={!editing}
         style={{
           width: '100%',

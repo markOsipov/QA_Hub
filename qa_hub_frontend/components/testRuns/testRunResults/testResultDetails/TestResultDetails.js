@@ -20,6 +20,11 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import {customTheme} from "../../../../styles/CustomTheme";
 import alertState from "../../../../state/AlertState";
 import {copyToClipboard} from "../../../../utils/CopyHelper";
+import ImageIcon from '@mui/icons-material/Image';
+import process from "../../../../next.config";
+import ArticleIcon from '@mui/icons-material/Article';
+import imagePopupState from "../../../../state/testRuns/ImagePopupState";
+import AttachmentElement from "./AttachmentElement";
 
 const TestResultDetails = observer(({ ...props }) => {
   const router = useRouter()
@@ -121,6 +126,12 @@ const TestResultDetails = observer(({ ...props }) => {
                   <label style={{marginLeft: '5px'}}>{ selectedTest.deviceRuntime }</label>
                 </div>
               </StyledTooltip>
+
+              {
+                (selectedTest.attachments || []).map((attachment, index) => {
+                  return <AttachmentElement key={index} attachment={attachment}/>
+                })
+              }
             </div>
 
           </div>
@@ -253,4 +264,5 @@ const TestResultFullName = observer(({testResult}) => {
     </div>
   </div>
 })
+
 export default TestResultDetails

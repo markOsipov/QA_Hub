@@ -12,7 +12,10 @@ import {getTmsIntegrations, getTmsTypes} from "../requests/integrations/TMSReque
 import appState from "../state/AppState";
 
 const Settings = observer(() => {
-    appState.setTitle("QA Hub: Settings")
+
+    useEffect(() => {
+        appState.setTitle("QA Hub: Settings")
+    }, [])
 
     useEffect(() => {
         getCicdTypes().then( data => {

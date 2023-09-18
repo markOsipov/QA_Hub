@@ -40,8 +40,18 @@ data class TestResult(
     var deviceId: String = "unknown",
 
     var reviewed: Boolean = false,
-    var attachments: MutableList<String> = mutableListOf()
+    var attachments: MutableList<TestResultAttachment> = mutableListOf()
 )
+
+data class TestResultAttachment(
+    val type: String,
+    val path: String,
+    val fileName: String
+)
+
+object AttachmentTypes {
+    val image = "image"
+}
 
 enum class TestStatus(val status: String) {
     SUCCESS("SUCCESS"),

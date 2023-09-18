@@ -17,7 +17,7 @@ class StatusHistoryItem(
     var device: String? = "unknown",
     var deviceRuntime: String? = "unknown",
     var deviceId: String? = "unknown",
-    var attachments: MutableList<String> = mutableListOf()
+    var attachments: MutableList<TestResultAttachment> = mutableListOf()
 ) {
     constructor(testResult: TestResult): this(
         date = testResult.date ?: currentDateTimeUtc(),
