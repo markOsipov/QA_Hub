@@ -17,6 +17,7 @@ buildscript {
         okhttp_ver = "4.8.1"
         gson_ver = "2.8.6"
         logback_json_ver = "0.1.2"
+        slack_api_ver = "1.32.0"
     }
 }
 
@@ -57,6 +58,8 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:$okhttp_ver")
     implementation("ch.qos.logback.contrib:logback-json-classic:$logback_json_ver")
     implementation("ch.qos.logback.contrib:logback-jackson:$logback_json_ver")
+
+    implementation("com.slack.api:slack-api-client:$slack_api_ver")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test:$spring_version")
 }
