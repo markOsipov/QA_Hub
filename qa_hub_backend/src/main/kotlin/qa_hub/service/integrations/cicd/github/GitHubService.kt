@@ -17,7 +17,7 @@ class GitHubService(cicdInfo: CicdInfo): CicdIntegrationAbstract(cicdInfo) {
         var message: String? = null
 
         response.errorBody()?.let {
-            message = Gson().fromJson(it.toString(), GithubStartJobResponse::class.java).message
+            message = Gson().fromJson(it.string(), GithubStartJobResponse::class.java).message
         }
 
         return StartJobResponse(
