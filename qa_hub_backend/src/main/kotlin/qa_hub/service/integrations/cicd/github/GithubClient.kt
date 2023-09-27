@@ -1,7 +1,9 @@
 package qa_hub.service.integrations.cicd.github
 
 import qa_hub.service.integrations.cicd.github.entity.GithubBranch
+import qa_hub.service.integrations.cicd.github.entity.GithubStartJobResponse
 import qa_hub.service.integrations.cicd.github.entity.StartWorkflowRequest
+import retrofit2.Response
 
 class GithubClient(apiUrl: String, apiToken: String) {
     private val githubService = GithubHttpInterface.getClient(apiUrl, apiToken)
@@ -13,11 +15,10 @@ class GithubClient(apiUrl: String, apiToken: String) {
                 .body()!!
     }
 
-    fun startJob(org: String, project: String, workflowId: String, body: StartWorkflowRequest): Int {
+    fun startJob(org: String, project: String, workflowId: String, body: StartWorkflowRequest): Response<Any?> {
         return githubService
             .startWorkflow(org, project, workflowId, body)
             .execute()
-            .code()
     }
 
     fun cancelJob(org: String, project: String, jobId: String): Int {

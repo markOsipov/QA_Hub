@@ -18,3 +18,7 @@ data class StartWorkflowRequest(
     val ref: String,
     val inputs: Map<String, String>
 )
+
+data class GithubStartJobResponse(
+    val message: String?
+)

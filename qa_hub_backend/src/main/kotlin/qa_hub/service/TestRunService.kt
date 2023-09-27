@@ -13,6 +13,7 @@ import qa_hub.entity.testRun.*
 import qa_hub.core.utils.DateTimeUtils.currentDateTimeUtc
 import qa_hub.core.utils.DateTimeUtils.currentEpoch
 import qa_hub.service.integrations.cicd.StartJobRequest
+import qa_hub.service.integrations.cicd.StartJobResponse
 import qa_hub.service.integrations.taskTrackers.TaskStatusResponse
 import qa_hub.service.testResults.TestLogsService
 import qa_hub.service.testResults.TestResultsService
@@ -124,7 +125,11 @@ class TestRunService {
         val insertedTestRun = getTestRun(testRun.testRunId)!!
 
         if (startJob) {
-            startJob(insertedTestRun, testRunRequest.branch)
+            val startJobResponse = startJob(insertedTestRun, testRunRequest.branch)
+            val code = startJobResponse?.code
+            if (code != null && code >= 400) {
+                throw Exception("Failed to start job: code ${code}. Message: ${startJobResponse.message}")
+            }
         }
 
         return@runBlocking insertedTestRun
@@ -371,7 +376,7 @@ class TestRunService {
         }
     }
 
-    fun startJob(testRun: TestRun, branch: String) {
+    fun startJob(testRun: TestRun, branch: String): StartJobResponse? {
         val cicdInfo = projectIntegrationsService.getProjectCicdInt(testRun.project)
         val cicdService = cicdInfo.cicdInfo?.cicdService()
 
@@ -381,7 +386,7 @@ class TestRunService {
         }
         paramsMap["TEST_RUN_ID"] = testRun.testRunId
 
-        cicdService?.startJob(
+        return cicdService?.startJob(
             cicdInfo.projectCicdInfo!!,
             cicdInfo.projectCicdInfo.jobId,
             StartJobRequest(

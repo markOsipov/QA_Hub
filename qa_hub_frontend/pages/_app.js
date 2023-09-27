@@ -65,7 +65,7 @@ const MyApp = observer(({ Component, pageProps }) => {
             <QaHubAppBar/>
             <div style={{height: 'calc(100vh - 65px)', minHeight: 'calc(100vh - 65px)', overflowY: 'auto'}}>
                 <Component {...pageProps} />
-                <AlertsView style={{position: "absolute", right: '30px', bottom: '20px'}}/>
+                <AlertsView style={{position: "absolute", right: '30px', bottom: '20px', zIndex: '1000000'}}/>
             </div>
         </ThemeProvider>
     </div>

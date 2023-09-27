@@ -42,8 +42,13 @@ data class StartJobRequest(
     val params: Map<String, String>
 )
 
+data class StartJobResponse(
+    val code: Int,
+    val message: String?
+)
+
 abstract class CicdIntegrationAbstract(val cicdInfo: CicdInfo) {
-    abstract fun startJob(info: ProjectCicdInfo, jobId: String, startJobRequest: StartJobRequest)
+    abstract fun startJob(info: ProjectCicdInfo, jobId: String, startJobRequest: StartJobRequest): StartJobResponse
 
     abstract fun stopJob(info: ProjectCicdInfo, jobId: String)
 

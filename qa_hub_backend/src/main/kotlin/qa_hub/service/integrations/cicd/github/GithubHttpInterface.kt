@@ -7,6 +7,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import qa_hub.service.integrations.cicd.github.entity.GithubBranch
+import qa_hub.service.integrations.cicd.github.entity.GithubStartJobResponse
 import qa_hub.service.integrations.cicd.github.entity.StartWorkflowRequest
 import retrofit2.Call
 import retrofit2.Retrofit
