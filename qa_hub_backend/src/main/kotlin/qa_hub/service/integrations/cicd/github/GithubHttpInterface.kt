@@ -66,5 +66,5 @@ interface GithubHttpInterface {
         @Path("project") project: String,
         @Path("workflowId") jobId: String,
         @Body body: StartWorkflowRequest
-    ): Call<GithubStartJobResponse?>
+    ): Call<Any?>
 }

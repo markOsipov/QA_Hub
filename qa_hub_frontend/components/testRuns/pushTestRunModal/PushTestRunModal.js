@@ -14,6 +14,7 @@ import CustomIconButton from "../../primitives/CustomIconButton";
 import {customTheme} from "../../../styles/CustomTheme";
 import ClearIcon from "@mui/icons-material/Clear";
 import alertState from "../../../state/AlertState";
+import axios from "axios";
 
 
 const PushTestRunModal = observer(({reloadTestRuns}) => {
@@ -28,10 +29,8 @@ const PushTestRunModal = observer(({reloadTestRuns}) => {
   }
 
   const handleStartNewTestRunClick = () => {
-    createNewTestRun(testRun.project, branch, params).then(response => {
-      if (response.status >= 400) {
-        alertState.showAlert("Failed to start new testrun", "error")
-      } else {
+    createNewTestRun(testRun.project, branch, params)
+      .then(() => {
         alertState.showAlert("New testrun has started", "success")
 
         if (reloadTestRuns) {
@@ -39,8 +38,11 @@ const PushTestRunModal = observer(({reloadTestRuns}) => {
         }
 
         pushModalState.setIsOpen(false)
-      }
-    })
+      })
+      .catch((err) => {
+        alertState.showAlert("Failed to start new testrun", "error")
+        console.log(JSON.stringify(err))
+      })
   }
 
   function loadTestRunForm() {

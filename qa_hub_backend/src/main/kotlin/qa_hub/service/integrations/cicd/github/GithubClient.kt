@@ -15,7 +15,7 @@ class GithubClient(apiUrl: String, apiToken: String) {
                 .body()!!
     }
 
-    fun startJob(org: String, project: String, workflowId: String, body: StartWorkflowRequest): Response<GithubStartJobResponse?> {
+    fun startJob(org: String, project: String, workflowId: String, body: StartWorkflowRequest): Response<Any?> {
         return githubService
             .startWorkflow(org, project, workflowId, body)
             .execute()
