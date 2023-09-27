@@ -24,8 +24,8 @@ const TestRunActionsOnPage = observer (({testRun, updateTestRunInfo, ...props}) 
   const handleDeleteTestRunClick = () => {
     if (confirm("This Testrun will be deleted. Are you sure?")) {
       deleteTestRun(testRun.testRunId).then(() => {
-        router.push("/testRuns")
-        alert(`Testun ${testRun.testRunId} has been deleted`)
+        router.push(`projects/${testRun.project}/testRuns`)
+        alert(`Testrun ${testRun.testRunId} has been deleted`)
       })
     }
   }
