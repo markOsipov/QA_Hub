@@ -33,7 +33,11 @@ const PushTestRunModal = observer(({reloadTestRuns}) => {
         alertState.showAlert("Failed to start new testrun", "error")
       } else {
         alertState.showAlert("New testrun has started", "success")
-        reloadTestRuns()
+
+        if (reloadTestRuns) {
+          reloadTestRuns()
+        }
+
         pushModalState.setIsOpen(false)
       }
     })
