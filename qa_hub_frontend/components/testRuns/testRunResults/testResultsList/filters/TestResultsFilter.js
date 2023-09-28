@@ -9,7 +9,6 @@ import DeviceFilter from "./DeviceFilter";
 import CustomIconButton from "../../../../primitives/CustomIconButton";
 import testResultsFilterState from "../../../../../state/testResults/TestResultsFilterState";
 import {observer} from "mobx-react-lite";
-import {useState} from "react";
 import Loader from "../../../../common/Loader";
 
 const TestResultsFilter = observer(({filterAndLoad, filterLoading, runners, ...props }) => {

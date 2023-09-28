@@ -9,11 +9,14 @@ import testResultsState from "../../../../state/testResults/TestResultsState";
 
 import StyledTextField from "../../../primitives/StyledTextField";
 import LoadMoreTestsButton from "./LoadMoreTestsButton";
-import {getCookie, QaHubCookies} from "../../../../utils/CookieHelper";
+import {getCookie, QaHubCookies, setCookie} from "../../../../utils/CookieHelper";
 import Typography from "@mui/material/Typography";
 import {customTheme} from "../../../../styles/CustomTheme";
+import {useRouter} from "next/router";
 
 const TestResultsList = observer(({  testRun, ...props}) => {
+  const router = useRouter()
+
   const { filter } = testResultsFilterState
   const { testResults} = testResultsState
 
@@ -30,7 +33,7 @@ const TestResultsList = observer(({  testRun, ...props}) => {
   const testRunId = testRun.testRunId
   const runners = testRun.runners || []
 
-  async function updateTestResults(skip, limit) {
+  async function updateTestResults(skip, limit, filter) {
     if (testResults[0]?.testRunId !== testRunId) {
       setLoading(true)
     }
@@ -51,6 +54,7 @@ const TestResultsList = observer(({  testRun, ...props}) => {
     const filterValue = filter || {}
 
     testResultsFilterState.setFilter(filterValue)
+    setFilterToUrl(filterValue)
 
     setFilterLoading(true)
     getTestResults(testRunId, filter, initialSkip, loadMoreSize).then(response => {
@@ -62,9 +66,48 @@ const TestResultsList = observer(({  testRun, ...props}) => {
   }
 
   useEffect(() => {
-    updateTestResults(initialSkip, loadMoreSize)
+    const newFilter =  getFilterFromUrl()
+    testResultsFilterState.setFilter(newFilter)
+
+    updateTestResults(initialSkip, loadMoreSize, newFilter)
   }, [testRunId])
 
+  function getFilterFromUrl() {
+    const statuses = router.query.statuses
+    const unreviewed = router.query.unreviewed
+    const retries = router.query.retries
+    const deviceId = router.query.deviceId
+    const runner = router.query.runner
+    const message = router.query.message
+
+    let newFilter = {}
+    newFilter.statuses = statuses ? statuses.split(" ") : []
+    newFilter.unreviewed = unreviewed ? unreviewed === 'true' : null
+    newFilter.filterRetries = retries ? retries === 'true' : null
+    newFilter.deviceId = deviceId
+    newFilter.runner = runner
+    newFilter.message = message
+
+    return newFilter
+  }
+
+  function setFilterToUrl(filter) {
+    if (filter.statuses != null && filter.statuses.length > 0) {
+      router.query.statuses = filter.statuses.join(" ")
+    } else {
+      delete router.query.statuses
+    }
+
+    ['unreviewed', 'retries', 'deviceId', 'runner', 'message'].forEach(filterType => {
+      if (filter[filterType] != null) {
+        router.query[filterType] = filter[filterType].toString()
+      } else {
+        delete router.query[filterType]
+      }
+    })
+
+    router.replace(router)
+  }
   const updateLoadMoreCount = (event) => {
     setLoadMoreSize(Number.parseInt(event.target.value))
   }
