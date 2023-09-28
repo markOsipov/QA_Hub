@@ -40,7 +40,7 @@ export default function TestResultsPlate({testRun, progressBarWidth, ...props}) 
       </div>
 
 
-      <div style={{display: 'flex', marginLeft: '15px'}}>
+      <div style={{display: 'flex', marginLeft: '15px', alignItems: 'center', position: 'relative', top: '-2px'}}>
         { successCount > 0 &&
           <SuccessfulTestsBadge successCount={successCount} testRun={testRun}/>
         }
