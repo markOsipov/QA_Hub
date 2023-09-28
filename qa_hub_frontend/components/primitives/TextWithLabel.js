@@ -14,6 +14,7 @@ export default function TextWithLabel ({value, label, labelStyle, valueStyle, ..
       minHeight: '33px',
       position: 'relative',
       borderColor: customTheme.palette.text.disabled,
+      cursor: 'inherit',
       ...(props.style)
     }}
   >
@@ -30,6 +31,7 @@ export default function TextWithLabel ({value, label, labelStyle, valueStyle, ..
         borderRadius: '5px',
         boxShadow: 'rgba(0, 0, 0, 0.1) 0px 1px 1px, rgba(0, 0, 0, 0.1) 0px 3px 3px',
         border: `1px solid ${customTheme.palette.text.disabled}`,
+        cursor: 'inherit',
         ...style
       }}>{label}</label>
     }
@@ -40,6 +42,7 @@ export default function TextWithLabel ({value, label, labelStyle, valueStyle, ..
       paddingBottom: label ? '4px' : '1px',
       minWidth: 'max-content',
       overflowX: 'hidden',
+      cursor: 'inherit',
       ...valueStyle
     }}>{value}</label>
   </div>
