@@ -233,7 +233,8 @@ class TestRunService {
                     testcaseId = it.testId,
                     project = testRun.project,
                     fullName = it.fullName,
-                    status = TestStatus.WAITING.status
+                    status = TestStatus.WAITING.status,
+                    title = it.title
                 )
             }
             if (updateTestResultRequests.isNotEmpty()) {
