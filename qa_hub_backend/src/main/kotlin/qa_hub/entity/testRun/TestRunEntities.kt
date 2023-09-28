@@ -92,6 +92,7 @@ data class TestRunRunner(
 )
 data class TestListElement(
     val testId: String = "",
+    val title: String = "",
     val fullName: String
 )
 
@@ -103,5 +104,6 @@ data class TestQueue(
 data class NextTestResponse(
     var nextTest: String?,
     val testId: String?,
+    val title: String?,
     val retry: Int?
 )
