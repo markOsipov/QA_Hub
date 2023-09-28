@@ -52,12 +52,16 @@ const TestRunForm = observer(({reloadTestRuns}) => {
     }
 
     const handleStartNewTestRunClick = () => {
-        createNewTestRun(project, branch, params).then(response => {
-            if (response.status >= 400) {
-                alertState.showAlert("Failed to start new testrun", "error")
-            } else {
-                reloadTestRuns()
-                alertState.showAlert("New testrun has started", "success")
+        createNewTestRun(project, branch, params).then(() => {
+            reloadTestRuns()
+            alertState.showAlert("New testrun has started", "success")
+        }).catch((err) => {
+            let message = "Failed to start new testrun"
+            let errorBody = err.response?.data
+
+            alertState.showAlert(message, "error")
+            if (errorBody) {
+                console.log(message + ":\n" + JSON.stringify(errorBody, null, 2))
             }
         })
     }

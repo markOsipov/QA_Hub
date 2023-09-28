@@ -40,8 +40,13 @@ const PushTestRunModal = observer(({reloadTestRuns}) => {
         pushModalState.setIsOpen(false)
       })
       .catch((err) => {
-        alertState.showAlert("Failed to start new testrun", "error")
-        console.log(JSON.stringify(err))
+        let message = "Failed to start new testrun"
+        let errorBody = err.response?.data
+
+        alertState.showAlert(message, "error")
+        if (errorBody) {
+          console.log(message + ":\n" + JSON.stringify(errorBody, null, 2))
+        }
       })
   }
 
