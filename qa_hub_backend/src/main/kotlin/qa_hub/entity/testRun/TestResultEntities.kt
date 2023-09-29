@@ -27,6 +27,7 @@ data class TestResult(
     var testcaseId: String = "",
     var project: String?,
     var fullName: String,
+    var title: String? = "",
 
     var duration: Double? = null,
     var status: String,

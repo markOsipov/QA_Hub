@@ -3,7 +3,6 @@ package qa_hub.service
 import kotlinx.coroutines.*
 import org.litote.kmongo.*
 import org.litote.kmongo.coroutine.aggregate
-import org.litote.kmongo.coroutine.updateOne
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import qa_hub.core.mongo.QaHubMongoClient
@@ -14,7 +13,6 @@ import qa_hub.core.utils.DateTimeUtils.currentDateTimeUtc
 import qa_hub.core.utils.DateTimeUtils.currentEpoch
 import qa_hub.service.integrations.cicd.StartJobRequest
 import qa_hub.service.integrations.cicd.StartJobResponse
-import qa_hub.service.integrations.taskTrackers.TaskStatusResponse
 import qa_hub.service.testResults.TestLogsService
 import qa_hub.service.testResults.TestResultsService
 import qa_hub.service.testResults.TestStepsService
@@ -235,7 +233,8 @@ class TestRunService {
                     testcaseId = it.testId,
                     project = testRun.project,
                     fullName = it.fullName,
-                    status = TestStatus.WAITING.status
+                    status = TestStatus.WAITING.status,
+                    title = it.title
                 )
             }
             if (updateTestResultRequests.isNotEmpty()) {
@@ -346,7 +345,8 @@ class TestRunService {
             return@runBlocking NextTestResponse(
                 nextTest = nextTest.fullName,
                 testId = nextTest.testcaseId,
-                retry = nextTest.retries
+                retry = nextTest.retries,
+                title = nextTest.title
             )
         } else {
             leaveQueue(testRunId, queueTicket)
@@ -354,7 +354,8 @@ class TestRunService {
             return@runBlocking NextTestResponse(
                 nextTest = null,
                 testId = null,
-                retry = null
+                retry = null,
+                title = null
             )
         }
     }
