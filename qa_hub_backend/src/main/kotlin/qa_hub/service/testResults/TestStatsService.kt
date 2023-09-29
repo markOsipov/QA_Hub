@@ -51,17 +51,17 @@ class TestStatsService {
             )
         )
 
+        request.add(sort(descending(TestRun::timeMetrics / TestRunTimeMetrics::created)))
+
         if (filter?.takeLast != null && filter.takeLast!! > 0) {
             request.add(limit(filter.takeLast!!))
         }
-
-        request.add(sort(descending(TestRun::timeMetrics / TestRunTimeMetrics::created)))
 
         testRunsCollection.aggregate<TestRun>(request).toList()
     }
 
     fun getStatsForProject(request: TestStatsRequest): List<TestStats> = runBlocking {
-        val filteredTestRuns = getFilteredTestRuns(request.project, request.filter).sortedByDescending { it.timeMetrics.created }
+        val filteredTestRuns = getFilteredTestRuns(request.project, request.filter)
         val testRunIds = filteredTestRuns.map{ '"' + it.testRunId + '"'}
 
         //default kmongo functions have bugs + do not support some of mongo operators
