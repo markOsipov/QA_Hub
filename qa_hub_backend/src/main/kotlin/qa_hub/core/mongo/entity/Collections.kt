@@ -19,5 +19,6 @@ enum class Collections(val collectionName: String) {
 
     CICD_INTEGRATIONS("cicdIntegrations"),
     TASK_TRACKER_INTEGRATIONS("taskTrackerIntegrations"),
-    TMS_INTEGRATIONS("tmsIntegrations");
+    TMS_INTEGRATIONS("tmsIntegrations"),
+    OTHER_INTEGRATIONS("otherIntegrations")
 }

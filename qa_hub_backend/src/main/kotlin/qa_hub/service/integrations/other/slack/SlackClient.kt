@@ -3,6 +3,7 @@ package qa_hub.service.integrations.other.slack
 import com.slack.api.Slack
 import com.slack.api.methods.request.chat.ChatPostMessageRequest
 import com.slack.api.methods.response.chat.ChatPostMessageResponse
+import com.slack.api.model.Attachment
 import com.slack.api.model.block.LayoutBlock
 
 // If the token is a bot token, it starts with `xoxb-` while if it's a user token, it starts with `xoxp-`
@@ -25,6 +26,18 @@ class SlackClient(token: String) {
             .builder()
             .channel(channel)
             .blocks(blocks)
+            .build()
+
+        return methods.chatPostMessage(request)
+    }
+
+    fun sendComplexMessage(channel: String, text: String? = null, blocks: List<LayoutBlock> = listOf(), attachments: List<Attachment> = listOf()): ChatPostMessageResponse {
+        val request = ChatPostMessageRequest
+            .builder()
+            .channel(channel)
+            .text(text)
+            .blocks(blocks)
+            .attachments(attachments)
             .build()
 
         return methods.chatPostMessage(request)

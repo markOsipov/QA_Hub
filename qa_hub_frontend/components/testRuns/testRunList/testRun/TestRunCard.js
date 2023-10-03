@@ -65,11 +65,11 @@ export default function TestRunCard({testRun, filter, setFilter, filterAndLoad, 
             valueStyle={{cursor: 'pointer'}}
             style={{
               fontSize: "15px",
-              width: "min-content",
+              width: "max-content",
               padding: "5px 6px",
               minHeight: 'unset',
               backgroundColor: isHovering ? 'rgba(255, 255, 255, 0.07)' : customTheme.palette.background.paper,
-              cursor: 'pointer'
+              cursor: 'pointer',
             }}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}

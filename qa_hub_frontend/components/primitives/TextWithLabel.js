@@ -10,11 +10,12 @@ export default function TextWithLabel ({value, label, labelStyle, valueStyle, ..
       alignItems: 'center',
       borderRadius: '4px',
       border: "1px solid",
-      padding:'5px',
-      minHeight: '33px',
+      padding:'5px 10px',
+      minHeight: '35px',
       position: 'relative',
       borderColor: customTheme.palette.text.disabled,
       cursor: 'inherit',
+      width: '100%',
       ...(props.style)
     }}
   >
@@ -35,15 +36,21 @@ export default function TextWithLabel ({value, label, labelStyle, valueStyle, ..
         ...style
       }}>{label}</label>
     }
-    <label style={{
-      color: customTheme.palette.text.white,
-      fontSize: props.style?.fontSize || '14px',
-      paddingTop: label ? '4px' : '1px',
-      paddingBottom: label ? '4px' : '1px',
-      minWidth: 'max-content',
-      overflowX: 'hidden',
-      cursor: 'inherit',
-      ...valueStyle
-    }}>{value}</label>
+    <div
+      style={{
+        lineBreak: 'anywhere',
+        paddingTop: '2px',
+        paddingBottom: '2px',
+      }}
+    >
+      <label style={{
+        color: customTheme.palette.text.white,
+        fontSize: props.style?.fontSize || '14px',
+        minWidth: 'max-content',
+        overflowX: 'hidden',
+        cursor: 'inherit',
+        ...valueStyle
+      }}>{value}</label>
+    </div>
   </div>
 }

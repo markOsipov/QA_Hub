@@ -57,6 +57,7 @@ const ProjectCICDForm = observer(({project, setProject, ...props}) => {
                          })
                        }}
       />
+
       <StyledTextField value={project.cicd?.path || ""}
                        size="small"
                        label="Path"
@@ -72,6 +73,7 @@ const ProjectCICDForm = observer(({project, setProject, ...props}) => {
                          })
                        }}
       />
+
       <StyledTextField value={project.cicd?.jobId || ""}
                        size="small"
                        label="Path"

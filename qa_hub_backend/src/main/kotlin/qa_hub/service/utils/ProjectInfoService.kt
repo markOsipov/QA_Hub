@@ -1,9 +1,10 @@
 package qa_hub.service.utils
 
 import kotlinx.coroutines.runBlocking
-import org.litote.kmongo.eq
+import org.litote.kmongo.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import qa_hub.controller.integrations.IntegrationsController
 import qa_hub.core.mongo.QaHubMongoClient
 import qa_hub.core.mongo.entity.Collections
 import qa_hub.core.utils.DateTimeUtils.currentEpoch
@@ -11,6 +12,8 @@ import qa_hub.entity.Project
 import qa_hub.entity.ProjectCicdInfo
 import qa_hub.entity.ProjectTmsInfo
 import qa_hub.service.integrations.cicd.CicdInfo
+import qa_hub.service.integrations.other.slack.AbstractOtherIntegrationInfo
+import qa_hub.service.integrations.other.slack.otherIntegrations
 import qa_hub.service.integrations.taskTrackers.TaskTrackerInfo
 import qa_hub.service.integrations.tms.TmsInfo
 
@@ -35,6 +38,20 @@ data class ProjectTmsIntegrationsInfo(
     val tmsInfo: TmsInfo?
 )
 
+data class ProjectOtherIntegrationsInfo(
+    val project: String,
+    val lastUpdate: Long,
+    val intInfo: List<OtherIntegrationInfo>,
+)
+
+data class OtherIntegrationInfo(
+    val project: String,
+    val intInfo: Map<String, String>,
+    override val type: String,
+    override var projectFields: List<String>,
+    override var sharedFields: List<String>
+): AbstractOtherIntegrationInfo(type, projectFields, sharedFields)
+
 @Service
 class ProjectIntegrationsService {
     @Autowired
@@ -42,17 +59,22 @@ class ProjectIntegrationsService {
 
     private val maxTimeSeconds = 1 * 10 * 60 //update every 10 min
 
-    private val taskTrackerIntegrationCollection by lazy {
+    private val taskTrackerIntegrationsCollection by lazy {
         mongoClient.db.getCollection<TaskTrackerInfo>(Collections.TASK_TRACKER_INTEGRATIONS.collectionName)
     }
 
-    private val cicdIntegrationCollection by lazy {
+    private val cicdIntegrationsCollection by lazy {
         mongoClient.db.getCollection<CicdInfo>(Collections.CICD_INTEGRATIONS.collectionName)
     }
 
-    private val tmsIntegrationCollection by lazy {
+    private val tmsIntegrationsCollection by lazy {
         mongoClient.db.getCollection<TmsInfo>(Collections.TMS_INTEGRATIONS.collectionName)
     }
+
+    private val otherIntegrationsCollection by lazy {
+        mongoClient.db.getCollection<OtherIntegrationInfo>(Collections.OTHER_INTEGRATIONS.collectionName)
+    }
+
 
     val projectCollection by lazy {
         mongoClient.db.getCollection<Project>(Collections.PROJECTS.collectionName)
@@ -61,10 +83,11 @@ class ProjectIntegrationsService {
     private val projectsTmsIntegrations = mutableMapOf<String, ProjectTmsIntegrationsInfo>()
     private val projectsCicdIntegrations = mutableMapOf<String, ProjectCicdIntegrationsInfo>()
     private val projectsTaskTrackerIntegrations = mutableMapOf<String, ProjectTaskTrackerIntegrationsInfo>()
+    private val projectOtherIntegrations = mutableMapOf<String, ProjectOtherIntegrationsInfo>()
     fun updateProjectCicdIntegrationsInfo(project: String): ProjectCicdIntegrationsInfo = runBlocking {
         val projectInfo = projectCollection.findOne(Project::name eq project)
 
-        val cicdInfo = cicdIntegrationCollection
+        val cicdInfo = cicdIntegrationsCollection
             .findOne(CicdInfo::cicdType eq projectInfo?.cicd?.type)
 
         val projectIntegrationsInfo = ProjectCicdIntegrationsInfo(
@@ -82,7 +105,7 @@ class ProjectIntegrationsService {
     fun updateProjectTmsIntegrationsInfo(project: String): ProjectTmsIntegrationsInfo = runBlocking {
         val projectInfo = projectCollection.findOne(Project::name eq project)
 
-        val tmsInfo = tmsIntegrationCollection
+        val tmsInfo = tmsIntegrationsCollection
             .findOne(TmsInfo::tmsType eq projectInfo?.tms?.type)
 
         val projectIntegrationsInfo = ProjectTmsIntegrationsInfo(
@@ -100,7 +123,7 @@ class ProjectIntegrationsService {
     fun updateProjectTaskTrackerIntegrationsInfo(project: String): ProjectTaskTrackerIntegrationsInfo = runBlocking {
         val projectInfo = projectCollection.findOne(Project::name eq project)
 
-        val ttInfo = taskTrackerIntegrationCollection
+        val ttInfo = taskTrackerIntegrationsCollection
             .findOne(TaskTrackerInfo::type eq projectInfo?.taskTracker?.type)
 
         val projectIntegrationsInfo = ProjectTaskTrackerIntegrationsInfo(
@@ -112,6 +135,33 @@ class ProjectIntegrationsService {
         projectsTaskTrackerIntegrations[project] = projectIntegrationsInfo
 
         return@runBlocking projectIntegrationsInfo
+    }
+
+    fun updateProjectOtherInts(project: String): ProjectOtherIntegrationsInfo = runBlocking {
+        val projectInfo = projectCollection.findOne(Project::name eq project)
+
+        val intInfo = projectInfo?.otherInts?.active ?: listOf()
+
+        val info = ProjectOtherIntegrationsInfo(
+            project = project,
+            lastUpdate = currentEpoch(),
+            intInfo = intInfo,
+        )
+
+        projectOtherIntegrations[project]= info
+
+        return@runBlocking info
+    }
+
+    fun getProjectOtherInts(project: String): List<OtherIntegrationInfo> = runBlocking {
+        val currentTime = currentEpoch()
+        val existingInfo = projectOtherIntegrations[project]
+
+        if (existingInfo != null && currentTime - existingInfo.lastUpdate <= maxTimeSeconds) {
+            return@runBlocking existingInfo.intInfo
+        } else {
+            return@runBlocking updateProjectOtherInts(project).intInfo
+        }
     }
 
     fun getProjectTaskTrackerInt(project: String): ProjectTaskTrackerIntegrationsInfo = runBlocking {

@@ -52,7 +52,7 @@ class ProjectService {
             upsert()
         )
 
-        return@runBlocking  projectsCollection.findOne(
+        return@runBlocking projectsCollection.findOne(
             Project::name.eq(project.name)
         )!!
     }

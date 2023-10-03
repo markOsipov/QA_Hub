@@ -119,5 +119,24 @@ export default function ProjectCard({project, ...props}) {
           </Accordion>
         }
 
+        <Accordion style={{backgroundColor: "unset", border: `1px solid ${customTheme.palette.text.disabled}`, borderRadius: '4px', marginTop: '15px'}}>
+            <StyledAccordionSummary>
+                <Typography>Other</Typography>
+            </StyledAccordionSummary>
+            <AccordionDetails>
+                {
+                    project.otherInts.active.map((activeInt, index ) => {
+                        return <div key={index} style={{marginBottom:'15px'}}>
+                            <Typography variant={'h6'}>{activeInt.type}</Typography>
+                            {
+                                activeInt.projectFields.map((field, index) => {
+                                    return <TextWithLabel key={index} label={field} value={activeInt.intInfo[field]} style={{marginTop: '20px'}}/>
+                                })
+                            }
+                        </div>
+                    })
+                }
+            </AccordionDetails>
+        </Accordion>
     </Card>
 }
