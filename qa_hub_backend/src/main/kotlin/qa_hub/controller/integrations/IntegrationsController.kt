@@ -51,22 +51,4 @@ class IntegrationsController {
 
         return ProjectIntegrations(tms, cicd, taskTracker, ProjecOtherInts(other))
     }
-
-    @PostMapping("/{project}/other/update/{type}")
-    fun updateOtherInt(
-        @PathVariable project: String,
-        @PathVariable type: String,
-        @RequestBody info: Map<String, String>
-    ) {
-        projectIntegrationsService.updateProjectOtherInt(project, type, info)
-    }
-
-    @PostMapping("/{project}/other/delete/{type}")
-    fun deleteOtherInt(
-        @PathVariable project: String,
-        @PathVariable type: String,
-        @RequestBody info: Map<String, String>
-    ) {
-        projectIntegrationsService.removeProjectOtherInt(project, type)
-    }
 }

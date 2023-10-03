@@ -1,5 +1,9 @@
 package qa_hub.service
 
+import com.slack.api.model.Action
+import com.slack.api.model.Attachment
+import com.slack.api.model.Attachments
+import com.slack.api.model.block.LayoutBlock
 import kotlinx.coroutines.*
 import org.litote.kmongo.*
 import org.litote.kmongo.coroutine.aggregate
@@ -13,6 +17,8 @@ import qa_hub.core.utils.DateTimeUtils.currentDateTimeUtc
 import qa_hub.core.utils.DateTimeUtils.currentEpoch
 import qa_hub.service.integrations.cicd.StartJobRequest
 import qa_hub.service.integrations.cicd.StartJobResponse
+import qa_hub.service.integrations.other.slack.OtherIntegrationTypes
+import qa_hub.service.integrations.other.slack.SlackClient
 import qa_hub.service.testResults.TestLogsService
 import qa_hub.service.testResults.TestResultsService
 import qa_hub.service.testResults.TestStepsService
@@ -397,7 +403,7 @@ class TestRunService {
         )
     }
 
-    fun finishTestRun(
+    private fun finishTestRun(
         testRunId: String,
         hasError: Boolean = false,
         canceled: Boolean = false
@@ -430,7 +436,50 @@ class TestRunService {
 
         testRun = getTestRun(testRunId)!!
 
+        launch {
+            notifyTestRunFinished(testRun)
+        }
+
         return@runBlocking testRun
+    }
+
+    private fun notifyTestRunFinished(testRun: TestRun) {
+        val integrations = projectIntegrationsService.getProjectOtherInts(testRun.project)
+        val slackInt = integrations.firstOrNull { it.type == OtherIntegrationTypes.SLACK.type}
+
+        slackInt?.let {
+            val token = it.intInfo["token"]
+            val channel = it.intInfo["channel"]
+
+            if (!token.isNullOrBlank() && !channel.isNullOrBlank()) {
+                val attachments = mutableListOf<Attachment>()
+                val text = "Testrun ${testRun.testRunId} is finished"
+
+                val successAttachment = Attachment()
+                successAttachment.authorName = "PASSED: ${testRun.tests.successCount}"
+                successAttachment.color = "#36a64f"
+
+                val failuresAttachment = Attachment()
+                failuresAttachment.authorName = "FAILED: ${testRun.tests.failsCount}"
+                successAttachment.color = "#FF0000"
+
+                val linkAttachment = Attachment()
+                val linkButton = Action()
+                linkButton.type = Action.Type.BUTTON
+                linkButton.text = "QA_Hub"
+                linkButton.url = "http://192.168.255.138:3000/projects/${testRun.project}/testRuns/${testRun.testRunId}"
+                linkAttachment.actions = listOf(linkButton)
+
+                attachments.add(successAttachment)
+                if ((testRun.tests.failsCount ?: 0) > 0) {
+                    attachments.add(failuresAttachment)
+                }
+
+                attachments.add(linkAttachment)
+
+                SlackClient(token).sendAttachmentsMessage(channel, text, attachments)
+            }
+        }
     }
 
     fun finishRunForRunner(

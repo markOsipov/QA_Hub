@@ -37,6 +37,12 @@ data class ProjectTmsIntegrationsInfo(
     val tmsInfo: TmsInfo?
 )
 
+data class ProjectOtherIntegrationsInfo(
+    val project: String,
+    val lastUpdate: Long,
+    val intInfo: List<OtherIntegrationInfo>,
+)
+
 data class OtherIntegrationInfo(
     val project: String,
     val intInfo: Map<String, String>,
@@ -76,6 +82,7 @@ class ProjectIntegrationsService {
     private val projectsTmsIntegrations = mutableMapOf<String, ProjectTmsIntegrationsInfo>()
     private val projectsCicdIntegrations = mutableMapOf<String, ProjectCicdIntegrationsInfo>()
     private val projectsTaskTrackerIntegrations = mutableMapOf<String, ProjectTaskTrackerIntegrationsInfo>()
+    private val projectOtherIntegrations = mutableMapOf<String, ProjectOtherIntegrationsInfo>()
     fun updateProjectCicdIntegrationsInfo(project: String): ProjectCicdIntegrationsInfo = runBlocking {
         val projectInfo = projectCollection.findOne(Project::name eq project)
 
@@ -129,40 +136,33 @@ class ProjectIntegrationsService {
         return@runBlocking projectIntegrationsInfo
     }
 
-    fun getProjectOtherInts(project: String): List<OtherIntegrationInfo> = runBlocking {
-        otherIntegrationsCollection.find(
+    fun updateProjectOtherInts(project: String): ProjectOtherIntegrationsInfo = runBlocking {
+        val intInfo = otherIntegrationsCollection.find(
             and(
                 OtherIntegrationInfo::project eq project
             )
         ).toList()
+
+        val info = ProjectOtherIntegrationsInfo(
+            project = project,
+            lastUpdate = currentEpoch(),
+            intInfo = intInfo,
+        )
+
+        projectOtherIntegrations[project]= info
+
+        return@runBlocking info
     }
 
-    fun updateProjectOtherInt(project: String, intType: String, info: Map<String, String>) = runBlocking {
-        val int = otherIntegrations.firstOrNull{ it.type == intType }
-        val projectFields = int?.projectFields ?: listOf()
-        val sharedFields = int?.sharedFields ?: listOf()
+    fun getProjectOtherInts(project: String): List<OtherIntegrationInfo> = runBlocking {
+        val currentTime = currentEpoch()
+        val existingInfo = projectOtherIntegrations[project]
 
-        otherIntegrationsCollection.updateOne(
-            and(
-                OtherIntegrationInfo::project eq project,
-                OtherIntegrationInfo::type eq intType
-            ),
-            set(
-                OtherIntegrationInfo::intInfo setTo info,
-                OtherIntegrationInfo::projectFields setTo projectFields,
-                AbstractOtherIntegrationInfo::sharedFields setTo sharedFields
-            ),
-            upsert()
-        )
-    }
-
-    fun removeProjectOtherInt(project: String, intType: String) = runBlocking {
-        otherIntegrationsCollection.deleteMany(
-            and(
-                OtherIntegrationInfo::project eq project,
-                OtherIntegrationInfo::type eq intType
-            )
-        )
+        if (existingInfo != null && currentTime - existingInfo.lastUpdate <= maxTimeSeconds) {
+            return@runBlocking existingInfo.intInfo
+        } else {
+            return@runBlocking updateProjectOtherInts(project).intInfo
+        }
     }
 
     fun getProjectTaskTrackerInt(project: String): ProjectTaskTrackerIntegrationsInfo = runBlocking {
