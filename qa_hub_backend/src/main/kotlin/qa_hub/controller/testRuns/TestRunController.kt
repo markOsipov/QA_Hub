@@ -231,4 +231,12 @@ class TestRunController {
 
         return measures
     }
+
+    @PostMapping("/finish/{testRunId}")
+    fun testFinishNotification(
+        @PathVariable testRunId: String
+    ) {
+        val testRun = testRunService.getTestRun(testRunId)!!
+        testRunService.notifyTestRunFinished(testRun)
+    }
 }

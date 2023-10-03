@@ -31,11 +31,12 @@ class SlackClient(token: String) {
         return methods.chatPostMessage(request)
     }
 
-    fun sendAttachmentsMessage(channel: String, text: String, attachments: List<Attachment>): ChatPostMessageResponse {
+    fun sendComplexMessage(channel: String, text: String? = null, blocks: List<LayoutBlock> = listOf(), attachments: List<Attachment> = listOf()): ChatPostMessageResponse {
         val request = ChatPostMessageRequest
             .builder()
             .channel(channel)
             .text(text)
+            .blocks(blocks)
             .attachments(attachments)
             .build()
 

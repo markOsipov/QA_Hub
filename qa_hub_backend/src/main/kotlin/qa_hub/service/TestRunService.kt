@@ -2,8 +2,11 @@ package qa_hub.service
 
 import com.slack.api.model.Action
 import com.slack.api.model.Attachment
-import com.slack.api.model.Attachments
+import com.slack.api.model.block.Blocks
 import com.slack.api.model.block.LayoutBlock
+import com.slack.api.model.block.SectionBlock
+import com.slack.api.model.block.composition.MarkdownTextObject
+import com.slack.api.model.block.composition.TextObject
 import kotlinx.coroutines.*
 import org.litote.kmongo.*
 import org.litote.kmongo.coroutine.aggregate
@@ -443,7 +446,7 @@ class TestRunService {
         return@runBlocking testRun
     }
 
-    private fun notifyTestRunFinished(testRun: TestRun) {
+    fun notifyTestRunFinished(testRun: TestRun) {
         val integrations = projectIntegrationsService.getProjectOtherInts(testRun.project)
         val slackInt = integrations.firstOrNull { it.type == OtherIntegrationTypes.SLACK.type}
 
@@ -453,7 +456,16 @@ class TestRunService {
 
             if (!token.isNullOrBlank() && !channel.isNullOrBlank()) {
                 val attachments = mutableListOf<Attachment>()
-                val text = "Testrun ${testRun.testRunId} is finished"
+
+                val frontendBaseUrl = System.getenv("REMOTE_FRONTEND_BASE_URL") ?: "http://localhost:3000"
+                val testRunUrl = "$frontendBaseUrl/projects/${testRun.project}/testRuns/${testRun.testRunId}"
+
+                val blocks = mutableListOf<LayoutBlock>()
+                val titleBlock = SectionBlock()
+                val text = MarkdownTextObject()
+                text.text = "Testrun *<$testRunUrl|${testRun.testRunId}>* on branch *${testRun.config?.branch ?: "unknown"}* is finished"
+                titleBlock.text = text
+                blocks.add(titleBlock)
 
                 val successAttachment = Attachment()
                 successAttachment.authorName = "PASSED: ${testRun.tests.successCount}"
@@ -461,25 +473,14 @@ class TestRunService {
 
                 val failuresAttachment = Attachment()
                 failuresAttachment.authorName = "FAILED: ${testRun.tests.failsCount}"
-                successAttachment.color = "#FF0000"
-
-                val linkAttachment = Attachment()
-                val linkButton = Action()
-                linkButton.type = Action.Type.BUTTON
-                linkButton.text = "QA_Hub"
-
-                val frontendBaseUrl = System.getenv("REMOTE_FRONTEND_BASE_URL").ifBlank { "http://localhost:3000"  }
-                linkButton.url = "$frontendBaseUrl/projects/${testRun.project}/testRuns/${testRun.testRunId}"
-                linkAttachment.actions = listOf(linkButton)
+                failuresAttachment.color = "#FF0000"
 
                 attachments.add(successAttachment)
                 if ((testRun.tests.failsCount ?: 0) > 0) {
                     attachments.add(failuresAttachment)
                 }
 
-                attachments.add(linkAttachment)
-
-                SlackClient(token).sendAttachmentsMessage(channel, text, attachments)
+                SlackClient(token).sendComplexMessage(channel, null, blocks, attachments)
             }
         }
     }

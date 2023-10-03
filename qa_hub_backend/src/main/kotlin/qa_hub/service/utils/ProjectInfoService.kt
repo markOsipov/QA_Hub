@@ -4,6 +4,7 @@ import kotlinx.coroutines.runBlocking
 import org.litote.kmongo.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import qa_hub.controller.integrations.IntegrationsController
 import qa_hub.core.mongo.QaHubMongoClient
 import qa_hub.core.mongo.entity.Collections
 import qa_hub.core.utils.DateTimeUtils.currentEpoch
@@ -137,11 +138,9 @@ class ProjectIntegrationsService {
     }
 
     fun updateProjectOtherInts(project: String): ProjectOtherIntegrationsInfo = runBlocking {
-        val intInfo = otherIntegrationsCollection.find(
-            and(
-                OtherIntegrationInfo::project eq project
-            )
-        ).toList()
+        val projectInfo = projectCollection.findOne(Project::name eq project)
+
+        val intInfo = projectInfo?.otherInts?.active ?: listOf()
 
         val info = ProjectOtherIntegrationsInfo(
             project = project,
