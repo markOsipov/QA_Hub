@@ -467,7 +467,9 @@ class TestRunService {
                 val linkButton = Action()
                 linkButton.type = Action.Type.BUTTON
                 linkButton.text = "QA_Hub"
-                linkButton.url = "http://192.168.255.138:3000/projects/${testRun.project}/testRuns/${testRun.testRunId}"
+
+                val frontendBaseUrl = System.getenv("REMOTE_FRONTEND_BASE_URL").ifBlank { "http://localhost:3000"  }
+                linkButton.url = "$frontendBaseUrl/projects/${testRun.project}/testRuns/${testRun.testRunId}"
                 linkAttachment.actions = listOf(linkButton)
 
                 attachments.add(successAttachment)
