@@ -12,6 +12,7 @@ import ProjectCICDForm from "./components/ProjectCICDForm";
 import ProjectTMSForm from "./components/ProjectTMSForm";
 import ProjectTaskTrackerForm from "./components/ProjectTaskTrackerForm";
 import {customTheme} from "../../../styles/CustomTheme";
+import ProjectOtherIntsForm from "./components/ProjectOtherIntsForm";
 
 function NewProjectModal({isOpen, setIsOpen, project}) {
     const [currentProject, setCurrentProject] = useState(project)
@@ -103,6 +104,7 @@ function NewProjectModal({isOpen, setIsOpen, project}) {
             <ProjectCICDForm project={currentProject} setProject={setCurrentProject} style={{marginTop: '20px'}}/>
             <ProjectTMSForm project={currentProject} setProject={setCurrentProject} style={{marginTop: '10px'}} />
             <ProjectTaskTrackerForm project={currentProject} setProject={setCurrentProject} style={{marginTop: '10px'}}/>
+            <ProjectOtherIntsForm project={currentProject} setProject={setCurrentProject} style={{marginTop: '10px'}} />
 
             <Button variant="contained"
                     color="error"

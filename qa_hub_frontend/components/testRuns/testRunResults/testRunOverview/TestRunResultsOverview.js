@@ -35,7 +35,7 @@ const TestRunResultsOverview = observer(({testRun, filterAndLoad, updateTestRunI
                 valueStyle={{cursor: 'pointer'}}
                 style={{
                   fontSize: "15px",
-                  width: "min-content",
+                  width: "max-content",
                   padding: "5px 6px",
                   minHeight: 'unset',
                   cursor: 'pointer'

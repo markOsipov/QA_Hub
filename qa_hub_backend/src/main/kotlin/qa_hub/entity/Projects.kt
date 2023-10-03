@@ -1,5 +1,7 @@
 package qa_hub.entity
 
+import qa_hub.controller.integrations.IntegrationsController.ProjecOtherInts
+
 // Separator is a symbol in full name of test, which separates test method name from test class or test suite
 // For example:
 // In android full test name is com.example.TestSuite#testMethod, separator is #
@@ -29,7 +31,8 @@ data class Project(
     val separator: String = Platforms.getSeparator(platform),
     val cicd: ProjectCicdInfo? = ProjectCicdInfo(),
     val tms: ProjectTmsInfo? = ProjectTmsInfo(),
-    val taskTracker: ProjectTaskTrackerInfo? = ProjectTaskTrackerInfo()
+    val taskTracker: ProjectTaskTrackerInfo? = ProjectTaskTrackerInfo(),
+    val otherInts: ProjecOtherInts = ProjecOtherInts(),
 )
 
 data class ProjectCicdInfo(
