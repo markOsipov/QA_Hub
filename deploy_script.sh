@@ -71,7 +71,7 @@ ssh $REMOTE_USER@$REMOTE_IP << EOF
     sudo docker stop qa_hub_backend 1>/dev/null || true
     sudo docker rm qa_hub_backend 1>/dev/null || true
     sudo docker pull "$DOCKER_SPACE"/qa_hub_backend:latest || echo FAILED TO PULL qa_hub_backend && \
-    sudo docker run -d -p $REMOTE_PORT_BACKEND:8080 --name qa_hub_backend \
+    sudo docker run -d -p $REMOTE_PORT_BACKEND:8080 --restart always --name qa_hub_backend \
      -v "$ENV_HOST_IMAGE_DIR":"$ENV_CONTAINER_IMAGE_DIR" \
      -e ENV_IMAGE_DIR="$ENV_CONTAINER_IMAGE_DIR" \
      -e ENV_MONGO_QA_HUB_HOST="$ENV_MONGO_QA_HUB_HOST" \
@@ -89,7 +89,7 @@ ssh $REMOTE_USER@$REMOTE_IP << EOF
     sudo docker stop qa_hub_frontend 1>/dev/null || true
     sudo docker rm qa_hub_frontend 1>/dev/null || true
     sudo docker pull "$DOCKER_SPACE"/qa_hub_frontend:latest || echo FAILED TO PULL qa_hub_frontend && \
-    sudo docker run -d -p $REMOTE_PORT_FRONTEND:3000 --name qa_hub_frontend \
+    sudo docker run -d -p $REMOTE_PORT_FRONTEND:3000 --restart always --name qa_hub_frontend \
     -e NEXT_PUBLIC_QA_HUB_BACKEND="$NEXT_PUBLIC_QA_HUB_BACKEND" \
     "$DOCKER_SPACE"/qa_hub_frontend:latest && \
     sudo docker rmi --force $(sudo docker images | grep qa_hub_frontend | grep none | awk '{print $3}') || true && \

@@ -39,25 +39,25 @@ export default function StatusHistory({ retry, ...props}) {
       <div style={{display: 'grid', marginLeft: '30px', opacity: '0.65', marginBottom: '30px' }}>
         {
           retry?.statusHistory.map((item, index) => {
-            return <div key={index} style={{marginTop: '20px', display: 'flex', alignItems: 'center' }}>
+            return <div key={index} style={{marginTop: '15px', display: 'flex', alignItems: 'center' }}>
               <div style={{display: 'flex', marginLeft: '10px', minWidth: '120px'}}>
                 <StatusBadge label={item.status} key={index} />
               </div>
 
               <div style={{display: 'flex', marginLeft: '10px', alignItems: 'center'}}>
                 <ComputerIcon />
-                <TextWithLabel value={item.runner || 'unknown'} style={{marginLeft: '5px'}}></TextWithLabel>
+                <TextWithLabel value={item.runner || 'unknown'} style={{marginLeft: '5px', width: 'max-content'}}></TextWithLabel>
               </div>
 
               <div style={{display: 'flex', marginLeft: '17px', alignItems: 'center'}}>
                 <PhoneIphoneIcon />
-                <TextWithLabel value={item.deviceId || 'unknown'} style={{marginLeft: '5px'}}></TextWithLabel>
+                <TextWithLabel value={item.deviceId || 'unknown'} style={{marginLeft: '5px', width: 'max-content'}}></TextWithLabel>
               </div>
 
               <TextWithLabel
                 label={'Time'} value={getTimeSeconds(item.date)}
                 labelStyle={{ justifySelf: 'center'}}
-                style={{padding: '3px', alignItems: 'center', minHeight: 'unset', marginLeft: '20px'}}
+                style={{padding: '3px', alignItems: 'center', minHeight: 'unset', marginLeft: '20px', width: 'max-content'}}
               />
             </div>
           })
