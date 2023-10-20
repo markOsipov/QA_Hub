@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import qa_hub.service.utils.MongoProxyService
 import qa_hub.service.utils.MongoProxyService.MongoRequest
-
+import qa_hub.service.utils.MongoProxyService.AggregateRequest
 
 @RestController
 @RequestMapping("/api/mongo")
@@ -35,4 +35,7 @@ class MongoProxyController {
 
     @PostMapping("/deleteMany")
     fun deleteMany(@RequestBody body: MongoRequest): List<DeleteResult> = mongoProxyService.deleteMany(body)
+
+    @PostMapping("/aggregate")
+    fun aggregate(@RequestBody body: AggregateRequest): List<Document> = mongoProxyService.aggregate(body)
 }

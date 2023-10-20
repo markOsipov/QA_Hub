@@ -261,4 +261,111 @@ class TestResultsService {
 
         updateTestResult(testResult)
     }
+
+
+    data class TimelineData(
+        val startDate: String,
+        val endDate: String,
+        val runners: List<TimelineRunnerInfo>
+    )
+
+    data class TimelineRunnerInfo(
+        val runner: String,
+        val startDate: String,
+        val endDate: String,
+        val devices: List<TimelineDeviceInfo>
+    )
+    data class TimelineDeviceInfo(
+        val runner: String,
+        val deviceId: String,
+        val startDate: String,
+        val endDate: String,
+        val results: List<TimelineElement>
+    )
+
+    data class TimelineElement(
+        val fullName: String,
+        val status: String,
+        val startDate: String,
+        val endDate: String,
+        val duration: Double,
+        val retry: Int
+    )
+    fun getTestrunTimelineData(testRunId: String): TimelineData? = runBlocking {
+        val pipeline: MutableList<String> = mutableListOf(
+            match(
+              TestResultRetry::testRunId eq testRunId
+            ).json,
+
+            """
+                {
+                    ${'$'}addFields: {
+                        deviceId: { ${'$'}last: "${'$'}statusHistory.deviceId" },
+                        runner: { ${'$'}last: "${'$'}statusHistory.runner" }
+                        status: { ${'$'}last: "${'$'}statusHistory.status" }
+                        startDate: { ${'$'}first: "${'$'}statusHistory.date" }
+                        endDate: { ${'$'}last: "${'$'}statusHistory.date" }
+                        duration: { ${'$'}last: "${'$'}statusHistory.duration" }
+                    }
+ 	            }
+            """.trimIndent(),
+
+            """
+                {
+                    ${'$'}group: {
+                        _id: "${'$'}deviceId",
+                        deviceId:  { ${'$'}first: "${'$'}deviceId"}, 
+                        runner: { ${'$'}first: "${'$'}runner"},
+                        startDate: { ${'$'}min: "${'$'}startDate"},
+                        endDate: { ${'$'}max: "${'$'}endDate"},
+                        results: { ${'$'}push: "${"$$"}ROOT" }                        
+                    }
+                }
+            """.trimIndent(),
+
+            """
+                {
+                    ${'$'}sort: {                     
+                        "deviceId": 1                       
+                    }
+                }
+            """.trimIndent(),
+
+            """
+                {
+                    ${'$'}group: {
+                        _id: "${'$'}runner",                      
+                        runner: { ${'$'}first: "${'$'}runner"},   
+                        startDate: { ${'$'}min: "${'$'}startDate"},
+                        endDate: { ${'$'}max: "${'$'}endDate"},
+                        devices: { ${'$'}push: "${"$$"}ROOT" }                      
+                    }
+                }
+            """.trimIndent(),
+
+            """
+                {
+                    ${'$'}sort: {                     
+                        "runner": 1                       
+                    }
+                }
+            """.trimIndent(),
+
+            """
+                {
+                    ${'$'}group: {
+                        _id: "1",              
+                        startDate: { ${'$'}min: "${'$'}startDate"},
+                        endDate: { ${'$'}max: "${'$'}endDate"},
+                        runners: { ${'$'}push: "${"$$"}ROOT" }                
+                    }
+                }
+            """.trimIndent(),
+
+
+        )
+
+
+        return@runBlocking testResultsRetriesCollection.aggregate<TimelineData>(*pipeline.toTypedArray()).first()
+    }
 }

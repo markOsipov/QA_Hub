@@ -11,6 +11,8 @@ import pushModalState from "../../../../state/testRuns/PushModalState";
 import Button from "@mui/material/Button";
 import projectIntegrationsState from "../../../../state/integrations/ProjectIntegrationsState";
 import GitHubIcon from '@mui/icons-material/GitHub';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import testRunId from "../../../../pages/projects/[project]/testRuns/[testRunId]";
 
 const TestRunActionsOnPage = observer (({testRun, updateTestRunInfo, ...props}) => {
   const router = useRouter()
@@ -77,6 +79,16 @@ const TestRunActionsOnPage = observer (({testRun, updateTestRunInfo, ...props}) 
         </div>
       </StyledTooltip>
     }
+
+    <StyledTooltip title={`Charts`}>
+      <div>
+        <CustomIconButton
+          action={ () => { window.location.href = `/projects/${testRun.project}/testRuns/${testRun.testRunId}/charts`}}
+          color={customTheme.palette.primary.main}
+          icon={<BarChartIcon />}
+        />
+      </div>
+    </StyledTooltip>
 
     <StyledTooltip title={"Rerun"}>
       <div>
