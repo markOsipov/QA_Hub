@@ -72,7 +72,7 @@ const TestrunChartsPage = observer(() => {
                   <label style={{width: '350px', marginLeft: '5px'}}>{deviceInfo.deviceId}</label>
                 </div>
 
-                <div style={{width: '100%', margin: '10px 0', backgroundColor: 'rgba(255, 255, 255, 0.05)', height: '20px', position: 'relative'}}>
+                <div style={{width: '100%', margin: '10px 0', backgroundColor: 'rgba(255, 255, 255, 0.07)', height: '20px', position: 'relative'}}>
                   {
                     deviceInfo.results.map((result, index) => {
                       return <TimelineElement
