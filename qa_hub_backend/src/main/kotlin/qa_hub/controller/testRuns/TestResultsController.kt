@@ -110,7 +110,7 @@ class TestResultsController {
     @GetMapping("/timeline/{testRunId}")
     fun getTimelineData(
         @PathVariable("testRunId") testRunId: String
-    ): List<TestResultsService.TimelineRunnerInfo> {
+    ): TestResultsService.TimelineData? {
         return testResultsService.getTestrunTimelineData(testRunId)
     }
 }

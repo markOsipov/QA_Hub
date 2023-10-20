@@ -263,6 +263,12 @@ class TestResultsService {
     }
 
 
+    data class TimelineData(
+        val startDate: String,
+        val endDate: String,
+        val runners: List<TimelineRunnerInfo>
+    )
+
     data class TimelineRunnerInfo(
         val runner: String,
         val startDate: String,
@@ -285,7 +291,7 @@ class TestResultsService {
         val duration: Double,
         val retry: Int
     )
-    fun getTestrunTimelineData(testRunId: String): List<TimelineRunnerInfo> = runBlocking {
+    fun getTestrunTimelineData(testRunId: String): TimelineData? = runBlocking {
         val pipeline: MutableList<String> = mutableListOf(
             match(
               TestResultRetry::testRunId eq testRunId
@@ -302,16 +308,6 @@ class TestResultsService {
                         duration: { ${'$'}last: "${'$'}statusHistory.duration" }
                     }
  	            }
-            """.trimIndent(),
-
-            """
-                {
-                    ${'$'}sort: {
-                        runner: 1,
-                        deviceId: 1,
-                        startDate: 1                        
-                    }
-                }
             """.trimIndent(),
 
             """
@@ -338,9 +334,30 @@ class TestResultsService {
                     }
                 }
             """.trimIndent(),
+
+            """
+                {
+                    ${'$'}group: {
+                        _id: "1",              
+                        startDate: { ${'$'}min: "${'$'}startDate"},
+                        endDate: { ${'$'}max: "${'$'}endDate"},
+                        runners: { ${'$'}push: "${"$$"}ROOT" }                
+                    }
+                }
+            """.trimIndent(),
+
+            """
+                {
+                    ${'$'}sort: {
+                        "runners.runner": 1,
+                        "runners.devices.deviceId": 1,
+                        "runners.devices.results.startDate": 1                        
+                    }
+                }
+            """.trimIndent(),
         )
 
 
-        return@runBlocking testResultsRetriesCollection.aggregate<TimelineRunnerInfo>(*pipeline.toTypedArray()).toList()
+        return@runBlocking testResultsRetriesCollection.aggregate<TimelineData>(*pipeline.toTypedArray()).first()
     }
 }
