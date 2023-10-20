@@ -325,12 +325,28 @@ class TestResultsService {
 
             """
                 {
+                    ${'$'}sort: {                     
+                        "deviceId": 1                       
+                    }
+                }
+            """.trimIndent(),
+
+            """
+                {
                     ${'$'}group: {
                         _id: "${'$'}runner",                      
                         runner: { ${'$'}first: "${'$'}runner"},   
                         startDate: { ${'$'}min: "${'$'}startDate"},
                         endDate: { ${'$'}max: "${'$'}endDate"},
                         devices: { ${'$'}push: "${"$$"}ROOT" }                      
+                    }
+                }
+            """.trimIndent(),
+
+            """
+                {
+                    ${'$'}sort: {                     
+                        "runner": 1                       
                     }
                 }
             """.trimIndent(),
@@ -346,15 +362,7 @@ class TestResultsService {
                 }
             """.trimIndent(),
 
-            """
-                {
-                    ${'$'}sort: {
-                        "runners.runner": 1,
-                        "runners.devices.deviceId": 1,
-                        "runners.devices.results.startDate": 1                        
-                    }
-                }
-            """.trimIndent(),
+
         )
 
 
