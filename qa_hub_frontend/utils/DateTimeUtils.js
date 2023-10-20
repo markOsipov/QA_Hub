@@ -31,3 +31,12 @@ export function daysBetween(date1, date2) {
     const timediff = (parsedDate2.getTime() - parsedDate1.getTime()) / coeff
     return Number.parseInt(timediff)
 }
+
+export function secondsBetween(date1, date2) {
+    const parsedDate1 = new Date(date1)
+    const parsedDate2 = date2 && new Date(date2) || new Date()
+
+    const coeff = (1000)
+    const timediff = (parsedDate2.getTime() - parsedDate1.getTime()) / coeff
+    return Number.parseInt(timediff)
+}

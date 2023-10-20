@@ -64,3 +64,15 @@ export function getTestRetries(testRunId, fullName) {
 
   return axios(config)
 }
+
+export function getTimelineData(testRunId) {
+  const config = {
+    method: 'get',
+    url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat(`/api/testResults/timeline/${testRunId}`),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+
+  return axios(config)
+}
