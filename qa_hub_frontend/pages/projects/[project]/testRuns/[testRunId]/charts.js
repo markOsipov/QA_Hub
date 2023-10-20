@@ -17,6 +17,8 @@ const TestrunChartsPage = observer(() => {
   const [timelineData, setTimelineData] = useState({})
   const [hoveredTest, setHoveredTest] = useState(null)
 
+  const [testRunIdHovered, setTestRunIdHovered] = useState(false)
+
   const startDate = timelineData.startDate
   const endDate = timelineData.endDate
   const duration = secondsBetween(startDate, endDate)
@@ -40,7 +42,19 @@ const TestrunChartsPage = observer(() => {
   return <Paper style={{display: 'grid', padding: '20px', margin: '15px', backgroundColor: customTheme.palette.background.default}}>
     <div style={{display: 'flex', marginBottom: '20px'}}>
       <Typography variant={'h5'}>Timeline</Typography>
-      <Typography variant={'h5'} style={{color: 'rgba(255, 255, 255, 0.4)', marginLeft: '8px'}}>#{router.query.testRunId}</Typography>
+      <a href={window.location.href.split("/charts")[0]}>
+        <Typography
+          variant={'h5'}
+          style={{
+            color: testRunIdHovered ? 'white' : 'rgba(255, 255, 255, 0.4)', marginLeft: '8px'
+        }}
+
+          onMouseOver={() => setTestRunIdHovered(true)}
+          onMouseLeave={() => setTestRunIdHovered(false)}
+          onBlur={() => setTestRunIdHovered(false)}
+
+        >#{router.query.testRunId}</Typography>
+      </a>
     </div>
     {
       (timelineData.runners || []).map( (runnerInfo, index) => {
