@@ -8,6 +8,8 @@ import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.runBlocking
 import org.bson.BsonDocument
 import org.bson.Document
+import org.litote.kmongo.coroutine.aggregate
+import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.coroutine.toList
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -25,6 +27,12 @@ class MongoProxyService {
             val filter: HashMap<String, Any>,
             val update: HashMap<String, Any>? = null,
             val upsert: Boolean? = null
+    )
+
+    data class AggregateRequest(
+        val db: String,
+        val collection: String,
+        val pipeline: List<String>
     )
 
     fun findOne(body: MongoRequest): Document? = runBlocking {
@@ -86,5 +94,13 @@ class MongoProxyService {
         val filter = BsonDocument.parse(Gson().toJson(body.filter))
 
         return@runBlocking collection.deleteMany(filter).toList()
+    }
+
+    fun aggregate(body: AggregateRequest): List<Document> = runBlocking {
+        val db = qaHubMongoClient.client.getDatabase(body.db)
+        val collection = db.getCollection(body.collection).coroutine
+        val pipeline = body.pipeline
+
+        collection.aggregate<Document>(*pipeline.toTypedArray()).toList()
     }
 }

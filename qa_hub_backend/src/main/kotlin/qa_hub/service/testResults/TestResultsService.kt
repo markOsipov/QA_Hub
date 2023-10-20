@@ -261,4 +261,78 @@ class TestResultsService {
 
         updateTestResult(testResult)
     }
+
+
+    data class TimelineRunnerInfo(
+        val runner: String,
+        val devices: List<TimelineDeviceInfo>
+    )
+    data class TimelineDeviceInfo(
+        val runner: String,
+        val deviceId: String,
+        val results: List<TimelineElement>
+    )
+
+    data class TimelineElement(
+        val fullName: String,
+        val status: String,
+        val startDate: String,
+        val endDate: String,
+        val duration: Double,
+        val retry: Int
+    )
+    fun getTestrunTimelineData(testRunId: String): List<TimelineRunnerInfo> = runBlocking {
+        val pipeline: MutableList<String> = mutableListOf(
+            match(
+              TestResultRetry::testRunId eq testRunId
+            ).json,
+
+            """
+                {
+                    ${'$'}addFields: {
+                        deviceId: { ${'$'}last: "${'$'}statusHistory.deviceId" },
+                        runner: { ${'$'}last: "${'$'}statusHistory.runner" }
+                        status: { ${'$'}last: "${'$'}statusHistory.status" }
+                        startDate: { ${'$'}first: "${'$'}statusHistory.date" }
+                        endDate: { ${'$'}last: "${'$'}statusHistory.date" }
+                        duration: { ${'$'}last: "${'$'}statusHistory.duration" }
+                    }
+ 	            }
+            """.trimIndent(),
+
+            """
+                {
+                    ${'$'}sort: {
+                        runner: 1,
+                        deviceId: 1,
+                        startDate: 1                        
+                    }
+                }
+            """.trimIndent(),
+
+            """
+                {
+                    ${'$'}group: {
+                        _id: "${'$'}deviceId",
+                        deviceId:  { ${'$'}first: "${'$'}deviceId"}, 
+                        runner: { ${'$'}first: "${'$'}runner"},                       
+                        results: { ${'$'}push: "${"$$"}ROOT" },                      
+                    }
+                }
+            """.trimIndent(),
+
+            """
+                {
+                    ${'$'}group: {
+                        _id: "${'$'}runner",                      
+                        runner: { ${'$'}first: "${'$'}runner"},                       
+                        devices: { ${'$'}push: "${"$$"}ROOT" },                      
+                    }
+                }
+            """.trimIndent(),
+        )
+
+
+        return@runBlocking testResultsRetriesCollection.aggregate<TimelineRunnerInfo>(*pipeline.toTypedArray()).toList()
+    }
 }

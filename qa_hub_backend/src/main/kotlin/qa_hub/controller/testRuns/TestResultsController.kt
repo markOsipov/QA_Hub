@@ -106,4 +106,11 @@ class TestResultsController {
     ): QaReview? {
         return qaReviewService.getQaReview(testRunId, fullName)
     }
+
+    @GetMapping("/timeline/{testRunId}")
+    fun getTimelineData(
+        @PathVariable("testRunId") testRunId: String
+    ): List<TestResultsService.TimelineRunnerInfo> {
+        return testResultsService.getTestrunTimelineData(testRunId)
+    }
 }
