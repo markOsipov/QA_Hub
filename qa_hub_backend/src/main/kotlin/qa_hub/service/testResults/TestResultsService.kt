@@ -265,11 +265,15 @@ class TestResultsService {
 
     data class TimelineRunnerInfo(
         val runner: String,
+        val startDate: String,
+        val endDate: String,
         val devices: List<TimelineDeviceInfo>
     )
     data class TimelineDeviceInfo(
         val runner: String,
         val deviceId: String,
+        val startDate: String,
+        val endDate: String,
         val results: List<TimelineElement>
     )
 
@@ -315,8 +319,10 @@ class TestResultsService {
                     ${'$'}group: {
                         _id: "${'$'}deviceId",
                         deviceId:  { ${'$'}first: "${'$'}deviceId"}, 
-                        runner: { ${'$'}first: "${'$'}runner"},                       
-                        results: { ${'$'}push: "${"$$"}ROOT" },                      
+                        runner: { ${'$'}first: "${'$'}runner"},
+                        startDate: { ${'$'}min: "${'$'}startDate"},
+                        endDate: { ${'$'}max: "${'$'}endDate"},
+                        results: { ${'$'}push: "${"$$"}ROOT" }                        
                     }
                 }
             """.trimIndent(),
@@ -325,8 +331,10 @@ class TestResultsService {
                 {
                     ${'$'}group: {
                         _id: "${'$'}runner",                      
-                        runner: { ${'$'}first: "${'$'}runner"},                       
-                        devices: { ${'$'}push: "${"$$"}ROOT" },                      
+                        runner: { ${'$'}first: "${'$'}runner"},   
+                        startDate: { ${'$'}min: "${'$'}startDate"},
+                        endDate: { ${'$'}max: "${'$'}endDate"},
+                        devices: { ${'$'}push: "${"$$"}ROOT" }                      
                     }
                 }
             """.trimIndent(),
