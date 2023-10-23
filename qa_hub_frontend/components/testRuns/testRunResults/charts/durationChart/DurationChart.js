@@ -51,8 +51,7 @@ const DurationChart = observer(({timelineData, hoveredTest, setHoveredTest}) => 
         </StyledSelect>
       </FormControl>
     </div>
-    <div style={{display: 'flex', marginLeft: '100px'}}>
-      {/*<div style={{flexGrow: '1', maxWidth: '150px'}}></div>*/}
+    <div style={{display: 'grid', placeItems: 'center'}}>
 
       {
         chartGroups === ChartGroups.none &&

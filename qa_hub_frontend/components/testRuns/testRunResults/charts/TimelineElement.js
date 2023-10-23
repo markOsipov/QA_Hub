@@ -49,6 +49,7 @@ const TimelineElement = ({ startDate, endDate, duration, result, hoveredTest, se
       onMouseOver={() => setHoveredTest(result.fullName)}
       onMouseLeave={() => setHoveredTest(null)}
       onBlur={() => setHoveredTest(null)}
+      onClick={() => {  window.open(window.location.href.split("/charts")[0] + `?test=${result.testcaseId || result.fullName}`, "_blank")}}
     >
       {
         hoveredTest === result.fullName &&

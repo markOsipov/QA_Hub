@@ -45,11 +45,13 @@ const DurationChartElement = ({durationElement, hoveredTest, setHoveredTest, max
         width: '10px',
         height: (durationElement.duration / maxDuration * 100 ) + '%',
         backgroundColor: durationElement.status === 'SUCCESS' ? customTheme.palette.success.main : customTheme.palette.error.main,
+        cursor: 'pointer',
         ...props.style
       }}
       onMouseOver={() => setHoveredTest(durationElement.fullName)}
       onMouseLeave={() => setHoveredTest(null)}
       onBlur={() => setHoveredTest(null)}
+      onClick={() => {  window.open(window.location.href.split("/charts")[0] + `?test=${durationElement.testcaseId || durationElement.fullName}`, "_blank")}}
     >
       {
         hoveredTest === durationElement.fullName &&
