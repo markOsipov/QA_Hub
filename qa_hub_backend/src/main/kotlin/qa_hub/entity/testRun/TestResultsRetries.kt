@@ -5,6 +5,7 @@ import qa_hub.core.utils.DateTimeUtils.currentDateTimeUtc
 data class TestResultRetry(
     var testRunId: String,
     var fullName: String,
+    var testcaseId: String? = null,
     var retry: Int,
     var statusHistory: MutableList<StatusHistoryItem>,
 )
