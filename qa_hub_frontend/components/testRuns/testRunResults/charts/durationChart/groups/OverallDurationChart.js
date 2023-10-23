@@ -26,7 +26,7 @@ const OverallDurationChart = ({timelineData, hoveredTest, setHoveredTest, sortRe
     setDurationInfo(sortResults(results, "duration", -1))
   }, [timelineData])
 
-  return  <DurationChartPlate data={durationInfo} hoveredTest={hoveredTest} setHoveredTest={setHoveredTest}/>
+  return  <DurationChartPlate data={durationInfo} hoveredTest={hoveredTest} setHoveredTest={setHoveredTest} title={'Overall'}/>
 }
 
 export default OverallDurationChart

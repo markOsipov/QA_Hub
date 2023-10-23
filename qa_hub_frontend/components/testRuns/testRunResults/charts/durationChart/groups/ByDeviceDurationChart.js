@@ -46,7 +46,7 @@ const ByDeviceDurationChart = ({timelineData, hoveredTest, setHoveredTest, sortR
                   title={deviceData.deviceId}
                   hoveredTest={hoveredTest}
                   setHoveredTest={setHoveredTest}
-                  style={{marginBottom: '35px', minWidth: '500px'}}
+                  style={{margin: '10px 10px 35px 10px', minWidth: '500px'}}
                 />
               })
             }

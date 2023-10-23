@@ -14,7 +14,7 @@ const DurationChartPlate = ({data, hoveredTest, setHoveredTest, maxDuration, tit
       title &&
       <Typography variant={'h6'} style={{marginBottom: '10px'}}>{title}</Typography>
     }
-    <div style={{display: 'flex', ...props.style}}>
+    <div style={{display: 'flex', backgroundColor: customTheme.palette.background.paper, padding: '25px 20px', borderRadius: '10px', ...props.style}}>
       <Scale
         maxDuration={maxDurationNormalized}
         style ={{
@@ -26,7 +26,7 @@ const DurationChartPlate = ({data, hoveredTest, setHoveredTest, maxDuration, tit
         style={{
           display: 'flex',
           minHeight: '350px',
-          maxWidth: '85vw',
+          maxWidth: 'calc(100vw - 350px)',
           overflowX: 'auto',
           position: 'relative',
 

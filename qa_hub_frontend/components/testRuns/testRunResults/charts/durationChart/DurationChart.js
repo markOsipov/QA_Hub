@@ -32,7 +32,7 @@ const DurationChart = observer(({timelineData, hoveredTest, setHoveredTest}) => 
     })
   }
 
-  return <Paper style={{padding: '10px', margin: '15px', maxWidth: '98xw', overflow: 'auto'}}>
+  return <Paper style={{padding: '10px', margin: '15px', maxWidth: '98xw', overflow: 'auto', backgroundColor: customTheme.palette.background.default}}>
     <div style={{display: 'flex', alignItems: 'center', marginBottom: '20px', marginTop: '5px'}}>
       <Typography variant={'h5'} style={{}}>Duration chart</Typography>
 
