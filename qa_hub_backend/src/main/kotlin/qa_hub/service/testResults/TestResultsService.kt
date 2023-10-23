@@ -221,6 +221,7 @@ class TestResultsService {
                 TestResultRetry(
                     testRunId = testResult.testRunId,
                     fullName = testResult.fullName,
+                    testcaseId = testResult.testcaseId,
                     retry = existingRetries.size + 1,
                     statusHistory = mutableListOf(historyItem)
                 )
