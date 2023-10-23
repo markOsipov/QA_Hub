@@ -57,7 +57,7 @@ const Scale = ({maxDuration, ...props}) => {
       ...props.style
     }}
   >
-    <div style={{height: '100%', width: 'max-content', position: 'relative'}}>
+    <div style={{height: '100%', width: 'max-content', position: 'relative', minWidth: '30px'}}>
       <div style={{ position: 'absolute', top: '-8px', right: '5px' }}>{Number.parseInt(maxDuration)}s</div>
       <div style={{ position: 'absolute', top: 'calc(50% - 10px)', right: '5px' }}>{Number.parseInt(maxDuration / 2)}s</div>
     </div>

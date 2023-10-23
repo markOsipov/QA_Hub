@@ -31,12 +31,12 @@ const ByDeviceDurationChart = ({timelineData, hoveredTest, setHoveredTest, sortR
     setDurationInfo(results)
   }, [timelineData])
 
-  return <div>
+  return <div style={{ width: '100%', display: 'grid', placeItems: 'center'}}>
     {
       (durationInfo.runners || []).map((runnerData, index) => {
-        return <div key={index} style={{marginBottom: '35px'}}>
-          <Typography variant={'h5'}>{runnerData.runner}</Typography>
-          <div style={{display: 'flex'}}>
+        return <div key={index} style={{marginBottom: '50px'}}>
+          <Typography variant={'h5'} style={{ }}>{runnerData.runner}</Typography>
+          <div style={{display: 'flex', flexWrap: 'wrap', maxWidth: '98vw'}}>
             {
               runnerData.devices.map((deviceData, index) => {
                 return <DurationChartPlate

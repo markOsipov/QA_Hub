@@ -3,7 +3,6 @@ import {useEffect, useState} from "react";
 import {FormControl, InputLabel, MenuItem, Paper} from "@mui/material";
 import {customTheme} from "../../../../../styles/CustomTheme";
 import Typography from "@mui/material/Typography";
-import DurationChartPlate from "./DurationChartPlate";
 import OverallDurationChart from "./groups/OverallDurationChart";
 import ByRunnerDurationChart from "./groups/ByRunnerDurationChart";
 import StyledSelect from "../../../../primitives/StyledSelect";
@@ -33,7 +32,7 @@ const DurationChart = observer(({timelineData, hoveredTest, setHoveredTest}) => 
     })
   }
 
-  return <Paper style={{padding: '10px', margin: '15px'}}>
+  return <Paper style={{padding: '10px', margin: '15px', maxWidth: '98xw', overflow: 'auto'}}>
     <div style={{display: 'flex', alignItems: 'center', marginBottom: '20px', marginTop: '5px'}}>
       <Typography variant={'h5'} style={{}}>Duration chart</Typography>
 
@@ -52,8 +51,8 @@ const DurationChart = observer(({timelineData, hoveredTest, setHoveredTest}) => 
         </StyledSelect>
       </FormControl>
     </div>
-    <div style={{display: 'flex'}}>
-      <div style={{flexGrow: '0.9', maxWidth: '150px'}}></div>
+    <div style={{display: 'flex', marginLeft: '100px'}}>
+      {/*<div style={{flexGrow: '1', maxWidth: '150px'}}></div>*/}
 
       {
         chartGroups === ChartGroups.none &&
