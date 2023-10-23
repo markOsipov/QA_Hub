@@ -9,7 +9,7 @@ import {secondsBetween} from "../../../../utils/DateTimeUtils";
 import {useRouter} from "next/router";
 import TimelineElement from "./TimelineElement";
 import {getTimelineData} from "../../../../requests/testResults/TestResultsRequests";
-import DurationChart from "./DurationChart";
+import DurationChart from "./durationChart/DurationChart";
 
 const TimelineChart = observer(({...props}) => {
   const router = useRouter()
