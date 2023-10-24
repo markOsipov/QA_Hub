@@ -47,6 +47,7 @@ const DurationChartPlate = ({data, hoveredTest, setHoveredTest, maxDuration, max
                 setHoveredTest={setHoveredTest}
                 filter={filter}
                 style={{width: `${elementWidth}px`}}
+                index={index}
               />
             })
           }
