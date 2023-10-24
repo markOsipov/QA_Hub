@@ -2,7 +2,7 @@ import DurationChartElement from "./DurationChartElement";
 import {customTheme} from "../../../../../styles/CustomTheme";
 import Typography from "@mui/material/Typography";
 
-const DurationChartPlate = ({data, hoveredTest, setHoveredTest, maxDuration, title, ...props}) => {
+const DurationChartPlate = ({data, hoveredTest, setHoveredTest, maxDuration, title, filter, ...props}) => {
   let maxDurationNormalized =  maxDuration || Math.max(...data.map(element => element.duration))
 
   if ((data || []).length === 0) {
@@ -41,6 +41,7 @@ const DurationChartPlate = ({data, hoveredTest, setHoveredTest, maxDuration, tit
                 maxDuration={maxDurationNormalized}
                 hoveredTest={hoveredTest}
                 setHoveredTest={setHoveredTest}
+                filter={filter}
               />
             })
           }

@@ -2,9 +2,10 @@ import {getDateTime} from "../../../../../utils/DateTimeUtils";
 import StyledTooltip from "../../../../primitives/StyledTooltip";
 import {customTheme} from "../../../../../styles/CustomTheme";
 
-const DurationChartElement = ({durationElement, hoveredTest, setHoveredTest, maxDuration, ...props}) => {
+const DurationChartElement = ({durationElement, hoveredTest, setHoveredTest, maxDuration, filter, ...props}) => {
+  let isDisplayed = durationElement.fullName.toLowerCase().includes(filter.toLowerCase()) || String(durationElement.testcaseId).includes(filter.toLowerCase())
   const DurationElementTooltip = () => {
-    return <div style={{display: 'grid'}}>
+    return <div style={{display: 'grid' }}>
       <label style={{fontWeight: 'bold'}}>{durationElement.fullName}</label>
 
       <div style={{display: 'grid', marginTop: '10px'}}>
@@ -35,6 +36,9 @@ const DurationChartElement = ({durationElement, hoveredTest, setHoveredTest, max
     </div>
   }
 
+  if (!isDisplayed) {
+    return <div style={{width: '10px', opacity: '0'}}></div>
+  }
 
   return <StyledTooltip
     maxWidth={'800px'}

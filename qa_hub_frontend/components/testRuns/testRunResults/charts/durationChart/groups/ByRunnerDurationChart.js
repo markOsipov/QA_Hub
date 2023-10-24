@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import DurationChartPlate from "../DurationChartPlate";
 
-const ByRunnerDurationChart = ({timelineData, hoveredTest, setHoveredTest, sortResults}) => {
+const ByRunnerDurationChart = ({timelineData, hoveredTest, setHoveredTest, sortResults, filter}) => {
   const [durationInfo, setDurationInfo] = useState([])
   const [maxDuration, setMaxDuration] = useState(0)
 
@@ -51,6 +51,7 @@ const ByRunnerDurationChart = ({timelineData, hoveredTest, setHoveredTest, sortR
           hoveredTest={hoveredTest}
           setHoveredTest={setHoveredTest}
           style={{marginBottom: '35px'}}
+          filter={filter}
         />
       })
     }

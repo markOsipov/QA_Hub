@@ -286,6 +286,7 @@ class TestResultsService {
 
     data class TimelineElement(
         val fullName: String,
+        var testcaseId: String? = null,
         val status: String,
         val startDate: String,
         val endDate: String,

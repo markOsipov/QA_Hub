@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import DurationChartPlate from "../DurationChartPlate";
 import Typography from "@mui/material/Typography";
 
-const ByDeviceDurationChart = ({timelineData, hoveredTest, setHoveredTest, sortResults}) => {
+const ByDeviceDurationChart = ({timelineData, hoveredTest, setHoveredTest, sortResults, filter}) => {
   const [durationInfo, setDurationInfo] = useState([])
   const [maxDuration, setMaxDuration] = useState(0)
 
@@ -47,6 +47,7 @@ const ByDeviceDurationChart = ({timelineData, hoveredTest, setHoveredTest, sortR
                   hoveredTest={hoveredTest}
                   setHoveredTest={setHoveredTest}
                   style={{margin: '10px 10px 35px 10px', minWidth: '500px'}}
+                  filter={filter}
                 />
               })
             }

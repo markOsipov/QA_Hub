@@ -10,10 +10,12 @@ import {useRouter} from "next/router";
 import TimelineElement from "./TimelineElement";
 import {getTimelineData} from "../../../../requests/testResults/TestResultsRequests";
 import DurationChart from "./durationChart/DurationChart";
+import StyledTextField from "../../../primitives/StyledTextField";
 
 const TimelineChart = observer(({...props}) => {
   const router = useRouter()
   const [timelineData, setTimelineData] = useState({})
+  const [filter, setFilter] = useState("")
 
   const [hoveredTest, setHoveredTest] = useState(null)
 
@@ -51,7 +53,7 @@ const TimelineChart = observer(({...props}) => {
         ...props.style
       }}
     >
-      <div style={{display: 'flex', marginBottom: '20px'}}>
+      <div style={{display: 'flex', marginBottom: '20px', alignItems: 'center'}}>
         <Typography variant={'h5'}>Timeline</Typography>
         <a href={window.location.href.split("/charts")[0]}>
           <Typography
@@ -66,6 +68,15 @@ const TimelineChart = observer(({...props}) => {
 
           >#{router.query.testRunId}</Typography>
         </a>
+
+        <StyledTextField value={filter}
+                         size="small"
+                         label="Filter"
+                         style={{minWidth: "150px", color: "white", marginLeft: '15px'}}
+                         onChange ={(event) => {
+                          setFilter(event.target.value)
+                         }}
+        />
       </div>
       {
         (timelineData.runners || []).map( (runnerInfo, index) => {
@@ -86,15 +97,16 @@ const TimelineChart = observer(({...props}) => {
                   <div style={{width: '100%', margin: '10px 0', backgroundColor: 'rgba(255, 255, 255, 0.07)', height: '20px', position: 'relative'}}>
                     {
                       deviceInfo.results.map((result, index) => {
-                        return <TimelineElement
-                          key={index}
-                          startDate={startDate}
-                          endDate={endDate}
-                          duration={duration}
-                          result={result}
-                          hoveredTest={hoveredTest}
-                          setHoveredTest={setHoveredTest}
-                        />
+                        return (result.fullName.toLowerCase().includes(filter) || String(result.testcaseId).toLowerCase().includes(filter)) &&
+                          <TimelineElement
+                            key={index}
+                            startDate={startDate}
+                            endDate={endDate}
+                            duration={duration}
+                            result={result}
+                            hoveredTest={hoveredTest}
+                            setHoveredTest={setHoveredTest}
+                          />
                       })
                     }
                   </div>
@@ -107,7 +119,7 @@ const TimelineChart = observer(({...props}) => {
         })
       }
     </Paper>
-    <DurationChart timelineData={timelineData} hoveredTest={hoveredTest} setHoveredTest={setHoveredTest}></DurationChart>
+    <DurationChart timelineData={timelineData} hoveredTest={hoveredTest} setHoveredTest={setHoveredTest} filter={filter}/>
   </div>
 })
 

@@ -8,7 +8,7 @@ import ByRunnerDurationChart from "./groups/ByRunnerDurationChart";
 import StyledSelect from "../../../../primitives/StyledSelect";
 import ByDeviceDurationChart from "./groups/ByDeviceDurationChart";
 
-const DurationChart = observer(({timelineData, hoveredTest, setHoveredTest}) => {
+const DurationChart = observer(({ timelineData, hoveredTest, setHoveredTest, filter }) => {
   const ChartGroups = {
     none: "none",
     runner: "runner",
@@ -55,15 +55,33 @@ const DurationChart = observer(({timelineData, hoveredTest, setHoveredTest}) => 
 
       {
         chartGroups === ChartGroups.none &&
-        <OverallDurationChart timelineData={timelineData} sortResults={sortResults} hoveredTest={hoveredTest} setHoveredTest={setHoveredTest}/>
+        <OverallDurationChart
+          timelineData={timelineData}
+          sortResults={sortResults}
+          hoveredTest={hoveredTest}
+          setHoveredTest={setHoveredTest}
+          filter={filter}
+        />
       }
       {
         chartGroups === ChartGroups.runner &&
-        <ByRunnerDurationChart timelineData={timelineData} sortResults={sortResults} hoveredTest={hoveredTest} setHoveredTest={setHoveredTest}/>
+        <ByRunnerDurationChart
+          timelineData={timelineData}
+          sortResults={sortResults}
+          hoveredTest={hoveredTest}
+          setHoveredTest={setHoveredTest}
+          filter={filter}
+        />
       }
       {
         chartGroups === ChartGroups.device &&
-        <ByDeviceDurationChart timelineData={timelineData} sortResults={sortResults} hoveredTest={hoveredTest} setHoveredTest={setHoveredTest}/>
+        <ByDeviceDurationChart
+          timelineData={timelineData}
+          sortResults={sortResults}
+          hoveredTest={hoveredTest}
+          setHoveredTest={setHoveredTest}
+          filter={filter}
+        />
       }
     </div>
   </Paper>
