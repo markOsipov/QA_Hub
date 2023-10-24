@@ -97,7 +97,7 @@ const TimelineChart = observer(({...props}) => {
                   <div style={{width: '100%', margin: '10px 0', backgroundColor: 'rgba(255, 255, 255, 0.07)', height: '20px', position: 'relative'}}>
                     {
                       deviceInfo.results.map((result, index) => {
-                        return (result.fullName.toLowerCase().includes(filter) || String(result.testcaseId).toLowerCase().includes(filter)) &&
+                        return (result.fullName.toLowerCase().includes(filter.toLowerCase()) || String(result.testcaseId).toLowerCase().includes(filter.toLowerCase())) &&
                           <TimelineElement
                             key={index}
                             startDate={startDate}

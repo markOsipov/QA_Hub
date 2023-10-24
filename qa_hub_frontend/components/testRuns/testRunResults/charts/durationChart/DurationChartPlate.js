@@ -62,6 +62,7 @@ const ScaleY = ({maxDuration, ...props}) => {
   return <div
     style={{
       display: 'flex',
+      opacity: '0.7',
       ...props.style
     }}
   >
@@ -109,6 +110,7 @@ const ScaleX = ({maxCount, elementWidth, ...props}) => {
       display: 'flex',
       flexDirection: 'column',
       minWidth: `${maxCount * (elementWidth || 10) + 30}px`,
+      opacity: '0.7',
       ...props.style
     }}
   >

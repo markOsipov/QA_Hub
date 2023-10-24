@@ -3,7 +3,7 @@ import StyledTooltip from "../../../../primitives/StyledTooltip";
 import {customTheme} from "../../../../../styles/CustomTheme";
 
 const DurationChartElement = ({durationElement, hoveredTest, setHoveredTest, maxDuration, filter, ...props}) => {
-  let isDisplayed = durationElement.fullName.toLowerCase().includes(filter.toLowerCase()) || String(durationElement.testcaseId).includes(filter.toLowerCase())
+  let isDisplayed = durationElement.fullName.toLowerCase().includes(filter.toLowerCase()) || String(durationElement.testcaseId.toLowerCase()).includes(filter.toLowerCase())
   const DurationElementTooltip = () => {
     return <div style={{display: 'grid' }}>
       <label style={{fontWeight: 'bold'}}>{durationElement.fullName}</label>
