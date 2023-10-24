@@ -1,7 +1,7 @@
 import DurationChartPlate from "../DurationChartPlate";
 import {useEffect, useState} from "react";
 
-const OverallDurationChart = ({timelineData, hoveredTest, setHoveredTest, sortResults}) => {
+const OverallDurationChart = ({timelineData, hoveredTest, setHoveredTest, sortResults, filter}) => {
   const [durationInfo, setDurationInfo] = useState([])
 
   useEffect(() => {
@@ -26,7 +26,13 @@ const OverallDurationChart = ({timelineData, hoveredTest, setHoveredTest, sortRe
     setDurationInfo(sortResults(results, "duration", -1))
   }, [timelineData])
 
-  return  <DurationChartPlate data={durationInfo} hoveredTest={hoveredTest} setHoveredTest={setHoveredTest} title={'Overall'}/>
+  return <DurationChartPlate
+    data={durationInfo}
+    hoveredTest={hoveredTest}
+    setHoveredTest={setHoveredTest}
+    title={'Overall'}
+    filter={filter}
+  />
 }
 
 export default OverallDurationChart

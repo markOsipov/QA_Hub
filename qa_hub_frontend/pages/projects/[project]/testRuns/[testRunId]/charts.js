@@ -1,5 +1,5 @@
 import {observer} from "mobx-react-lite";
-import TimelineChart from "../../../../../components/testRuns/testRunResults/charts/TimelineChart";
+import TimelineChart from "../../../../../components/testRuns/testRunResults/charts/timelineChart/TimelineChart";
 
 const TestrunChartsPage = observer(() => {
   return <div>

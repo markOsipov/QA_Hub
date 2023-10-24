@@ -1,6 +1,6 @@
-import {getDateTime, secondsBetween} from "../../../../utils/DateTimeUtils";
-import StyledTooltip from "../../../primitives/StyledTooltip";
-import {customTheme} from "../../../../styles/CustomTheme";
+import {getDateTime, secondsBetween} from "../../../../../utils/DateTimeUtils";
+import StyledTooltip from "../../../../primitives/StyledTooltip";
+import {customTheme} from "../../../../../styles/CustomTheme";
 
 const TimelineElement = ({ startDate, endDate, duration, result, hoveredTest, setHoveredTest, ...props }) => {
   const resultDuration = Number.parseInt(result.duration)
