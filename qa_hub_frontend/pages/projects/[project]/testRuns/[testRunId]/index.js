@@ -13,6 +13,7 @@ import PushTestRunPopup from "../../../../../components/testRuns/pushTestRunModa
 import appState from "../../../../../state/AppState";
 import ImagePopup from "../../../../../components/testRuns/testRunResults/testResultDetails/ImagePopup";
 import imagePopupState from "../../../../../state/testRuns/ImagePopupState";
+import {TestRunStatuses} from "../../../../../components/testRuns/testRunList/TestRunConstants";
 
 const TestRunPage = observer(() => {
   const router = useRouter()
@@ -49,6 +50,18 @@ const TestRunPage = observer(() => {
       updateTestRunInfo(testRunId)
     }
   }, [router.query.testRunId])
+
+  useEffect(() => {
+    //Refreshing not finished testrun
+    const interval = setInterval(() => {
+      if (testRun === null || [TestRunStatuses.created, TestRunStatuses.processing].includes(testRun.status)) {
+        updateTestRunInfo(router.query.testRunId)
+      } else {
+        clearInterval(interval)
+      }
+    }, 30000)
+    return () => clearInterval(interval)
+  }, [testRun])
 
   useEffect(() => {
     appState.setTitle(`QA Hub: ${testRun?.testRunId || 'Test run'}`)

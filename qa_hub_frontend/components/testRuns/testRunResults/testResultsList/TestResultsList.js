@@ -13,6 +13,7 @@ import {getCookie, QaHubCookies, setCookie} from "../../../../utils/CookieHelper
 import Typography from "@mui/material/Typography";
 import {customTheme} from "../../../../styles/CustomTheme";
 import {useRouter} from "next/router";
+import {TestRunStatuses} from "../../testRunList/TestRunConstants";
 
 const TestResultsList = observer(({  testRun, ...props}) => {
   const router = useRouter()
@@ -70,6 +71,19 @@ const TestResultsList = observer(({  testRun, ...props}) => {
     testResultsFilterState.setFilter(newFilter)
 
     updateTestResults(initialSkip, loadMoreSize, newFilter)
+
+    //Updating test results if not finished
+    const interval = setInterval(() => {
+      if (testRun === null || [TestRunStatuses.created, TestRunStatuses.processing].includes(testRun.status)) {
+        console.log('refreshing')
+        filterAndLoad(filter)
+      } else {
+        console.log('stop refreshing')
+        clearInterval(interval)
+      }
+    }, 30000)
+    return () => clearInterval(interval)
+
   }, [testRunId])
 
   function getFilterFromUrl() {
