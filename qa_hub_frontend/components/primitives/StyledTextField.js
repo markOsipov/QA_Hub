@@ -12,7 +12,7 @@ const StyledTextField = styled((props) => (
          top: props.size === 'tiny' && '-10px',
         color: customTheme.palette.text.faded
     },
-    '& .MuiInputLabel-root:.Mui-focused)': {
+    '& .MuiInputLabel-root.Mui-focused': {
         top: props.size === 'tiny' && '0',
         color: customTheme.palette.text.faded
     },
