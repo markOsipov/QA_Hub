@@ -72,18 +72,16 @@ const TestResultsList = observer(({  testRun, ...props}) => {
 
     updateTestResults(initialSkip, loadMoreSize, newFilter)
 
-    //Updating test results if not finished
+    //Updating test results if the testrun is not finished
     const interval = setInterval(() => {
       if (testRun === null || [TestRunStatuses.created, TestRunStatuses.processing].includes(testRun.status)) {
-        console.log('refreshing')
         filterAndLoad(filter)
       } else {
-        console.log('stop refreshing')
         clearInterval(interval)
       }
     }, 30000)
-    return () => clearInterval(interval)
 
+    return () => clearInterval(interval)
   }, [testRunId])
 
   function getFilterFromUrl() {
