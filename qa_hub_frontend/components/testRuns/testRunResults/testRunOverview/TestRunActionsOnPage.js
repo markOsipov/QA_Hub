@@ -81,13 +81,12 @@ const TestRunActionsOnPage = observer (({testRun, updateTestRunInfo, ...props}) 
     }
 
     <StyledTooltip title={`Charts`}>
-      <div>
+      <a href={`/projects/${testRun.project}/testRuns/${testRun.testRunId}/charts`} target={"_blank"} rel="noreferrer">
         <CustomIconButton
-          action={ () => { window.location.href = `/projects/${testRun.project}/testRuns/${testRun.testRunId}/charts`}}
           color={customTheme.palette.primary.main}
           icon={<BarChartIcon />}
         />
-      </div>
+      </a>
     </StyledTooltip>
 
     <StyledTooltip title={"Rerun"}>
