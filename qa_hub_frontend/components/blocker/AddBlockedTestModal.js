@@ -1,7 +1,6 @@
-import {Box, FormControl, InputLabel, MenuItem, Modal, Select, TextField} from "@mui/material";
+import {Box, Modal} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {useEffect, useState} from "react";
-import useSWR from "swr";
 import Button from "@mui/material/Button";
 import StyledTextField from "../primitives/StyledTextField";
 import projectState from "../../state/ProjectState";
