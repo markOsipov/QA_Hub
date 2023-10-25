@@ -36,12 +36,13 @@ const DurationChart = observer(({ timelineData, hoveredTest, setHoveredTest, fil
     <div style={{display: 'flex', alignItems: 'center', marginBottom: '20px', marginTop: '5px'}}>
       <Typography variant={'h5'} style={{}}>Duration chart</Typography>
 
-      <FormControl sx={{ minWidth: 150, marginLeft: '15px' }} size="small">
+      <FormControl sx={{ minWidth: 150, marginLeft: '15px' }} >
         <InputLabel style={{ color: customTheme.palette.text.faded }}>Group by</InputLabel>
         <StyledSelect
           value={chartGroups}
           label="Group by"
           onChange={(e) => { setChartGroups(e.target.value)}}
+          size="tiny"
         >
           {
             Object.keys(ChartGroups).map((option) =>

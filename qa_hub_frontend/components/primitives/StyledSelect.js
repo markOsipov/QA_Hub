@@ -16,7 +16,7 @@ const StyledSelect = styled((props) => (
     color: customTheme.palette.text.faded
   },
   '& .MuiSelect-select': {
-    padding: props.size === 'tiny' && '5px'
+    padding: props.size === 'tiny' && '5px 5px 5px 12px'
   },
 }));
 

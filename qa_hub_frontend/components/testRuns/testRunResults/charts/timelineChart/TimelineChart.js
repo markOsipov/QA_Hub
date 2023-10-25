@@ -77,7 +77,7 @@ const TimelineChart = observer(({...props}) => {
         </a>
 
         <StyledTextField value={filter}
-                         size="small"
+                         size="tiny"
                          label="Filter"
                          style={{minWidth: "150px", color: "white", marginLeft: '15px'}}
                          onChange ={(event) => {
