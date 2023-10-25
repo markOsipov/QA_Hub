@@ -4,9 +4,11 @@ import testResultsFilterState from "../../../../../state/testResults/TestResults
 import {observer} from "mobx-react-lite";
 
 const SearchFilter = observer(({...props}) => {
+  const filter = testResultsFilterState.filter
+
   return <StyledTooltip title={"Search by test fullName or testcaseId" } enterDelay={800}>
     <div style={{minWidth: '50px', ...props.style}}>
-      <StyledTextField value={testResultsFilterState.filter.search}
+      <StyledTextField value={filter.search}
                        size="tiny"
                        label="Filter"
                        style={{color: "white", width: '100%'}}

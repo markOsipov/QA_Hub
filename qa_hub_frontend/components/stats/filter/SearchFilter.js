@@ -18,7 +18,7 @@ export default function SearchFilter({filter, setFilter, ...props}) {
     <StyledFormControl size={"tiny"} autocomplete={'off'}>
       <StyledTextField
         label="Search"
-        value={filter.search || ''}
+        value={filter?.search || ''}
         autoComplete={'off'}
         style={{backgroundColor: customTheme.palette.background.input, minWidth: '120px', ...props.style}}
         onChange={handleSearchFilterChange}

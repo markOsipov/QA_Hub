@@ -32,7 +32,7 @@ const TestResultsFilter = observer(({filterAndLoad, filterLoading, runners, ...p
         }
       </div>
 
-      <SearchFilter  style={{width: '200px', flexGrow: '1'}}/>
+      <SearchFilter style={{width: '200px', flexGrow: '1'}}/>
       <DeviceFilter style={{marginLeft: '5px'}} runners={runners}/>
       <ErrorFilter style={{marginLeft: '5px'}}/>
       <RetriesFilter style={{marginLeft: '5px'}}/>
