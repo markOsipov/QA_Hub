@@ -41,7 +41,7 @@ const TestRunList = observer(({...props}) => {
             }
           })
         })
-    }, 1000);
+    }, 30000);
     return () => clearInterval(interval);
   }, [testRuns])
 
