@@ -127,18 +127,18 @@ const TestResultsList = observer(({  testRun, ...props}) => {
     </Paper>
   }
 
-  return <Paper style={{padding: '15px', ...props.style}}>
+  return <Paper style={{padding: '12px 15px 15px 15px', ...props.style}}>
     <TestResultsFilter
       filterAndLoad={filterAndLoad}
       filterLoading={filterLoading}
       runners={runners}
     />
     {
-      testResults.map((testResult) => {
+      testResults.map((testResult, index) => {
         return <TestResultCard
           testResult={testResult}
           key={testResult.fullName}
-          style={{padding: '15px', marginTop: '15px'}}
+          style={{padding: '15px', marginTop: index > 0 && '15px'}}
         />
       })
     }

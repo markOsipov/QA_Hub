@@ -13,6 +13,7 @@ export default function CustomIconButton({action, icon, color, ...props}) {
       backgroundColor: color || customTheme.palette.primary.main,
       height: '25px',
       width: '25px',
+      minWidth: '25px',
       marginLeft: '6px',
       ...customIconButtonBackgroundStyle,
       ...props.style

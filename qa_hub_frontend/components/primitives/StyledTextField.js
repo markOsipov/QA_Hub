@@ -6,7 +6,13 @@ const StyledTextField = styled((props) => (
     <TextField {...props}/>
 ))(({ theme, ...props }) => ({
     '& .MuiInputLabel-root': {
-        color:  customTheme.palette.text.faded
+        color:  customTheme.palette.text.faded,
+    },
+    '& .MuiInputLabel-root:not(.Mui-focused):not(.MuiFormLabel-filled)': {
+         top: props.size === 'tiny' && '-10px'
+    },
+    '& .MuiInputLabel-root:.Mui-focused)': {
+        top: props.size === 'tiny' && '0'
     },
     '& .MuiOutlinedInput-notchedOutline': {
         border: `1px solid ${customTheme.palette.text.disabled}`

@@ -70,7 +70,7 @@ const TestRunPage = observer(() => {
     <div style={{display: "flex", marginTop: '15px', width: '100%', minWidth: '100%', maxHeight: '90vh', overflowY: 'auto'}}>
       <TestResultsList
         testRun={testRun}
-        style={{width: "550px", minWidth: '370px', maxWidth: '70%', overflowX: 'auto', resize: 'horizontal'}}
+        style={{width: "550px", minWidth: '390px', maxWidth: '70%', overflowX: 'auto', resize: 'horizontal'}}
       />
       <TestResultDetails
         style={{marginLeft: '15px', overflowX: 'auto', width: 'min-content', flexGrow:'1.1'}}

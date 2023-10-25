@@ -10,6 +10,7 @@ import CustomIconButton from "../../../../primitives/CustomIconButton";
 import testResultsFilterState from "../../../../../state/testResults/TestResultsFilterState";
 import {observer} from "mobx-react-lite";
 import Loader from "../../../../common/Loader";
+import SearchFilter from "./SearchFilter";
 
 const TestResultsFilter = observer(({filterAndLoad, filterLoading, runners, ...props }) => {
   const {filter,  filterChanged } = testResultsFilterState
@@ -24,21 +25,19 @@ const TestResultsFilter = observer(({filterAndLoad, filterLoading, runners, ...p
   }
 
   return <div style={{overflowX: 'auto', ...props.style}}>
-    <div style={{display: 'flex', alignItems: 'center', minWidth: 'max-content', paddingTop: '6px'}}>
-      <div style={{flexGrow: '1'}}></div>
-
+    <div style={{display: 'flex', alignItems: 'center', height: '48px', marginBottom: '5px'}}>
       <div style={{overflow: 'hidden', position: 'relative', top: '1px'}}>
         {
           filterLoading && <Loader style={{color: customTheme.palette.text.disabled, marginRight: '1px'}}/>
         }
       </div>
 
+      <SearchFilter  style={{width: '200px', flexGrow: '1'}}/>
       <DeviceFilter style={{marginLeft: '5px'}} runners={runners}/>
       <ErrorFilter style={{marginLeft: '5px'}}/>
       <RetriesFilter style={{marginLeft: '5px'}}/>
       <UnreviewedFilter style={{marginLeft: '5px'}}/>
       <StatusFilter style={{marginLeft: '5px'}} />
-
 
       <div style={{position:'relative'}}>
         <CustomIconButton
