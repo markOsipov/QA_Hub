@@ -41,9 +41,9 @@ const TestRunList = observer(({...props}) => {
             }
           })
         })
-    }, 30000);
+    }, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [testRuns])
 
   const loadMoreTestRuns = async () => {
     setLoading(true)
