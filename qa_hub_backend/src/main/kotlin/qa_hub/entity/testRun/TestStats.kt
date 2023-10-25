@@ -36,7 +36,8 @@ data class TestResultsFilter(
     val branch: String?,
     val tag: String?,
     var takeLast: Int?,
-    val environment: String?
+    val environment: String?,
+    val search: String?
 )
 
 data class TestStats(
