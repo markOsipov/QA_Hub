@@ -26,13 +26,12 @@ const TestResultsFilter = observer(({filterAndLoad, filterLoading, runners, ...p
 
   return <div style={{overflowX: 'auto', ...props.style}}>
     <div style={{display: 'flex', alignItems: 'center', height: '48px', marginBottom: '5px'}}>
-      <div style={{overflow: 'hidden', position: 'relative', top: '1px'}}>
+      <SearchFilter style={{width: '200px', flexGrow: '1'}}/>
+      <div style={{overflow: 'hidden', position: 'relative', top: '1px', width: '25px', minWidth: '25px', marginLeft: '3px'}}>
         {
           filterLoading && <Loader style={{color: customTheme.palette.text.disabled, marginRight: '1px'}}/>
         }
       </div>
-
-      <SearchFilter style={{width: '200px', flexGrow: '1'}}/>
       <DeviceFilter style={{marginLeft: '5px'}} runners={runners}/>
       <ErrorFilter style={{marginLeft: '5px'}}/>
       <RetriesFilter style={{marginLeft: '5px'}}/>

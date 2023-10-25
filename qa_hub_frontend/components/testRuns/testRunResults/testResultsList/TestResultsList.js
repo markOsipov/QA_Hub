@@ -58,6 +58,7 @@ const TestResultsList = observer(({  testRun, ...props}) => {
     setFilterToUrl(filterValue)
 
     setFilterLoading(true)
+    testResultsFilterState.setFilterChanged(false)
     getTestResults(testRunId, filter, initialSkip, loadMoreSize).then(response => {
       setFilterLoading(false)
       if (response.data) {
@@ -71,10 +72,14 @@ const TestResultsList = observer(({  testRun, ...props}) => {
     testResultsFilterState.setFilter(newFilter)
 
     updateTestResults(initialSkip, loadMoreSize, newFilter)
+  }, [testRunId])
 
+
+  useEffect(() => {
     //Updating test results if the testrun is not finished
     const interval = setInterval(() => {
       if (testRun === null || [TestRunStatuses.created, TestRunStatuses.processing].includes(testRun.status)) {
+
         filterAndLoad(filter)
       } else {
         clearInterval(interval)
@@ -82,7 +87,7 @@ const TestResultsList = observer(({  testRun, ...props}) => {
     }, 30000)
 
     return () => clearInterval(interval)
-  }, [testRunId])
+  }, [testRunId, filter])
 
   function getFilterFromUrl() {
     const statuses = router.query.statuses
