@@ -4,7 +4,12 @@ import {customTheme} from "../../../styles/CustomTheme";
 import React from "react";
 import StyledTooltip from "../../primitives/StyledTooltip";
 
-export default function SearchFilter({filter, setFilter, ...props}) {
+export default function SearchFilter({filter, setFilter, filterAndLoad, ...props}) {
+  const handleEnterKeyPressed = (event) => {
+    if (event.key === 'Enter') {
+      filterAndLoad(filter)
+    }
+  }
   const handleSearchFilterChange = (event) => {
     setFilter(
       {
@@ -22,6 +27,7 @@ export default function SearchFilter({filter, setFilter, ...props}) {
         autoComplete={'off'}
         style={{backgroundColor: customTheme.palette.background.input, minWidth: '120px', ...props.style}}
         onChange={handleSearchFilterChange}
+        onKeyDown={handleEnterKeyPressed}
       />
     </StyledFormControl>
   </StyledTooltip>
