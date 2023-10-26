@@ -3,7 +3,13 @@ import StyledTextField from "../../primitives/StyledTextField";
 import {customTheme} from "../../../styles/CustomTheme";
 import React from "react";
 
-export default function TakeLastFilter({filter, setFilter, ...props}) {
+export default function TakeLastFilter({filter, setFilter, filterAndLoad, ...props}) {
+
+  const handleEnterKeyPressed = (event) => {
+    if (event.key === 'Enter') {
+      filterAndLoad(filter)
+    }
+  }
   const handleBranchChange = (event) => {
     setFilter(
       {
@@ -19,6 +25,7 @@ export default function TakeLastFilter({filter, setFilter, ...props}) {
       value={filter.takeLast || ''}
       style={{backgroundColor: customTheme.palette.background.input, minWidth: '120px', ...props.style}}
       onChange={handleBranchChange}
+      onKeyDown={handleEnterKeyPressed}
     />
   </StyledFormControl>
 }

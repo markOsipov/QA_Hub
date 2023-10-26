@@ -13,6 +13,7 @@ import PushTestRunPopup from "../../../../../components/testRuns/pushTestRunModa
 import appState from "../../../../../state/AppState";
 import ImagePopup from "../../../../../components/testRuns/testRunResults/testResultDetails/ImagePopup";
 import imagePopupState from "../../../../../state/testRuns/ImagePopupState";
+import {TestRunStatuses} from "../../../../../components/testRuns/testRunList/TestRunConstants";
 
 const TestRunPage = observer(() => {
   const router = useRouter()
@@ -51,6 +52,18 @@ const TestRunPage = observer(() => {
   }, [router.query.testRunId])
 
   useEffect(() => {
+    //Refreshing not finished testrun
+    const interval = setInterval(() => {
+      if (testRun === null || [TestRunStatuses.created, TestRunStatuses.processing].includes(testRun.status)) {
+        updateTestRunInfo(router.query.testRunId)
+      } else {
+        clearInterval(interval)
+      }
+    }, 30000)
+    return () => clearInterval(interval)
+  }, [testRun])
+
+  useEffect(() => {
     appState.setTitle(`QA Hub: ${testRun?.testRunId || 'Test run'}`)
   }, [testRun?.testRunId])
 
@@ -70,7 +83,7 @@ const TestRunPage = observer(() => {
     <div style={{display: "flex", marginTop: '15px', width: '100%', minWidth: '100%', maxHeight: '90vh', overflowY: 'auto'}}>
       <TestResultsList
         testRun={testRun}
-        style={{width: "550px", minWidth: '370px', maxWidth: '70%', overflowX: 'auto', resize: 'horizontal'}}
+        style={{width: "550px", minWidth: '415px', maxWidth: '70%', overflowX: 'auto', resize: 'horizontal'}}
       />
       <TestResultDetails
         style={{marginLeft: '15px', overflowX: 'auto', width: 'min-content', flexGrow:'1.1'}}

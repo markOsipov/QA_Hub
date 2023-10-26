@@ -20,10 +20,10 @@ export default function TestRunsFilter({ filter, setFilter, loadTestRuns, filter
         <Loader style={{alignSelf: 'center', color: customTheme.palette.text.disabled, position: 'relative', top: '1px'}}/>
       }
       <StatusFilter filter={filter} setFilter={setFilter} style={{marginLeft: '10px'}} />
-      <TagFilter    filter={filter} setFilter={setFilter} style={{marginLeft: '15px', width: '120px'}}/>
-      <BranchFilter filter={filter} setFilter={setFilter} style={{marginLeft: '15px'}}/>
-      <CommitFilter filter={filter} setFilter={setFilter} style={{marginLeft: '15px', width: '120px'}}/>
-      <EnvironmentFilter filter={filter} setFilter={setFilter} style={{marginLeft: '15px', width: '120px'}}/>
+      <TagFilter    filter={filter} setFilter={setFilter} filterAndLoad={filterAndLoad} style={{marginLeft: '15px', width: '120px'}}/>
+      <BranchFilter filter={filter} setFilter={setFilter} filterAndLoad={filterAndLoad} style={{marginLeft: '15px'}}/>
+      <CommitFilter filter={filter} setFilter={setFilter} filterAndLoad={filterAndLoad} style={{marginLeft: '15px', width: '120px'}}/>
+      <EnvironmentFilter filter={filter} setFilter={setFilter} filterAndLoad={filterAndLoad} style={{marginLeft: '15px', width: '120px'}}/>
 
       <Button variant="contained"
               color="primary"

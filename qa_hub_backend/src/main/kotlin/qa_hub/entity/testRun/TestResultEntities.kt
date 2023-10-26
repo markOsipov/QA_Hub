@@ -20,7 +20,8 @@ data class TestResultFilter(
     val deviceId: String?,
     val runner: String?,
     val retries: Boolean?,
-    val unreviewed: Boolean?
+    val unreviewed: Boolean?,
+    val search: String?
 )
 data class TestResult(
     var testRunId: String,

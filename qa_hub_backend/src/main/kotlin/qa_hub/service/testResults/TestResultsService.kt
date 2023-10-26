@@ -75,6 +75,15 @@ class TestResultsService {
                 false -> filter.add(TestResult::reviewed eq true)
                 else -> {}
             }
+
+            if (it.search != null) {
+                filter.add(
+                    or(
+                        TestResult::fullName regex Regex(it.search, RegexOption.IGNORE_CASE),
+                        TestResult::testcaseId regex Regex(it.search, RegexOption.IGNORE_CASE)
+                    )
+                )
+            }
         }
 
         val query = mutableListOf(

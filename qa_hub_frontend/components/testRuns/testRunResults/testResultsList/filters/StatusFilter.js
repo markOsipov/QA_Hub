@@ -32,11 +32,11 @@ const StatusFilter = observer(({...props}) => {
     testResultsFilterState.setFilterChanged(true)
   }
 
-  return <StyledFormControl size={"tiny"} style={{ width: 'min-content', ...props.style}}>
+  return <StyledFormControl size={"tiny"} style={{ width: 'min-content', minWidth: 'min-content', ...props.style}}>
     <StyledInputLabel>Status</StyledInputLabel>
     <StyledSelect
       value={statuses}
-      style={{backgroundColor: customTheme.palette.background.input, minWidth: '100px', maxWidth: '150px'}}
+      style={{backgroundColor: customTheme.palette.background.input, width: '100px', minWidth: '70px', maxWidth: '150px'}}
       onChange={handleStatusChange}
       renderValue={(selected) => selected.join(separator)}
       multiple

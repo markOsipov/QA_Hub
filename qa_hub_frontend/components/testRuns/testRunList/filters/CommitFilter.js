@@ -1,10 +1,14 @@
-import {FormControl} from "@mui/material";
 import {customTheme} from "../../../../styles/CustomTheme";
-import React, {useEffect, useState} from "react";
 import StyledTextField from "../../../primitives/StyledTextField";
 import StyledFormControl from "../../../primitives/StyledFormControl";
 
-export default function CommitFilter({filter, setFilter, ...props}) {
+export default function CommitFilter({filter, setFilter, filterAndLoad, ...props}) {
+  const handleEnterKeyPressed = (event) => {
+    if (event.key === 'Enter') {
+      filterAndLoad(filter)
+    }
+  }
+
   const handleCommitChange = (event) => {
     setFilter(
       {
@@ -20,6 +24,7 @@ export default function CommitFilter({filter, setFilter, ...props}) {
       value={filter.commit || ''}
       style={{backgroundColor: customTheme.palette.background.input, minWidth: '150px', ...props.style}}
       onChange={handleCommitChange}
+      onKeyDown={handleEnterKeyPressed}
     />
   </StyledFormControl>
 }

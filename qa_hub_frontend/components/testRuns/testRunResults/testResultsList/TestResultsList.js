@@ -13,6 +13,7 @@ import {getCookie, QaHubCookies, setCookie} from "../../../../utils/CookieHelper
 import Typography from "@mui/material/Typography";
 import {customTheme} from "../../../../styles/CustomTheme";
 import {useRouter} from "next/router";
+import {TestRunStatuses} from "../../testRunList/TestRunConstants";
 
 const TestResultsList = observer(({  testRun, ...props}) => {
   const router = useRouter()
@@ -57,6 +58,7 @@ const TestResultsList = observer(({  testRun, ...props}) => {
     setFilterToUrl(filterValue)
 
     setFilterLoading(true)
+    testResultsFilterState.setFilterChanged(false)
     getTestResults(testRunId, filter, initialSkip, loadMoreSize).then(response => {
       setFilterLoading(false)
       if (response.data) {
@@ -71,6 +73,21 @@ const TestResultsList = observer(({  testRun, ...props}) => {
 
     updateTestResults(initialSkip, loadMoreSize, newFilter)
   }, [testRunId])
+
+
+  useEffect(() => {
+    //Updating test results if the testrun is not finished
+    const interval = setInterval(() => {
+      if (testRun === null || [TestRunStatuses.created, TestRunStatuses.processing].includes(testRun.status)) {
+
+        filterAndLoad(filter)
+      } else {
+        clearInterval(interval)
+      }
+    }, 30000)
+
+    return () => clearInterval(interval)
+  }, [testRunId, filter])
 
   function getFilterFromUrl() {
     const statuses = router.query.statuses
@@ -127,18 +144,18 @@ const TestResultsList = observer(({  testRun, ...props}) => {
     </Paper>
   }
 
-  return <Paper style={{padding: '15px', ...props.style}}>
+  return <Paper style={{padding: '12px 15px 15px 15px', ...props.style}}>
     <TestResultsFilter
       filterAndLoad={filterAndLoad}
       filterLoading={filterLoading}
       runners={runners}
     />
     {
-      testResults.map((testResult) => {
+      testResults.map((testResult, index) => {
         return <TestResultCard
           testResult={testResult}
           key={testResult.fullName}
-          style={{padding: '15px', marginTop: '15px'}}
+          style={{padding: '15px', marginTop: index > 0 && '15px'}}
         />
       })
     }

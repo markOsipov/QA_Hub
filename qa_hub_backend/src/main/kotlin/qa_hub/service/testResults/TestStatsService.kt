@@ -117,6 +117,18 @@ class TestStatsService {
  	            }
             """.trimIndent()
         )
+
+        request.filter?.search?.let {
+            pipeline.add(
+                match(
+                    or(
+                        TestStats::fullName regex Regex(request.filter.search, RegexOption.IGNORE_CASE),
+                        TestStats::testcaseId regex Regex(request.filter.search, RegexOption.IGNORE_CASE)
+                    )
+                ).json
+            )
+        }
+
         request.sort?.let {
             pipeline.add(
                 """
@@ -145,6 +157,7 @@ class TestStatsService {
                 """.trimIndent()
             )
         }
+        println(pipeline)
 
         return@runBlocking testResultsCollection.aggregate<TestStats>(*pipeline.toTypedArray()).toList()
     }

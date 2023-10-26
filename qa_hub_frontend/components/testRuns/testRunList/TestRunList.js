@@ -1,18 +1,17 @@
 import {observer} from "mobx-react-lite";
 import projectState from "../../../state/ProjectState";
 import {useEffect, useState} from "react";
-import {getTestRuns} from "../../../requests/testRuns/TestRunRequests";
+import {getTestRun, getTestRuns} from "../../../requests/testRuns/TestRunRequests";
 import TestRunCard from "./testRun/TestRunCard";
 import TestRunsFilter from "./filters/TestRunsFilter";
 import StyledTextField from "../../primitives/StyledTextField";
 import LoadMoreTestRunsButton from "./LoadMoreTestRunsButtons";
 import {getCookie, QaHubCookies, setCookie} from "../../../utils/CookieHelper";
 import PushTestRunModal from "../pushTestRunModal/PushTestRunModal";
-import {useRouter} from "next/router";
 import TestRunForm from "../testRunForms/TestRunForm";
+import {TestRunStatuses} from "./TestRunConstants";
 
 const TestRunList = observer(({...props}) => {
-  const router = useRouter()
   const project = projectState.selectedProject
 
   let [testRuns, setTestRuns] = useState([])
@@ -26,6 +25,25 @@ const TestRunList = observer(({...props}) => {
 
   const [loadMoreSize, setLoadMoreSize] = useState(initialLoadSize)
   const [lastTestRunLoaded, setLastTestRunLoaded] = useState(false)
+
+  useEffect(() => {
+    //Refreshing not finished testruns
+    const interval = setInterval(() => {
+      testRuns.filter(testRun => {
+          return [TestRunStatuses.created, TestRunStatuses.processing].includes(testRun.status)
+        }).forEach((testRun, index) => {
+          getTestRun(testRun.testRunId).then((response) => {
+            if (response.data != null) {
+              const newTestRuns = [...testRuns]
+              newTestRuns[index] = response.data
+
+              setTestRuns(newTestRuns)
+            }
+          })
+        })
+    }, 30000);
+    return () => clearInterval(interval);
+  }, [testRuns])
 
   const loadMoreTestRuns = async () => {
     setLoading(true)
