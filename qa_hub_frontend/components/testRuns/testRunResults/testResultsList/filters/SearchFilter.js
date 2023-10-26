@@ -5,28 +5,31 @@ import {observer} from "mobx-react-lite";
 
 const SearchFilter = observer(({ applyFilters, ...props}) => {
   const filter = testResultsFilterState.filter
-
   const handleEnterKeyPressed = (event) => {
     if (event.key === 'Enter') {
       applyFilters()
     }
   }
+  const handleValueChanged = (event) => {
+    testResultsFilterState.setFilter(
+      {
+        ...filter,
+        search: event.target.value
+      }
+    )
+    testResultsFilterState.setFilterChanged(true)
+  }
 
   return <StyledTooltip title={"Search by test fullName or testcaseId" } enterDelay={800}>
     <div style={{minWidth: '50px', ...props.style}}>
-      <StyledTextField value={filter.search}
-                       size="tiny"
-                       label="Filter"
-                       style={{color: "white", width: '100%'}}
-                       onKeyDown={handleEnterKeyPressed}
-                       onChange ={(event) => {
-                         testResultsFilterState.setFilter({
-                           ...filter,
-                           search: event.target.value
-                         })
-                         testResultsFilterState.setFilterChanged(true)
-                       }}
-      />
+        <StyledTextField
+          value={filter.search || ''}
+          style={{color: "white", width: '100%'}}
+          size="tiny"
+          label="Filter"
+          onKeyDown={handleEnterKeyPressed}
+          onChange={handleValueChanged}
+        />
     </div>
   </StyledTooltip>
 })
