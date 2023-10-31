@@ -1,12 +1,9 @@
 package qa_hub.service
 
-import com.slack.api.model.Action
 import com.slack.api.model.Attachment
-import com.slack.api.model.block.Blocks
 import com.slack.api.model.block.LayoutBlock
 import com.slack.api.model.block.SectionBlock
 import com.slack.api.model.block.composition.MarkdownTextObject
-import com.slack.api.model.block.composition.TextObject
 import kotlinx.coroutines.*
 import org.litote.kmongo.*
 import org.litote.kmongo.coroutine.aggregate
@@ -30,6 +27,7 @@ import qa_hub.service.testResults.TestResultsService
 import qa_hub.service.testResults.TestStepsService
 import qa_hub.service.utils.ProjectIntegrationsService
 import java.io.File
+import java.time.LocalDateTime
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import kotlin.random.Random
@@ -558,5 +556,11 @@ class TestRunService {
         } catch (e: Exception) {
             logger.warn("Failed to delete attachments for testrun $testRunId: ${e.message}")
         }
+    }
+
+    fun getOldTestRuns(maxDays: Int): List<TestRun> = runBlocking {
+        return@runBlocking testRunCollection.find(
+            TestRun::timeMetrics / TestRunTimeMetrics::started lt ZonedDateTime.now().minusDays(maxDays.toLong()).toString()
+        ).toList()
     }
 }

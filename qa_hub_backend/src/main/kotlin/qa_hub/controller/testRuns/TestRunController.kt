@@ -3,8 +3,11 @@ package qa_hub.controller.testRuns
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.runBlocking
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.ClassPathResource
+import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.web.bind.annotation.*
 import qa_hub.core.utils.runParallel
 import qa_hub.entity.testRun.*
@@ -33,6 +36,8 @@ class TestRunController {
 
     @Autowired
     lateinit var testStepsService: TestStepsService
+
+    private val logger: Logger = LoggerFactory.getLogger(javaClass)
     @PostMapping("/{project}")
     fun getTestRuns(@PathVariable("project") project: String, @RequestBody request: TestRunsRequest?): List<TestRun> {
         return testRunService.getTestRuns(project, request)
@@ -84,6 +89,33 @@ class TestRunController {
     @PostMapping("/delete/{project}/{testRunId}")
     fun deleteTestRun(@PathVariable project: String, @PathVariable testRunId: String) {
         testRunService.deleteTestRun(project = project, testRunId = testRunId)
+    }
+
+    data class ClearResponse(
+        var deleted: Int,
+        var errors: Int,
+        var failedTestRuns: List<String>
+    )
+
+    @Scheduled(cron = "0 0 4 * * SUN")
+    @PostMapping("/clear")
+    fun deleteOldTestRuns(@RequestParam(required = false, defaultValue = "60") maxDays: Int): ClearResponse {
+        var deleted = 0
+        var errors = 0
+        val failedTestRuns = mutableListOf<String>()
+
+        testRunService.getOldTestRuns(maxDays).forEach {
+            try {
+                testRunService.deleteTestRun(project = it.project, testRunId = it.testRunId)
+                deleted += 1
+            } catch (e: Exception) {
+                logger.warn("Failed to delete testrun ${it.testRunId} in project ${it.project}")
+                errors += 1
+                failedTestRuns.add(it.testRunId)
+            }
+        }
+
+        return ClearResponse(deleted, errors, failedTestRuns)
     }
 
     @PostMapping("/createDebug")
