@@ -11,6 +11,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import qa_hub.controller.testRuns.TestRunController
 import qa_hub.controller.testRuns.imageDir
 import qa_hub.core.mongo.QaHubMongoClient
 import qa_hub.core.mongo.entity.Collections.*
@@ -562,5 +563,29 @@ class TestRunService {
         return@runBlocking testRunCollection.find(
             TestRun::timeMetrics / TestRunTimeMetrics::started lt ZonedDateTime.now().minusDays(maxDays.toLong()).toString()
         ).toList()
+    }
+
+    data class ClearResponse(
+        var deleted: Int,
+        var errors: Int,
+        var failedTestRuns: List<String>
+    )
+    fun deleteOldTestRuns(maxDays: Int): ClearResponse {
+        var deleted = 0
+        var errors = 0
+        val failedTestRuns = mutableListOf<String>()
+
+        getOldTestRuns(maxDays).forEach {
+            try {
+                deleteTestRun(project = it.project, testRunId = it.testRunId)
+                deleted += 1
+            } catch (e: Exception) {
+                logger.warn("Failed to delete testrun ${it.testRunId} in project ${it.project}")
+                errors += 1
+                failedTestRuns.add(it.testRunId)
+            }
+        }
+
+        return ClearResponse(deleted, errors, failedTestRuns)
     }
 }

@@ -91,31 +91,15 @@ class TestRunController {
         testRunService.deleteTestRun(project = project, testRunId = testRunId)
     }
 
-    data class ClearResponse(
-        var deleted: Int,
-        var errors: Int,
-        var failedTestRuns: List<String>
-    )
+    @Scheduled(cron = "0 0 4 * * *")
+    @PostMapping("/autoClear")
+    fun autoClear(): TestRunService.ClearResponse {
+        return testRunService.deleteOldTestRuns(60)
+    }
 
-    @Scheduled(cron = "0 0 4 * * SUN")
     @PostMapping("/clear")
-    fun deleteOldTestRuns(@RequestParam(required = false, defaultValue = "60") maxDays: Int): ClearResponse {
-        var deleted = 0
-        var errors = 0
-        val failedTestRuns = mutableListOf<String>()
-
-        testRunService.getOldTestRuns(maxDays).forEach {
-            try {
-                testRunService.deleteTestRun(project = it.project, testRunId = it.testRunId)
-                deleted += 1
-            } catch (e: Exception) {
-                logger.warn("Failed to delete testrun ${it.testRunId} in project ${it.project}")
-                errors += 1
-                failedTestRuns.add(it.testRunId)
-            }
-        }
-
-        return ClearResponse(deleted, errors, failedTestRuns)
+    fun clear(@RequestParam(required = false, defaultValue = "60") maxDays: Int): TestRunService.ClearResponse {
+        return testRunService.deleteOldTestRuns(maxDays)
     }
 
     @PostMapping("/createDebug")
