@@ -10,10 +10,10 @@ import java.io.File
 import java.util.*
 import javax.imageio.ImageIO
 
+val imageDir = System.getenv("ENV_IMAGE_DIR") ?: "${System.getProperty("user.home")}/Images/QA_Hub"
 @RestController
 @RequestMapping("/api/attachments")
 class AttachmentsController {
-    val imageDir = System.getenv("ENV_IMAGE_DIR") ?: "${System.getProperty("user.home")}/Images/QA_Hub"
     @PostMapping("/images")
     fun postAttachments(
         @RequestParam project: String,

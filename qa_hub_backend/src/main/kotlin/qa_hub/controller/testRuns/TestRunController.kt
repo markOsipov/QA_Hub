@@ -81,9 +81,9 @@ class TestRunController {
         return testRunService.finishRunForRunner(testRunId = testRunId, runnerHasError = hasError, runner = runner)
     }
 
-    @PostMapping("/delete/{testRunId}")
-    fun deleteTestRun(@PathVariable testRunId: String) {
-        testRunService.deleteTestRun(testRunId = testRunId)
+    @PostMapping("/delete/{project}/{testRunId}")
+    fun deleteTestRun(@PathVariable project: String, @PathVariable testRunId: String) {
+        testRunService.deleteTestRun(project = project, testRunId = testRunId)
     }
 
     @PostMapping("/createDebug")

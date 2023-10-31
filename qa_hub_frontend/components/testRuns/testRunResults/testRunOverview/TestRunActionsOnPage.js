@@ -25,7 +25,7 @@ const TestRunActionsOnPage = observer (({testRun, updateTestRunInfo, ...props}) 
   }
   const handleDeleteTestRunClick = () => {
     if (confirm("This Testrun will be deleted. Are you sure?")) {
-      deleteTestRun(testRun.testRunId).then(() => {
+      deleteTestRun(testRun.project, testRun.testRunId).then(() => {
         window.location.href = `/projects/${testRun.project}/testRuns`
         alert(`Testrun ${testRun.testRunId} has been deleted`)
       })

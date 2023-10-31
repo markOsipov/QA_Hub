@@ -10,8 +10,11 @@ import com.slack.api.model.block.composition.TextObject
 import kotlinx.coroutines.*
 import org.litote.kmongo.*
 import org.litote.kmongo.coroutine.aggregate
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import qa_hub.controller.testRuns.imageDir
 import qa_hub.core.mongo.QaHubMongoClient
 import qa_hub.core.mongo.entity.Collections.*
 import qa_hub.core.mongo.utils.setCurrentPropertyValues
@@ -26,6 +29,7 @@ import qa_hub.service.testResults.TestLogsService
 import qa_hub.service.testResults.TestResultsService
 import qa_hub.service.testResults.TestStepsService
 import qa_hub.service.utils.ProjectIntegrationsService
+import java.io.File
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import kotlin.random.Random
@@ -33,6 +37,8 @@ import kotlin.random.Random
 
 @Service
 class TestRunService {
+    private val logger: Logger = LoggerFactory.getLogger(javaClass)
+
     @Autowired
     lateinit var mongoClient: QaHubMongoClient
 
@@ -538,7 +544,7 @@ class TestRunService {
         ))
     }
 
-    fun deleteTestRun(testRunId: String) = runBlocking {
+    fun deleteTestRun(project: String, testRunId: String) = runBlocking {
         testRunCollection.deleteMany(TestRun::testRunId eq testRunId)
         testResultsCollection.deleteMany(TestResult::testRunId eq testRunId)
         testRetriesCollection.deleteMany(TestResultRetry::testRunId eq testRunId)
@@ -546,5 +552,11 @@ class TestRunService {
         testLogsCollection.deleteMany(TestLogsService.TestLog::testRunId eq testRunId)
         testStepsCollection.deleteMany(TestStepsService.TestSteps::testRunId eq testRunId)
         testQaReviewsCollection.deleteMany(QaReview::testRunId eq testRunId)
+
+        try {
+            File("$imageDir/testruns/$project/$testRunId").deleteRecursively()
+        } catch (e: Exception) {
+            logger.warn("Failed to delete attachments for testrun $testRunId: ${e.message}")
+        }
     }
 }
