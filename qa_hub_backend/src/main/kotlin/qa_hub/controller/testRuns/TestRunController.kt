@@ -3,8 +3,11 @@ package qa_hub.controller.testRuns
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.runBlocking
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.ClassPathResource
+import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.web.bind.annotation.*
 import qa_hub.core.utils.runParallel
 import qa_hub.entity.testRun.*
@@ -33,6 +36,8 @@ class TestRunController {
 
     @Autowired
     lateinit var testStepsService: TestStepsService
+
+    private val logger: Logger = LoggerFactory.getLogger(javaClass)
     @PostMapping("/{project}")
     fun getTestRuns(@PathVariable("project") project: String, @RequestBody request: TestRunsRequest?): List<TestRun> {
         return testRunService.getTestRuns(project, request)
@@ -81,9 +86,20 @@ class TestRunController {
         return testRunService.finishRunForRunner(testRunId = testRunId, runnerHasError = hasError, runner = runner)
     }
 
-    @PostMapping("/delete/{testRunId}")
-    fun deleteTestRun(@PathVariable testRunId: String) {
-        testRunService.deleteTestRun(testRunId = testRunId)
+    @PostMapping("/delete/{project}/{testRunId}")
+    fun deleteTestRun(@PathVariable project: String, @PathVariable testRunId: String) {
+        testRunService.deleteTestRun(project = project, testRunId = testRunId)
+    }
+
+    @Scheduled(cron = "0 0 4 * * *")
+    @PostMapping("/autoClear")
+    fun autoClear(): TestRunService.ClearResponse {
+        return testRunService.deleteOldTestRuns(60)
+    }
+
+    @PostMapping("/clear")
+    fun clear(@RequestParam(required = false, defaultValue = "60") maxDays: Int): TestRunService.ClearResponse {
+        return testRunService.deleteOldTestRuns(maxDays)
     }
 
     @PostMapping("/createDebug")

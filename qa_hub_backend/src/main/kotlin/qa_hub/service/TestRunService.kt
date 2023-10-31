@@ -1,17 +1,18 @@
 package qa_hub.service
 
-import com.slack.api.model.Action
 import com.slack.api.model.Attachment
-import com.slack.api.model.block.Blocks
 import com.slack.api.model.block.LayoutBlock
 import com.slack.api.model.block.SectionBlock
 import com.slack.api.model.block.composition.MarkdownTextObject
-import com.slack.api.model.block.composition.TextObject
 import kotlinx.coroutines.*
 import org.litote.kmongo.*
 import org.litote.kmongo.coroutine.aggregate
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import qa_hub.controller.testRuns.TestRunController
+import qa_hub.controller.testRuns.imageDir
 import qa_hub.core.mongo.QaHubMongoClient
 import qa_hub.core.mongo.entity.Collections.*
 import qa_hub.core.mongo.utils.setCurrentPropertyValues
@@ -26,6 +27,8 @@ import qa_hub.service.testResults.TestLogsService
 import qa_hub.service.testResults.TestResultsService
 import qa_hub.service.testResults.TestStepsService
 import qa_hub.service.utils.ProjectIntegrationsService
+import java.io.File
+import java.time.LocalDateTime
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import kotlin.random.Random
@@ -33,6 +36,8 @@ import kotlin.random.Random
 
 @Service
 class TestRunService {
+    private val logger: Logger = LoggerFactory.getLogger(javaClass)
+
     @Autowired
     lateinit var mongoClient: QaHubMongoClient
 
@@ -538,7 +543,7 @@ class TestRunService {
         ))
     }
 
-    fun deleteTestRun(testRunId: String) = runBlocking {
+    fun deleteTestRun(project: String, testRunId: String) = runBlocking {
         testRunCollection.deleteMany(TestRun::testRunId eq testRunId)
         testResultsCollection.deleteMany(TestResult::testRunId eq testRunId)
         testRetriesCollection.deleteMany(TestResultRetry::testRunId eq testRunId)
@@ -546,5 +551,41 @@ class TestRunService {
         testLogsCollection.deleteMany(TestLogsService.TestLog::testRunId eq testRunId)
         testStepsCollection.deleteMany(TestStepsService.TestSteps::testRunId eq testRunId)
         testQaReviewsCollection.deleteMany(QaReview::testRunId eq testRunId)
+
+        try {
+            File("$imageDir/testruns/$project/$testRunId").deleteRecursively()
+        } catch (e: Exception) {
+            logger.warn("Failed to delete attachments for testrun $testRunId: ${e.message}")
+        }
+    }
+
+    fun getOldTestRuns(maxDays: Int): List<TestRun> = runBlocking {
+        return@runBlocking testRunCollection.find(
+            TestRun::timeMetrics / TestRunTimeMetrics::started lt ZonedDateTime.now().minusDays(maxDays.toLong()).toString()
+        ).toList()
+    }
+
+    data class ClearResponse(
+        var deleted: Int,
+        var errors: Int,
+        var failedTestRuns: List<String>
+    )
+    fun deleteOldTestRuns(maxDays: Int): ClearResponse {
+        var deleted = 0
+        var errors = 0
+        val failedTestRuns = mutableListOf<String>()
+
+        getOldTestRuns(maxDays).forEach {
+            try {
+                deleteTestRun(project = it.project, testRunId = it.testRunId)
+                deleted += 1
+            } catch (e: Exception) {
+                logger.warn("Failed to delete testrun ${it.testRunId} in project ${it.project}")
+                errors += 1
+                failedTestRuns.add(it.testRunId)
+            }
+        }
+
+        return ClearResponse(deleted, errors, failedTestRuns)
     }
 }

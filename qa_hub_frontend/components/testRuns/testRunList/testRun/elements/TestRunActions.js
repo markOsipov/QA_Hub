@@ -14,7 +14,7 @@ const TestRunActions = observer(({testRun, filter, filterAndLoad, ...props}) => 
   }
   const handleDeleteTestRunClick = () => {
     if (confirm("This Testrun will be deleted. Are you sure?")) {
-      deleteTestRun(testRun.testRunId).then(() => {
+      deleteTestRun(testRun.project, testRun.testRunId).then(() => {
         filterAndLoad(filter)
       })
     }

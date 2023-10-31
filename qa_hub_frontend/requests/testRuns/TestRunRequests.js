@@ -76,10 +76,10 @@ export function cancelTestRun(testRunId) {
     return axios(config)
 }
 
-export function deleteTestRun(testRunId) {
+export function deleteTestRun(project, testRunId) {
     const config = {
         method: 'post',
-        url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat(`/api/testRuns/delete/${testRunId}`),
+        url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat(`/api/testRuns/delete/${project}/${testRunId}`),
         headers: {
             'Content-Type': 'application/json'
         }
