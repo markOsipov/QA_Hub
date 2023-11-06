@@ -90,7 +90,7 @@ const ProjectOtherIntsForm = observer(({project, setProject, ...props}) => {
         })
       }
       {
-        project.otherInts.active.length < project.otherInts.all.length && project.otherInts.active.find(el => el.type === emptyIntegration.type) == null || true &&
+        project.otherInts.active.length < project.otherInts.all.length &&
 
         <div style={{display: 'flex'}}>
           <Button variant="contained"
