@@ -468,7 +468,7 @@ class TestRunService {
                 val blocks = mutableListOf<LayoutBlock>()
                 val titleBlock = SectionBlock()
                 val text = MarkdownTextObject()
-                text.text = "Testrun *<$testRunUrl|${testRun.testRunId}>* on branch *${testRun.config?.branch ?: "unknown"}* is finished"
+                text.text = "*${testRun.project}:* Testrun *<$testRunUrl|${testRun.testRunId}>* on branch *${testRun.config?.branch ?: "unknown"}* is finished"
                 titleBlock.text = text
                 blocks.add(titleBlock)
 
