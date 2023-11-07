@@ -58,7 +58,7 @@ class TestResultsController {
         return testResultsService.updateTestResult(body)
     }
 
-    @PostMapping("/log")
+    @PostMapping("/testLog")
     fun postTestLog(
         @RequestParam("file") file: MultipartFile,
         @RequestParam("testRunId") testRunId: String,
@@ -68,17 +68,36 @@ class TestResultsController {
         return testLogsService.insertTestLog(testRunId, fullName, retry, file)
     }
 
-    @GetMapping("/log")
+    @PostMapping("/appLog")
+    fun postAppLog(
+        @RequestParam("file") file: MultipartFile,
+        @RequestParam("testRunId") testRunId: String,
+        @RequestParam("fullName") fullName: String,
+        @RequestParam("retry", required = false, defaultValue = "1") retry: Int,
+    ): InsertOneResult {
+        return testLogsService.insertAppLog(testRunId, fullName, retry, file)
+    }
+
+    @GetMapping("/testLog")
     fun getTestLog(
         @RequestParam("testRunId") testRunId: String,
         @RequestParam("fullName") fullName: String,
         @RequestParam("retry", required = false, defaultValue = "1") retry: Int,
     ): TestLogsService.TestLog? {
-        return testLogsService.getLog(testRunId, fullName, retry)
+        return testLogsService.getTestLog(testRunId, fullName, retry)
+    }
+
+    @GetMapping("/appLog")
+    fun getAppLog(
+        @RequestParam("testRunId") testRunId: String,
+        @RequestParam("fullName") fullName: String,
+        @RequestParam("retry", required = false, defaultValue = "1") retry: Int,
+    ): TestLogsService.TestLog? {
+        return testLogsService.getAppLog(testRunId, fullName, retry)
     }
 
     @PostMapping("/steps")
-    fun postTestLog(
+    fun postTestSteps(
        @RequestBody body: TestStepsService.TestSteps
     ): InsertOneResult {
         return testStepsService.insertTestSteps(body)

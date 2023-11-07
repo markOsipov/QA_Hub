@@ -21,7 +21,11 @@ class TestLogsService {
         mongoClient.db.getCollection<TestLog>(Collections.TEST_LOGS.collectionName)
     }
 
-    fun getLog(
+    private val appLogsCollection by lazy {
+        mongoClient.db.getCollection<TestLog>(Collections.APP_LOGS.collectionName)
+    }
+
+    fun getTestLog(
         testRunId: String,
         fullName: String,
         retry: Int
@@ -34,18 +38,43 @@ class TestLogsService {
             )
         )
     }
+
+    fun getAppLog(
+        testRunId: String,
+        fullName: String,
+        retry: Int
+    ): TestLog? = runBlocking {
+        appLogsCollection.findOne(
+            and(
+                TestLog::testRunId eq testRunId,
+                TestLog::fullName eq fullName,
+                TestLog::retry eq retry
+            )
+        )
+    }
     fun insertTestLog(
         testRunId: String,
         fullName: String,
         retry: Int,
-        logFile: MultipartFile)
-    : InsertOneResult = runBlocking {
+        logFile: MultipartFile
+    ): InsertOneResult = runBlocking {
         val text = BufferedReader(InputStreamReader(logFile.inputStream)).readText()
 
         testLogsCollection.insertOne(
-            TestLog(
-                testRunId, fullName, retry, text
-            )
+            TestLog(testRunId, fullName, retry, text)
+        )
+    }
+
+    fun insertAppLog(
+        testRunId: String,
+        fullName: String,
+        retry: Int,
+        logFile: MultipartFile
+    ): InsertOneResult = runBlocking {
+        val text = BufferedReader(InputStreamReader(logFile.inputStream)).readText()
+
+        appLogsCollection.insertOne(
+            TestLog(testRunId, fullName, retry, text)
         )
     }
 
