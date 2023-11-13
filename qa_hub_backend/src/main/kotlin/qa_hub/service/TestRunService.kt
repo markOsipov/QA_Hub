@@ -67,6 +67,10 @@ class TestRunService {
         mongoClient.db.getCollection<TestLogsService.TestLog>(TEST_LOGS.collectionName)
     }
 
+    private val appLogsCollection by lazy {
+        mongoClient.db.getCollection<TestLogsService.TestLog>(APP_LOGS.collectionName)
+    }
+
     private val testStepsCollection by lazy {
         mongoClient.db.getCollection<TestStepsService.TestSteps>(TEST_STEPS.collectionName)
     }
@@ -549,6 +553,7 @@ class TestRunService {
         testRetriesCollection.deleteMany(TestResultRetry::testRunId eq testRunId)
         testQueueCollection.deleteMany(TestQueue::testRunId eq testRunId)
         testLogsCollection.deleteMany(TestLogsService.TestLog::testRunId eq testRunId)
+        appLogsCollection.deleteMany(TestLogsService.TestLog::testRunId eq testRunId)
         testStepsCollection.deleteMany(TestStepsService.TestSteps::testRunId eq testRunId)
         testQaReviewsCollection.deleteMany(QaReview::testRunId eq testRunId)
 
