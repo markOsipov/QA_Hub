@@ -43,8 +43,15 @@ data class OtherIntegrationInfo(
 ): AbstractOtherIntegrationInfo(type, projectFields, sharedFields)
 @Service
 class CachedIntegrationInfoService {
-    val prjTmsInts = mutableMapOf<String, ProjectTmsIntegrationsInfo>()
-    val prjCicdInts = mutableMapOf<String, ProjectCicdIntegrationsInfo>()
-    val prjTtInts = mutableMapOf<String, ProjectTaskTrackerIntegrationsInfo>()
-    val prjOtherInts = mutableMapOf<String, ProjectOtherIntegrationsInfo>()
+    var prjTmsInts = mutableMapOf<String, ProjectTmsIntegrationsInfo>()
+    var prjCicdInts = mutableMapOf<String, ProjectCicdIntegrationsInfo>()
+    var prjTtInts = mutableMapOf<String, ProjectTaskTrackerIntegrationsInfo>()
+    var prjOtherInts = mutableMapOf<String, ProjectOtherIntegrationsInfo>()
+
+    fun clearProjectInts(project: String) {
+        prjTmsInts.remove(project)
+        prjCicdInts.remove(project)
+        prjTtInts.remove(project)
+        prjOtherInts.remove(project)
+    }
 }

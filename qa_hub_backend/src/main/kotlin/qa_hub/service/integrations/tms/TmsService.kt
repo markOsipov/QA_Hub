@@ -10,11 +10,15 @@ import org.springframework.stereotype.Service
 import qa_hub.core.mongo.QaHubMongoClient
 import qa_hub.core.mongo.entity.Collections.TMS_INTEGRATIONS
 import qa_hub.core.mongo.utils.setCurrentPropertyValues
+import qa_hub.service.utils.CachedIntegrationInfoService
 
 @Service
 class TmsService {
     @Autowired
     lateinit var mongoClient: QaHubMongoClient
+
+    @Autowired
+    lateinit var cachedInts: CachedIntegrationInfoService
 
     private val tmsIntegrationsCollection by lazy {
         mongoClient.db.getCollection<TmsInfo>(TMS_INTEGRATIONS.collectionName)
@@ -28,6 +32,8 @@ class TmsService {
         val integrations = getTmsIntegrations()
         if (integrations.firstOrNull { it.tmsType == integration.tmsType } == null) {
             tmsIntegrationsCollection.insertOne(integration)
+
+            cachedInts.prjTmsInts = mutableMapOf()
 
             return@runBlocking tmsIntegrationsCollection.findOne(
                 TmsInfo::tmsType.eq(integration.tmsType)
@@ -46,18 +52,28 @@ class TmsService {
             upsert()
         )
 
+        cachedInts.prjTmsInts = mutableMapOf()
+
         return@runBlocking tmsIntegrationsCollection.findOne(
             TmsInfo::tmsType.eq(integration.tmsType)
         )!!
     }
 
     fun deleteTmsIntegration(id: String): DeleteResult = runBlocking {
-        tmsIntegrationsCollection.deleteOne(
+        val result = tmsIntegrationsCollection.deleteOne(
             TmsInfo::_id.eq(id)
         )
+
+        cachedInts.prjTmsInts = mutableMapOf()
+
+        return@runBlocking result
     }
 
     fun deleteAllTmsIntegrations(): DeleteResult = runBlocking {
-        tmsIntegrationsCollection.deleteMany()
+        val result = tmsIntegrationsCollection.deleteMany()
+
+        cachedInts.prjTmsInts = mutableMapOf()
+
+        return@runBlocking result
     }
 }

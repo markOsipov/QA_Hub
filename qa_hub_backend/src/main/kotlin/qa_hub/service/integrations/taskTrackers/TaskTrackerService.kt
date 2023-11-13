@@ -10,11 +10,15 @@ import org.springframework.stereotype.Service
 import qa_hub.core.mongo.QaHubMongoClient
 import qa_hub.core.mongo.entity.Collections
 import qa_hub.core.mongo.utils.setCurrentPropertyValues
+import qa_hub.service.utils.CachedIntegrationInfoService
 
 @Service
 class TaskTrackerService {
     @Autowired
     lateinit var mongoClient: QaHubMongoClient
+
+    @Autowired
+    lateinit var cachedInts: CachedIntegrationInfoService
 
     private val taskTrackersIntegrationsCollection by lazy {
         mongoClient.db.getCollection<TaskTrackerInfo>(Collections.TASK_TRACKER_INTEGRATIONS.collectionName)
@@ -28,6 +32,8 @@ class TaskTrackerService {
         val integrations = getTaskTrackerIntegrations()
         if (integrations.firstOrNull { it.type == integration.type } == null) {
             taskTrackersIntegrationsCollection.insertOne(integration)
+
+            cachedInts.prjTtInts = mutableMapOf()
 
             return@runBlocking taskTrackersIntegrationsCollection.findOne(
                 TaskTrackerInfo::type.eq(integration.type)
@@ -46,18 +52,28 @@ class TaskTrackerService {
             upsert()
         )
 
+        cachedInts.prjTtInts = mutableMapOf()
+
         return@runBlocking taskTrackersIntegrationsCollection.findOne(
             TaskTrackerInfo::type.eq(integration.type)
         )!!
     }
 
     fun deleteTaskTrackerIntegration(id: String): DeleteResult = runBlocking {
-        taskTrackersIntegrationsCollection.deleteOne(
+        val result = taskTrackersIntegrationsCollection.deleteOne(
             TaskTrackerInfo::_id.eq(id)
         )
+
+        cachedInts.prjTtInts = mutableMapOf()
+
+        return@runBlocking result
     }
 
     fun deleteAllTaskTrackerIntegrations(): DeleteResult = runBlocking {
-        taskTrackersIntegrationsCollection.deleteMany()
+        val result = taskTrackersIntegrationsCollection.deleteMany()
+
+        cachedInts.prjTtInts = mutableMapOf()
+
+        return@runBlocking result
     }
 }
