@@ -8,8 +8,6 @@ import {
 import {StyledTableRow} from "../primitives/Table/StyledTableRow";
 import {StyledTableCell} from "../primitives/Table/StyledTableCell";
 import {observer} from "mobx-react-lite";
-import projectState from "../../state/ProjectState";
-import {getTaskTmsIntegration, getTaskTrackerIntegration} from "../../requests/BlockerRequests";
 import {useState, useEffect} from "react";
 import FullNameTableHeaderCell from "./FullNameTableHeaderCell";
 import BlockedTestTableRow from "./BlockedTestTableRow";
@@ -20,7 +18,7 @@ import TablePaginationActions from "../primitives/Table/TablePaginationActions";
 import blockerState from "../../state/BlockerState";
 import TestHistoryModal from "../stats/testHistoryModal/TestHistoryModal";
 import {useRouter} from "next/router";
-
+import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 
 const BlockedTestsTable = observer(() => {
     const router = useRouter()
@@ -110,13 +108,24 @@ const BlockedTestsTable = observer(() => {
                     </TableBody>
                     <TableFooter>
                         <TableRow>
-                            <StyledTableCell style={{borderBottom: "1px solid rgba(224, 224, 224, 1)", maxWidth: "50px"}} colSpan={3}>
-                                <Button variant="contained"
-                                        color="error"
-                                        startIcon={<AddIcon />}
-                                        onClick={handleOpenAddBlockedTestModal}
-                                        style={{margin: "0 15px", width: "max-content"}}
-                                >Add blocked test</Button>
+                            <StyledTableCell style={{borderBottom: "1px solid rgba(224, 224, 224, 1)", maxWidth: "50px"}} colSpan={4}>
+                                <div style={{display: 'flex'}}>
+                                    <Button variant="contained"
+                                            color="primary"
+                                            size="small"
+                                            startIcon={<ImportContactsIcon />}
+                                            onClick={() => router.push(`/projects/${project}/blocker/history`)}
+                                            style={{margin: "0 5px", width: "max-content"}}
+                                    >History</Button>
+
+                                    <Button variant="contained"
+                                            color="error"
+                                            size="small"
+                                            startIcon={<AddIcon />}
+                                            onClick={handleOpenAddBlockedTestModal}
+                                            style={{margin: "0 5px", width: "max-content"}}
+                                    >Add</Button>
+                                </div>
                             </StyledTableCell>
                             <TablePagination
                                 rowsPerPageOptions={[20, 50, 100, { label: 'All', value: -1 }]}
