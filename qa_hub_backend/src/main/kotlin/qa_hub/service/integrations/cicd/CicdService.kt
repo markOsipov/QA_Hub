@@ -11,6 +11,7 @@ import qa_hub.core.mongo.QaHubMongoClient
 import qa_hub.core.mongo.entity.Collections
 import qa_hub.core.mongo.utils.setCurrentPropertyValues
 import qa_hub.core.utils.DateTimeUtils
+import qa_hub.service.utils.CachedIntegrationInfoService
 import qa_hub.service.utils.ProjectIntegrationsService
 import qa_hub.service.utils.ProjectTmsIntegrationsInfo
 
@@ -20,7 +21,7 @@ class CicdService {
     lateinit var mongoClient: QaHubMongoClient
 
     @Autowired
-    lateinit var projectIntegrationsService: ProjectIntegrationsService
+    lateinit var cachedInts: CachedIntegrationInfoService
 
     private val cicdIntegrationsCollection by lazy {
         mongoClient.db.getCollection<CicdInfo>(Collections.CICD_INTEGRATIONS.collectionName)
@@ -34,6 +35,8 @@ class CicdService {
         val integrations = getCicdIntegrations()
         if (integrations.firstOrNull { it.cicdType == integration.cicdType } == null) {
             cicdIntegrationsCollection.insertOne(integration)
+
+            cachedInts.prjCicdInts = mutableMapOf()
 
             return@runBlocking cicdIntegrationsCollection.findOne(
                 CicdInfo::cicdType.eq(integration.cicdType)
@@ -52,18 +55,28 @@ class CicdService {
             upsert()
         )
 
+        cachedInts.prjCicdInts = mutableMapOf()
+
         return@runBlocking cicdIntegrationsCollection.findOne(
             CicdInfo::cicdType.eq(integration.cicdType)
         )!!
     }
 
     fun deleteCicdIntegration(id: String): DeleteResult = runBlocking {
-        cicdIntegrationsCollection.deleteOne(
+        val result = cicdIntegrationsCollection.deleteOne(
             CicdInfo::_id.eq(id)
         )
+
+        cachedInts.prjCicdInts = mutableMapOf()
+
+        return@runBlocking result
     }
 
     fun deleteAllCicdIntegrations(): DeleteResult = runBlocking {
-        cicdIntegrationsCollection.deleteMany()
+        val result = cicdIntegrationsCollection.deleteMany()
+
+        cachedInts.prjCicdInts = mutableMapOf()
+
+        return@runBlocking result
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import qa_hub.entity.Project
+import qa_hub.service.utils.CachedIntegrationInfoService
 import qa_hub.service.utils.ProjectService
 
 @RestController
@@ -16,6 +17,9 @@ import qa_hub.service.utils.ProjectService
 class ProjectController {
     @Autowired
     lateinit var projectService: ProjectService
+
+    @Autowired
+    lateinit var cachedInts: CachedIntegrationInfoService
 
     @GetMapping("")
     fun getProjects(): List<Project> {
@@ -29,6 +33,7 @@ class ProjectController {
 
     @PostMapping("/{projectName}/delete")
     fun deleteProject(@PathVariable projectName: String): DeleteResult {
+        cachedInts.clearProjectInts(projectName)
         return projectService.deleteProject(projectName)
     }
 
@@ -39,6 +44,9 @@ class ProjectController {
 
     @PostMapping("/update")
     fun editProject(@RequestBody body: Project): Project {
-        return projectService.upsertProject(body)
+        val project = projectService.upsertProject(body)
+        cachedInts.clearProjectInts(project.name)
+
+        return project
     }
 }
