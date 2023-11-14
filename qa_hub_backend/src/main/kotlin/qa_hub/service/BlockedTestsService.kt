@@ -32,7 +32,7 @@ class BlockedTestsService {
     }
 
     private val blockedTestsHistoryCollection by lazy {
-        mongoClient.db.getCollection<BlockedTestHistoryItem>(BLOCKED_TESTS.collectionName)
+        mongoClient.db.getCollection<BlockedTestHistoryItem>(BLOCKED_TESTS_HISTORY.collectionName)
     }
 
     fun getBlockedTests(): List<BlockedTest> = runBlocking {
