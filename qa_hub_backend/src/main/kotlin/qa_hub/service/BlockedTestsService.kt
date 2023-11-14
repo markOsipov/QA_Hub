@@ -53,6 +53,12 @@ class BlockedTestsService {
             .toList()
     }
 
+    fun getBlockedTestsHistoryForProject(project: String): List<BlockedTestHistoryItem> = runBlocking {
+        blockedTestsHistoryCollection
+            .find(BlockedTestHistoryItem::project eq project)
+            .toList()
+    }
+
     fun getTaskStatus(project: String, task: String): TaskStatusResponse? = runBlocking {
         val taskTrackerInfo = projectIntegrationsService
             .getProjectTaskTrackerInt(project)
@@ -88,6 +94,7 @@ class BlockedTestsService {
             BlockedTestHistoryItem(
                 date = blockDate,
                 event = BlockedTestHistoryEvent.BLOCK.event,
+                project = blockedTest.project,
                 blockedTest = blockedTest
             )
         )
@@ -96,7 +103,7 @@ class BlockedTestsService {
     }
 
     fun unblockTest(blockedTest: BlockedTest) = runBlocking {
-        blockedTestsCollection.deleteOne(
+        val result = blockedTestsCollection.deleteOne(
             and(
                 BlockedTest::project.eq(blockedTest.project),
                 BlockedTest::fullName.eq(blockedTest.fullName)
@@ -107,9 +114,12 @@ class BlockedTestsService {
             BlockedTestHistoryItem(
                 date = currentDateTimeUtc(),
                 event = BlockedTestHistoryEvent.UNBLOCK.event,
+                project = blockedTest.project,
                 blockedTest = blockedTest
             )
         )
+
+        return@runBlocking result
     }
 
     fun clearAll() = runBlocking {
@@ -131,7 +141,7 @@ class BlockedTestsService {
             )
         }
 
-        blockedTestsCollection.updateOne(
+        val result = blockedTestsCollection.updateOne(
             updateBson,
             set(
                 *(blockedTest.setCurrentPropertyValues(skipProperties = listOf("_id")))
@@ -142,8 +152,11 @@ class BlockedTestsService {
             BlockedTestHistoryItem(
                 date = currentDateTimeUtc(),
                 event = BlockedTestHistoryEvent.EDIT.event,
+                project = blockedTest.project,
                 blockedTest = blockedTest
             )
         )
+
+        return@runBlocking result
     }
 }

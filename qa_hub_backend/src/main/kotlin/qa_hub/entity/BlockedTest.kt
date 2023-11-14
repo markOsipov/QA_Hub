@@ -21,5 +21,6 @@ enum class BlockedTestHistoryEvent(val event: String) {
 data class BlockedTestHistoryItem(
     val date: String,
     val event: String,
+    val project: String,
     val blockedTest: BlockedTest
 )

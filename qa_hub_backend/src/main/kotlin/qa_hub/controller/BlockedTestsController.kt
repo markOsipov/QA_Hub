@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import qa_hub.entity.BlockedTestHistoryItem
 import qa_hub.service.integrations.taskTrackers.TaskStatusResponse
 import java.lang.Exception
 
@@ -33,6 +34,12 @@ class BlockedTestsController {
         @RequestParam("skipTrials", required = false, defaultValue = "false"
     ) skipTrials: Boolean): List<BlockedTest> {
         return blockedTestsService.getBlockedTestsForProject(project, skipTrials)
+    }
+
+    @GetMapping("/history/{project}")
+    fun getBlockedTestsHistoryForProject(
+        @PathVariable project: String): List<BlockedTestHistoryItem> {
+        return blockedTestsService.getBlockedTestsHistoryForProject(project)
     }
 
     @GetMapping("/{project}/taskStatus/{task}")
