@@ -87,7 +87,7 @@ class QaHubConfigController {
         qaHubConfigService.deleteAllConfigs()
         projectService.deleteAllProjects()
         testcaseService.deleteAll()
-        blockedTestsService.unblockAll()
+        blockedTestsService.clearAll()
 
         qaHubConfigService.upsertConfig(
             QaHubConfig(TEAMS.configName, true, teams)
