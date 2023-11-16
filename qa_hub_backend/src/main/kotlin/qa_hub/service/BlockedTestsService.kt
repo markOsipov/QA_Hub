@@ -1,5 +1,6 @@
 package qa_hub.service
 
+import com.mongodb.client.model.Sorts
 import qa_hub.core.mongo.QaHubMongoClient
 import qa_hub.core.mongo.utils.setCurrentPropertyValues
 import com.mongodb.client.result.UpdateResult
@@ -56,6 +57,7 @@ class BlockedTestsService {
     fun getBlockedTestsHistoryForProject(project: String): List<BlockedTestHistoryItem> = runBlocking {
         blockedTestsHistoryCollection
             .find(BlockedTestHistoryItem::project eq project)
+            .sort(Sorts.ascending("date"))
             .toList()
     }
 

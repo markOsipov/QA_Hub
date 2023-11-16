@@ -58,7 +58,6 @@ const ProjectOtherIntsForm = observer(({project, setProject, ...props}) => {
     let newProject = { ...project }
     newProject.otherInts.active.splice(index, 1)
 
-    console.log( JSON.stringify(newProject.otherInts.active))
     setProject(newProject)
   }
 
@@ -111,13 +110,11 @@ const OtherIntCard = ({index, integration, project, setIntegration, emptyIntegra
   const changeIntType = (integrationType) => {
     const integration = project.otherInts.all.find(el => {return el.type === integrationType})
     if (integration) {
-      console.log("FOUND")
       setIntegration(index, {
         ...emptyIntegration,
         ...integration
       })
     } else {
-      console.log("NOT FOUND")
       setIntegration(index, {
         ...emptyIntegration
       })

@@ -13,9 +13,15 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import EventTypeIcon from "./EventTypeIcon";
 import EventsList from "./EventsList";
 import {useEffect, useState} from "react";
+import Button from "@mui/material/Button";
+import LockIcon from "@mui/icons-material/Lock";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
+import {useRouter} from "next/router";
 
 const SelectedBlockedTest = observer(({selectedItem, setSelectedItem, history, refreshHistory, ...props}) => {
   const blockedTests = blockerState.blockedTests
+  const router = useRouter()
+  const project = router.query.project
 
   const [filteredHistory, setFilteredHistory] = useState([])
   const [blockedTest, setBlockedTest] = useState(null)
@@ -42,12 +48,22 @@ const SelectedBlockedTest = observer(({selectedItem, setSelectedItem, history, r
       item.shortName === blockedTest?.shortName
     }).length > 0
 
-    console.log(blockedTest?.testcaseId)
-    console.log(JSON.stringify(blockedTests))
-    console.log(isBlocked)
-
     setIsBlocked(isBlocked)
   }, [blockedTests, blockedTest])
+
+  const handleClickBlock = () => {
+    blockTest(blockedTest).then(() => {
+      blockerState.updateBlockedTests(project)
+      refreshHistory()
+    })
+  }
+
+  const handleClickUnblock = () => {
+      unblockTest(blockedTest).then(() => {
+        blockerState.updateBlockedTests(project)
+        refreshHistory()
+      })
+  }
 
   if (!blockedTest) {
     return <div style={{display: 'grid', placeItems: 'center', width: '55%'}}>
@@ -69,75 +85,60 @@ const SelectedBlockedTest = observer(({selectedItem, setSelectedItem, history, r
       </StyledTooltip>
     </div>
 
-    <div
-      style={{
-        maxWidth: 'max-content',
-        display: 'flex',
-        alignItems: 'center',
-        marginTop: '20px'
-      }}
-    >
-      <TextWithLabel label={'TestcaseId'} value={blockedTest.testcaseId} style={{height: 'max-content', minWidth: '90px'}}/>
-      <TextWithLabel label={'FullName'} value={blockedTest.fullName} style={{marginLeft: '15px', height: 'max-content', minWidth: 'max-content'}}/>
-      <TextWithLabel label={'Issue'} value={blockedTest.jiraIssue} style={{marginLeft: '15px', height: 'max-content', minWidth: '90px'}}/>
+    <div style={{display: 'block', width: 'max-content'}}>
+      <div
+        style={{
+          maxWidth: 'max-content',
+          display: 'flex',
+          alignItems: 'center',
+          marginTop: '20px'
+        }}
+      >
+        <TextWithLabel label={'TestcaseId'} value={blockedTest.testcaseId} style={{height: 'max-content', minWidth: '90px'}}/>
+        <TextWithLabel label={'FullName'} value={blockedTest.fullName} style={{marginLeft: '15px', height: 'max-content', minWidth: 'max-content'}}/>
+        <TextWithLabel label={'Issue'} value={blockedTest.jiraIssue} style={{marginLeft: '15px', height: 'max-content', minWidth: '90px'}}/>
 
-      <div style={{display: 'flex', alignItems: 'center', marginLeft: '20px'}}>
-        <Switch
-          checked={blockedTest.allowTrialRuns}
-        />
-        <label>Trial</label>
+        <div style={{display: 'flex', alignItems: 'center', marginLeft: '20px'}}>
+          <Switch
+            checked={blockedTest.allowTrialRuns}
+          />
+          <label>Trial</label>
+        </div>
       </div>
+      <TextWithLabel label={'Comment'} value={blockedTest.comment} style={{height: 'max-content', minHeight: '20px', maxHeight: '300px', resize: 'vertical', marginTop: '20px'}}/>
     </div>
 
     <div style={{marginTop: '10px'}}>
       <Typography variant={'h6'} style={{color: customTheme.palette.text.faded}}>Related events</Typography>
 
       <div>
-        <EventsList history={filteredHistory } refreshHistory={refreshHistory} setSelectedItem={setSelectedItem} style={{width: '100%', height: 'max-content', minHeight: '250px', maxHeight: 'calc(100vh - 350px)', opacity: '0.7', resize: 'vertical'}}></EventsList>
+        <EventsList history={filteredHistory } refreshHistory={refreshHistory} setSelectedItem={setSelectedItem} style={{width: '100%', height: 'max-content', minHeight: '250px', maxHeight: 'calc(100vh - 360px)', opacity: '0.7', resize: 'vertical'}}></EventsList>
       </div>
     </div>
 
-    <div style={{marginTop: '10px'}}>
-      Is blocked: { String(isBlocked) }
+    <div style={{marginTop: '20px', display: 'flex', alignItems: 'center'}}>
+      {
+        isBlocked &&
+        <Button
+          startIcon={<LockOpenIcon />}
+          variant={'contained'}
+          size={'small'}
+          onClick={handleClickUnblock}
+        >Unblock</Button>
+      }
+      {
+        !isBlocked &&
+        <Button
+          startIcon={<LockIcon />}
+          variant={'contained'}
+          size={'small'}
+          color={'error'}
+          onClick={handleClickBlock}
+        >Block</Button>
+      }
+      <label style={{marginLeft: '10px'}}>This is test is { isBlocked ? 'blocked' : 'unblocked' } now</label>
     </div>
   </div>
 })
 
 export default SelectedBlockedTest
-const BlockerEventActionButton = ({eventType, blockedTest, refreshHistory, ...props}) => {
-  const eventTypes = {
-    unblock: "unblock",
-    block: "block",
-    edit: "edit"
-  }
-
-  if (eventType === eventTypes.edit ) {
-    return null
-  }
-
-  const handleClick = () => {
-    if (eventType === eventTypes.unblock ) {
-      if (confirm("Do you want to block this test")) {
-        blockTest(blockedTest).then(() => {
-          refreshHistory()
-        })
-      }
-    } else {
-      if (confirm("Do you want to block this test")) {
-        unblockTest(blockedTest).then(() => {
-          refreshHistory()
-        })
-      }
-    }
-  }
-
-  return <StyledTooltip title={'Undo'}>
-    <div>
-      <CustomIconButton
-        action={handleClick}
-        color={customTheme.palette.primary.main}
-        icon={<UndoIcon />}
-      />
-    </div>
-  </StyledTooltip>
-}

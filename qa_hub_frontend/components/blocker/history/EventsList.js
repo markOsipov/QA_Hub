@@ -2,15 +2,28 @@ import {Card, Paper, Table, TableBody, TableContainer, TableHead} from "@mui/mat
 import {StyledTableRow} from "../../primitives/Table/StyledTableRow";
 import {StyledTableCell} from "../../primitives/Table/StyledTableCell";
 import TextWithLabel from "../../primitives/TextWithLabel";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {customTheme} from "../../../styles/CustomTheme";
 import {getDate, getTimeMinutes} from "../../../utils/DateTimeUtils";
 import EventTypeIcon from "./EventTypeIcon";
-const EventsList = ({history, refreshHistory, setSelectedItem, ...props}) => {
-  const [hovered, setHovered] = useState(false)
-  const handleClick = (historyItem) => {
-    setSelectedItem(historyItem)
-  }
+const EventsList = ({history, refreshHistory, setSelectedItem, filter, ...props}) => {
+  const [filteredItems, setFilteredItems] = useState(history)
+
+  useEffect(() => {
+    if (filter == null) {
+      setFilteredItems(history)
+    } else {
+      setFilteredItems(
+        history.filter(el => {
+          return filter === "" ||
+            el.blockedTest.testcaseId.includes(filter) ||
+            el.blockedTest.fullName.includes(filter) ||
+            el.blockedTest.jiraIssue.includes(filter) ||
+            el.blockedTest.comment.includes(filter)
+        })
+      )
+    }
+  }, [filter, history])
 
   return <TableContainer style={{...props.style}}>
     <Table size="small" stickyHeader >
@@ -26,7 +39,7 @@ const EventsList = ({history, refreshHistory, setSelectedItem, ...props}) => {
       </TableHead>
       <TableBody>
         {
-          history.map((historyItem, index) => {
+          filteredItems.map((historyItem, index) => {
               return <HistoryItemTableRow key={index} historyItem={historyItem} setSelectedItem={setSelectedItem} index={index} />
             }
           )
