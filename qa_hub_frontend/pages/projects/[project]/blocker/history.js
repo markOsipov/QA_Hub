@@ -29,7 +29,7 @@ const BlockedTestsHistoryPage = observer(() => {
 
   return <>
     <Paper elevation={3} style={{margin: "10px", height: "calc(100vh - 85px)", overflowY: "auto", width: "calc(100% - 20px)", display: 'flex', padding: '10px' }}>
-      <EventsList history={history} refreshHistory={refreshHistory} setSelectedItem={setSelectedItem}  style={{width: 'calc(50% - 20px)', maxHeight: '90vh'}}/>
+      <EventsList history={history} refreshHistory={refreshHistory} setSelectedItem={setSelectedItem}  style={{width: 'calc(50%)', maxHeight: '90vh', marginRight: '10px'}}/>
       <SelectedBlockedTest history={history} refreshHistory={refreshHistory} selectedItem={selectedItem} setSelectedItem={setSelectedItem}/>
     </Paper>
   </>

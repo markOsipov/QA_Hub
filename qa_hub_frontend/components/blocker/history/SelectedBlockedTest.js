@@ -54,7 +54,7 @@ const SelectedBlockedTest = observer(({selectedItem, setSelectedItem, history, r
       <Typography variant={'h5'} style={{color: customTheme.palette.text.disabled}}>Not selected</Typography>
     </div>
   }
-  return <div style={{width: '55%', padding: '0 15px 15px 15px'}}>
+  return <div style={{width: '55%', padding: '5px 0 10px 10px'}}>
     <div style={{display: 'flex', marginBottom: '30px'}}>
       <EventTypeIcon eventType={selectedItem.event}></EventTypeIcon>
       <Typography variant={'h5'} style={{marginLeft: '10px'}}>Event details:</Typography>
