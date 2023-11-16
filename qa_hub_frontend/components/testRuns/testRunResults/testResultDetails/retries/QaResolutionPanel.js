@@ -92,7 +92,7 @@ export default function QaResolutionPanel({ testResult, ...props}) {
         value={qaReview.qaComment || ""}
         onChange={(event) => {setQaReview({ ...qaReview, qaComment: event.target.value || "" })}}
         onKeyDown={handleShiftEnterKeysPressed}
-        onBlur={() => { updateComment(); console.log("Updated") }}
+        onBlur={() => { updateComment() }}
         disabled={!editing}
         style={{
           width: '100%',

@@ -12,3 +12,15 @@ data class BlockedTest(
     var team: String? = null,
     var allowTrialRuns: Boolean? = false
 )
+
+enum class BlockedTestHistoryEvent(val event: String) {
+    BLOCK("block"),
+    EDIT("edit"),
+    UNBLOCK("unblock")
+}
+data class BlockedTestHistoryItem(
+    val date: String,
+    val event: String,
+    val project: String,
+    val blockedTest: BlockedTest
+)

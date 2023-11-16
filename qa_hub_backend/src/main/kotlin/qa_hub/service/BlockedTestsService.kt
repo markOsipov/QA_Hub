@@ -1,8 +1,8 @@
 package qa_hub.service
 
+import com.mongodb.client.model.Sorts
 import qa_hub.core.mongo.QaHubMongoClient
 import qa_hub.core.mongo.utils.setCurrentPropertyValues
-import qa_hub.entity.BlockedTest
 import com.mongodb.client.result.UpdateResult
 import kotlinx.coroutines.runBlocking
 import org.bson.types.ObjectId
@@ -12,11 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import qa_hub.core.mongo.entity.Collections.*
 import qa_hub.core.utils.DateTimeUtils.currentDateTimeUtc
-import qa_hub.core.utils.DateTimeUtils.formatDate
-import qa_hub.entity.Platforms
-import qa_hub.entity.Project
+import qa_hub.entity.*
 import qa_hub.service.integrations.taskTrackers.TaskStatusResponse
-import qa_hub.service.integrations.taskTrackers.TaskTrackerInfo
 import qa_hub.service.utils.ProjectIntegrationsService
 import qa_hub.service.utils.ProjectService
 
@@ -35,12 +32,8 @@ class BlockedTestsService {
         mongoClient.db.getCollection<BlockedTest>(BLOCKED_TESTS.collectionName)
     }
 
-    private val taskTrackerIntegrationCollection by lazy {
-        mongoClient.db.getCollection<TaskTrackerInfo>(TASK_TRACKER_INTEGRATIONS.collectionName)
-    }
-
-    private val projectCollection by lazy {
-        mongoClient.db.getCollection<Project>(PROJECTS.collectionName)
+    private val blockedTestsHistoryCollection by lazy {
+        mongoClient.db.getCollection<BlockedTestHistoryItem>(BLOCKED_TESTS_HISTORY.collectionName)
     }
 
     fun getBlockedTests(): List<BlockedTest> = runBlocking {
@@ -61,6 +54,13 @@ class BlockedTestsService {
             .toList()
     }
 
+    fun getBlockedTestsHistoryForProject(project: String): List<BlockedTestHistoryItem> = runBlocking {
+        blockedTestsHistoryCollection
+            .find(BlockedTestHistoryItem::project eq project)
+            .sort(Sorts.ascending("date"))
+            .toList()
+    }
+
     fun getTaskStatus(project: String, task: String): TaskStatusResponse? = runBlocking {
         val taskTrackerInfo = projectIntegrationsService
             .getProjectTaskTrackerInt(project)
@@ -71,7 +71,8 @@ class BlockedTestsService {
     }
 
     fun blockTest(blockedTest: BlockedTest): UpdateResult = runBlocking {
-        blockedTest.blockDate = currentDateTimeUtc()
+        val blockDate = currentDateTimeUtc()
+        blockedTest.blockDate = blockDate
 
         try {
             val separator = projectService.currentProjects.first { it.name == blockedTest.project }.separator
@@ -80,7 +81,7 @@ class BlockedTestsService {
             throw Exception("Blocked test has wrong project name: ${blockedTest.project}")
         }
 
-        blockedTestsCollection.updateOne(
+        val result = blockedTestsCollection.updateOne(
             and(
                 BlockedTest::project.eq(blockedTest.project),
                 BlockedTest::fullName.eq(blockedTest.fullName)
@@ -90,28 +91,42 @@ class BlockedTestsService {
             ),
             upsert()
         )
+
+        blockedTestsHistoryCollection.insertOne(
+            BlockedTestHistoryItem(
+                date = blockDate,
+                event = BlockedTestHistoryEvent.BLOCK.event,
+                project = blockedTest.project,
+                blockedTest = blockedTest
+            )
+        )
+
+        return@runBlocking result
     }
 
     fun unblockTest(blockedTest: BlockedTest) = runBlocking {
-        blockedTestsCollection.deleteOne(
+        val result = blockedTestsCollection.deleteOne(
             and(
                 BlockedTest::project.eq(blockedTest.project),
                 BlockedTest::fullName.eq(blockedTest.fullName)
             )
         )
-    }
 
-    fun unblockTest(fullName: String, project: String) = runBlocking {
-        blockedTestsCollection.deleteOne(
-            and(
-                BlockedTest::project.eq(project),
-                BlockedTest::fullName.eq(fullName)
+        blockedTestsHistoryCollection.insertOne(
+            BlockedTestHistoryItem(
+                date = currentDateTimeUtc(),
+                event = BlockedTestHistoryEvent.UNBLOCK.event,
+                project = blockedTest.project,
+                blockedTest = blockedTest
             )
         )
+
+        return@runBlocking result
     }
 
-    fun unblockAll() = runBlocking {
+    fun clearAll() = runBlocking {
         blockedTestsCollection.deleteMany()
+        blockedTestsHistoryCollection.deleteMany()
     }
 
     fun editBlockedTest(blockedTest: BlockedTest) = runBlocking {
@@ -128,11 +143,22 @@ class BlockedTestsService {
             )
         }
 
-        blockedTestsCollection.updateOne(
+        val result = blockedTestsCollection.updateOne(
             updateBson,
             set(
                 *(blockedTest.setCurrentPropertyValues(skipProperties = listOf("_id")))
             )
         )
+
+        blockedTestsHistoryCollection.insertOne(
+            BlockedTestHistoryItem(
+                date = currentDateTimeUtc(),
+                event = BlockedTestHistoryEvent.EDIT.event,
+                project = blockedTest.project,
+                blockedTest = blockedTest
+            )
+        )
+
+        return@runBlocking result
     }
 }

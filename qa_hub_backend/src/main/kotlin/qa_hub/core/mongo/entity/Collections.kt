@@ -6,6 +6,7 @@ enum class Collections(val collectionName: String) {
 
     APP_LOGS("appLogs"),
     BLOCKED_TESTS("blockedTests"),
+    BLOCKED_TESTS_HISTORY("blockedTestsHistory"),
     TESTCASES("testcases"),
     TEST_LOGS("testLogs"),
     TEST_QA_REVIEWS("testQaReviews"),

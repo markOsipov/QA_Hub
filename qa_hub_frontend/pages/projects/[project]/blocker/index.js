@@ -1,9 +1,9 @@
-import BlockedTestsTable from "../../../components/blocker/BlockedTestsTable";
-import appState from "../../../state/AppState";
+import BlockedTestsTable from "../../../../components/blocker/BlockedTestsTable";
+import appState from "../../../../state/AppState";
 import {observer} from "mobx-react-lite";
 import {useEffect} from "react";
 
-const Blocker = observer(() => {
+const Index = observer(() => {
     useEffect(() => {
         appState.setTitle(`QA Hub: Blocker`)
     }, [])
@@ -13,4 +13,4 @@ const Blocker = observer(() => {
     );
 })
 
-export default Blocker;
+export default Index;
