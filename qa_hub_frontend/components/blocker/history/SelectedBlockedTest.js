@@ -1,6 +1,6 @@
 import Typography from "@mui/material/Typography";
 import {customTheme} from "../../../styles/CustomTheme";
-import {blockTest, unblockTest} from "../../../requests/BlockerRequests";
+import {blockTest, getTaskStatus, unblockTest} from "../../../requests/BlockerRequests";
 import StyledTooltip from "../../primitives/StyledTooltip";
 import CustomIconButton from "../../primitives/CustomIconButton";
 import UndoIcon from "@mui/icons-material/Undo";
@@ -17,6 +17,9 @@ import Button from "@mui/material/Button";
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import {useRouter} from "next/router";
+import TaskLink from "../TaskLink";
+import TaskStatus from "../TaskStatus";
+import projectIntegrationsState from "../../../state/integrations/ProjectIntegrationsState";
 
 const SelectedBlockedTest = observer(({selectedItem, setSelectedItem, history, refreshHistory, ...props}) => {
   const blockedTests = blockerState.blockedTests
@@ -26,6 +29,19 @@ const SelectedBlockedTest = observer(({selectedItem, setSelectedItem, history, r
   const [filteredHistory, setFilteredHistory] = useState([])
   const [blockedTest, setBlockedTest] = useState(null)
   const [isBlocked, setIsBlocked] = useState(false)
+
+  const [status, setStatus] = useState(null)
+  const [color, setColor] = useState(null)
+  const taskTrackerInfo = projectIntegrationsState.taskTrackerInt || {}
+
+  useEffect(() => {
+    if (selectedItem) {
+      getTaskStatus(selectedItem.blockedTest.project, selectedItem.blockedTest.jiraIssue).then((data) => {
+        setStatus(data?.data?.statusInfo?.statusName || null)
+        setColor(data?.data?.statusInfo?.statusColor || null)
+      })
+    }
+  }, [selectedItem])
 
   useEffect(() => {
     const historyFilter = (item) => {
@@ -96,13 +112,17 @@ const SelectedBlockedTest = observer(({selectedItem, setSelectedItem, history, r
       >
         <TextWithLabel label={'TestcaseId'} value={blockedTest.testcaseId} style={{height: 'max-content', minWidth: '90px'}}/>
         <TextWithLabel label={'FullName'} value={blockedTest.fullName} style={{marginLeft: '15px', height: 'max-content', minWidth: 'max-content'}}/>
-        <TextWithLabel label={'Issue'} value={blockedTest.jiraIssue} style={{marginLeft: '15px', height: 'max-content', minWidth: '90px'}}/>
 
-        <div style={{display: 'flex', alignItems: 'center', marginLeft: '20px'}}>
+        <div style={{display: 'flex', alignItems: 'center', marginLeft: '15px'}}>
           <Switch
             checked={blockedTest.allowTrialRuns}
           />
           <label>Trial</label>
+        </div>
+
+        <div style={{display: 'flex', alignItems: 'center', width:'max-content', marginLeft: '15px'}}>
+          <TaskStatus status={status} color={color} />
+          <TaskLink blockedTest={selectedItem.blockedTest} taskUrl={taskTrackerInfo.taskUrl} style={{width:'max-content', marginLeft: '3px'}}/>
         </div>
       </div>
       <TextWithLabel label={'Comment'} value={blockedTest.comment} style={{height: 'max-content', minHeight: '20px', maxHeight: '300px', resize: 'vertical', marginTop: '20px'}}/>
