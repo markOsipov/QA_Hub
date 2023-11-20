@@ -22,6 +22,7 @@ import alertState from "../../../../state/AlertState";
 import {copyToClipboard} from "../../../../utils/CopyHelper";
 import AttachmentElement from "./AttachmentElement";
 import LabelIcon from '@mui/icons-material/Label';
+import TestResultTags from "./TestResultTags";
 
 const TestResultDetails = observer(({ ...props }) => {
   const router = useRouter()
@@ -132,32 +133,7 @@ const TestResultDetails = observer(({ ...props }) => {
             </div>
 
           </div>
-        <div style={{display: 'flex', position: 'absolute', right: '10px', top: '10px'}}>
-          {
-            (selectedTest.tags || []).map((tag, index) => {
-              const color = customTheme.palette.text.faded
-
-              return <div
-                style={{
-                  display: 'flex',
-                  marginLeft: '2px',
-                  alignItems: 'center',
-                  color: color,
-                  padding: '0 5px'
-                }}
-                key={index}
-              >
-                <LabelIcon
-                  style={{
-                    transform: 'rotate(180deg)',
-                    color: customTheme.palette.text.disabled
-                  }}
-                />
-                <label style={{position: 'relative', top: '-1px', marginLeft: '2px'}}>{tag}</label>
-              </div>
-            })
-          }
-        </div>
+          <TestResultTags style={{position: 'absolute', right: '10px', top: '10px'}} tags={selectedTest.tags} />
           <TestResultActions testResult={selectedTest} style={{position: 'absolute', right: '10px', bottom: '10px'}}/>
         </Paper>
 

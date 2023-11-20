@@ -20,7 +20,7 @@ const SearchFilter = observer(({ applyFilters, ...props}) => {
     testResultsFilterState.setFilterChanged(true)
   }
 
-  return <StyledTooltip title={"Search by test fullName or testcaseId" } enterDelay={800}>
+  return <StyledTooltip title={"Search by test fullName, testcaseId or tag" } enterDelay={800}>
     <div style={{minWidth: '50px', ...props.style}}>
         <StyledTextField
           value={filter.search || ''}

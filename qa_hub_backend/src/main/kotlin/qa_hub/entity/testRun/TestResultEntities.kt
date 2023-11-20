@@ -59,7 +59,7 @@ data class TestResultFilter(
         }
 
         if (tags.isNotEmpty()) {
-            filter.add(TestResult::tags all statuses)
+            filter.add(TestResult::tags all tags)
         }
 
         if (search != null) {
