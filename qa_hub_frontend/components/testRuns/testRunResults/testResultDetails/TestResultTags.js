@@ -6,7 +6,14 @@ import {useEffect, useState} from "react";
 import StyledTooltip from "../../../primitives/StyledTooltip";
 
 const TestResultTags = observer(({tags, ...props}) => {
-  return  <div style={{display: 'flex', ...props.style}}>
+  return  <div
+    style={{
+      display: 'flex',
+      flexWrap: 'wrap',
+      maxWidth: '45%',
+      justifyContent: 'end',
+      ...props.style}}
+    >
     {
       (tags || []).map((tag, index) => {
         return <TestResultTag
