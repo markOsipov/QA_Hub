@@ -21,6 +21,8 @@ import {customTheme} from "../../../../styles/CustomTheme";
 import alertState from "../../../../state/AlertState";
 import {copyToClipboard} from "../../../../utils/CopyHelper";
 import AttachmentElement from "./AttachmentElement";
+import LabelIcon from '@mui/icons-material/Label';
+import TestResultTags from "./TestResultTags";
 
 const TestResultDetails = observer(({ ...props }) => {
   const router = useRouter()
@@ -131,7 +133,7 @@ const TestResultDetails = observer(({ ...props }) => {
             </div>
 
           </div>
-
+          <TestResultTags style={{position: 'absolute', right: '10px', top: '10px'}} tags={selectedTest.tags} />
           <TestResultActions testResult={selectedTest} style={{position: 'absolute', right: '10px', bottom: '10px'}}/>
         </Paper>
 

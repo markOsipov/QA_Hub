@@ -48,42 +48,7 @@ class TestResultsService {
         val filter = mutableListOf(TestResult::testRunId eq testRunId)
 
         request?.filter?.let {
-            if (it.deviceId != null) {
-                filter.add(TestResult::deviceId eq it.deviceId)
-            }
-
-            if (it.runner != null) {
-                filter.add(TestResult::runner eq it.runner)
-            }
-
-            if (it.message != null) {
-                filter.add(TestResult::message regex it.message)
-            }
-
-            if (it.statuses.isNotEmpty()) {
-                filter.add(TestResult::status `in` it.statuses)
-            }
-
-            if (it.retries == true) {
-                filter.add(TestResult::retries gt 1)
-            } else if ((it.retries == false)) {
-                filter.add(TestResult::retries lte 1)
-            }
-
-            when (it.unreviewed) {
-                true -> filter.add(TestResult::reviewed ne true)
-                false -> filter.add(TestResult::reviewed eq true)
-                else -> {}
-            }
-
-            if (it.search != null) {
-                filter.add(
-                    or(
-                        TestResult::fullName regex Regex(it.search, RegexOption.IGNORE_CASE),
-                        TestResult::testcaseId regex Regex(it.search, RegexOption.IGNORE_CASE)
-                    )
-                )
-            }
+            filter.addAll(request.filter.getMongoFilter())
         }
 
         val query = mutableListOf(
@@ -104,41 +69,7 @@ class TestResultsService {
         val filter = mutableListOf(TestResult::testRunId eq testRunId)
 
         request?.let {
-            if (it.deviceId != null) {
-                filter.add(TestResult::deviceId eq it.deviceId)
-            }
-
-            if (it.runner != null) {
-                filter.add(TestResult::runner eq it.runner)
-            }
-
-            if (it.message != null) {
-                val specialCharacters = ".+*[]()"
-                var screenedMessage: String = it.message
-
-                specialCharacters.forEach { char ->
-                    screenedMessage = screenedMessage.replace("$char", "\\$char")
-                }
-
-
-                filter.add(TestResult::message regex screenedMessage)
-            }
-
-            if (it.statuses.isNotEmpty()) {
-                filter.add(TestResult::status `in` it.statuses)
-            }
-
-            if (it.retries == true) {
-                filter.add(TestResult::retries gt 1)
-            } else if ((it.retries == false)) {
-                filter.add(TestResult::retries lte 1)
-            }
-
-            when (it.unreviewed) {
-                true -> filter.add(TestResult::reviewed ne true)
-                false -> filter.add(TestResult::reviewed eq true)
-                else -> {}
-            }
+            filter.addAll(request.getMongoFilter())
         }
 
         return@runBlocking CountResponse(testResultsCollection.countDocuments(filter = and(*filter.toTypedArray())))
