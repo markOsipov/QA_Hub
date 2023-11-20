@@ -29,6 +29,7 @@ data class TestResult(
     var project: String?,
     var fullName: String,
     var title: String? = "",
+    var tags: MutableList<String> = mutableListOf(),
 
     var duration: Double? = null,
     var status: String,

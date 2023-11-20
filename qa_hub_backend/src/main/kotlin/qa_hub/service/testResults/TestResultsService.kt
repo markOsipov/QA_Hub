@@ -80,7 +80,8 @@ class TestResultsService {
                 filter.add(
                     or(
                         TestResult::fullName regex Regex(it.search, RegexOption.IGNORE_CASE),
-                        TestResult::testcaseId regex Regex(it.search, RegexOption.IGNORE_CASE)
+                        TestResult::testcaseId regex Regex(it.search, RegexOption.IGNORE_CASE),
+                        TestResult::tags contains it.search
                     )
                 )
             }
