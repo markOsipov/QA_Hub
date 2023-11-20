@@ -81,7 +81,7 @@ class TestResultsService {
                     or(
                         TestResult::fullName regex Regex(it.search, RegexOption.IGNORE_CASE),
                         TestResult::testcaseId regex Regex(it.search, RegexOption.IGNORE_CASE),
-                        TestResult::tags contains it.search
+                        TestResult::tags regex Regex(it.search, RegexOption.IGNORE_CASE)
                     )
                 )
             }
