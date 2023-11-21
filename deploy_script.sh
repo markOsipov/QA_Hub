@@ -95,7 +95,9 @@ ssh $REMOTE_USER@$REMOTE_IP << EOF
     sudo docker rmi --force $(sudo docker images | grep qa_hub_frontend | grep none | awk '{print $3}') || true && \
     echo qa_hub_frontend HAS BEEN SUCCESSFULLY UPDATED || echo qa_hub_frontend HAS FAILED TO UPDATE
 
-    exit
+    sudo -S <<< "$REMOTE_PASSWORD" docker rmi --force $(sudo docker images | grep qa_hub_ | grep none | awk '{print $3}') || true
 
-    sudo docker rmi --force $(sudo docker images | grep qa_hub_ | grep none | awk '{print $3}') || true
+    exit
 EOF
+
+sudo -S <<< "$REMOTE_PASSWORD" docker rmi --force $(sudo docker images | grep qa_hub_ | grep none | awk '{print $3}') || true
