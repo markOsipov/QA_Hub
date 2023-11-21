@@ -16,6 +16,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface GithubHttpInterface {
     companion object {
@@ -50,7 +51,9 @@ interface GithubHttpInterface {
     @GET("/repos/{org}/{project}/branches")
     fun getBranches(
         @Path("org") org: String,
-        @Path("project") project: String
+        @Path("project") project: String,
+        @Query("per_page") perPage: Int = 100,
+        @Query("page") page: Int = 1
     ): Call<List<GithubBranch>>
 
     @POST("/repos/{org}/{project}/actions/runs/{jobId}/cancel")

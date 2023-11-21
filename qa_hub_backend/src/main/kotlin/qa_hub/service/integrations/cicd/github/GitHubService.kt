@@ -30,6 +30,17 @@ class GitHubService(cicdInfo: CicdInfo): CicdIntegrationAbstract(cicdInfo) {
     }
 
     override fun getBranches(info: ProjectCicdInfo): List<String> {
-        return client.getBranches(info.path, info.project).map { it.name }
+        val branches = mutableListOf<String>()
+        var finished = false
+        var page = 1
+        val maxPages = 5
+        while (!finished) {
+            val response = client.getBranches(info.path, info.project, 100, page).map { it.name }
+            branches.addAll(response)
+            page += 1
+
+            finished = response.isEmpty() || page == maxPages
+        }
+        return branches
     }
 }

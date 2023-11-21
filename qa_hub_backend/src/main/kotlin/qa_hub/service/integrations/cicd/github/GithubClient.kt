@@ -8,9 +8,9 @@ import retrofit2.Response
 class GithubClient(apiUrl: String, apiToken: String) {
     private val githubService = GithubHttpInterface.getClient(apiUrl, apiToken)
 
-    fun getBranches(org: String, project: String): List<GithubBranch> {
+    fun getBranches(org: String, project: String, perPage: Int = 100, page: Int = 1): List<GithubBranch> {
         return githubService
-                .getBranches(org, project)
+                .getBranches(org, project, perPage, page)
                 .execute()
                 .body()!!
     }
