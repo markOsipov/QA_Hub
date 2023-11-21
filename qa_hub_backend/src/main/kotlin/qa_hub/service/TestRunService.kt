@@ -228,6 +228,7 @@ class TestRunService {
             testRun.config = request.config
             testRun.tests = TestRunTests(testsCount = request.testList.size, 0, 0)
             testRun.cicdJobId = request.cicdJobId
+            testRun.tags = request.tags
 
             testRunCollection.updateOne(
                 TestRun::testRunId eq testRun.testRunId,
