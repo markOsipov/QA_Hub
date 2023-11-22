@@ -7,6 +7,7 @@ import {customTheme} from "../../../../styles/CustomTheme";
 import {useEffect, useState} from "react";
 import TestRunConfigFilterable from "./elements/TestRunConfigFilterable";
 import TestRunActions from "./elements/TestRunActions";
+import TestRunTags from "./elements/TestRunTags";
 
 export default function TestRunCard({testRun, filter, setFilter, filterAndLoad, reloadTestRuns, ...props }) {
   const opacity = 0.6
@@ -119,6 +120,8 @@ export default function TestRunCard({testRun, filter, setFilter, filterAndLoad, 
         }
       </div>
     </div>
+
+    <TestRunTags tags={testRun.tags} filterAndLoad={filterAndLoad} filter={filter} setFilter={setFilter} style={{position: 'absolute', right: '10px', top: '10px'}}/>
 
     <div style={{position: 'absolute', right: '15px', bottom: '15px'}} >
         <TestRunActions
