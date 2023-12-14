@@ -43,7 +43,7 @@ const RetryTab = observer(({retry, isLastRetry, ...props}) => {
       </div>
     }
 
-    <div style={{display: 'flex', marginTop: '20px', marginLeft: '5px'}}>
+    <div style={{display: 'flex', marginTop: '10px', marginLeft: '5px'}}>
       <div style={{display: 'flex', opacity: '0.7' }}>
         <StyledTooltip title={'Runner'}>
           <div style={{display: 'flex', alignItems: 'center'}}>
