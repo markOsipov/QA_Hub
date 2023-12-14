@@ -66,7 +66,7 @@ const TestResultDetails = observer(({ ...props }) => {
                 value={selectedTest.testcaseId}
                 labelStyle={{ justifySelf: 'center'}}
               />
-              <div style={{maxWidth: 'min-content', overflowX: 'hidden', position: 'relative', marginLeft: '15px', top: '-1px'}}>
+              <div style={{maxWidth: 'min-content', overflowX: 'hidden', position: 'relative', top: '-1px'}}>
                 <TestResultShortName testResult={selectedTest} action={() => openTestHistoryModal(selectedTest.fullName)} style={{marginLeft: '5px',}}/>
                 <TestResultFullName testResult={selectedTest} />
               </div>
@@ -76,11 +76,11 @@ const TestResultDetails = observer(({ ...props }) => {
                 style={{
                   position: 'relative',
                   top: '12px',
-                  marginLeft: '15px'
+                  marginLeft: '7px'
               }}/>
             </div>
           </div>
-          <TestResultTags style={{position: 'absolute', right: '10px', top: '10px'}} tags={selectedTest.tags} />
+          <TestResultTags style={{position: 'absolute', right: '5px', top: '5px'}} tags={selectedTest.tags} />
           <TestResultActions testResult={selectedTest} style={{position: 'absolute', right: '10px', bottom: '10px'}}/>
         </Paper>
 
