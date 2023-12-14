@@ -74,7 +74,7 @@ export default function LogsPanel({ retry, selectedStep, setSelectedStep, ...pro
     </div>
     {
       currentLogs === currentLogsOptions.testLogs &&
-      <TestLogsArea testLogs={testLogs} selectedLogRow={selectedLogRow} style={{marginTop: '10px', maxHeight: '85vh',}} />
+      <TestLogsArea testLogs={testLogs} selectedLogRow={selectedLogRow} style={{marginTop: '10px', maxHeight: 'calc(100vh - 140px)',}} />
     }
     {
       currentLogs === currentLogsOptions.appLogs &&
