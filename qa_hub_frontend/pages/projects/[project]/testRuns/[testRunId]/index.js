@@ -71,7 +71,7 @@ const TestRunPage = observer(() => {
     return <div>Loading</div>
   }
 
-  return <div style={{padding: "15px"}}>
+  return <div style={{padding: "15px 10px 10px 15px"}}>
     <PushTestRunModal/>
 
     <TestRunResultsOverview
