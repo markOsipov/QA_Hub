@@ -73,14 +73,13 @@ const TestRunPage = observer(() => {
 
   return <div style={{padding: "15px"}}>
     <PushTestRunModal/>
-    {/*<TestHistoryModal isOpen={testHistoryModalOpen} onClose={closeTestHistoryModal} testcaseId={selectedTestId} />*/}
 
     <TestRunResultsOverview
       testRun={testRun}
       updateTestRunInfo={updateTestRunInfo}
     />
 
-    <div style={{display: "flex", marginTop: '15px', width: '100%', minWidth: '100%', maxHeight: '90vh', overflowY: 'auto'}}>
+    <div style={{display: "flex", marginTop: '15px', width: '100%', minWidth: '100%', maxHeight: 'calc(100vh - 90px)', overflowY: 'auto'}}>
       <TestResultsList
         testRun={testRun}
         style={{width: "550px", minWidth: '449px', maxWidth: '70%', overflowX: 'auto', resize: 'horizontal'}}

@@ -7,7 +7,6 @@ import {observer} from "mobx-react-lite";
 import testResultsState from "../../../../state/testResults/TestResultsState";
 import ErrorMessage from "./retries/ErrorMessage";
 import QaResolutionPanel from "./retries/QaResolutionPanel";
-import StyledAccordionSummary from "../../../primitives/StyledAccordeonSummary";
 import StyledTooltip from "../../../primitives/StyledTooltip";
 import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
@@ -21,7 +20,6 @@ import {customTheme} from "../../../../styles/CustomTheme";
 import alertState from "../../../../state/AlertState";
 import {copyToClipboard} from "../../../../utils/CopyHelper";
 import AttachmentElement from "./AttachmentElement";
-import LabelIcon from '@mui/icons-material/Label';
 import TestResultTags from "./TestResultTags";
 
 const TestResultDetails = observer(({ ...props }) => {
@@ -137,18 +135,18 @@ const TestResultDetails = observer(({ ...props }) => {
           <TestResultActions testResult={selectedTest} style={{position: 'absolute', right: '10px', bottom: '10px'}}/>
         </Paper>
 
-        <Accordion style={{ marginTop: '15px'}}>
-          <StyledAccordionSummary
+        <Paper style={{ marginTop: '15px', padding: '10px 0 15px 15px'}}>
+          <div
             style={{maxWidth: "max-content"}}
             aria-controls="panel1a-content"
           >
             <Typography variant="h5" style={{marginBottom: "5px", marginTop: "5px"}}>Details</Typography>
-          </StyledAccordionSummary>
+          </div>
 
-          <AccordionDetails style={{padding: '15px 10px'}}>
+          <div style={{padding: '15px 10px'}}>
             <TestRetriesTabs/>
-          </AccordionDetails>
-        </Accordion>
+          </div>
+        </Paper>
 
       </div>
     }
