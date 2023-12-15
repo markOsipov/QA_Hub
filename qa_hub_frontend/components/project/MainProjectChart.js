@@ -4,15 +4,30 @@ import {daysBetween, getDate} from "../../utils/DateTimeUtils";
 import {add} from "date-fns";
 import Typography from "@mui/material/Typography";
 import {useEffect, useState} from "react";
-import {getMainProjectMetrics} from "../../requests/metrics/MainProjectMetricsRequests";
+import {getMainProjectMetrics, updateMetrics} from "../../requests/metrics/MainProjectMetricsRequests";
+import Button from "@mui/material/Button";
+import ImportContactsIcon from "@mui/icons-material/ImportContacts";
+import AutorenewIcon from '@mui/icons-material/Autorenew';
+import {observer} from "mobx-react-lite";
+import alertState from "../../state/AlertState";
+import Loader from "../common/Loader";
 
-export default function MainProjectChart({project, ...props}) {
+const MainProjectChart = observer(({project, ...props}) => {
+
   const [data, setData] = useState([])
   const [ticks, setTicks] = useState([])
   const [domain, setDomain] = useState([])
+  const [showLoader, setShowLoader] = useState(false)
 
   useEffect(() => {
+    setShowLoader(true)
+    getMetrics()
+  }, [project])
+
+  function getMetrics() {
     getMainProjectMetrics(project).then(response => {
+      setShowLoader(false)
+
       const calculatedData = Array.from(response.data || [])
       calculatedData.forEach(el => {
         const date = new Date(el.date)
@@ -30,7 +45,19 @@ export default function MainProjectChart({project, ...props}) {
         setTicks(getTicks(startDate, endDate, 5))
       }
     })
-  }, [project])
+  }
+
+  function updateMetricsNow() {
+    setShowLoader(true)
+    updateMetrics(project).then(response => {
+      if (response.status < 400) {
+        getMetrics()
+        alertState.showAlert("Metrics have been updated", alertState.severities.success)
+      } else {
+        alertState.showAlert("Failed to update metrics", alertState.severities.error)
+      }
+    })
+  }
 
   const dateFormatter = date => {
     return getDate(date)
@@ -153,7 +180,6 @@ export default function MainProjectChart({project, ...props}) {
                 dot={{ stroke: 'white', strokeWidth: 1, r: 5,strokeDasharray:''}}
           />
 
-
           <Area type="monotone"
                 dataKey="blocked"
                 stackId="2"
@@ -166,6 +192,21 @@ export default function MainProjectChart({project, ...props}) {
         </AreaChart>
       </ResponsiveContainer>
     </div>
+
+    <div style={{display: 'flex'}}>
+      <Button variant="contained"
+              color="error"
+              size="small"
+              startIcon={<AutorenewIcon />}
+              onClick={updateMetricsNow}
+      >Update now</Button>
+      {
+        showLoader &&
+        <Loader style={{opacity: '0.6', marginLeft: '4px', position: 'relative', top: '1px'}} />
+      }
+    </div>
   </div>
-}
+})
+
+export default MainProjectChart
 

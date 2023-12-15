@@ -12,3 +12,15 @@ export function getMainProjectMetrics(project) {
 
   return axios(config)
 }
+
+export function updateMetrics(project) {
+  const config = {
+    method: 'post',
+    url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat(`/api/metrics/main/${project}`),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+
+  return axios(config)
+}
