@@ -94,7 +94,7 @@ const CustomAlert = observer(({ index, alert, ...props}) => {
       fontSize: '35px',
       ...props.style
     }}
-    action={<CustomIconButton icon={<CloseIcon/>} action={closeAlert} color={customTheme.palette.text.disabled}/>}
+    action={<CustomIconButton icon={<CloseIcon/>} action={closeAlert} color={customTheme.palette.text.disabled} style={{position: 'relative', top: '-2px'}}/>}
   >{alert.title}</StyledAlert>
 })
 
