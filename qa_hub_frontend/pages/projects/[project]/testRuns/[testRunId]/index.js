@@ -1,5 +1,5 @@
 import {useRouter} from "next/router";
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import {getTestRun} from "../../../../../requests/testRuns/TestRunRequests";
 import TestRunResultsOverview from "../../../../../components/testRuns/testRunResults/testRunOverview/TestRunResultsOverview";
 import TestResultsList from "../../../../../components/testRuns/testRunResults/testResultsList/TestResultsList";
