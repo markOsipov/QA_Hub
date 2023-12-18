@@ -1,5 +1,5 @@
 import {useRouter} from "next/router";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {getTestRun} from "../../../../../requests/testRuns/TestRunRequests";
 import TestRunResultsOverview from "../../../../../components/testRuns/testRunResults/testRunOverview/TestRunResultsOverview";
 import TestResultsList from "../../../../../components/testRuns/testRunResults/testResultsList/TestResultsList";
@@ -14,11 +14,21 @@ import appState from "../../../../../state/AppState";
 import ImagePopup from "../../../../../components/testRuns/testRunResults/testResultDetails/ImagePopup";
 import imagePopupState from "../../../../../state/testRuns/ImagePopupState";
 import {TestRunStatuses} from "../../../../../components/testRuns/testRunList/TestRunConstants";
+import SwitchTestListButton from "../../../../../components/testRuns/testRunResults/SwitchTestListButton";
+import {getCookie, QaHubCookies, setCookie} from "../../../../../utils/CookieHelper";
 
 const TestRunPage = observer(() => {
   const router = useRouter()
 
   const [testRun, setTestRun] = useState(null)
+  const [showTestResultsList, setShowTestResultsList] = useState((getCookie(QaHubCookies.showTestResultsList) || "true") === "true")
+
+  const switchShowTestList = () => {
+    let newValue = !showTestResultsList
+    setShowTestResultsList(newValue)
+    setCookie(QaHubCookies.showTestResultsList, newValue)
+  }
+
   const loadTestResultFromUrl = (testRunId) => {
     const identifier = router.query.test
 
@@ -79,13 +89,24 @@ const TestRunPage = observer(() => {
       updateTestRunInfo={updateTestRunInfo}
     />
 
-    <div style={{display: "flex", marginTop: '15px', width: '100%', minWidth: '100%', maxHeight: 'calc(100vh - 90px)', overflowY: 'auto'}}>
-      <TestResultsList
-        testRun={testRun}
-        style={{width: "550px", minWidth: '449px', maxWidth: '70%', overflowX: 'auto', resize: 'horizontal'}}
-      />
+    <div style={{display: "flex", paddingTop: '15px', width: '100%', minWidth: '100%', maxHeight: 'calc(100vh - 90px)', overflowY: 'auto', position: 'relative'}}>
+
+      {
+        showTestResultsList &&
+        <TestResultsList
+          style={{width: "550px", minWidth: '449px', maxWidth: '70%', overflowX: 'auto', marginRight: '15px', position: 'relative', resize: 'horizontal', }}
+          testRun={testRun}
+        />
+      }
+
       <TestResultDetails
-        style={{marginLeft: '15px', overflowX: 'auto', width: 'min-content', flexGrow:'1.1'}}
+        style={{overflowX: 'auto', width: 'min-content', flexGrow:'1.1'}}
+      />
+
+      <SwitchTestListButton
+        style={{position: 'absolute', top: '10px', left: '0px'}}
+        showTestList={showTestResultsList}
+        switchShowTestList={switchShowTestList}
       />
     </div>
 
