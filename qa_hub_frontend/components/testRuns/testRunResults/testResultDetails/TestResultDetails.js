@@ -15,7 +15,7 @@ import alertState from "../../../../state/AlertState";
 import {copyToClipboard} from "../../../../utils/CopyHelper";
 import TestResultTags from "./TestResultTags";
 
-const TestResultDetails = observer(({ ...props }) => {
+const TestResultDetails = observer(({...props }) => {
   const router = useRouter()
   const {  selectedTest } = testResultsState
 
