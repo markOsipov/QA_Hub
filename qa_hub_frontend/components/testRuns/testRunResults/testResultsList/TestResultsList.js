@@ -144,7 +144,7 @@ const TestResultsList = observer(({  testRun, ...props}) => {
     </Paper>
   }
 
-  return <Paper style={{padding: '12px 15px 15px 15px', ...props.style}}>
+  return <Paper style={{padding: '8px 15px 8px 15px', ...props.style}}>
     <TestResultsFilter
       filterAndLoad={filterAndLoad}
       filterLoading={filterLoading}
