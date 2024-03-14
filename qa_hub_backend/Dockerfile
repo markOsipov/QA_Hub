@@ -8,6 +8,7 @@ RUN gradle clean bootJar
 FROM openjdk:11
 
 RUN mkdir /app
+COPY global-bundle.pem /app/global-bundle.pem
 COPY --from=builder /home/gradle/src/build/libs/*.jar /app/app.jar
 WORKDIR /app
 

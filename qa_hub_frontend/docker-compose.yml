@@ -1,6 +1,8 @@
 version: '3.3'
 services:
   frontend:
+#    depends_on:
+#      - backend
     image: qa_hub_frontend:latest
     container_name: "qa_hub_frontend"
     restart: always
@@ -15,7 +17,26 @@ services:
     volumes:
       - qa_hub_frontend:/usr/src/app/qa_hub_frontend
 
+#  backend:
+#    image: qa_hub_backend:latest
+#    container_name: "qa_hub_backend"
+#    restart: always
+#    build:
+#      context: .
+#    ports:
+#      - '8080:8080'
+#    environment:
+#      - ENV_MONGO_QA_HUB_HOST=$ENV_MONGO_QA_HUB_HOST
+#      - ENV_MONGO_QA_HUB_LOGIN=$ENV_MONGO_QA_HUB_LOGIN
+#      - ENV_MONGO_QA_HUB_PASSWORD=$ENV_MONGO_QA_HUB_PASSWORD
+#      - ENV_IMAGE_DIR=$ENV_IMAGE_DIR
+#    networks: # Networks to join (Services on the same network can communicate with each other using their name)
+#      - qa_hub_network
+#    volumes:
+#      - qa_hub_backend:/usr/src/app/qa_hub_backend
+
 volumes:
+#  qa_hub_backend:
   qa_hub_frontend:
 
 networks:

@@ -21,7 +21,7 @@ out/
 
 ### VS Code ###
 .vscode/
-/.config/env
+/.config
 /.config/
 /qa_hub_backend/src/main/resources/debug/
 
