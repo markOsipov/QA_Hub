@@ -1,3 +1,3 @@
-ENV_MONGO_QA_HUB_HOST=mongodb://administrator:I7!z4WV9oJf!V*dk@qaa-stage-qase-docdb.cluster-cabbihznimpr.eu-central-1.docdb.amazonaws.com:27017/?tls=true&tlsCAFile=/usr/src/app/qa_hub_backend/src/main/resources/global-bundle.pem&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false
-ENV_MONGO_QA_HUB_LOGIN=administrator
+ENV_MONGO_QA_HUB_HOST=mongodb://root:example@localhost:27017
+ENV_MONGO_QA_HUB_LOGIN=root
 ENV_MONGO_QA_HUB_PASSWORD=I7!z4WV9oJf!V*dk

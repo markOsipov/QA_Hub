@@ -1,8 +1,19 @@
 version: '3.3'
 services:
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
   backend:
     image: qa_hub_backend:latest
     container_name: "qa_hub_backend"
+    depends_on:
+      - mongo
     restart: always
     build:
       context: .
