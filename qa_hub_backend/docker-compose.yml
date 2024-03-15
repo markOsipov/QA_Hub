@@ -1,6 +1,6 @@
 version: '3.3'
 services:
-  mongo:
+  qa_hub_mongo:
     image: mongo:latest
     container_name: "qa_hub_mongo"
     restart: always
@@ -16,7 +16,7 @@ services:
     image: qa_hub_backend:latest
     container_name: "qa_hub_backend"
     depends_on:
-      - mongo
+      - qa_hub_mongo
     restart: always
     build:
       context: .

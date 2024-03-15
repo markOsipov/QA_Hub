@@ -165,7 +165,7 @@ class TestRunController {
 
 
         val testRun = measure("CreateTestRun"){
-            testRunService.createTestRun(CreateTestRunRequest("TestProject", "dev"))
+            testRunService.createTestRun(CreateTestRunRequest(projectName, "dev"))
         }
 
         runners.forEach {

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "NEXT_PUBLIC_QA_HUB_BACKEND=http://192.168.255.138:8080 next dev",
+    "dev": "NEXT_PUBLIC_QA_HUB_BACKEND=http://127.0.0.1:8080 next dev",
     "build": "next build",
     "start": "next start",
     "start_local": "NEXT_PUBLIC_QA_HUB_BACKEND=http://127.0.0.1:8080 next start",
