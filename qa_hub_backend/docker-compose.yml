@@ -1,13 +1,16 @@
 version: '3.3'
 services:
   mongo:
-    image: mongo
+    image: mongo:latest
+    container_name: "qa_hub_mongo"
     restart: always
     ports:
       - '27017:27017'
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_ROOT_USERNAME: ${ENV_MONGO_QA_HUB_LOGIN}
+      MONGO_INITDB_ROOT_PASSWORD: ${ENV_MONGO_QA_HUB_PASSWORD}
+    networks:
+      - qa_hub_network
 
   backend:
     image: qa_hub_backend:latest
@@ -25,7 +28,7 @@ services:
       - ENV_MONGO_QA_HUB_LOGIN=${ENV_MONGO_QA_HUB_LOGIN}
       - ENV_MONGO_QA_HUB_PASSWORD=${ENV_MONGO_QA_HUB_PASSWORD}
       - ENV_IMAGE_DIR=${ENV_IMAGE_DIR}
-    networks: # Networks to join (Services on the same network can communicate with each other using their name)
+    networks:
       - qa_hub_network
     volumes:
       - ./:/usr/src/app/qa_hub_backend

@@ -21,7 +21,7 @@ class QaHubMongoClient {
         val builder = MongoClientSettings.builder()
         builder.applyConnectionString(ConnectionString(mongoHost))
 
-        if (!userName.isNullOrEmpty() && userPass.isNullOrEmpty()) {
+        if (!userName.isNullOrEmpty() && !userPass.isNullOrEmpty()) {
             builder.credential(
                 MongoCredential.createScramSha1Credential(
                     userName,
