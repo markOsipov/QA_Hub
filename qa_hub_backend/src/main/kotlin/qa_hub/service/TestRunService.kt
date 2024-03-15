@@ -29,8 +29,6 @@ import qa_hub.service.testResults.TestResultsService
 import qa_hub.service.testResults.TestStepsService
 import qa_hub.service.utils.ProjectIntegrationsService
 import java.io.File
-import java.time.LocalDateTime
-import java.io.File
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import kotlin.random.Random

@@ -10,11 +10,14 @@ import org.springframework.core.io.ClassPathResource
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.web.bind.annotation.*
 import qa_hub.core.utils.runParallel
+import qa_hub.entity.Platforms
+import qa_hub.entity.Project
 import qa_hub.entity.testRun.*
 import qa_hub.service.testResults.TestResultsService
 import qa_hub.service.TestRunService
 import qa_hub.service.testResults.TestLogsService
 import qa_hub.service.testResults.TestStepsService
+import qa_hub.service.utils.ProjectService
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.time.ZoneOffset
@@ -36,6 +39,9 @@ class TestRunController {
 
     @Autowired
     lateinit var testStepsService: TestStepsService
+
+    @Autowired
+    lateinit var projectService: ProjectService
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
     @PostMapping("/{project}")
@@ -150,8 +156,11 @@ class TestRunController {
         }
         val testList = tests.map{ TestListElement(fullName = it, testId = Random.nextInt(10000, 99999).toString()) }.toMutableList()
 
+        val projectName = "DebugProject"
+        projectService.upsertProject(Project(name = projectName, platform = Platforms.IOS.name))
+
         val testRun = measure("CreateTestRun"){
-            testRunService.createTestRun(CreateTestRunRequest("Lowkey", "dev"))
+            testRunService.createTestRun(CreateTestRunRequest("TestProject", "dev"))
         }
 
         runners.forEach {
