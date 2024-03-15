@@ -110,7 +110,7 @@ class TestRunController {
 
     @PostMapping("/createDebug")
     fun createDebugTestRun(
-        @RequestParam(required = false, defaultValue = "10") testsCount: Int,
+        @RequestParam(required = false, defaultValue = "30") testsCount: Int,
         @RequestParam(required = false, defaultValue = "2") runnersCount: Int,
         @RequestParam(required = false, defaultValue = "2") simulatorsCount: Int
     ): List<String> {
@@ -157,7 +157,12 @@ class TestRunController {
         val testList = tests.map{ TestListElement(fullName = it, testId = Random.nextInt(10000, 99999).toString()) }.toMutableList()
 
         val projectName = "DebugProject"
-        projectService.upsertProject(Project(name = projectName, platform = Platforms.IOS.name))
+        try {
+            projectService.insertProject(Project(name = projectName, platform = Platforms.IOS.name))
+        } catch (e: Exception) {
+            print("Debug project already exists")
+        }
+
 
         val testRun = measure("CreateTestRun"){
             testRunService.createTestRun(CreateTestRunRequest("TestProject", "dev"))
