@@ -19,7 +19,7 @@ services:
       - qa_hub_mongo
     restart: always
     build:
-      context: .
+      context: ./qa_hub_backend
       dockerfile: Dockerfile
     ports:
       - '8080:8080'
@@ -31,7 +31,25 @@ services:
     networks:
       - qa_hub_network
     volumes:
-      - ./:/usr/src/app/qa_hub_backend
+      - ./qa_hub_backend:/usr/src/app/qa_hub_backend
+
+  frontend:
+    depends_on:
+      - backend
+    image: qa_hub_frontend:latest
+    container_name: "qa_hub_frontend"
+    restart: always
+    build:
+      context: ./qa_hub_frontend
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      - NEXT_PUBLIC_QA_HUB_BACKEND=$NEXT_PUBLIC_QA_HUB_BACKEND
+    networks:
+      - qa_hub_network
+    volumes:
+      - ./qa_hub_frontend:/usr/src/app/qa_hub_frontend
 
 networks:
   qa_hub_network:
