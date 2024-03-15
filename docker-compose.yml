@@ -30,8 +30,6 @@ services:
       - ENV_IMAGE_DIR=${ENV_IMAGE_DIR}
     networks:
       - qa_hub_network
-    volumes:
-      - ./qa_hub_backend:/usr/src/app/qa_hub_backend
 
   frontend:
     depends_on:
@@ -42,14 +40,12 @@ services:
     build:
       context: ./qa_hub_frontend
       dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_QA_HUB_BACKEND=${NEXT_PUBLIC_QA_HUB_BACKEND}
     ports:
       - '3000:3000'
-    environment:
-      - NEXT_PUBLIC_QA_HUB_BACKEND=$NEXT_PUBLIC_QA_HUB_BACKEND
     networks:
       - qa_hub_network
-    volumes:
-      - ./qa_hub_frontend:/usr/src/app/qa_hub_frontend
 
 networks:
   qa_hub_network:
