@@ -7,8 +7,16 @@ RUN gradle clean bootJar
 
 FROM openjdk:11
 
+ARG ENV_MONGO_QA_HUB_TRUST_STORE_DIR
+ARG ENV_MONGO_QA_HUB_TRUST_STORE_FILE
+
+ENV ENV_MONGO_QA_HUB_TRUST_STORE_DIR=$ENV_MONGO_QA_HUB_TRUST_STORE_DIR
+ENV ENV_MONGO_QA_HUB_TRUST_STORE_FILE=$ENV_MONGO_QA_HUB_TRUST_STORE_FILE
+
+RUN mkdir -p $ENV_MONGO_QA_HUB_TRUST_STORE_DIR
+COPY ./src/main/resources/certs/truststore.jks $ENV_MONGO_QA_HUB_TRUST_STORE_DIR/$ENV_MONGO_QA_HUB_TRUST_STORE_FILE
+
 RUN mkdir /app
-COPY global-bundle.pem /app/global-bundle.pem
 COPY --from=builder /home/gradle/src/build/libs/*.jar /app/app.jar
 WORKDIR /app
 
@@ -18,4 +26,12 @@ RUN env
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-Denvironment=${ENV_MONGO_QA_HUB_HOST}", "-Denvironment=${ENV_MONGO_QA_HUB_LOGIN}", "-Denvironment=${ENV_MONGO_QA_HUB_PASSWORD}" , "-jar", "/app/app.jar"]
+ENTRYPOINT ["java", \
+            "-Denvironment=${ENV_MONGO_QA_HUB_HOST}", \
+            "-Denvironment=${ENV_MONGO_QA_HUB_LOGIN}", \
+            "-Denvironment=${ENV_MONGO_QA_HUB_PASSWORD}", \
+            "-Denvironment=${ENV_MONGO_QA_HUB_TRUST_STORE_DIR}", \
+            "-Denvironment=${ENV_MONGO_QA_HUB_TRUST_STORE_FILE}", \
+            "-Denvironment=${ENV_MONGO_QA_HUB_TRUST_STORE_PASS}", \
+            "-jar", \
+            "/app/app.jar"]

@@ -1,3 +1,0 @@
-ENV_MONGO_QA_HUB_HOST=mongodb://root:example@localhost:27017
-ENV_MONGO_QA_HUB_LOGIN=root
-ENV_MONGO_QA_HUB_PASSWORD=I7!z4WV9oJf!V*dk
