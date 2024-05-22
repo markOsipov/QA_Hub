@@ -8,14 +8,37 @@ import {useEffect, useState} from "react";
 import TestRunConfigFilterable from "./elements/TestRunConfigFilterable";
 import TestRunActions from "./elements/TestRunActions";
 import TestRunTags from "./elements/TestRunTags";
+import {getTestRun} from "../../../../requests/testRuns/TestRunRequests";
+import {TestRunStatuses} from "../TestRunConstants";
 
-export default function TestRunCard({testRun, filter, setFilter, filterAndLoad, reloadTestRuns, ...props }) {
+export default function TestRunCard({testRunData, filter, setFilter, filterAndLoad, reloadTestRuns, ...props }) {
   const opacity = 0.6
 
   const [progressBarWidth, setProgressBarWidth] = useState(Math.max(window.innerWidth * 0.2, 200))
+  const [testRun, setTestRun] = useState(testRunData)
+  
   useEffect(() => {
     setProgressBarWidth(Math.max(window.innerWidth * 0.2, 200))
   }, [window.innerWidth])
+
+  useEffect(() => {
+    setTestRun(testRunData)
+  }, [testRunData])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if ([TestRunStatuses.created, TestRunStatuses.processing].includes(testRun.status)) {
+        getTestRun(testRun.testRunId).then((response) => {
+          if (response.data != null) {
+            setTestRun(response.data)
+          }
+        })
+      } else {
+        clearInterval(interval)
+      }
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [testRun])
 
   const [isHovering, setIsHovered] = useState(false);
   const onMouseEnter = () => setIsHovered(true);

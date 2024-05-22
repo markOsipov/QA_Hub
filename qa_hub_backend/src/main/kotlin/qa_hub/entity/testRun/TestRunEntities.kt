@@ -48,7 +48,7 @@ data class TestRun(
 
     var startedByRunner: String? = null,
     var cicdJobId: String? = null,
-    var allureLaunchId: String? = null
+    var tmsLaunchId: String? = null
 )
 
 data class TestRunConfig(

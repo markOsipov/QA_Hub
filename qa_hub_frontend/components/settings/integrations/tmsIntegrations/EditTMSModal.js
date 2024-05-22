@@ -82,6 +82,19 @@ function EditTmsModal({isOpen, setIsOpen, updateTmsList, tmsTypes, tmsIntegratio
                              }}
             />
 
+            <StyledTextField value={currentTms.apiUrl}
+                             size="small"
+                             label="Base Api URL"
+                             style={{minWidth: "400px", color: "white", margin: "8px"}}
+                             autoComplete='off'
+                             onChange ={(event) => {
+                                 setCurrentTms({
+                                     ...currentTms,
+                                     apiUrl: event.target.value
+                                 })
+                             }}
+            />
+
             <StyledTextField value={currentTms.apiToken}
                              size="small"
                              label="Api Token"

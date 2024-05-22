@@ -40,7 +40,8 @@ class TestRunFormsService {
         testRunFormsCollection.updateOne(
             StartTestRunForm::project.eq(startTestRunForm.project),
             set(
-                StartTestRunForm::params.setTo(startTestRunForm.params)
+                StartTestRunForm::params.setTo(startTestRunForm.params),
+                StartTestRunForm::defaultBranch.setTo(startTestRunForm.defaultBranch)
             ),
             upsert()
         )

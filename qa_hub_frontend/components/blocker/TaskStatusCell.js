@@ -1,5 +1,4 @@
 import EditableTableCell from "../primitives/Table/EditableTableCell";
-import {customTheme} from "../../styles/CustomTheme";
 import {useEffect, useState} from "react";
 import {getTaskStatus} from "../../requests/BlockerRequests";
 import {observer} from "mobx-react-lite";
@@ -14,15 +13,15 @@ const TaskStatusCell = observer(({blockedTest, onChangeCallback, onBlurCallback,
   const taskTrackerInfo = projectIntegrationsState.taskTrackerInt || {}
 
   useEffect(() => {
-    getTaskStatus(blockedTest.project, blockedTest.jiraIssue).then((data) => {
-      setStatus(data?.data?.statusInfo?.statusName || defaultStatus)
+    getTaskStatus(blockedTest.project, blockedTest.tmsTask).then((data) => {
+      setStatus(data?.data?.statusInfo?.statusName)
       setColor(data?.data?.statusInfo?.statusColor || null)
     })
   }, [blockedTest])
 
 
   return <EditableTableCell
-    value={blockedTest.jiraIssue}
+    value={blockedTest.tmsTask}
     content={<TaskLink blockedTest={blockedTest} taskUrl={taskTrackerInfo.taskUrl}/>}
     contentStyle={{
       maxWidth: '80px',

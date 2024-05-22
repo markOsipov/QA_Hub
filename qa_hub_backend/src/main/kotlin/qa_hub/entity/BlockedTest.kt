@@ -5,7 +5,7 @@ data class BlockedTest(
     var fullName: String,
     var shortName: String? = null,
     var testcaseId: String? = null,
-    var jiraIssue: String? = null,
+    var tmsTask: String? = null,
     var comment: String? = null,
     var blockDate: String? = null,
     var project: String,

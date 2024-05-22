@@ -12,6 +12,13 @@ export default function TestHistoryTable({ testHistoryResults, ...props}) {
     return <div style={{...props.style}}>No test results</div>
   }
 
+  const calcErrorHeight = (testResult) => {
+    if (testResult.message.split("\n").length > 5) {
+      return "100px"
+    }
+    return "max-content"
+  }
+
   return <Paper elevation={3} style={{...props.style, overflowY: 'auto'}}>
     <TableContainer>
       <Table size="small" stickyHeader >
@@ -64,6 +71,11 @@ export default function TestHistoryTable({ testHistoryResults, ...props}) {
                         border: '1px solid',
                         borderColor: customTheme.palette.error.main,
                         borderRadius: '10px',
+                        whiteSpace: 'break-spaces',
+                        height: calcErrorHeight(testResult),
+                        resize: 'vertical',
+                        overflowY: 'hidden',
+                        minHeight: '50px',
                         backgroundColor: customTheme.palette.error.faded,
                       }}
                     >{testResult.message}</div>

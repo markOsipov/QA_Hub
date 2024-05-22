@@ -79,9 +79,12 @@ data class TestResult(
     var testRunId: String,
     var testcaseId: String = "",
     var project: String?,
+
     var fullName: String,
     var title: String? = "",
     var tags: MutableList<String> = mutableListOf(),
+
+    var tmsLaunchId: String? = null,
 
     var duration: Double? = null,
     var status: String,

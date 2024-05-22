@@ -38,7 +38,11 @@ class TestResultsController {
         @PathVariable("testRunId") testRunId: String,
         @RequestBody requestBody: TestResultFilter? = null
     ): TestResultsService.CountResponse {
-        return testResultsService.countTestResults(testRunId, requestBody)
+        return try {
+            testResultsService.countTestResults(testRunId, requestBody)
+        } catch (e: Exception) {
+            TestResultsService.CountResponse(-1)
+        }
     }
 
     @PostMapping("/single")

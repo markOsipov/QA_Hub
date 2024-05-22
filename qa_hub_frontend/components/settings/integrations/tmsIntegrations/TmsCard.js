@@ -78,6 +78,7 @@ export default function TmsCard({tms, updateTmsList, tmsTypes, tmsIntegrations, 
         </div>
 
         <TextWithLabel value={tms.baseUrl} label={"Base URL"} style={{margin: '15px 0 15px 0'}}/>
+        <TextWithLabel value={tms.apiUrl} label={"Base Api URL"} style={{margin: '20px 0 15px 0'}}/>
         <TextWithLabel value={tms.apiToken} label={"Api token"} style={{margin: '20px 0 15px 0'}}/>
         <TextWithLabel value={tms.login} label={"Login"} style={{margin: '20px 0 15px 0'}}/>
         <TextWithLabel value={tms.password} label={"Password"} style={{margin: '20px 0 15px 0'}}/>

@@ -42,28 +42,6 @@ class BlockerState {
     })
   }
 
-  setTaskTrackerInfo(taskTrackerInfo) {
-    let taskUrl = taskTrackerInfo.baseUrl
-    if (taskTrackerInfo?.type === "Jira") {
-      taskUrl += "/browse"
-
-      taskUrl = taskUrl.replace("//browse", "/browse")
-    }
-
-    this.taskTrackerInfo = { ...taskTrackerInfo, taskUrl: taskUrl}
-  }
-
-  setTmsInfo(tmsInfo) {
-    let testcaseUrl = tmsInfo?.tmsInfo?.baseUrl
-    if (tmsInfo?.projectTmsInfo?.type === "Allure") {
-      testcaseUrl += `/project/${tmsInfo.projectTmsInfo?.project}/test-cases/`
-
-      testcaseUrl = testcaseUrl.replace("//project", "/project")
-    }
-
-    this.tmsInfo = { ...tmsInfo, testcaseUrl: testcaseUrl}
-  }
-
   constructor() {
     makeAutoObservable(this)
   }

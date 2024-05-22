@@ -24,12 +24,16 @@ const TestRunForm = observer(({reloadTestRuns}) => {
     const [isEditTestRunFormModalOpen, setIsEditTestRunFormModalOpen] = useState(false);
     const [paramConfigs, setParamConfigs] = useState([])
     const [params, setParams] =  useState([])
-    const [branch, setBranch] =  useState("dev")
+    const [defaultBranch, setDefaultBranch] = useState("dev")
+    const [branch, setBranch] =  useState(defaultBranch)
 
     function loadTestRunForm() {
         getTestRunForm(project).then(response => {
             if (response.data?.params) {
                 setParamConfigs(response.data?.params)
+            }
+            if (response.data?.defaultBranch) {
+                setDefaultBranch(response.data?.defaultBranch)
             }
         })
     }
@@ -46,6 +50,10 @@ const TestRunForm = observer(({reloadTestRuns}) => {
             })
         )
     }, [paramConfigs])
+
+    useEffect(() => {
+        setBranch(defaultBranch)
+    }, [defaultBranch])
 
     const handleEditFormClick = () => {
         setIsEditTestRunFormModalOpen(true)
@@ -67,7 +75,13 @@ const TestRunForm = observer(({reloadTestRuns}) => {
     }
 
     return <Paper>
-        <EditTestRunFormModal isOpen={isEditTestRunFormModalOpen} setIsOpen={setIsEditTestRunFormModalOpen} params={paramConfigs} loadTestRunForm={loadTestRunForm}/>
+        <EditTestRunFormModal
+          isOpen={isEditTestRunFormModalOpen}
+          setIsOpen={setIsEditTestRunFormModalOpen}
+          defaultBranch={defaultBranch}
+          params={paramConfigs}
+          loadTestRunForm={loadTestRunForm}
+        />
 
         <Accordion>
             <StyledAccordionSummary

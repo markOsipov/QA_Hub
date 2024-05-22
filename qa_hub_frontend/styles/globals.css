@@ -18,6 +18,10 @@ a {
   text-decoration: none;
 }
 
+label {
+    color: var(--primary-text-color)
+}
+
 * {
   box-sizing: border-box;
   font-size: 14px;
@@ -52,6 +56,11 @@ button + button {
 .Mui-disabled .MuiSvgIcon-root {
   color: var(--disabled-text-color)
 }
+
+.MuiTypography-root {
+    color: var(--primary-text-color)
+}
+
 
 @keyframes rotation {
   0% {

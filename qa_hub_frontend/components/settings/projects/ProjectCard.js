@@ -79,6 +79,8 @@ export default function ProjectCard({project, ...props}) {
         </div>
 
         <TextWithLabel label={'Platform'} value={project.platform} style={{margin: '15px 0 15px 0'}}></TextWithLabel>
+        <TextWithLabel label={'Separator'} value={project.separator} style={{margin: '25px 0 30px 0'}}></TextWithLabel>
+
         {
             project.cicd &&
             <Accordion style={{backgroundColor: "unset", border: `1px solid ${customTheme.palette.text.disabled}`, borderRadius: '4px'}}>

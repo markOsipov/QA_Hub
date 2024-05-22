@@ -42,18 +42,20 @@ const TestRunActionsOnPage = observer (({testRun, updateTestRunInfo, ...props}) 
 
   return <div style={{display: 'flex', ...props.style}}>
     {
-      testRun.allureLaunchId && tmsType &&
+      testRun.tmsLaunchId && tmsType &&
 
       <StyledTooltip title={`Testrun in ${tmsType}`}>
         <div style={{marginLeft: '5px'}}>
           <Button
-            href={`${projectIntegrationsState.tmsInt.launchUrl}/${testRun.allureLaunchId}`}
+            href={`${projectIntegrationsState.tmsInt.launchUrl}/${testRun.tmsLaunchId}`}
             target={'_blank'}
             variant={'contained'}
             size="small"
             style={{
               height: '25px',
-              backgroundColor: tmsType === 'Allure' ? customTheme.palette.integrations.allure : customTheme.palette.primary.main
+              backgroundColor: tmsType === 'Allure' ? customTheme.palette.integrations.allure :
+                tmsType === 'Qase' ? customTheme.palette.integrations.qase :
+                customTheme.palette.primary.main
           }}
           >{ tmsType }</Button>
         </div>

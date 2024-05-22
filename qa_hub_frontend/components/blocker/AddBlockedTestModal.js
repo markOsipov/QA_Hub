@@ -11,7 +11,7 @@ const AddBlockedTestModal = observer(({isOpen, setIsOpen}) => {
     const defaultBlockedTestValue = {
         fullName: "",
         testcaseId: "",
-        jiraIssue: "",
+        tmsTask: "",
         comment: "",
         project: projectState.selectedProject
     }
@@ -86,15 +86,15 @@ const AddBlockedTestModal = observer(({isOpen, setIsOpen}) => {
                                  })
                              }}
             />
-            <StyledTextField value={newBlockedTest.jiraIssue}
+            <StyledTextField value={newBlockedTest.tmsTask}
                              size="small"
-                             label="Jira issue"
+                             label="Blocking task"
                              style={{minWidth: "530px", color: "white", margin: "8px"}}
                              autoComplete='off'
                              onChange={(event) => {
                                  setNewBlockedTest({
                                      ...newBlockedTest,
-                                     jiraIssue: event.target.value
+                                     tmsTask: event.target.value
                                  })
                              }}
             />

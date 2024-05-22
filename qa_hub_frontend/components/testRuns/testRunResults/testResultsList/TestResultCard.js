@@ -6,6 +6,7 @@ import TestStatusWithRetries from "../../../common/TestStatusWithRetries";
 import {useRouter} from "next/router";
 import testResultsState from "../../../../state/testResults/TestResultsState";
 import {observer} from "mobx-react-lite";
+import projectState from "../../../../state/ProjectState";
 
 const TestResultCard = observer(({testResult, ...props}) => {
   const router = useRouter()
@@ -17,10 +18,6 @@ const TestResultCard = observer(({testResult, ...props}) => {
     testResultsState.setSelectedTest(testResult)
     router.query.test = (testResult.testcaseId != null && testResult.testcaseId.length > 0) ? testResult.testcaseId : testResult.fullName
     router.replace(router)
-  }
-
-  function getShortName(testResult) {
-    return testResult.fullName.substring(testResult.fullName.lastIndexOf(".") + 1)
   }
 
   return <Card
@@ -63,7 +60,7 @@ const TestResultCard = observer(({testResult, ...props}) => {
       />
 
       <div style={{maxWidth: 'min-content', overflowX: 'hidden', position: 'relative', marginRight: '5px', top: '-1px'}}>
-        <Typography variant={'h6'} style={{marginLeft: '15px', width: 'max-content'}}>{getShortName(testResult)}</Typography>
+        <Typography variant={'h6'} style={{marginLeft: '15px', width: 'max-content'}}>{projectState.getShortName(testResult)}</Typography>
         <Typography variant={'h6'} style={{marginLeft: '15px', width: 'max-content', fontSize: '14px', opacity: '0.5'}}>{testResult.fullName}</Typography>
       </div>
       <div style={{flexGrow: '1.1'}}></div>

@@ -44,7 +44,8 @@ export var customTheme = createTheme({
 
         integrations: {
             gitHub: 'rgba(0, 0, 0, 0.5)',
-            allure: 'rgb(26,165,77)'
+            allure: 'rgb(26,165,77)',
+            qase: 'rgb(30,84,197)'
         }
     },
 });

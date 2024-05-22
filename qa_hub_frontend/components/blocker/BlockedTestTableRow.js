@@ -50,8 +50,8 @@ const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, 
         handleTestcaseFieldChange("comment", event)
     }
 
-    function handleJiraIssueChange(event) {
-        handleTestcaseFieldChange("jiraIssue", event)
+    function handleTaskChange(event) {
+        handleTestcaseFieldChange("tmsTask", event)
     }
 
     function handleTestcaseEditFinish() {
@@ -109,7 +109,7 @@ const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, 
         />
 
         <TaskStatusCell blockedTest={blockedTest}
-                        onChangeCallback={ handleJiraIssueChange }
+                        onChangeCallback={ handleTaskChange }
                         onBlurCallback={ handleTestcaseEditFinish }/>
 
 

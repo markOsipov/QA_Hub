@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "NEXT_PUBLIC_QA_HUB_BACKEND=http://192.168.255.138:8080 next dev",
+    "dev": "NEXT_PUBLIC_QA_HUB_BACKEND=http://127.0.0.1:8080 next dev",
     "build": "next build",
     "start": "next start",
     "start_local": "NEXT_PUBLIC_QA_HUB_BACKEND=http://127.0.0.1:8080 next start",
@@ -22,7 +22,7 @@
     "eslint-config-next": "13.0.2",
     "mobx": "^6.6.2",
     "mobx-react-lite": "^3.4.0",
-    "next": "13.0.2",
+    "next": "^13.5.6",
     "react": "18.2.0",
     "react-cookie": "^4.1.1",
     "react-dom": "18.2.0",

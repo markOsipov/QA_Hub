@@ -8,7 +8,7 @@ export default function TestSteps({ steps, margin, setSelectedStep, ...props }) 
           key={index}
           step={step}
           margin={margin}
-          setSelectedStep={setSelectedStep}
+          setSelectedStep={setSelectedStep}         
           style={{
             marginLeft: margin * 10 + 'px',
             marginTop: '10px',

@@ -15,7 +15,7 @@ const EventsList = ({history, refreshHistory, setSelectedItem, filter, ...props}
           return filter === "" ||
             el.blockedTest.testcaseId.includes(filter) ||
             el.blockedTest.fullName.includes(filter) ||
-            el.blockedTest.jiraIssue.includes(filter) ||
+            el.blockedTest.tmsTask.includes(filter) ||
             el.blockedTest.comment.includes(filter)
         })
       )

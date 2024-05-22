@@ -52,12 +52,17 @@ const ProjectSelector = observer(({style}) => {
   }, [projectState.selectedProject])
 
   function getTaskUrl(taskTrackerInt) {
-
     let taskUrl = taskTrackerInt?.taskTrackerInfo?.baseUrl
     if (taskTrackerInt?.taskTrackerInfo?.type === "Jira") {
       taskUrl += "/browse"
 
       taskUrl = taskUrl.replace("//browse", "/browse")
+    }
+
+    if (taskTrackerInt?.taskTrackerInfo?.type === "Asana") {
+      taskUrl += "/0/0"
+
+      taskUrl = taskUrl.replace("//0", "/0")
     }
 
     return taskUrl
@@ -67,12 +72,22 @@ const ProjectSelector = observer(({style}) => {
     let testcaseUrl = tmsInt?.tmsInfo?.baseUrl
     let launchUrl = tmsInt?.tmsInfo?.baseUrl
 
-    if (tmsInt?.projectTmsInfo?.type === "Allure") {
-      testcaseUrl += `/project/${tmsInt?.projectTmsInfo?.project}/test-cases/`
+    const tmsType = tmsInt?.projectTmsInfo?.type
+    const tmsProject = tmsInt?.projectTmsInfo?.project
+
+    if (tmsType === "Allure") {
+      testcaseUrl += `/project/${tmsProject}/test-cases/`
       testcaseUrl = testcaseUrl.replace("//project", "/project")
 
       launchUrl += `/launch`
       testcaseUrl = testcaseUrl.replace("//launch", "/launch")
+    }
+
+    if (tmsType === "Qase") {
+      testcaseUrl += `/case/${tmsProject}-`
+
+      launchUrl += `/run/${tmsProject}/dashboard`
+      launchUrl = launchUrl.replace("//run", "/run")
     }
 
     return {

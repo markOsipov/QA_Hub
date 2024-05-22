@@ -6,6 +6,7 @@ import com.mongodb.MongoCredential
 import org.litote.kmongo.coroutine.CoroutineDatabase
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.reactivestreams.KMongo
+import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -21,7 +22,7 @@ class QaHubMongoClient {
         val builder = MongoClientSettings.builder()
         builder.applyConnectionString(ConnectionString(mongoHost))
 
-        if (!userName.isNullOrEmpty() && userPass.isNullOrEmpty()) {
+        if (!userName.isNullOrEmpty() && !userPass.isNullOrEmpty()) {
             builder.credential(
                 MongoCredential.createScramSha1Credential(
                     userName,

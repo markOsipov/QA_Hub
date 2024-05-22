@@ -235,7 +235,7 @@ class TestStatsService {
         )
     }
 
-    fun getTestHistory(request: TestHistoryRequest): SingleTestStats = runBlocking {
+    fun getTestHistory(request: TestHistoryRequest): SingleTestStats? = runBlocking {
         val takeLast = (request.filter?.takeLast ?: 0) + 0
         val filter = request.filter
         filter?.let{
@@ -310,6 +310,6 @@ class TestStatsService {
 
         val testHistory = testResultsCollection.aggregate<SingleTestStats>(*pipeline.toTypedArray()).toList()
 
-        return@runBlocking testHistory.first()
+        return@runBlocking testHistory.firstOrNull()
     }
 }

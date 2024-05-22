@@ -26,7 +26,7 @@ export default function HistoryItemTableRow({historyItem, setSelectedItem, index
     </StyledTableCell>
     <StyledTableCell align="center">{historyItem.blockedTest.testcaseId}</StyledTableCell>
     <StyledTableCell align="center">{historyItem.blockedTest.shortName}</StyledTableCell>
-    <StyledTableCell align="center">{historyItem.blockedTest.jiraIssue}</StyledTableCell>
+    <StyledTableCell align="center">{historyItem.blockedTest.tmsTask}</StyledTableCell>
     <StyledTableCell align="center">
       <label style={{ color: customTheme.palette.text.disabled}}>{getTimeMinutes(historyItem.date) }</label>
       <label style={{marginLeft: '7px',}}>{getDate(historyItem.date) }</label>

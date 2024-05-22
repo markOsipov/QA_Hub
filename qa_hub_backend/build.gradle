@@ -10,9 +10,9 @@ buildscript {
         shadow_version = "7.1.2"
         spring_version = "2.7.5"
         prometheus_version = "1.8.3"
-        kotlin_version = "1.6.21"
+        kotlin_version = "1.9.23"
         coroutine_version = "1.4.1"
-        kmongo_version = "4.2.0"
+        kmongo_version = "4.11.0"
         retrofit_ver = "2.9.0"
         okhttp_ver = "4.8.1"
         gson_ver = "2.8.6"
@@ -68,8 +68,8 @@ compileKotlin {
     kotlinOptions {
         freeCompilerArgs = ["-Xjsr305=strict"]
         jvmTarget = "11"
-        apiVersion = "1.6"
-        languageVersion = "1.6"
+        apiVersion = "1.9"
+        languageVersion = "1.9"
     }
 }
 

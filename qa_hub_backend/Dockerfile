@@ -17,4 +17,9 @@ RUN env
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-Denvironment=${ENV_MONGO_QA_HUB_HOST}", "-Denvironment=${ENV_MONGO_QA_HUB_LOGIN}", "-Denvironment=${ENV_MONGO_QA_HUB_PASSWORD}" , "-jar", "/app/app.jar"]
+ENTRYPOINT ["java", \
+            "-Denvironment=${ENV_MONGO_QA_HUB_HOST}", \
+            "-Denvironment=${ENV_MONGO_QA_HUB_LOGIN}", \
+            "-Denvironment=${ENV_MONGO_QA_HUB_PASSWORD}", \
+            "-jar", \
+            "/app/app.jar"]

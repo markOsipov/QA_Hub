@@ -76,7 +76,7 @@ function NewProjectModal({isOpen, setIsOpen, project}) {
             <StyledTextField value={currentProject.name}
                              size="small"
                              label="Project name"
-                             style={{minWidth: "100%", color: "white", marginBottom: "16px"}}
+                             style={{minWidth: "100%", color: "white", marginBottom: "20px"}}
                              autoComplete='off'
                              onChange ={(event) => {
                                  setCurrentProject({
@@ -86,7 +86,7 @@ function NewProjectModal({isOpen, setIsOpen, project}) {
                              }}
             />
 
-            <FormControl sx={{ minWidth: "100%", marginBottom: "8px" }} size="small">
+            <FormControl sx={{ minWidth: "100%"}} size="small">
                 <InputLabel style={{ color: customTheme.palette.text.faded }}>Platform</InputLabel>
                 <StyledSelect
                     value={currentProject.platform || ''}
@@ -101,7 +101,20 @@ function NewProjectModal({isOpen, setIsOpen, project}) {
                 </StyledSelect>
             </FormControl>
 
-            <ProjectCICDForm project={currentProject} setProject={setCurrentProject} style={{marginTop: '20px'}}/>
+            <StyledTextField value={currentProject.separator}
+                             size="small"
+                             label="Separator"
+                             style={{minWidth: "100%", color: "white", marginTop: '20px'}}
+                             autoComplete='off'
+                             onChange ={(event) => {
+                                 setCurrentProject({
+                                     ...currentProject,
+                                     separator: event.target.value
+                                 })
+                             }}
+            />
+
+            <ProjectCICDForm project={currentProject} setProject={setCurrentProject} style={{marginTop: '30px'}}/>
             <ProjectTMSForm project={currentProject} setProject={setCurrentProject} style={{marginTop: '10px'}} />
             <ProjectTaskTrackerForm project={currentProject} setProject={setCurrentProject} style={{marginTop: '10px'}}/>
             <ProjectOtherIntsForm project={currentProject} setProject={setCurrentProject} style={{marginTop: '10px'}} />

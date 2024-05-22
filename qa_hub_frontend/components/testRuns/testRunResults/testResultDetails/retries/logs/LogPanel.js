@@ -20,10 +20,21 @@ export default function LogsPanel({ retry, selectedStep, setSelectedStep, ...pro
 
   useEffect(() => {
     if (testLogs) {
-      const stepLine = testLogs.log.split("\n").findIndex((line) => {
-        return line.includes(`Starting step ${selectedStep}`)
+      const stepLines = []
+      
+      testLogs.log.split("\n").forEach((line, index) => {
+        if (line.includes(`Starting step ${selectedStep.id}:`)) {
+          stepLines.push(index)
+        }
       })
-      setSelectedLogRow(stepLine)
+    
+      const nextLine = stepLines.find((el) => el > selectedLogRow) 
+
+      if (nextLine) {      
+        setSelectedLogRow(nextLine)       
+      } else if (stepLines.length > 0) {      
+        setSelectedLogRow(stepLines[0])
+      }
     }
   }, [selectedStep])
 

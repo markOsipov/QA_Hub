@@ -105,7 +105,7 @@ class QaHubConfigController {
                     shortName = shortName,
                     fullName = "${project.platform.uppercase()}.some.package.sample.test.suite${project.separator}$shortName",
                     testcaseId = testcase.testcaseId,
-                    jiraIssue = "INT-${Random.nextInt(1..1000)}",
+                    tmsTask = "INT-${Random.nextInt(1..1000)}",
                     project = testcase.project,
                     team = testcase.team
                 )

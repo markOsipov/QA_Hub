@@ -55,6 +55,13 @@ class ProjectState {
         }
     }
 
+    getShortName(testResult) {
+        const separator = this.getSeparator(testResult.project)
+        return testResult.fullName.substring(
+          testResult.fullName.lastIndexOf(separator) + separator.length
+        )
+    }
+
     getSelectedProjectFullInfo() {
         return this.projectsDetails.find(project => {
             return project.name === this.selectedProject
