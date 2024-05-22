@@ -14,6 +14,7 @@ import {customTheme} from "../../../../styles/CustomTheme";
 import alertState from "../../../../state/AlertState";
 import {copyToClipboard} from "../../../../utils/CopyHelper";
 import TestResultTags from "./TestResultTags";
+import projectState from "../../../../state/ProjectState";
 
 const TestResultDetails = observer(({...props }) => {
   const router = useRouter()
@@ -101,7 +102,7 @@ const TestResultDetails = observer(({...props }) => {
 const TestResultShortName = observer(({testResult, action, ...props}) => {
   const [nameHovered, setNameHovered] = useState(false)
   const [copyIconHovered, setCopyIconHovered] = useState(false)
-  const shortName = testResult.fullName.substring(testResult.fullName.lastIndexOf(".") + 1)
+  const shortName = projectState.getShortName(testResult)
 
 
   function copyTestName() {

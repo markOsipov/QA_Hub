@@ -26,8 +26,7 @@ class TestStatsController {
     }
 
     @PostMapping("/history")
-    fun getTestHistory(@RequestBody request: TestHistoryRequest): SingleTestStats {
+    fun getTestHistory(@RequestBody request: TestHistoryRequest): SingleTestStats? {
         return testStatsService.getTestHistory(request)
     }
-
 }

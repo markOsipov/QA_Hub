@@ -11,7 +11,6 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import qa_hub.controller.testRuns.TestRunController
 import qa_hub.controller.testRuns.imageDir
 import qa_hub.core.mongo.QaHubMongoClient
 import qa_hub.core.mongo.entity.Collections.*
@@ -28,7 +27,6 @@ import qa_hub.service.testResults.TestResultsService
 import qa_hub.service.testResults.TestStepsService
 import qa_hub.service.utils.ProjectIntegrationsService
 import java.io.File
-import java.time.LocalDateTime
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import kotlin.random.Random
@@ -185,7 +183,7 @@ class TestRunService {
             val taskTrackerService = prjTmsInt.tmsInfo?.tmsService()
 
             taskTrackerService?.startTestrun(prjTmsInt.projectTmsInfo!!.project)
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             null
         }
     }
@@ -222,7 +220,7 @@ class TestRunService {
 
         testRun = getTestRun(testRun.testRunId)!!
         if (testRun.startedByRunner == runner.name) {
-            testRun.allureLaunchId = startTestRunInTms(testRun.project)
+            testRun.tmsLaunchId = startTestRunInTms(testRun.project)
             testRun.status = TestRunStatus.PROCESSING.status
             testRun.timeMetrics.started = startDate
             testRun.config = request.config

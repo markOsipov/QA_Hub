@@ -30,7 +30,7 @@ class MetricService {
     }
 
     fun calculateMetrics(project: String): MainProjectMetric {
-        val validStatuses = listOf("active", "actual", "draft")
+        val validStatuses = listOf("active", "actual", "draft", "review")
 
         val date = Instant.parse( currentDateTimeUtc() )
             .truncatedTo( ChronoUnit.DAYS )

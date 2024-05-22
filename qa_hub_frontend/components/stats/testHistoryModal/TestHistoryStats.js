@@ -8,8 +8,8 @@ import TodayIcon from '@mui/icons-material/Today';
 import TimerIcon from '@mui/icons-material/Timer';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 import {customTheme} from "../../../styles/CustomTheme";
-export default function TestHistoryStats({testHistory, ...props}) {
-  return <div style={{padding: "5px", ...props.style}}>
+export default function TestHistoryStats({testHistory, innerRef, ...props}) {
+  return <div style={{padding: "5px", ...props.style}} ref={innerRef}>
     <Stack  direction="row" spacing={2}>
       <StyledTooltip title={'Success rate'}>
         <div style={{display: 'flex' }}>

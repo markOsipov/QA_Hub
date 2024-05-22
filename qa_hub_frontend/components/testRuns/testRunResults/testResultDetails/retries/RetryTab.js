@@ -92,7 +92,7 @@ const RetryTab = observer(({retry, isLastRetry, ...props}) => {
 
     <div style={{display: 'flex', marginTop: '35px'}}>
       <StepsPanel
-        style={{width: 'max-content', minWidth: '200px', resize: 'horizontal', overflowX: 'auto'}}
+        style={{width: 'max-content', minWidth: '200px', width: 'max-content'}}
         retry={retry}
         selectedStep={selectedStep}
         setSelectedStep={setSelectedStep}

@@ -39,7 +39,7 @@ const BlockTestComponent = observer(({testResult, qaComment, ...props}) => {
           testcaseId: testResult.testcaseId,
           project: project,
           comment: qaComment,
-          jiraIssue: task,
+          tmsTask: task,
         },
         updateIsBlocked
       )

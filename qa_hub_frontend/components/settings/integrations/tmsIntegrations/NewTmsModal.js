@@ -12,6 +12,7 @@ function NewTmsModal({isOpen, setIsOpen, updateTmsList, tmsTypes, tmsIntegration
     const defaultTmsValue = {
         tmsType: "",
         baseUrl: "",
+        apiUrl: "",
         apiToken: "",
         login: "",
         password: ""
@@ -84,6 +85,19 @@ function NewTmsModal({isOpen, setIsOpen, updateTmsList, tmsTypes, tmsIntegration
                                  setNewTms({
                                      ...newTms,
                                      baseUrl: event.target.value
+                                 })
+                             }}
+            />
+
+            <StyledTextField value={newTms.apiUrl}
+                             size="small"
+                             label="Base Api URL"
+                             style={{minWidth: "400px", color: "white", margin: "8px"}}
+                             autoComplete='off'
+                             onChange ={(event) => {
+                                 setNewTms({
+                                     ...newTms,
+                                     apiUrl: event.target.value
                                  })
                              }}
             />

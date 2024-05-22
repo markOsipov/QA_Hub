@@ -26,25 +26,6 @@ const TestRunList = observer(({...props}) => {
   const [loadMoreSize, setLoadMoreSize] = useState(initialLoadSize)
   const [lastTestRunLoaded, setLastTestRunLoaded] = useState(false)
 
-  useEffect(() => {
-    //Refreshing not finished testruns
-    const interval = setInterval(() => {
-      testRuns.filter(testRun => {
-          return [TestRunStatuses.created, TestRunStatuses.processing].includes(testRun.status)
-        }).forEach((testRun, index) => {
-          getTestRun(testRun.testRunId).then((response) => {
-            if (response.data != null) {
-              const newTestRuns = [...testRuns]
-              newTestRuns[index] = response.data
-
-              setTestRuns(newTestRuns)
-            }
-          })
-        })
-    }, 30000);
-    return () => clearInterval(interval);
-  }, [testRuns])
-
   const loadMoreTestRuns = async () => {
     setLoading(true)
     await getTestRuns(project, filter, testRuns.length, loadMoreSize).then((response) => {
@@ -115,7 +96,7 @@ const TestRunList = observer(({...props}) => {
       {
         testRuns.map((testRun, index) => {
           return <TestRunCard
-            testRun={testRun}
+            testRunData={testRun}
             key={index}
             style={{marginTop: "15px", minWidth: 'max-content'}}
             filter={filter}

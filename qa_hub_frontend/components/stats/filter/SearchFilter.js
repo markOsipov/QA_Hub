@@ -20,7 +20,7 @@ export default function SearchFilter({filter, setFilter, filterAndLoad, ...props
   }
 
   return <StyledTooltip title={'Search by fullName or testcaseId'}>
-    <StyledFormControl size={"tiny"} autocomplete={'off'}>
+    <StyledFormControl size={"tiny"} autoComplete={'off'}>
       <StyledTextField
         label="Search"
         value={filter?.search || ''}

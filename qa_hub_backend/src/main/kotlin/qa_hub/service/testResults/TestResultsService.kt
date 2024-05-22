@@ -13,11 +13,15 @@ import qa_hub.core.mongo.utils.setCurrentPropertyValues
 import qa_hub.core.utils.DateTimeUtils
 import qa_hub.entity.testRun.*
 import qa_hub.service.TestRunService
+import qa_hub.service.utils.ProjectIntegrationsService
 
 @Service
 class TestResultsService {
     @Autowired
     lateinit var mongoClient: QaHubMongoClient
+
+    @Autowired
+    lateinit var projectIntegrationsService: ProjectIntegrationsService
 
 
     private val testResultsCollection by lazy {
@@ -115,6 +119,18 @@ class TestResultsService {
         )
     }
 
+    private fun updateTmsTestResult(testResult: TestResult): String? {
+        return try {
+            if (testResult.tmsLaunchId != null && testResult.project != null) {
+                val prjTmsInt = projectIntegrationsService
+                    .getProjectTmsInt(testResult.project!!)
+                val tmsService = prjTmsInt.tmsInfo?.tmsService()
+
+                return tmsService?.updateTestcase(prjTmsInt.projectTmsInfo?.project!!, testResult)
+            } else { null }
+        } catch (e: Throwable) { null }
+    }
+
     fun updateTestResult(testResult: TestResult): UpdateResult = runBlocking {
         val skipProperties = mutableListOf("_id", "testRunId", "fullName")
         if (testResult.status != TestStatus.PROCESSING.status) {
@@ -138,6 +154,10 @@ class TestResultsService {
 
         launch {
             updateActualTestsCount(testResult.testRunId)
+        }
+
+        launch {
+            updateTmsTestResult(testResult)
         }
 
         result

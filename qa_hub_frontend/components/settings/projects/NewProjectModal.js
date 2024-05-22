@@ -1,6 +1,4 @@
 import {
-    Accordion,
-    AccordionDetails,
     Box,
     FormControl,
     InputLabel,
@@ -15,8 +13,6 @@ import Button from "@mui/material/Button";
 import projectState from "../../../state/ProjectState";
 import {modalStyle} from "../../../styles/ModalStyle";
 import StyledSelect from "../../primitives/StyledSelect";
-import StyledAccordionSummary from "../../primitives/StyledAccordeonSummary";
-import integrationsState from "../../../state/integrations/IntegrationsState";
 import ProjectCICDForm from "./components/ProjectCICDForm";
 import ProjectTMSForm from "./components/ProjectTMSForm";
 import ProjectTaskTrackerForm from "./components/ProjectTaskTrackerForm";
@@ -26,6 +22,7 @@ function NewProjectModal({isOpen, setIsOpen}) {
     const defaultProjectValue = {
         name: "",
         platform: "",
+        separator: ".",
         cicd: {},
         tms: {},
         taskTracking: {}
@@ -84,7 +81,7 @@ function NewProjectModal({isOpen, setIsOpen}) {
             <StyledTextField value={newProject.name}
                              size="small"
                              label="Project name"
-                             style={{minWidth: "100%", color: "white", marginBottom: "16px"}}
+                             style={{minWidth: "100%", color: "white", marginBottom: "20px"}}
                              autoComplete='off'
                              onChange ={(event) => {
                                  setNewProject({
@@ -94,7 +91,7 @@ function NewProjectModal({isOpen, setIsOpen}) {
                              }}
             />
 
-            <FormControl sx={{ minWidth: "100%", marginBottom: "8px" }} size="small">
+            <FormControl sx={{ minWidth: "100%"}} size="small">
                 <InputLabel style={{ color: customTheme.palette.text.faded }}>Platform</InputLabel>
                 <StyledSelect
                     value={newProject.platform || ''}
@@ -109,7 +106,20 @@ function NewProjectModal({isOpen, setIsOpen}) {
                 </StyledSelect>
             </FormControl>
 
-            <ProjectCICDForm project={newProject} setProject={setNewProject} style={{marginTop: '20px'}}/>
+            <StyledTextField value={newProject.separator}
+                             size="small"
+                             label="Separator"
+                             style={{minWidth: "100%", color: "white", marginTop: '20px'}}
+                             autoComplete='off'
+                             onChange ={(event) => {
+                                 setNewProject({
+                                     ...newProject,
+                                     separator: event.target.value
+                                 })
+                             }}
+            />
+
+            <ProjectCICDForm project={newProject} setProject={setNewProject} style={{marginTop: '30px'}}/>
             <ProjectTMSForm project={newProject} setProject={setNewProject} style={{marginTop: '10px'}} />
             <ProjectTaskTrackerForm project={newProject} setProject={setNewProject} style={{marginTop: '10px'}}/>
 

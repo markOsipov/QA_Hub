@@ -10,11 +10,14 @@ import org.springframework.core.io.ClassPathResource
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.web.bind.annotation.*
 import qa_hub.core.utils.runParallel
+import qa_hub.entity.Platforms
+import qa_hub.entity.Project
 import qa_hub.entity.testRun.*
 import qa_hub.service.testResults.TestResultsService
 import qa_hub.service.TestRunService
 import qa_hub.service.testResults.TestLogsService
 import qa_hub.service.testResults.TestStepsService
+import qa_hub.service.utils.ProjectService
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.time.ZoneOffset
@@ -36,6 +39,9 @@ class TestRunController {
 
     @Autowired
     lateinit var testStepsService: TestStepsService
+
+    @Autowired
+    lateinit var projectService: ProjectService
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
     @PostMapping("/{project}")
@@ -104,7 +110,7 @@ class TestRunController {
 
     @PostMapping("/createDebug")
     fun createDebugTestRun(
-        @RequestParam(required = false, defaultValue = "10") testsCount: Int,
+        @RequestParam(required = false, defaultValue = "30") testsCount: Int,
         @RequestParam(required = false, defaultValue = "2") runnersCount: Int,
         @RequestParam(required = false, defaultValue = "2") simulatorsCount: Int
     ): List<String> {
@@ -150,8 +156,16 @@ class TestRunController {
         }
         val testList = tests.map{ TestListElement(fullName = it, testId = Random.nextInt(10000, 99999).toString()) }.toMutableList()
 
+        val projectName = "DebugProject"
+        try {
+            projectService.insertProject(Project(name = projectName, platform = Platforms.IOS.name))
+        } catch (e: Exception) {
+            print("Debug project already exists")
+        }
+
+
         val testRun = measure("CreateTestRun"){
-            testRunService.createTestRun(CreateTestRunRequest("Lowkey", "dev"))
+            testRunService.createTestRun(CreateTestRunRequest(projectName, "dev"))
         }
 
         runners.forEach {
@@ -209,7 +223,7 @@ class TestRunController {
                                 device = "iPhone 12",
                                 deviceRuntime = "iOS 16.3.1",
                                 runner = runner,
-                                duration = Random.nextDouble(300.0),
+                                duration = Random.nextDouble(1.0),
                                 message = if (status.status == TestStatus.FAILURE.status) {
                                     logText.take(Random.nextInt(20, 500))
                                 } else null

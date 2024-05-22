@@ -4,7 +4,7 @@ export default function TaskLink({blockedTest, taskUrl, ...props}) {
   const [hover, setHover] = useState(false)
 
   return <a
-    href={`${taskUrl}/${blockedTest.jiraIssue}`}
+    href={`${taskUrl}/${blockedTest.tmsTask}`}
     target={'_blank'}
     rel="noreferrer"
     style={{
@@ -15,6 +15,6 @@ export default function TaskLink({blockedTest, taskUrl, ...props}) {
     onMouseOver={() => {setHover(true)}}
     onMouseLeave={() => {setHover(false)}}
   >
-    {blockedTest.jiraIssue}
+    {blockedTest.tmsTask}
   </a>
 }

@@ -16,6 +16,23 @@ const ErrorMessage = observer(({ message, ...props }) => {
 
   const [selectedText, setSelectedText] = useState(null)
   const [testsWithSimilarError, setTestsWithSimilarError] = useState(null)
+
+  const [mouseX, setMouseX] = useState(0);
+  const [mouseY, setMouseY] = useState(0);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+    setMouseX(event.clientX);
+    setMouseY(event.clientY);
+  }
+
+  const calcHeight = () => {
+    if (message.split("\n").length > 30) {
+      return "500px"
+    }
+    return "max-content"
+  }
+
   const handleSelect = (event) => {
     const selection = window.getSelection()
 
@@ -66,6 +83,9 @@ const ErrorMessage = observer(({ message, ...props }) => {
       backgroundColor: customTheme.palette.error.faded,
       width: 'max-content',
       display: 'grid',
+      resize: 'vertical',
+      maxHeight: calcHeight(),
+      overflowY: 'auto',
       ...props.style
     }}
   >
@@ -73,6 +93,11 @@ const ErrorMessage = observer(({ message, ...props }) => {
       anchorEl={anchorEl}
       open={menuOpen}
       onClose={closeMenu}
+      anchorReference="anchorPosition"
+      anchorPosition={{
+        top: mouseY,
+        left: mouseX,
+      }}
       MenuListProps={{
         'aria-labelledby': 'basic-button',
       }}
@@ -80,7 +105,17 @@ const ErrorMessage = observer(({ message, ...props }) => {
       <div style={{padding: '0 10px 10px 10px'}}>
         <div style={{display: 'flex', alignItems: 'center'}}>
           <WarningIcon style={{ color: customTheme.palette.error.main }}/>
-          <label style={{marginLeft: '4px'}}>Similar errors: { testsWithSimilarError }</label>
+
+          {
+            testsWithSimilarError >= 0 &&
+            <label style={{marginLeft: '4px'}}>Similar errors: { testsWithSimilarError }</label>
+          }
+
+          {
+            testsWithSimilarError < 0 &&
+            <label style={{marginLeft: '4px'}}>Similar errors: Unknown</label>
+          }
+          
         </div>
 
         { selectedText &&
@@ -98,7 +133,7 @@ const ErrorMessage = observer(({ message, ...props }) => {
         <ListItemText>Add to filter</ListItemText>
       </MenuItem>
     </Menu>
-    <div onMouseUp={() => { setAnchorEl(ref.current) }}>
+    <div onClick={handleClick}>
       <label ref={ref} style={{whiteSpace: 'break-spaces', cursor: 'pointer'}}
       >{message}</label>
     </div>

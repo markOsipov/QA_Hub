@@ -1,5 +1,6 @@
 package qa_hub.service.integrations.taskTrackers
 
+import qa_hub.service.integrations.taskTrackers.asana.AsanaService
 import qa_hub.service.integrations.taskTrackers.jira.JiraService
 
 data class TaskTrackerType(
@@ -10,7 +11,8 @@ data class TaskTrackerType(
 enum class TaskTrackerTypes(
     val type: TaskTrackerType
 ) {
-    JIRA(TaskTrackerType("Jira"))
+    JIRA(TaskTrackerType("Jira")),
+    ASANA(TaskTrackerType("Asana"))
 }
 
 enum class AuthType(val authType: String) {
@@ -29,15 +31,22 @@ class TaskTrackerInfo(
     fun taskTrackerService(): TaskTrackerIntegrationAbstract? {
         return when (type) {
             TaskTrackerTypes.JIRA.type.name -> JiraService(this)
+            TaskTrackerTypes.ASANA.type.name -> AsanaService(this)
             else -> null
         }
     }
 }
 
+data class TaskStatusInfo(
+    val statusName: String?,
+    val statusColor: String?
+)
+
 data class TaskStatusResponse(
     val task: String,
-    val statusInfo: Any
+    val statusInfo: TaskStatusInfo
 )
+
 abstract class TaskTrackerIntegrationAbstract(val info: TaskTrackerInfo) {
     abstract fun getTaskStatus(task: String): TaskStatusResponse
 

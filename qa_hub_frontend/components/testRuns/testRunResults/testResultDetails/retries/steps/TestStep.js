@@ -9,6 +9,13 @@ export default function TestStep({step, margin, setSelectedStep, ...props}) {
   const [expanded, setExpanded] = useState( step.result === 'failure')
   const [hovered, setHovered] = useState(false)
 
+  const selectStep = () => {
+    setSelectedStep({
+      id: step.id,
+      timestamp: Date.now()
+    })
+  }
+
   return <div style={{ ...props.style }}>
     <div style={{display: "flex", alignItems: 'center'}}>
       {
@@ -59,7 +66,7 @@ export default function TestStep({step, margin, setSelectedStep, ...props}) {
           backgroundColor: hovered ? 'rgba(255, 255, 255, 0.03)' : 'unset',
           padding: '6px'
         }}
-        onClick={() => { setSelectedStep(step.id)} }
+        onClick={() => { selectStep(step.id) }}
         onMouseEnter={() => {setHovered(true)}}
         onMouseLeave={() => {setHovered(false)}}
       >

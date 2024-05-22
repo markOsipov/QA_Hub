@@ -36,7 +36,7 @@ const SelectedBlockedTest = observer(({selectedItem, setSelectedItem, history, r
 
   useEffect(() => {
     if (selectedItem) {
-      getTaskStatus(selectedItem.blockedTest.project, selectedItem.blockedTest.jiraIssue).then((data) => {
+      getTaskStatus(selectedItem.blockedTest.project, selectedItem.blockedTest.tmsTask).then((data) => {
         setStatus(data?.data?.statusInfo?.statusName || null)
         setColor(data?.data?.statusInfo?.statusColor || null)
       })

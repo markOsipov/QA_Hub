@@ -2,6 +2,7 @@ package qa_hub.entity
 
 data class StartTestRunForm(
     val project: String,
+    var defaultBranch: String = "dev",
     val params: MutableList<StartTestRunParam>
 )
 

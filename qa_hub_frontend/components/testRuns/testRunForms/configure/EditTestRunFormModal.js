@@ -1,4 +1,4 @@
-import {Box, Modal} from "@mui/material";
+import {Box, FormControl, Input, InputLabel, Modal} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {useEffect, useState} from "react";
 import Button from "@mui/material/Button";
@@ -12,12 +12,13 @@ import {CloseIcon} from "next/dist/client/components/react-dev-overlay/internal/
 import {customTheme} from "../../../../styles/CustomTheme";
 import {useRouter} from "next/router";
 
-const EditTestRunFormModal = observer(({isOpen, setIsOpen, params, loadTestRunForm}) => {
+const EditTestRunFormModal = observer(({isOpen, setIsOpen, params, defaultBranch, loadTestRunForm}) => {
     const router = useRouter()
     let project = router.query.project
     const testRunFormParamsViewId = "edit-test-run-form-params"
 
     const [editedParams, setEditedParams] = useState(params)
+    const [editedBranch, setEditedBranch] = useState(defaultBranch)
     const [paramTypes, setParamTypes] = useState([])
 
     const defaultNewParam = {
@@ -32,6 +33,8 @@ const EditTestRunFormModal = observer(({isOpen, setIsOpen, params, loadTestRunFo
     useEffect(() => {
         if (isOpen) {
             setEditedParams(params)
+            setEditedBranch(defaultBranch)
+
             getParamTypes(projectState).then(response => {
                 if (response.data) {
                     setParamTypes(response.data)
@@ -68,6 +71,7 @@ const EditTestRunFormModal = observer(({isOpen, setIsOpen, params, loadTestRunFo
         } else {
             const body = {
                 project: project,
+                defaultBranch: editedBranch,
                 params: editedParams
             }
 
@@ -88,6 +92,14 @@ const EditTestRunFormModal = observer(({isOpen, setIsOpen, params, loadTestRunFo
             </Typography>
 
             <div style={{maxHeight: "88vh", overflowY: "auto", paddingRight: "10px"}} id={testRunFormParamsViewId}>
+                <FormControl style={{width: "450px", marginBottom: "20px"}}>
+                    <InputLabel style={{color: "white", left: "-5px", top: "7px"}}>Default branch</InputLabel>
+                    <Input style={{backgroundColor: customTheme.palette.background.input, paddingLeft:"5px", height: "36px", color: "white"}}
+                           value={editedBranch}
+                           onChange={(event) => {setEditedBranch(event.target.value)}}
+                    />
+                </FormControl>
+
                 {
                     editedParams.map((param, index) => {
                         return <ConfigureParamCard key={ "param_" + index } param={param} index={index} params={editedParams} setParams={setEditedParams} paramTypes={paramTypes}/>
