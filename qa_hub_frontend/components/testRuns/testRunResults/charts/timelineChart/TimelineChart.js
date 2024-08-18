@@ -151,6 +151,16 @@ const TimelineChart = observer(({...props}) => {
 const ScaleX = ({duration, elementWidth, setShowPointer, setPointerCoordX, setPointerTitle, ...props}) => {
   const ref = useRef(null)
 
+  const refCenter = useRef(null)
+  const [posCenter, setPosCenter] = useState('0px')
+
+  useEffect(() => {
+    if (refCenter?.current?.clientWidth > 0) {
+      setPosCenter( `calc(50% - ${refCenter.current?.clientWidth / 2}px)`)
+    }
+  }, [refCenter])
+
+
   const handleMouseMove = (e) => {
     const xCoord = e.clientX - 34 //34 is magic number, adjusting pointer position to the cursor
 
@@ -214,7 +224,11 @@ const ScaleX = ({duration, elementWidth, setShowPointer, setPointerCoordX, setPo
     <div style={{width: `100%`, height: 'max-content', position: 'relative', minHeight: '15px'}}>
       <div style={{ position: 'absolute', left: '-3px' }}>0</div>
       <div style={{ position: 'absolute', right: '0' }}>{duration}s</div>
-      <div style={{ position: 'absolute', left: `calc(50% - ${String(Number.parseInt(duration / 2)).length * 4.2}px)` }}>{duration / 2}s</div>
+      {
+        refCenter &&
+        <div ref={refCenter} style={{ position: 'absolute', left: posCenter }}>{duration / 2}s</div>
+      }
+      
     </div>
   </div>
 }

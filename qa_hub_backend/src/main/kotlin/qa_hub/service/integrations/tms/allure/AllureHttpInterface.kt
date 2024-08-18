@@ -1,7 +1,5 @@
 package qa_hub.service.integrations.tms.allure
 
-import retrofit2.http.Body
-import retrofit2.http.POST
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -13,8 +11,7 @@ import qa_hub.service.integrations.tms.allure.entity.AllureTestcasesResponse
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.*
 
 
 interface AllureHttpInterface {
@@ -49,6 +46,11 @@ interface AllureHttpInterface {
 
     @POST("/api/rs/launch")
     fun createTestRun(@Body request: AllureCreateTestrunRequest): Call<AllureCreateTestrunResponse>
+
+    @POST("/api/rs/launch/{testRunId}/close")
+    fun completeTestRun(
+        @Path("testRunId") testRunId: String,
+    ): Call<Any?>
 
     @GET("/api/rs/testcase")
     fun getTestcases(

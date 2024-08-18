@@ -83,8 +83,8 @@ export default function TestHistoryTable({ testHistoryResults, ...props}) {
                 </StyledTableCell>
 
                 <StyledTableCell align={'center'}>
-                  <label style={{color: customTheme.palette.text.disabled}}>{getTimeMinutes(testResult.date)}</label>
-                  <label style={{marginLeft: '10px'}}>{getDate(testResult.date)}</label>
+                  <label style={{color: customTheme.palette.text.disabled}}>{getTimeMinutes(testResult.endDate)}</label>
+                  <label style={{marginLeft: '10px'}}>{getDate(testResult.endDate)}</label>
                 </StyledTableCell>
               </StyledTableRow>
             })

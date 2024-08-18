@@ -12,7 +12,6 @@ import qa_hub.core.mongo.entity.Collections
 import qa_hub.core.mongo.utils.setCurrentPropertyValues
 import qa_hub.core.utils.DateTimeUtils
 import qa_hub.entity.testRun.*
-import qa_hub.service.TestRunService
 import qa_hub.service.utils.ProjectIntegrationsService
 
 @Service
@@ -137,7 +136,9 @@ class TestResultsService {
             skipProperties.add("retries")
         }
 
-        testResult.date = DateTimeUtils.currentDateTimeUtc()
+        testResult.endDate = DateTimeUtils.currentDateTimeUtc()
+        testResult.qaHubDuration = testResult.calcQaHubDuration()
+
         launch {
             updateRetriesInfo(testResult)
         }
@@ -268,6 +269,7 @@ class TestResultsService {
                         startDate: { ${'$'}first: "${'$'}statusHistory.date" }
                         endDate: { ${'$'}last: "${'$'}statusHistory.date" }
                         duration: { ${'$'}last: "${'$'}statusHistory.duration" }
+                        qaHubDuration: { ${'$'}last: "${'$'}statusHistory.qaHubDuration" }
                     }
  	            }
             """.trimIndent(),

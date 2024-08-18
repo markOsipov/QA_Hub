@@ -19,20 +19,19 @@ export default function LogsPanel({ retry, selectedStep, setSelectedStep, ...pro
   const [appLogsHovered, setAppLogsHovered] = useState(false)
 
   useEffect(() => {
-    if (testLogs) {
+    if (testLogs && selectedStep) {
       const stepLines = []
-      
       testLogs.log.split("\n").forEach((line, index) => {
         if (line.includes(`Starting step ${selectedStep.id}:`)) {
           stepLines.push(index)
         }
       })
-    
-      const nextLine = stepLines.find((el) => el > selectedLogRow) 
 
-      if (nextLine) {      
-        setSelectedLogRow(nextLine)       
-      } else if (stepLines.length > 0) {      
+      const nextLine = stepLines.find((el) => el > selectedLogRow)
+
+      if (nextLine) {
+        setSelectedLogRow(nextLine)
+      } else if (stepLines.length > 0) {
         setSelectedLogRow(stepLines[0])
       }
     }

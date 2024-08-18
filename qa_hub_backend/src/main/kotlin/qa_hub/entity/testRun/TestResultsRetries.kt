@@ -13,6 +13,7 @@ class StatusHistoryItem(
     var date: String,
     var status: String,
     var duration: Double? = null,
+    var qaHubDuration: Double? = null,
     var message: String? = null,
     var runner: String? = "unknown",
     var device: String? = "unknown",
@@ -21,9 +22,10 @@ class StatusHistoryItem(
     var attachments: MutableList<TestResultAttachment> = mutableListOf()
 ) {
     constructor(testResult: TestResult): this(
-        date = testResult.date ?: currentDateTimeUtc(),
+        date = testResult.endDate ?: currentDateTimeUtc(),
         status = testResult.status,
         duration = testResult.duration,
+        qaHubDuration = testResult.qaHubDuration,
         message = testResult.message,
         runner = testResult.runner,
         device = testResult.device,

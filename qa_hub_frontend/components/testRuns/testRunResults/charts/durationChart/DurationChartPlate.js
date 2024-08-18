@@ -1,6 +1,7 @@
 import DurationChartElement from "./DurationChartElement";
 import {customTheme} from "../../../../../styles/CustomTheme";
 import Typography from "@mui/material/Typography";
+import {useEffect, useState, useRef} from 'react'
 
 const DurationChartPlate = ({data, hoveredTest, setHoveredTest, maxDuration, maxCount, title, filter, ...props}) => {
   let maxDurationNormalized =  maxDuration || Math.max(...data.map(element => element.duration))
@@ -17,7 +18,7 @@ const DurationChartPlate = ({data, hoveredTest, setHoveredTest, maxDuration, max
       title &&
       <Typography variant={'h6'} style={{marginBottom: '10px'}}>{title}</Typography>
     }
-    <div style={{display: 'flex', backgroundColor: customTheme.palette.background.paper, padding: '25px 20px', borderRadius: '10px', ...props.style}}>
+    <div style={{display: 'flex', backgroundColor: customTheme.palette.background.paper, padding: '25px 20px', borderRadius: '10px', ...props.style, minWidth: "400px"}}>
       <ScaleY
         maxDuration={maxDurationNormalized}
         style ={{
@@ -106,6 +107,33 @@ const ScaleY = ({maxDuration, ...props}) => {
 }
 
 const ScaleX = ({maxCount, elementWidth, ...props}) => {
+  const refLeft = useRef(null)
+  const refRight = useRef(null)
+  const refCenter = useRef(null)
+
+  const [posLeft, setPosLeft] = useState('0px')
+  const [posCenter, setPosCenter] = useState('0px')
+  const [posRight, setPosRight] = useState('0px')
+
+  useEffect(() => {
+    if (refLeft?.current?.clientWidth > 0) {
+      setPosLeft(`-${refLeft.current?.clientWidth / 2}px`)
+    }
+  }, [refLeft])
+
+  useEffect(() => {
+    if (refCenter?.current?.clientWidth > 0) {
+      setPosCenter( `calc(50% - ${refCenter.current?.clientWidth / 2}px)`)
+    }
+  }, [refCenter])
+
+  useEffect(() => {
+    if (refRight?.current?.clientWidth > 0) {
+      setPosRight(`-${refRight.current?.clientWidth / 2}px`)
+    }
+  }, [refRight])
+  
+
   return <div
     style={{
       display: 'flex',
@@ -132,7 +160,7 @@ const ScaleX = ({maxCount, elementWidth, ...props}) => {
       <div
         style={{
           minWidth: '5px',
-          borderRight: '1px solid',
+          borderRight: maxCount > 1 && '1px solid',
           borderColor: customTheme.palette.text.faded,
           flexGrow: '1'
         }}>
@@ -140,7 +168,7 @@ const ScaleX = ({maxCount, elementWidth, ...props}) => {
       <div
         style={{
           minWidth: '5px',
-          borderLeft: '1px solid',
+          borderLeft: maxCount > 1 && '1px solid',
           borderColor: customTheme.palette.text.faded,
           flexGrow: '1'
         }}>
@@ -148,9 +176,20 @@ const ScaleX = ({maxCount, elementWidth, ...props}) => {
     </div>
 
     <div style={{width: `${maxCount * (elementWidth || 10)}px`, height: 'max-content', position: 'relative', minHeight: '15px'}}>
-      <div style={{ position: 'absolute', left: '-3px' }}>0</div>
-      <div style={{ position: 'absolute', right: '-8px' }}>{Number.parseInt(maxCount)}</div>
-      <div style={{ position: 'absolute', left: `calc(50% - ${String(maxCount / 2).length * 2.25}px)` }}>{Number.parseInt(maxCount / 2)}</div>
+      {
+        refLeft &&
+        <div ref={refLeft} style={{ position: 'absolute', left: posLeft }}>0</div>
+      }
+      {
+        refRight &&
+        <div ref={refRight} style={{ position: 'absolute', right: posRight }}>{Number.parseInt(maxCount)}</div>
+      }
+      
+      {
+        refCenter && maxCount > 1 &&
+        <div ref={refCenter} style={{ position: 'absolute', left: posCenter }}>{Number.parseInt(maxCount / 2)}</div>
+      }
+      
     </div>
   </div>
 }

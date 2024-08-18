@@ -3,7 +3,16 @@ import StyledTooltip from "../../../../primitives/StyledTooltip";
 import {customTheme} from "../../../../../styles/CustomTheme";
 
 const TimelineElement = ({ startDate, endDate, duration, result, hoveredTest, setHoveredTest, ...props }) => {
-  const resultDuration = Number.parseInt(result.duration)
+  const calculateDuration = () => {
+    if (result.duration) {
+        return Number.parseInt(result.duration)
+    }
+    if (result.qaHubDuration) {
+        return Number.parseInt(result.qaHubDuration)
+    }
+    return secondsBetween(result.startDate, result.endDate)
+  }
+  const resultDuration = calculateDuration()
   const secondsBeforeEnd = secondsBetween(startDate, result.endDate)
   const secondsFromStart = (secondsBeforeEnd - resultDuration)
 

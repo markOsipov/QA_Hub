@@ -32,7 +32,10 @@ open class StartTestRunRequest(
 
     var runner: String? = null,
     var simulators: List<String> = listOf(),
-    var cicdJobId: String? = null
+    var cicdJobId: String? = null,
+    var tmsLaunchName: String? = null,
+    var tmsLaunchId: String? = null,
+    var tmsAutoExport: Boolean = false
 ): CreateTestRunRequest(project, config.branch, params)
 
 data class TestRun(
@@ -48,7 +51,8 @@ data class TestRun(
 
     var startedByRunner: String? = null,
     var cicdJobId: String? = null,
-    var tmsLaunchId: String? = null
+    var tmsLaunchId: String? = null,
+    var tmsAutoExport: Boolean = false
 )
 
 data class TestRunConfig(

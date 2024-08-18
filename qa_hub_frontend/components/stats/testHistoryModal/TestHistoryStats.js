@@ -42,7 +42,7 @@ export default function TestHistoryStats({testHistory, innerRef, ...props}) {
           }
           {
             !testHistory.lastSuccess &&
-            <div style={{marginLeft: '7px', color: customTheme.palette.text.disabled}}>-------------</div>
+            <div style={{marginLeft: '7px', color: customTheme.palette.text.disabled, minWidth: 'max-content'}}>-------------</div>
           }
         </div>
       </StyledTooltip>
@@ -56,7 +56,7 @@ export default function TestHistoryStats({testHistory, innerRef, ...props}) {
           }
           {
             !testHistory.lastRun &&
-            <div style={{marginLeft: '7px', color: customTheme.palette.text.disabled}}>-------------</div>
+            <div style={{marginLeft: '7px', color: customTheme.palette.text.disabled, minWidth: 'max-content'}}>-------------</div>
           }
         </div>
       </StyledTooltip>

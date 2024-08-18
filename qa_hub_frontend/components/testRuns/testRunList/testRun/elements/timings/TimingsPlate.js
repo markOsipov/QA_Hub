@@ -46,9 +46,12 @@ export default function TimingsPlate ({testRun, ...props}) {
     }
   }
 
+  if (testRun?.timeMetrics == null) {
+    return null
+  }
 
-    return <div style={{...props.style}}>
-      {renderComponent()}
-    </div>
+  return <div style={{...props.style}}>
+    {renderComponent()}
+  </div>
 }
 
