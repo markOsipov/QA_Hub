@@ -7,7 +7,7 @@ import {useState} from "react";
 export default function TestResultsPlate({testRun, progressBarWidth, ...props}) {
   const router = useRouter()
 
-  if (!testRun.tests.testsCount) {
+  if (testRun?.tests == null || !testRun.tests.testsCount) {
     return null
   }
 

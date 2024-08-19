@@ -11,6 +11,10 @@ data class QaseCreateTestrunResponse(
     val result: QaseCreateTestrunResponseResult
 )
 
+data class QaseCompleteTestrunResponse(
+    val status: Boolean
+)
+
 data class QaseCreateTestrunResponseResult(
     val id: Int
 )

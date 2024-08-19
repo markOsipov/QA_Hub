@@ -9,13 +9,18 @@ import qa_hub.service.integrations.tms.qase.entity.*
 class QaseClient(baseUrl: String, authToken: String) {
     private val client = QaseHttpInterface.getClient(baseUrl, authToken)
 
-    fun createTestRun(projectCode: String, testRunName: String = "Autotest launch ${currentDateTimeHumanReadable()}"): QaseCreateTestrunResponse {
+    fun createTestRun(projectCode: String, testRunName: String?): QaseCreateTestrunResponse {
         return client.createTestRun(
             projectCode,
             QaseCreateTestrunRequest(
-                title = testRunName
+                title = testRunName ?: "Autotest launch ${currentDateTimeHumanReadable()}"
             )
         ).execute().body()!!
+    }
+
+    fun completeTestRun(projectCode: String, testRunId: String): QaseCompleteTestrunResponse {
+        return client.completeTestRun(projectCode, testRunId)
+            .execute().body()!!
     }
 
     fun getTestcases(projectCode: String): List<CommonTestcase> {

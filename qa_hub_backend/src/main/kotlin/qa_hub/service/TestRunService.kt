@@ -175,14 +175,27 @@ class TestRunService {
         return@runBlocking testRunCollection.find(TestRun::cicdJobId eq request.cicdJobId).toList().first()
     }
 
-    private fun startTestRunInTms(project: String): String? {
+    private fun startTestRunInTms(project: String, testRunName: String?): String? {
         return try {
             val prjTmsInt = projectIntegrationsService
                 .getProjectTmsInt(project)
 
             val taskTrackerService = prjTmsInt.tmsInfo?.tmsService()
 
-            taskTrackerService?.startTestrun(prjTmsInt.projectTmsInfo!!.project)
+            taskTrackerService?.startTestrun(prjTmsInt.projectTmsInfo!!.project, testRunName)
+        } catch (e: Throwable) {
+            null
+        }
+    }
+
+    private fun completeTestRunInTms(project: String, testRunId: String): String? {
+        return try {
+            val prjTmsInt = projectIntegrationsService
+                .getProjectTmsInt(project)
+
+            val taskTrackerService = prjTmsInt.tmsInfo?.tmsService()
+
+            taskTrackerService?.completeTestrun(prjTmsInt.projectTmsInfo!!.project, testRunId)
         } catch (e: Throwable) {
             null
         }
@@ -220,7 +233,16 @@ class TestRunService {
 
         testRun = getTestRun(testRun.testRunId)!!
         if (testRun.startedByRunner == runner.name) {
-            testRun.tmsLaunchId = startTestRunInTms(testRun.project)
+            testRun.tmsAutoExport = request.tmsAutoExport
+
+            if (testRun.tmsAutoExport) {
+                testRun.tmsLaunchId = if (request.tmsLaunchId == null) {
+                    startTestRunInTms(testRun.project, request.tmsLaunchName)
+                } else {
+                    request.tmsLaunchId
+                }
+            }
+
             testRun.status = TestRunStatus.PROCESSING.status
             testRun.timeMetrics.started = startDate
             testRun.config = request.config
@@ -351,6 +373,7 @@ class TestRunService {
         if (nextTest != null) {
             nextTest.apply {
                 status = TestStatus.PROCESSING.status
+                startDate = currentDateTimeUtc()
                 deviceId = simulatorId
                 this.runner = runner
                 retries +=  1
@@ -446,6 +469,10 @@ class TestRunService {
         )
 
         testRun = getTestRun(testRunId)!!
+
+        if (testRun.tmsAutoExport && testRun.tmsLaunchId != null) {
+            completeTestRunInTms(testRun.project, testRun.tmsLaunchId!!)
+        }
 
         launch {
             notifyTestRunFinished(testRun)

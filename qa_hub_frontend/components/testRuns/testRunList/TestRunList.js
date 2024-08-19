@@ -95,7 +95,7 @@ const TestRunList = observer(({...props}) => {
     <div style={{minWidth: 'max-content'}}>
       {
         testRuns.map((testRun, index) => {
-          return <TestRunCard
+          return testRun != null && <TestRunCard
             testRunData={testRun}
             key={index}
             style={{marginTop: "15px", minWidth: 'max-content'}}

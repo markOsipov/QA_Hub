@@ -8,13 +8,17 @@ import qa_hub.service.integrations.tms.allure.entity.AllureCreateTestrunResponse
 class AllureClient(baseUrl: String, authToken: String) {
     private val client = AllureHttpInterface.getClient(baseUrl, authToken)
 
-    fun createTestRun(projectId: Int, testRunName: String = "Autotest launch ${currentDateTimeHumanReadable()}"): AllureCreateTestrunResponse {
+    fun createTestRun(projectId: Int, testRunName: String?): AllureCreateTestrunResponse {
         return client.createTestRun(
                 AllureCreateTestrunRequest(
                     projectId = projectId,
-                    name = testRunName
+                    name = testRunName ?: "Autotest launch ${currentDateTimeHumanReadable()}"
                 )
             ).execute().body()!!
+    }
+
+    fun completeTestRun(testRunId: String): String {
+        return client.completeTestRun(testRunId).execute().code().toString()
     }
 
     fun getTestcases(projectId: Int): List<CommonTestcase> {

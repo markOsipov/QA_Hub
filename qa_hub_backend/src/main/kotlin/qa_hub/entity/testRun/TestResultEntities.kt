@@ -2,6 +2,9 @@ package qa_hub.entity.testRun
 
 import org.bson.conversions.Bson
 import org.litote.kmongo.*
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
 data class SingleTestResultRequest(
     val testRunId: String,
@@ -86,20 +89,35 @@ data class TestResult(
 
     var tmsLaunchId: String? = null,
 
-    var duration: Double? = null,
+    var duration: Double? = null,       //duration of test execution, sended in test result. Usually calculated by test framework.
+    var qaHubDuration: Double? = null,  //duration between entering processing status and entering final status on Qa Hub side.
+
     var status: String,
     var retries: Int = 0,
-    var date: String? = null,
+
+    var startDate: String? = null,
+    var endDate: String? = null,
 
     var message: String? = null,
     var runner: String = "unknown",
-    var device: String? = "simulator",
+    var device: String? = "unknown",
     var deviceRuntime: String = "unknown",
     var deviceId: String = "unknown",
 
     var reviewed: Boolean = false,
     var attachments: MutableList<TestResultAttachment> = mutableListOf()
-)
+) {
+    fun calcQaHubDuration(): Double? {
+        return try {
+            ChronoUnit.MILLIS.between(
+                ZonedDateTime.parse(this.startDate!!, DateTimeFormatter.ISO_INSTANT),
+                ZonedDateTime.parse(this.endDate!!, DateTimeFormatter.ISO_INSTANT)
+            ).toDouble() / 1000
+        } catch (e: Exception) {
+            null
+        }
+    }
+}
 
 data class TestResultAttachment(
     val type: String,

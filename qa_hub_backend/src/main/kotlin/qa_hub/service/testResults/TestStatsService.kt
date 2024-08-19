@@ -1,6 +1,5 @@
 package qa_hub.service.testResults
 
-import com.mongodb.client.model.Field
 import com.mongodb.client.model.Sorts
 import kotlinx.coroutines.runBlocking
 import org.litote.kmongo.*
@@ -9,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import qa_hub.core.mongo.QaHubMongoClient
 import qa_hub.core.mongo.entity.Collections
-import qa_hub.core.mongo.utils.divide
-import qa_hub.core.utils.DateTimeUtils.currentDateTimeUtc
 import qa_hub.entity.testRun.*
 
 @Service
@@ -174,7 +171,7 @@ class TestStatsService {
                 )
             ),
             sort(
-                descending(TestResult::date, TestResult::testRunId)
+                descending(TestResult::endDate, TestResult::testRunId)
             ),
         )
 
@@ -220,8 +217,8 @@ class TestStatsService {
         val avgRetries = testResults.sumOf { it.retries }.toDouble() / testResults.count { it.retries > 0 }.toDouble()
 
         val sortedResults = testResults.sortedByDescending { it.testRunId }
-        val lastRun = sortedResults.first().date
-        val lastSuccess = sortedResults.firstOrNull { it.status == TestStatus.SUCCESS.status }?.date
+        val lastRun = sortedResults.first().endDate
+        val lastSuccess = sortedResults.firstOrNull { it.status == TestStatus.SUCCESS.status }?.endDate
 
        return TestStats(
             fullName = fullName,
@@ -255,7 +252,7 @@ class TestStatsService {
                     )
                 )
             ),
-            sort(descending(TestResult::date)),
+            sort(descending(TestResult::endDate)),
             """
                 {
                     ${'$'}group: {
@@ -276,13 +273,13 @@ class TestStatsService {
                             } 
                         },
                         lastRun: {
-                            ${'$'}max: "${'$'}date"
+                            ${'$'}max: "${'$'}endDate"
                         },
                         lastSuccess: {
                             ${'$'}max: {
                                ${'$'}cond: {
                                    if: { ${'$'}eq: [ "${'$'}status", "SUCCESS" ] },
-                                   then: "${'$'}date",
+                                   then: "${'$'}endDate",
                                    else: null
                                }
                            } 
@@ -300,7 +297,7 @@ class TestStatsService {
  	            }
             """.trimIndent().bson,
             sort(
-                descending(TestResult::date)
+                descending(TestResult::endDate)
             )
         )
 

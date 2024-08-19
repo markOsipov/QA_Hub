@@ -48,6 +48,12 @@ interface QaseHttpInterface {
         @Body request: QaseCreateTestrunRequest
     ): Call<QaseCreateTestrunResponse>
 
+    @POST("/v1/run/{projectCode}/{testRunId}/complete")
+    fun completeTestRun(
+        @Path("projectCode") projectCode: String,
+        @Path("testRunId") testRunId: String
+    ): Call<QaseCompleteTestrunResponse>
+
     @GET("/v1/case/{projectCode}")
     fun getTestcases(
         @Path("projectCode") projectCode: String,

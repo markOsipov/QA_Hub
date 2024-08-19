@@ -1,11 +1,23 @@
-import {getDateTime} from "../../../../../utils/DateTimeUtils";
+import {getDateTime, secondsBetween} from "../../../../../utils/DateTimeUtils";
 import StyledTooltip from "../../../../primitives/StyledTooltip";
 import {customTheme} from "../../../../../styles/CustomTheme";
 
 const DurationChartElement = ({durationElement, hoveredTest, setHoveredTest, maxDuration, filter, index, ...props}) => {
   let isDisplayed = durationElement.fullName.toLowerCase().includes(filter.toLowerCase()) || String(durationElement.testcaseId.toLowerCase()).includes(filter.toLowerCase())
+
+  const calculateDuration = () => {
+    if (durationElement.duration) {
+        return Number.parseInt(durationElement.duration)
+    }
+    if (durationElement.qaHubDuration) {
+        return Number.parseInt(durationElement.qaHubDuration)
+    }
+    return secondsBetween(durationElement.startDate, durationElement.endDate)
+  }
+  const resultDuration = calculateDuration()
+
   const DurationElementTooltip = () => {
-    return <div style={{display: 'grid' }}>
+    return <div style={{display: 'grid'}}>
       <div style={{display: 'flex', alignItems: 'center'}}>
         <label style={{fontWeight: 'bold'}}>{durationElement.fullName}</label>
         <div style={{flexGrow: '1'}}></div>
@@ -33,7 +45,7 @@ const DurationChartElement = ({durationElement, hoveredTest, setHoveredTest, max
           <label style={{marginLeft: '10px', color: 'rgba(255, 255, 255, 0.5)'}}>{getDateTime(durationElement.endDate)}</label>
         </div>
 
-        <label style={{marginTop: '10px'}}>Duration: {Number.parseInt(durationElement.duration)}s</label>
+        <label style={{marginTop: '10px'}}>Duration: {Number.parseInt(resultDuration)}s</label>
       </div>
 
       <label style={{marginTop: '10px'}}>Retry: {durationElement.retry}</label>
@@ -45,13 +57,13 @@ const DurationChartElement = ({durationElement, hoveredTest, setHoveredTest, max
   }
 
   return <StyledTooltip
-    maxWidth={'800px'}
+    maxWidth={'100%'}
     title={<DurationElementTooltip />}
   >
     <div
       style={{
         width: '10px',
-        height: (durationElement.duration / maxDuration * 100 ) + '%',
+        height: (Number.parseInt(resultDuration) / maxDuration * 100 ) + '%',
         backgroundColor: durationElement.status === 'SUCCESS' ? customTheme.palette.success.main : customTheme.palette.error.main,
         cursor: 'pointer',
         ...props.style

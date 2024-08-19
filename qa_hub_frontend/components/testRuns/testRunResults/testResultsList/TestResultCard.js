@@ -43,25 +43,26 @@ const TestResultCard = observer(({testResult, ...props}) => {
       <TextWithLabel
         style={{
           fontSize: "12px",
-          width: "max-content",
           padding: "5px 6px",
           minHeight: 'unset',
-          minWidth: '70px',
+          minWidth: "75px",
+          width: 'max-content',
           display: 'grid',
           justifyItems: 'center',
           height: 'min-content',
           position: 'relative',
           top: '6px',
-          marginRight: '7px'
+          marginRight: '15px'
         }}
         label={'TestcaseId'}
         value={testResult.testcaseId}
-        labelStyle={{ justifySelf: 'center'}}
+        labelStyle={{ justifySelf: 'center' }}
+        valueStyle={{ lineBreak: 'auto', }}
       />
 
       <div style={{maxWidth: 'min-content', overflowX: 'hidden', position: 'relative', marginRight: '5px', top: '-1px'}}>
-        <Typography variant={'h6'} style={{marginLeft: '15px', width: 'max-content'}}>{projectState.getShortName(testResult)}</Typography>
-        <Typography variant={'h6'} style={{marginLeft: '15px', width: 'max-content', fontSize: '14px', opacity: '0.5'}}>{testResult.fullName}</Typography>
+        <Typography variant={'h6'} style={{width: 'max-content'}}>{projectState.getShortName(testResult)}</Typography>
+        <Typography variant={'h6'} style={{width: 'max-content', fontSize: '14px', opacity: '0.5'}}>{testResult.fullName}</Typography>
       </div>
       <div style={{flexGrow: '1.1'}}></div>
       <TestStatusWithRetries status={testResult.status} retries={testResult.retries} />

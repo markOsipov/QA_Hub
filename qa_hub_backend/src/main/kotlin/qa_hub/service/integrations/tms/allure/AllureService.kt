@@ -29,7 +29,11 @@ class AllureService(info: TmsInfo): TmsIntegrationAbstract(info) {
         return null
     }
 
-    override fun startTestrun(projectId: String): String {
-        return client.createTestRun(projectId = projectId.toInt()).id.toString()
+    override fun startTestrun(projectId: String, testRunName: String?): String {
+        return client.createTestRun(projectId = projectId.toInt(), testRunName).id.toString()
+    }
+
+    override fun completeTestrun(projectId: String, testRunId: String): String {
+        return client.completeTestRun(testRunId)
     }
 }

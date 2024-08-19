@@ -28,6 +28,10 @@ export default function TestRunConfigFilterable({testRun, filter, setFilter, fil
     filterAndLoad(newFilterValue)
   }
 
+  if (testRun?.config == null) {
+    return null
+  }
+
   return <div style={{display: 'flex', flexDirection: 'column', height: 'min-content', opacity: '0.8', ...props.style}}>
 
     <div style={{display: 'flex', marginBottom: marginBottom}}>

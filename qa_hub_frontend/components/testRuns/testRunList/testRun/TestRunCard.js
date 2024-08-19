@@ -67,6 +67,10 @@ export default function TestRunCard({testRunData, filter, setFilter, filterAndLo
     filterAndLoad(newFilterValue)
   }
 
+  if (testRun == null || testRun.testRunId == null) {
+    return null
+  }
+
   return <Paper
     style={{
       padding: '15px', position: 'relative', ...props.style,

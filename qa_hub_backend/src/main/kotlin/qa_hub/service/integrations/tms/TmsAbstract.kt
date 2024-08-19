@@ -46,7 +46,8 @@ abstract class TmsIntegrationAbstract(val tmsInfo: TmsInfo) {
     abstract fun getTestcases(projectId: String): List<CommonTestcase>
     abstract fun getTestcase(projectId: String, testcaseId: String): CommonTestcase
     abstract fun updateTestcase(tmsProject: String, testResult: TestResult): String?
-    abstract fun startTestrun(projectId: String): String
+    abstract fun startTestrun(projectId: String, testRunName: String?): String
+    abstract fun completeTestrun(projectId: String, testRunId: String): String
 }
 
 abstract class TmsProjectAbstract
