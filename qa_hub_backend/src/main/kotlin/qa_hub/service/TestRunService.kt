@@ -277,7 +277,12 @@ class TestRunService {
                 )
             }
             if (updateTestResultRequests.isNotEmpty()) {
-                testResultsCollection.insertMany(updateTestResultRequests)
+                try {
+                    testResultsCollection.insertMany(updateTestResultRequests)
+                } catch(e: Exception) {
+                    logger.warn("Inserting test result has met error. TestRunId: ${testRun.testRunId}")
+                    e.printStackTrace()
+                }
             }
         } else {
             testRunCollection.updateOne(
