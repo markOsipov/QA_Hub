@@ -61,7 +61,7 @@ update_image qa_hub_backend
 update_image qa_hub_frontend
 
 echo "\nDEPLOYING IMAGES"
-ssh $REMOTE_USER@$REMOTE_IP << EOF
+ssh $REMOTE_USER:$REMOTE_PASSWORD@$REMOTE_IP << EOF
     sudo -S <<< "$REMOTE_PASSWORD" rm ~/.docker/config.json
     sudo mkdir -p "$ENV_HOST_IMAGE_DIR"
 
