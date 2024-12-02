@@ -2,14 +2,16 @@ import Button from "@mui/material/Button";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {Paper} from "@mui/material";
-import {clearData, hardReset} from "../../requests/ResetRequests";
+import {clearData, hardReset, createDebugTestrun} from "../../requests/ResetRequests";
 import projectState from "../../state/ProjectState";
 
 export default function ResetPlate() {
     function handleHardResetClick() {
         if (confirm("All current data will be erased.\nThen the default data set would be restored.\n\nContinue?")) {
             hardReset().then(() => {
-                projectState.updateProjects()
+                createDebugTestrun().then(() => {
+                    projectState.updateProjects()
+                })
             })
         }
     }

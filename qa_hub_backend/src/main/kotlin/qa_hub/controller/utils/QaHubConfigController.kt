@@ -75,9 +75,7 @@ class QaHubConfigController {
     @PostMapping("/hardReset")
     fun hardReset() {
         val projects = listOf(
-            Project(name = "qahub_example_ios", platform = IOS.platform.name),
-            Project(name = "qahub_example_android", platform = ANDROID.platform.name),
-            Project(name = "qahub_example_backend", platform = BACKEND.platform.name)
+            Project(name = "BlockerDebugProject", platform = IOS.platform.name)
         )
 
         val teams = listOf(

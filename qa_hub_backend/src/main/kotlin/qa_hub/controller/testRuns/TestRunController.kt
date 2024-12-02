@@ -156,7 +156,7 @@ class TestRunController {
         }
         val testList = tests.map{ TestListElement(fullName = it, testId = Random.nextInt(10000, 99999).toString()) }.toMutableList()
 
-        val projectName = "DebugProject"
+        val projectName = "TestrunDebugProject"
         try {
             projectService.insertProject(Project(name = projectName, platform = Platforms.IOS.name))
         } catch (e: Exception) {

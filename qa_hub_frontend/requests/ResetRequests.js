@@ -13,6 +13,18 @@ export function hardReset() {
     return axios(config)
 }
 
+export function createDebugTestrun() {
+    const config = {
+        method: 'post',
+        url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat("/api/testRuns/createDebug"),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+
+    return axios(config)
+}
+
 export function clearData() {
     const config = {
         method: 'post',
