@@ -1,0 +1,54 @@
+version: '3.3'
+services:
+#  mongo:
+#    image: mongo:latest
+#    container_name: "qa_hub_mongo"
+#    restart: always
+#    ports:
+#      - '27017:27017'
+#    environment:
+#      MONGO_INITDB_ROOT_USERNAME: ${ENV_MONGO_QA_HUB_LOGIN}
+#      MONGO_INITDB_ROOT_PASSWORD: ${ENV_MONGO_QA_HUB_PASSWORD}
+#    networks:
+#      - qa_hub_network
+
+  backend:
+    image: qa_hub_backend:latest
+    container_name: "qa_hub_backend"
+    restart: always
+    build:
+      context: ./qa_hub_backend
+      dockerfile: Dockerfile
+      args:
+        - ENV_MONGO_QA_HUB_TRUST_STORE_DIR=${ENV_MONGO_QA_HUB_TRUST_STORE_DIR}
+        - ENV_MONGO_QA_HUB_TRUST_STORE_FILE=${ENV_MONGO_QA_HUB_TRUST_STORE_FILE}
+    ports:
+      - '8080:8080'
+    environment:
+      - ENV_MONGO_QA_HUB_HOST=${ENV_MONGO_QA_HUB_HOST}
+      - ENV_MONGO_QA_HUB_LOGIN=${ENV_MONGO_QA_HUB_LOGIN}
+      - ENV_MONGO_QA_HUB_PASSWORD=${ENV_MONGO_QA_HUB_PASSWORD}
+      - ENV_MONGO_QA_HUB_TRUST_STORE_PASS=${ENV_MONGO_QA_HUB_TRUST_STORE_PASS}
+      - ENV_IMAGE_DIR=${ENV_IMAGE_DIR}
+      - REMOTE_FRONTEND_BASE_URL=${REMOTE_FRONTEND_BASE_URL}
+    networks:
+      - qa_hub_network
+
+  frontend:
+    depends_on:
+      - backend
+    image: qa_hub_frontend:latest
+    container_name: "qa_hub_frontend"
+    restart: always
+    build:
+      context: ./qa_hub_frontend
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_QA_HUB_BACKEND=${NEXT_PUBLIC_QA_HUB_BACKEND}
+    ports:
+      - '3000:3000'
+    networks:
+      - qa_hub_network
+
+networks:
+  qa_hub_network:
