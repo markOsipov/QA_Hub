@@ -67,7 +67,7 @@ const Settings = observer(() => {
 
 
     return <div style={{padding: "15px"}}>
-        <ResetPlate />/
+        <ResetPlate />
         <ProjectEditor />
         <CicdEditor />
         <TmsEditor />

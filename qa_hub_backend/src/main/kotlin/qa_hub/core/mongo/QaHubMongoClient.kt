@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository
 class QaHubMongoClient {
     private val qaHubDb = "dbQaHub"
 
-    private val mongoHost = System.getenv("ENV_MONGO_QA_HUB_HOST")
+    private val mongoHost = "mongodb://127.0.0.1:27017"
     private val userName = System.getenv("ENV_MONGO_QA_HUB_LOGIN")
     private val userPass = System.getenv("ENV_MONGO_QA_HUB_PASSWORD")
     private val authSource = System.getenv("ENV_MONGO_QA_HUB_AUTH_SOURCE")
