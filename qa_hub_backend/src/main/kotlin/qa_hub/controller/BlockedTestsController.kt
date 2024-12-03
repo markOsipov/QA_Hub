@@ -30,9 +30,10 @@ class BlockedTestsController {
     @GetMapping("/{project}")
     fun getBlockedTestsForProject(
         @PathVariable project: String,
-        @RequestParam("skipTrials", required = false, defaultValue = "false"
-    ) skipTrials: Boolean): List<BlockedTest> {
-        return blockedTestsService.getBlockedTestsForProject(project, skipTrials)
+        @RequestParam("skipTrials", required = false, defaultValue = "false") skipTrials: Boolean,
+        @RequestParam("team", required = false) team: String?
+    ): List<BlockedTest> {
+        return blockedTestsService.getBlockedTestsForProject(project, skipTrials, team)
     }
 
     @GetMapping("/history/{project}")

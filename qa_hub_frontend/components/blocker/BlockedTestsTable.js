@@ -29,6 +29,8 @@ const BlockedTestsTable = observer(() => {
     const [showFullName, setShowFullName] = useState(true)
     const [addBlockedTestModalOpen, setAddBlockedTestModalOpen] = useState(false)
 
+    const [teamFilter, setTeamFilter] = useState(null)
+
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(20)
 
@@ -52,7 +54,8 @@ const BlockedTestsTable = observer(() => {
     }
 
     useEffect(() => {
-        blockerState.updateBlockedTests(project)
+        setTeamFilter(null)
+        blockerState.updateBlockedTests(project, null)
     }, [project])
 
 
@@ -97,6 +100,8 @@ const BlockedTestsTable = observer(() => {
                                     return <BlockedTestTableRow
                                         key={blockedTest._id}
                                         index={index}
+                                        teamFilter={teamFilter}
+                                        setTeamFilter={setTeamFilter}
                                         blockedTestForRow={blockedTest}
                                         showFullName={showFullName}
                                         setShowFullName={setShowFullName}

@@ -13,7 +13,7 @@ import TaskStatusCell from "./TaskStatusCell";
 import TestcaseIdCell from "./TestcaseIdCell";
 import DateWithDayDiff from "../stats/cells/DateWithDayDiff";
 
-const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, setShowFullName, openTestHistoryModal }) => {
+const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, setShowFullName, teamFilter, setTeamFilter, openTestHistoryModal }) => {
     const [blockedTest, setBlockedTest] = useState(blockedTestForRow)
 
     function handleUnblockButtonClick() {
@@ -58,6 +58,17 @@ const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, 
         blockerState.editBlockedTest(blockedTest)
     }
 
+    function handleTeamClick() {
+        let newTeamFilter
+        if (teamFilter == null) {
+            newTeamFilter = blockedTest.team
+        } else {
+            newTeamFilter = null
+        }
+        setTeamFilter(newTeamFilter)
+        blockerState.updateBlockedTests(blockedTest.project, newTeamFilter)
+    }
+
     return <StyledTableRow>
         <StyledTableCell align="left">
             <label style={{ padding: "5px 9px"}}>{index + 1}</label>
@@ -86,7 +97,17 @@ const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, 
         />
 
         <StyledTableCell align="center" style={{color: customTheme.palette.text.faded}}> {
-          blockedTest.team && <label style={{border: "1px solid darkgray", borderRadius: "5px", padding: "5px"}}>{blockedTest.team}</label>
+            blockedTest.team && <label
+                style={{
+                    border: "1px solid darkgray",
+                    borderRadius: "5px",
+                    padding: "5px",
+                    cursor: "pointer",
+                    color: teamFilter == blockedTest.team && "white",
+                    borderColor: teamFilter == blockedTest.team && "white",
+                }}
+                onClick={handleTeamClick}
+            >{blockedTest.team}</label>
         }
 
         </StyledTableCell>

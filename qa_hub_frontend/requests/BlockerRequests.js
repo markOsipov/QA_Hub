@@ -1,10 +1,13 @@
 import axios from "axios";
 import process from "../next.config";
 
-export function getBlockedTests(project) {
+export function getBlockedTests(project, team) {
     const config = {
         method: 'get',
         url: process.env.NEXT_PUBLIC_QA_HUB_BACKEND.concat("/api/blocker/" + project),
+        params: {
+            'team': team,
+        },
         headers: {
             'Content-Type': 'application/json'
         }
