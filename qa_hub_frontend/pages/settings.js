@@ -70,7 +70,7 @@ const Settings = observer(() => {
         <ResetPlate />
         <ProjectEditor />
         <CicdEditor />
-        <TmsEditor />
+        {/* <TmsEditor /> */}
         <TaskTrackerEditor />
     </div>
 })
