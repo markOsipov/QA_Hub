@@ -76,7 +76,7 @@ class QaHubConfigController {
     @PostMapping("/hardReset")
     fun hardReset() {
         val projects = listOf(
-            Project(name = "BlockerDebugProject", platform = IOS.platform.name)
+            Project(name = "DebugProject", platform = IOS.platform.name)
         )
 
         val teams = listOf(
@@ -99,10 +99,10 @@ class QaHubConfigController {
                     QaHubTestcase( project = project.name, description = "Sample testcase", team = teams.random())
                 )
 
-                val shortName = "sampleTest${Random.nextInt(1..1000)}"
+                val shortName = "testMethod${Random.nextInt(1..1000)}"
                 val blockedTest = BlockedTest(
                     shortName = shortName,
-                    fullName = "${project.platform.uppercase()}.some.package.sample.test.suite${project.separator}$shortName",
+                    fullName = "TestTarget.TestClass.$shortName",
                     testcaseId = testcase.testcaseId,
                     tmsTask = "INT-${Random.nextInt(1..1000)}",
                     project = testcase.project,

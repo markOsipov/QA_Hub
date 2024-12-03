@@ -9,9 +9,8 @@ export default function ResetPlate() {
     function handleHardResetClick() {
         if (confirm("All current data will be erased.\nThen the default data set would be restored.\n\nContinue?")) {
             hardReset().then(() => {
-                createDebugTestrun().then(() => {
-                    projectState.updateProjects()
-                })
+                createDebugTestrun()
+                projectState.updateProjects()
             })
         }
     }
