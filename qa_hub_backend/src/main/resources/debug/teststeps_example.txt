@@ -1,120 +1,1275 @@
 [
-  {
-    "result" : "success",
-    "id" : "1",
-    "parentId" : "0",
-    "name" : "SetUp: Deleting the lowkey app",
-    "steps" : [
-      {
-        "result" : "success",
-        "id" : "2",
-        "parentId" : "1",
-        "name" : "Step: Opening context menu",
-        "steps" : [
-
-        ]
-      },
-      {
-        "result" : "success",
-        "id" : "3",
-        "parentId" : "1",
-        "name" : "Step: Deleting the app",
-        "steps" : [
-          {
-            "result" : "success",
-            "id" : "4",
-            "parentId" : "3",
-            "name" : "Step: WaitForElement: \"Delete App\" Button. State: isHittable == 1",
-            "steps" : [
-
-            ]
-          },
-          {
-            "result" : "success",
-            "id" : "5",
-            "parentId" : "3",
-            "name" : "Step: WaitForElement: \"Lowkey Dev\" Icon. State: exists == 0",
-            "steps" : [
-
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "result" : "failure",
-    "id" : "6",
-    "parentId" : "0",
-    "name" : "Test: Auth confirmation page: Try another phone button. TestcaseId: 42",
-    "steps" : [
-      {
-        "result" : "success",
-        "id" : "7",
-        "parentId" : "6",
-        "name" : "Step: Leaving the Landing page",
-        "steps" : [
-          {
-            "result" : "success",
-            "id" : "8",
-            "parentId" : "7",
-            "name" : "Step: Tap: \"ContinueButton\" Any",
-            "steps" : [
-
-            ]
-          }
-        ]
-      },
-      {
-        "result" : "success",
-        "id" : "9",
-        "parentId" : "6",
-        "name" : "Step: Input the phone number",
-        "steps" : [
-          {
-            "result" : "success",
-            "id" : "10",
-            "parentId" : "9",
-            "name" : "Step: SelectAndType: \"PhoneNumberTextInput\" Any. Text: 6609814280",
-            "steps" : [
-              {
-                "result" : "success",
-                "id" : "11",
-                "parentId" : "10",
-                "name" : "Step: TapAtCenter: \"PhoneNumberTextInput\" TextField",
-                "steps" : [
-                  {
-                    "result" : "success",
-                    "id" : "12",
-                    "parentId" : "11",
-                    "name" : "Step: WaitForElement: \"PhoneNumberTextInput\" TextField. State: exists == 1",
-                    "steps" : [
-
-                    ]
-                  }
+    {
+        "id": "1",
+        "name": "Adding options",
+        "parentId": "0",
+        "result": "success",
+        "steps": []
+    },
+    {
+        "id": "2",
+        "name": "Fixture: launch config",
+        "parentId": "0",
+        "result": "success",
+        "steps": []
+    },
+    {
+        "id": "3",
+        "name": "Fixture: launch director",
+        "parentId": "0",
+        "result": "success",
+        "steps": []
+    },
+    {
+        "id": "4",
+        "name": "Fixture: launch control",
+        "parentId": "0",
+        "result": "success",
+        "steps": [
+            {
+                "id": "4.1",
+                "name": "Launching base api",
+                "parentId": "4",
+                "result": "success",
+                "steps": [
+                    {
+                        "id": "4.1.1",
+                        "name": "Init appium options",
+                        "parentId": "4.1",
+                        "result": "success",
+                        "steps": []
+                    },
+                    {
+                        "id": "4.1.2",
+                        "name": "Init appium driver",
+                        "parentId": "4.1",
+                        "result": "success",
+                        "steps": []
+                    },
+                    {
+                        "id": "4.1.3",
+                        "name": "Init platform api",
+                        "parentId": "4.1",
+                        "result": "success",
+                        "steps": []
+                    }
                 ]
-              }
-            ]
-          }
+            },
+            {
+                "id": "4.2",
+                "name": "Init game API",
+                "parentId": "4",
+                "result": "success",
+                "steps": [
+                    {
+                        "id": "4.2.1",
+                        "name": "Init ems client",
+                        "parentId": "4.2",
+                        "result": "success",
+                        "steps": [
+                            {
+                                "id": "4.2.1.1",
+                                "name": "Stopping the app",
+                                "parentId": "4.2.1",
+                                "result": "success",
+                                "steps": []
+                            },
+                            {
+                                "id": "4.2.1.2",
+                                "name": "Starting the app",
+                                "parentId": "4.2.1",
+                                "result": "success",
+                                "steps": []
+                            },
+                            {
+                                "id": "4.2.1.3",
+                                "name": "Init game api",
+                                "parentId": "4.2.1",
+                                "result": "success",
+                                "steps": [
+                                    {
+                                        "id": "4.2.1.3.1",
+                                        "name": "Forwarding port 9998 to 9998",
+                                        "parentId": "4.2.1.3",
+                                        "result": "success",
+                                        "steps": []
+                                    },
+                                    {
+                                        "id": "4.2.1.3.2",
+                                        "name": "Connecting to the game endpoint: ws://localhost:9998",
+                                        "parentId": "4.2.1.3",
+                                        "result": "success",
+                                        "steps": [
+                                            {
+                                                "id": "4.2.1.3.2.1",
+                                                "name": "Retrying for condition: Connecting to the api client. Max retries: 10. Sleep time: 1s",
+                                                "parentId": "4.2.1.3.2",
+                                                "result": "success",
+                                                "steps": []
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
         ]
-      },
-      {
-        "result" : "failure",
-        "id" : "13",
-        "parentId" : "6",
-        "name" : "Step: Click on the Try another phone button",
-        "steps" : [
-          {
-            "result" : "failure",
-            "id" : "14",
-            "parentId" : "13",
-            "name" : "Step: Tap: \"TryAnotherPhoneText\" Any",
-            "steps" : [
-
-            ]
-          }
+    },
+    {
+        "id": "5",
+        "name": "Fixture: cats api",
+        "parentId": "0",
+        "result": "success",
+        "steps": [
+            {
+                "id": "5.1",
+                "name": "Send websocket request to CATS",
+                "parentId": "5",
+                "result": "success",
+                "steps": []
+            },
+            {
+                "id": "5.2",
+                "name": "Send websocket request to CATS",
+                "parentId": "5",
+                "result": "success",
+                "steps": []
+            }
         ]
-      }
-    ]
-  }
+    },
+    {
+        "id": "6",
+        "name": "Fixture: reset skip start tutorial",
+        "parentId": "0",
+        "result": "success",
+        "steps": [
+            {
+                "id": "6.1",
+                "name": "Disable events",
+                "parentId": "6",
+                "result": "success",
+                "steps": [
+                    {
+                        "id": "6.1.1",
+                        "name": "Send websocket request to CATS",
+                        "parentId": "6.1",
+                        "result": "success",
+                        "steps": []
+                    }
+                ]
+            },
+            {
+                "id": "6.2",
+                "name": "Add event in white list",
+                "parentId": "6",
+                "result": "success",
+                "steps": [
+                    {
+                        "id": "6.2.1",
+                        "name": "Send websocket request to CATS",
+                        "parentId": "6.2",
+                        "result": "success",
+                        "steps": []
+                    }
+                ]
+            },
+            {
+                "id": "6.3",
+                "name": "Set bool var 'skip_start_tutorial' via CATS",
+                "parentId": "6",
+                "result": "success",
+                "steps": [
+                    {
+                        "id": "6.3.1",
+                        "name": "Send websocket request to CATS",
+                        "parentId": "6.3",
+                        "result": "success",
+                        "steps": []
+                    }
+                ]
+            },
+            {
+                "id": "6.4",
+                "name": "Skip system window",
+                "parentId": "6",
+                "result": "success",
+                "steps": [
+                    {
+                        "id": "6.4.1",
+                        "name": "Send websocket request to CATS",
+                        "parentId": "6.4",
+                        "result": "success",
+                        "steps": []
+                    }
+                ]
+            },
+            {
+                "id": "6.5",
+                "name": "Skip system window",
+                "parentId": "6",
+                "result": "success",
+                "steps": [
+                    {
+                        "id": "6.5.1",
+                        "name": "Send websocket request to CATS",
+                        "parentId": "6.5",
+                        "result": "success",
+                        "steps": []
+                    }
+                ]
+            },
+            {
+                "id": "6.6",
+                "name": "Skip system window",
+                "parentId": "6",
+                "result": "success",
+                "steps": [
+                    {
+                        "id": "6.6.1",
+                        "name": "Send websocket request to CATS",
+                        "parentId": "6.6",
+                        "result": "success",
+                        "steps": []
+                    }
+                ]
+            },
+            {
+                "id": "6.7",
+                "name": "Skip system window",
+                "parentId": "6",
+                "result": "success",
+                "steps": [
+                    {
+                        "id": "6.7.1",
+                        "name": "Send websocket request to CATS",
+                        "parentId": "6.7",
+                        "result": "success",
+                        "steps": []
+                    }
+                ]
+            },
+            {
+                "id": "6.8",
+                "name": "Get the maximum level in balance",
+                "parentId": "6",
+                "result": "success",
+                "steps": [
+                    {
+                        "id": "6.8.1",
+                        "name": "Send websocket request to CATS",
+                        "parentId": "6.8",
+                        "result": "success",
+                        "steps": []
+                    }
+                ]
+            },
+            {
+                "id": "6.9",
+                "name": "Set bool var 'reset_game' via CATS",
+                "parentId": "6",
+                "result": "success",
+                "steps": [
+                    {
+                        "id": "6.9.1",
+                        "name": "Set bool var value",
+                        "parentId": "6.9",
+                        "result": "success",
+                        "steps": [
+                            {
+                                "id": "6.9.1.1",
+                                "name": "Send websocket request to CATS",
+                                "parentId": "6.9.1",
+                                "result": "success",
+                                "steps": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": "6.9.2",
+                        "name": "Waiting for condition: Reset game flag has been set. Max wait time: 30s. Sleep time: 1s",
+                        "parentId": "6.9",
+                        "result": "success",
+                        "steps": [
+                            {
+                                "id": "6.9.2.1",
+                                "name": "Get bool var value from CATS",
+                                "parentId": "6.9.2",
+                                "result": "success",
+                                "steps": [
+                                    {
+                                        "id": "6.9.2.1.1",
+                                        "name": "Send websocket request to CATS",
+                                        "parentId": "6.9.2.1",
+                                        "result": "success",
+                                        "steps": []
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "6.10",
+                "name": "Stopping the app",
+                "parentId": "6",
+                "result": "success",
+                "steps": []
+            },
+            {
+                "id": "6.11",
+                "name": "Starting the app",
+                "parentId": "6",
+                "result": "success",
+                "steps": []
+            },
+            {
+                "id": "6.12",
+                "name": "Setting metrics",
+                "parentId": "6",
+                "result": "success",
+                "steps": [
+                    {
+                        "id": "6.12.1",
+                        "name": "Send websocket request to CATS",
+                        "parentId": "6.12",
+                        "result": "success",
+                        "steps": []
+                    }
+                ]
+            },
+            {
+                "id": "6.13",
+                "name": "Send websocket request to CATS",
+                "parentId": "6",
+                "result": "success",
+                "steps": []
+            },
+            {
+                "id": "6.14",
+                "name": "Enabling game features",
+                "parentId": "6",
+                "result": "success",
+                "steps": [
+                    {
+                        "id": "6.14.1",
+                        "name": "Set game feature SpecialOffers status to False",
+                        "parentId": "6.14",
+                        "result": "success",
+                        "steps": [
+                            {
+                                "id": "6.14.1.1",
+                                "name": "Send websocket request to CATS",
+                                "parentId": "6.14.1",
+                                "result": "success",
+                                "steps": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": "6.14.2",
+                        "name": "Set game feature DailyBonus30 status to False",
+                        "parentId": "6.14",
+                        "result": "success",
+                        "steps": [
+                            {
+                                "id": "6.14.2.1",
+                                "name": "Send websocket request to CATS",
+                                "parentId": "6.14.2",
+                                "result": "success",
+                                "steps": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": "6.14.3",
+                        "name": "Set game feature PiggyBank status to False",
+                        "parentId": "6.14",
+                        "result": "success",
+                        "steps": [
+                            {
+                                "id": "6.14.3.1",
+                                "name": "Send websocket request to CATS",
+                                "parentId": "6.14.3",
+                                "result": "success",
+                                "steps": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": "6.14.4",
+                        "name": "Set game feature Clan status to False",
+                        "parentId": "6.14",
+                        "result": "success",
+                        "steps": [
+                            {
+                                "id": "6.14.4.1",
+                                "name": "Send websocket request to CATS",
+                                "parentId": "6.14.4",
+                                "result": "success",
+                                "steps": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": "6.14.5",
+                        "name": "Set game feature RateUs_GiveFiveStars status to False",
+                        "parentId": "6.14",
+                        "result": "success",
+                        "steps": [
+                            {
+                                "id": "6.14.5.1",
+                                "name": "Send websocket request to CATS",
+                                "parentId": "6.14.5",
+                                "result": "success",
+                                "steps": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": "6.14.6",
+                        "name": "Set game feature NeedPushNotificationsReminder status to False",
+                        "parentId": "6.14",
+                        "result": "success",
+                        "steps": [
+                            {
+                                "id": "6.14.6.1",
+                                "name": "Send websocket request to CATS",
+                                "parentId": "6.14.6",
+                                "result": "success",
+                                "steps": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": "6.14.7",
+                        "name": "Set game feature Marketing_GameReturn status to False",
+                        "parentId": "6.14",
+                        "result": "success",
+                        "steps": [
+                            {
+                                "id": "6.14.7.1",
+                                "name": "Send websocket request to CATS",
+                                "parentId": "6.14.7",
+                                "result": "success",
+                                "steps": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": "6.14.8",
+                        "name": "Set game feature FacebookON status to False",
+                        "parentId": "6.14",
+                        "result": "success",
+                        "steps": [
+                            {
+                                "id": "6.14.8.1",
+                                "name": "Send websocket request to CATS",
+                                "parentId": "6.14.8",
+                                "result": "success",
+                                "steps": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "6.15",
+                "name": "Send websocket request to CATS",
+                "parentId": "6",
+                "result": "success",
+                "steps": []
+            },
+            {
+                "id": "6.16",
+                "name": "Send cheat: set infinity lives 0",
+                "parentId": "6",
+                "result": "success",
+                "steps": [
+                    {
+                        "id": "6.16.1",
+                        "name": "Send websocket request to CATS",
+                        "parentId": "6.16",
+                        "result": "success",
+                        "steps": []
+                    }
+                ]
+            },
+            {
+                "id": "6.17",
+                "name": "Send cheat: set lives 5",
+                "parentId": "6",
+                "result": "success",
+                "steps": [
+                    {
+                        "id": "6.17.1",
+                        "name": "Send websocket request to CATS",
+                        "parentId": "6.17",
+                        "result": "success",
+                        "steps": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "7",
+        "name": "Fixture: no tutorials",
+        "parentId": "0",
+        "result": "success",
+        "steps": [
+            {
+                "id": "7.1",
+                "name": "Set set_tutorial_enabled flag",
+                "parentId": "7",
+                "result": "success",
+                "steps": [
+                    {
+                        "id": "7.1.1",
+                        "name": "Send websocket request to CATS",
+                        "parentId": "7.1",
+                        "result": "success",
+                        "steps": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "8",
+        "name": "Fixture: send save",
+        "parentId": "0",
+        "result": "success",
+        "steps": [
+            {
+                "id": "8.1",
+                "name": "Send save",
+                "parentId": "8",
+                "result": "success",
+                "steps": [
+                    {
+                        "id": "8.1.1",
+                        "name": "Send websocket request to CATS",
+                        "parentId": "8.1",
+                        "result": "success",
+                        "steps": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "9",
+        "name": "Fixture: set level",
+        "parentId": "0",
+        "result": "success",
+        "steps": []
+    },
+    {
+        "id": "10",
+        "name": "Fixture: start game",
+        "parentId": "0",
+        "result": "success",
+        "steps": [
+            {
+                "id": "10.1",
+                "name": "Send websocket request to CATS",
+                "parentId": "10",
+                "result": "success",
+                "steps": []
+            },
+            {
+                "id": "10.2",
+                "name": "Send websocket request to CATS",
+                "parentId": "10",
+                "result": "success",
+                "steps": []
+            },
+            {
+                "id": "10.3",
+                "name": "Send websocket request to CATS",
+                "parentId": "10",
+                "result": "success",
+                "steps": []
+            },
+            {
+                "id": "10.4",
+                "name": "Retrying for condition: Starting the game. Max retries: 10. Sleep time: 1s",
+                "parentId": "10",
+                "result": "success",
+                "steps": [
+                    {
+                        "id": "10.4.1",
+                        "name": "Click on element by ID: UI_ExpHomeCC_StartLoadScreen.UI_StartLoadScreen.AnimationsController.UI.CenterButtons.ButtonStart.ButtonController",
+                        "parentId": "10.4",
+                        "result": "success",
+                        "steps": [
+                            {
+                                "id": "10.4.1.1",
+                                "name": "Waiting for condition: Wait for element is available: UI_ExpHomeCC_StartLoadScreen.UI_StartLoadScreen.AnimationsController.UI.CenterButtons.ButtonStart.ButtonController. Max wait time: 3s. Sleep time: 1s",
+                                "parentId": "10.4.1",
+                                "result": "success",
+                                "steps": [
+                                    {
+                                        "id": "10.4.1.1.1",
+                                        "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                                        "parentId": "10.4.1.1",
+                                        "result": "success",
+                                        "steps": []
+                                    },
+                                    {
+                                        "id": "10.4.1.1.2",
+                                        "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                                        "parentId": "10.4.1.1",
+                                        "result": "success",
+                                        "steps": []
+                                    },
+                                    {
+                                        "id": "10.4.1.1.3",
+                                        "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                                        "parentId": "10.4.1.1",
+                                        "result": "success",
+                                        "steps": []
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "10.4.1.2",
+                                "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                                "parentId": "10.4.1",
+                                "result": "success",
+                                "steps": []
+                            },
+                            {
+                                "id": "10.4.1.3",
+                                "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                                "parentId": "10.4.1",
+                                "result": "success",
+                                "steps": []
+                            },
+                            {
+                                "id": "10.4.1.4",
+                                "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                                "parentId": "10.4.1",
+                                "result": "success",
+                                "steps": []
+                            },
+                            {
+                                "id": "10.4.1.5",
+                                "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                                "parentId": "10.4.1",
+                                "result": "success",
+                                "steps": []
+                            },
+                            {
+                                "id": "10.4.1.6",
+                                "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                                "parentId": "10.4.1",
+                                "result": "success",
+                                "steps": []
+                            },
+                            {
+                                "id": "10.4.1.7",
+                                "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                                "parentId": "10.4.1",
+                                "result": "success",
+                                "steps": []
+                            },
+                            {
+                                "id": "10.4.1.8",
+                                "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                                "parentId": "10.4.1",
+                                "result": "success",
+                                "steps": []
+                            },
+                            {
+                                "id": "10.4.1.9",
+                                "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                                "parentId": "10.4.1",
+                                "result": "success",
+                                "steps": []
+                            },
+                            {
+                                "id": "10.4.1.10",
+                                "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                                "parentId": "10.4.1",
+                                "result": "success",
+                                "steps": []
+                            },
+                            {
+                                "id": "10.4.1.11",
+                                "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                                "parentId": "10.4.1",
+                                "result": "success",
+                                "steps": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": "10.4.2",
+                        "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                        "parentId": "10.4",
+                        "result": "success",
+                        "steps": []
+                    },
+                    {
+                        "id": "10.4.3",
+                        "name": "Click on element by ID: UI_ExpHomeCC_StartLoadScreen.UI_StartLoadScreen.AnimationsController.UI.CenterButtons.ButtonStart.ButtonController",
+                        "parentId": "10.4",
+                        "result": "failure",
+                        "steps": [
+                            {
+                                "id": "10.4.3.1",
+                                "name": "Waiting for condition: Wait for element is available: UI_ExpHomeCC_StartLoadScreen.UI_StartLoadScreen.AnimationsController.UI.CenterButtons.ButtonStart.ButtonController. Max wait time: 3s. Sleep time: 1s",
+                                "parentId": "10.4.3",
+                                "result": "failure",
+                                "steps": [
+                                    {
+                                        "id": "10.4.3.1.1",
+                                        "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                                        "parentId": "10.4.3.1",
+                                        "result": "failure",
+                                        "steps": []
+                                    },
+                                    {
+                                        "id": "10.4.3.1.2",
+                                        "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                                        "parentId": "10.4.3.1",
+                                        "result": "failure",
+                                        "steps": []
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": "10.4.4",
+                        "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                        "parentId": "10.4",
+                        "result": "failure",
+                        "steps": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "11",
+        "name": "Fixture: set quests before restart",
+        "parentId": "0",
+        "result": "success",
+        "steps": []
+    },
+    {
+        "id": "12",
+        "name": "Fixture: common setup",
+        "parentId": "0",
+        "result": "success",
+        "steps": []
+    },
+    {
+        "id": "13",
+        "name": "Receiving M3 field state",
+        "parentId": "0",
+        "result": "success",
+        "steps": [
+            {
+                "id": "13.1",
+                "name": "Retrying for condition: M3 Field is not empty. Max retries: 10. Sleep time: 1s",
+                "parentId": "13",
+                "result": "success",
+                "steps": [
+                    {
+                        "id": "13.1.1",
+                        "name": "Get m3 cells",
+                        "parentId": "13.1",
+                        "result": "success",
+                        "steps": [
+                            {
+                                "id": "13.1.1.1",
+                                "name": "Send websocket request to CATS",
+                                "parentId": "13.1.1",
+                                "result": "success",
+                                "steps": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": "13.1.2",
+                        "name": "Get m3 cells",
+                        "parentId": "13.1",
+                        "result": "success",
+                        "steps": [
+                            {
+                                "id": "13.1.2.1",
+                                "name": "Send websocket request to CATS",
+                                "parentId": "13.1.2",
+                                "result": "success",
+                                "steps": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": "13.1.3",
+                        "name": "Get m3 cells",
+                        "parentId": "13.1",
+                        "result": "success",
+                        "steps": [
+                            {
+                                "id": "13.1.3.1",
+                                "name": "Send websocket request to CATS",
+                                "parentId": "13.1.3",
+                                "result": "success",
+                                "steps": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": "13.1.4",
+                        "name": "Get m3 cells",
+                        "parentId": "13.1",
+                        "result": "success",
+                        "steps": [
+                            {
+                                "id": "13.1.4.1",
+                                "name": "Send websocket request to CATS",
+                                "parentId": "13.1.4",
+                                "result": "success",
+                                "steps": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": "13.1.5",
+                        "name": "Get m3 cells",
+                        "parentId": "13.1",
+                        "result": "success",
+                        "steps": [
+                            {
+                                "id": "13.1.5.1",
+                                "name": "Send websocket request to CATS",
+                                "parentId": "13.1.5",
+                                "result": "success",
+                                "steps": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": "13.1.6",
+                        "name": "Get m3 cells",
+                        "parentId": "13.1",
+                        "result": "success",
+                        "steps": [
+                            {
+                                "id": "13.1.6.1",
+                                "name": "Send websocket request to CATS",
+                                "parentId": "13.1.6",
+                                "result": "success",
+                                "steps": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": "13.1.7",
+                        "name": "Get m3 cells",
+                        "parentId": "13.1",
+                        "result": "success",
+                        "steps": [
+                            {
+                                "id": "13.1.7.1",
+                                "name": "Send websocket request to CATS",
+                                "parentId": "13.1.7",
+                                "result": "success",
+                                "steps": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": "13.1.8",
+                        "name": "Get m3 cells",
+                        "parentId": "13.1",
+                        "result": "success",
+                        "steps": [
+                            {
+                                "id": "13.1.8.1",
+                                "name": "Send websocket request to CATS",
+                                "parentId": "13.1.8",
+                                "result": "success",
+                                "steps": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": "13.1.9",
+                        "name": "Get m3 cells",
+                        "parentId": "13.1",
+                        "result": "success",
+                        "steps": [
+                            {
+                                "id": "13.1.9.1",
+                                "name": "Send websocket request to CATS",
+                                "parentId": "13.1.9",
+                                "result": "success",
+                                "steps": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": "13.1.10",
+                        "name": "Get m3 cells",
+                        "parentId": "13.1",
+                        "result": "success",
+                        "steps": [
+                            {
+                                "id": "13.1.10.1",
+                                "name": "Send websocket request to CATS",
+                                "parentId": "13.1.10",
+                                "result": "success",
+                                "steps": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "14",
+        "name": "Upload and start custom level: easy_bomb",
+        "parentId": "0",
+        "result": "success",
+        "steps": [
+            {
+                "id": "14.1",
+                "name": "Uploading custom level: easy_bomb.xml",
+                "parentId": "14",
+                "result": "success",
+                "steps": []
+            },
+            {
+                "id": "14.2",
+                "name": "Retrying for condition: Starting custom level: easy_bomb. Max retries: 30. Sleep time: 1s",
+                "parentId": "14",
+                "result": "success",
+                "steps": [
+                    {
+                        "id": "14.2.1",
+                        "name": "Set custom level",
+                        "parentId": "14.2",
+                        "result": "success",
+                        "steps": [
+                            {
+                                "id": "14.2.1.1",
+                                "name": "Send websocket request to CATS",
+                                "parentId": "14.2.1",
+                                "result": "success",
+                                "steps": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": "14.2.2",
+                        "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                        "parentId": "14.2",
+                        "result": "failure",
+                        "steps": []
+                    },
+                    {
+                        "id": "14.2.3",
+                        "name": "Waiting for condition: Wait for element is available: UI_BriefingM3_window.UI_BriefingM3.Scaler.Panel.BtnPlay.ButtonController. Max wait time: 10s. Sleep time: 1s",
+                        "parentId": "14.2",
+                        "result": "success",
+                        "steps": [
+                            {
+                                "id": "14.2.3.1",
+                                "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                                "parentId": "14.2.3",
+                                "result": "success",
+                                "steps": []
+                            },
+                            {
+                                "id": "14.2.3.2",
+                                "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                                "parentId": "14.2.3",
+                                "result": "success",
+                                "steps": []
+                            },
+                            {
+                                "id": "14.2.3.3",
+                                "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                                "parentId": "14.2.3",
+                                "result": "success",
+                                "steps": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": "14.2.4",
+                        "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                        "parentId": "14.2",
+                        "result": "success",
+                        "steps": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "15",
+        "name": "Start m3 level",
+        "parentId": "0",
+        "result": "success",
+        "steps": [
+            {
+                "id": "15.1",
+                "name": "Click on element by ID: UI_BriefingM3_window.UI_BriefingM3.Scaler.Panel.BtnPlay.ButtonController",
+                "parentId": "15",
+                "result": "success",
+                "steps": [
+                    {
+                        "id": "15.1.1",
+                        "name": "Waiting for condition: Wait for element is available: UI_BriefingM3_window.UI_BriefingM3.Scaler.Panel.BtnPlay.ButtonController. Max wait time: 30s. Sleep time: 1s",
+                        "parentId": "15.1",
+                        "result": "success",
+                        "steps": [
+                            {
+                                "id": "15.1.1.1",
+                                "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                                "parentId": "15.1.1",
+                                "result": "success",
+                                "steps": []
+                            },
+                            {
+                                "id": "15.1.1.2",
+                                "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                                "parentId": "15.1.1",
+                                "result": "success",
+                                "steps": []
+                            },
+                            {
+                                "id": "15.1.1.3",
+                                "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                                "parentId": "15.1.1",
+                                "result": "success",
+                                "steps": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": "15.1.2",
+                        "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                        "parentId": "15.1",
+                        "result": "success",
+                        "steps": []
+                    },
+                    {
+                        "id": "15.1.3",
+                        "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                        "parentId": "15.1",
+                        "result": "success",
+                        "steps": []
+                    },
+                    {
+                        "id": "15.1.4",
+                        "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                        "parentId": "15.1",
+                        "result": "success",
+                        "steps": []
+                    },
+                    {
+                        "id": "15.1.5",
+                        "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                        "parentId": "15.1",
+                        "result": "success",
+                        "steps": []
+                    },
+                    {
+                        "id": "15.1.6",
+                        "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                        "parentId": "15.1",
+                        "result": "success",
+                        "steps": []
+                    },
+                    {
+                        "id": "15.1.7",
+                        "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                        "parentId": "15.1",
+                        "result": "success",
+                        "steps": []
+                    },
+                    {
+                        "id": "15.1.8",
+                        "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                        "parentId": "15.1",
+                        "result": "success",
+                        "steps": []
+                    },
+                    {
+                        "id": "15.1.9",
+                        "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                        "parentId": "15.1",
+                        "result": "success",
+                        "steps": []
+                    },
+                    {
+                        "id": "15.1.10",
+                        "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                        "parentId": "15.1",
+                        "result": "success",
+                        "steps": []
+                    },
+                    {
+                        "id": "15.1.11",
+                        "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                        "parentId": "15.1",
+                        "result": "success",
+                        "steps": []
+                    }
+                ]
+            },
+            {
+                "id": "15.2",
+                "name": "Waiting for condition: Wait for element is available: ..side_panel.Hammer.button_locked. Max wait time: 30s. Sleep time: 1s",
+                "parentId": "15",
+                "result": "success",
+                "steps": [
+                    {
+                        "id": "15.2.1",
+                        "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                        "parentId": "15.2",
+                        "result": "failure",
+                        "steps": []
+                    },
+                    {
+                        "id": "15.2.2",
+                        "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                        "parentId": "15.2",
+                        "result": "failure",
+                        "steps": []
+                    },
+                    {
+                        "id": "15.2.3",
+                        "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                        "parentId": "15.2",
+                        "result": "success",
+                        "steps": []
+                    },
+                    {
+                        "id": "15.2.4",
+                        "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                        "parentId": "15.2",
+                        "result": "success",
+                        "steps": []
+                    },
+                    {
+                        "id": "15.2.5",
+                        "name": "Retrying for condition: Game API Handler request: get_ui_element. Max retries: 1. Sleep time: 1s",
+                        "parentId": "15.2",
+                        "result": "success",
+                        "steps": []
+                    }
+                ]
+            },
+            {
+                "id": "15.3",
+                "name": "Swap m3 cell right: row 7, col 8",
+                "parentId": "15",
+                "result": "success",
+                "steps": [
+                    {
+                        "id": "15.3.1",
+                        "name": "Receiving M3 field state",
+                        "parentId": "15.3",
+                        "result": "success",
+                        "steps": [
+                            {
+                                "id": "15.3.1.1",
+                                "name": "Retrying for condition: M3 Field is not empty. Max retries: 10. Sleep time: 1s",
+                                "parentId": "15.3.1",
+                                "result": "success",
+                                "steps": [
+                                    {
+                                        "id": "15.3.1.1.1",
+                                        "name": "Get m3 cells",
+                                        "parentId": "15.3.1.1",
+                                        "result": "success",
+                                        "steps": [
+                                            {
+                                                "id": "15.3.1.1.1.1",
+                                                "name": "Send websocket request to CATS",
+                                                "parentId": "15.3.1.1.1",
+                                                "result": "success",
+                                                "steps": []
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "id": "15.3.2",
+                        "name": "Swiping the screen: right. Tap point x: 1518, tap point y: 833",
+                        "parentId": "15.3",
+                        "result": "success",
+                        "steps": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "16",
+        "name": "Activate the bomb",
+        "parentId": "0",
+        "result": "success",
+        "steps": [
+            {
+                "id": "16.1",
+                "name": "Starting metrics measuring",
+                "parentId": "16",
+                "result": "success",
+                "steps": [
+                    {
+                        "id": "16.1.1",
+                        "name": "Send websocket request to CATS",
+                        "parentId": "16.1",
+                        "result": "success",
+                        "steps": []
+                    }
+                ]
+            },
+            {
+                "id": "16.2",
+                "name": "Click m3 cell: row 5, col 4",
+                "parentId": "16",
+                "result": "success",
+                "steps": []
+            },
+            {
+                "id": "16.3",
+                "name": "Stopping metrics measuring",
+                "parentId": "16",
+                "result": "success",
+                "steps": [
+                    {
+                        "id": "16.3.1",
+                        "name": "Send websocket request to CATS",
+                        "parentId": "16.3",
+                        "result": "success",
+                        "steps": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "17",
+        "name": "Kill the driver",
+        "parentId": "0",
+        "result": "success",
+        "steps": []
+    }
 ]

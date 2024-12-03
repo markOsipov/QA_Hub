@@ -2,6 +2,7 @@ package qa_hub.controller.utils
 
 import com.mongodb.client.result.DeleteResult
 import com.mongodb.client.result.UpdateResult
+import kotlinx.coroutines.runBlocking
 import org.bson.Document
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
@@ -65,8 +66,8 @@ class QaHubConfigController {
 
     //Очистка всех данных для проверки поведения приложения на пустых таблицах
     @PostMapping("/clearData")
-    suspend fun clearData() {
-        Collections.values().forEach {
+    fun clearData() = runBlocking {
+        Collections.entries.forEach {
             mongoClient.db.getCollection<Document>(it.collectionName).deleteMany()
         }
     }
@@ -79,7 +80,7 @@ class QaHubConfigController {
         )
 
         val teams = listOf(
-            "Sample_team_0", "Sample_team_1", "Sample_team_2", "Sample_team_3"
+            "Team 0", "Team 1", "Team 2", "Team 3"
         )
 
         qaHubConfigService.deleteAllConfigs()
