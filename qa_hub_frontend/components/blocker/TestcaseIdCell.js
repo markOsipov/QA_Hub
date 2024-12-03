@@ -6,7 +6,7 @@ import projectIntegrationsState from "../../state/integrations/ProjectIntegratio
 const TestcaseIdCell = observer(({blockedTest, onChangeCallback, onBlurCallback, ...props}) => {
   const {tmsInt} = projectIntegrationsState
 
-  return <EditableTableCell
+  return <EditableTableCell   
     value={blockedTest.testcaseId}
     content={<TestcaseUrl blockedTest={blockedTest} testcaseUrl={tmsInt.testcaseUrl}/>}
     onChangeCallback={ onChangeCallback }

@@ -80,8 +80,8 @@ const BlockedTestsTable = observer(() => {
                             <StyledTableCell align='center' style={{width: "50px"}}>№</StyledTableCell>
                             <StyledTableCell style={{width: "50px"}}/>
                             <StyledTableCell style={{width: "120px"}} align='center'>Trial</StyledTableCell>
-                            <StyledTableCell style={{width: "200px"}} align='left'>TestcaseId</StyledTableCell>
-                            <StyledTableCell style={{width: "200px"}} align='center'><label style={{position: "relative", left: "-25px"}}>Team</label></StyledTableCell>
+                            <StyledTableCell style={{width: "150px"}} align='left'>TestcaseId</StyledTableCell>
+                            <StyledTableCell style={{width: "200px"}} align='center'><label style={{position: "relative"}}>Team</label></StyledTableCell>
                             <FullNameTableHeaderCell style={{width: "600px"}} showFullName={showFullName} setShowFullName={setShowFullName}/>
                             <StyledTableCell style={{minWidth: "400px", maxWidth:'600px'}} align='center'><label style={{position: "relative", left: "-25px"}}>Comment</label></StyledTableCell>
                             <StyledTableCell style={{width: "235px", minWidth: "235px"}} align='center'><label style={{position: "relative", left: "-25px"}}>Task</label></StyledTableCell>
