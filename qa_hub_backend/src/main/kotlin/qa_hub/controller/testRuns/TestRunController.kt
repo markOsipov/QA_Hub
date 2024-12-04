@@ -2,6 +2,7 @@ package qa_hub.controller.testRuns
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -110,9 +111,9 @@ class TestRunController {
 
     @PostMapping("/createDebug")
     fun createDebugTestRun(
-        @RequestParam(required = false, defaultValue = "30") testsCount: Int,
-        @RequestParam(required = false, defaultValue = "2") runnersCount: Int,
-        @RequestParam(required = false, defaultValue = "2") simulatorsCount: Int
+        @RequestParam(required = false, defaultValue = "45") testsCount: Int,
+        @RequestParam(required = false, defaultValue = "3") runnersCount: Int,
+        @RequestParam(required = false, defaultValue = "5") simulatorsCount: Int
     ): List<String> {
         val logFile = ClassPathResource("debug/testlog_example.log")
         val logText = BufferedReader(InputStreamReader(logFile.inputStream)).readText()
@@ -211,6 +212,10 @@ class TestRunController {
 
                 finish = nextTest.nextTest == null
                 nextTest.nextTest?.let {
+                    val duration = Random.nextLong(5000, 15000)
+                    runBlocking {
+                        delay(duration)
+                    }
                     measure("UpdateTestResult") {
                         testResultsService.updateTestResult(
                             TestResult(
@@ -223,7 +228,7 @@ class TestRunController {
                                 device = "iPhone 12",
                                 deviceRuntime = "iOS 16.3.1",
                                 runner = runner,
-                                duration = Random.nextDouble(1.0),
+                                duration = duration.toDouble() / 1000,
                                 message = if (status.status == TestStatus.FAILURE.status) {
                                     logText.take(Random.nextInt(20, 500))
                                 } else null
