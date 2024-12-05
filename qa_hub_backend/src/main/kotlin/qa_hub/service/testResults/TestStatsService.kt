@@ -90,13 +90,13 @@ class TestStatsService {
                             } 
                         },
                         lastRun: {
-                            ${'$'}max: "${'$'}date"
+                            ${'$'}max: "${'$'}endDate"
                         },
                         lastSuccess: {
                             ${'$'}max: {
                                ${'$'}cond: {
                                    if: { ${'$'}eq: [ "${'$'}status", "SUCCESS" ] },
-                                   then: "${'$'}date",
+                                   then: "${'$'}endDate",
                                    else: null
                                }
                            } 
