@@ -1,19 +1,22 @@
 package qa_hub.controller.testRuns
 
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import qa_hub.entity.testRun.AttachmentTypes
 import qa_hub.entity.testRun.TestResultAttachment
+import qa_hub.service.AttachmentService
 import java.io.File
-import java.util.*
 import javax.imageio.ImageIO
 
 val imageDir = System.getenv("ENV_IMAGE_DIR") ?: "${System.getProperty("user.home")}/Images/QA_Hub"
 @RestController
 @RequestMapping("/api/attachments")
 class AttachmentsController {
+    @Autowired
+    lateinit var attachmentService: AttachmentService
+
     @PostMapping("/images")
     fun postAttachments(
         @RequestParam project: String,
@@ -22,25 +25,9 @@ class AttachmentsController {
         @RequestParam image: MultipartFile,
         @RequestParam(required = false, defaultValue = "jpeg") extension: String
     ): TestResultAttachment {
-        val path = "$imageDir/testruns/$project/$testRunId/$fullName"
-        val directory = File(path)
-        if (!directory.exists()) {
-            directory.mkdirs()
-        }
-        val fileName = "${UUID.randomUUID()}.$extension"
-        val file = File("$path/$fileName")
+        val bufferedImage = ImageIO.read(image.inputStream)
 
-        val result = ImageIO.write(ImageIO.read(image.inputStream), extension, file)
-
-        if (result) {
-            return TestResultAttachment(
-                type = AttachmentTypes.image,
-                path = "/api/attachments/images/${project}/${testRunId}/${fullName}/${fileName}",
-                fileName = fileName
-            )
-        }
-
-        throw Exception("Failed to save an attachment")
+        return attachmentService.saveImage(project, testRunId, fullName, bufferedImage, extension)
     }
 
 

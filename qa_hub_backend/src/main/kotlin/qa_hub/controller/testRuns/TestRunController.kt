@@ -14,6 +14,7 @@ import qa_hub.core.utils.runParallel
 import qa_hub.entity.Platforms
 import qa_hub.entity.Project
 import qa_hub.entity.testRun.*
+import qa_hub.service.AttachmentService
 import qa_hub.service.testResults.TestResultsService
 import qa_hub.service.TestRunService
 import qa_hub.service.testResults.TestLogsService
@@ -23,6 +24,7 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
+import javax.imageio.ImageIO
 import kotlin.random.Random
 
 
@@ -43,6 +45,9 @@ class TestRunController {
 
     @Autowired
     lateinit var projectService: ProjectService
+
+    @Autowired
+    lateinit var attachmentService: AttachmentService
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
     @PostMapping("/{project}")
@@ -122,6 +127,9 @@ class TestRunController {
         val stepsText = BufferedReader(InputStreamReader(stepsFile.inputStream)).readText()
         val stepsTypeToken = object : TypeToken<List<TestStepsService.TestStep>>() {}.type
         val steps: List<TestStepsService.TestStep> = Gson().fromJson(stepsText, stepsTypeToken)
+
+        val screenShotFile = ClassPathResource("debug/screenshot_example.png")
+        val bufferedImage = ImageIO.read((screenShotFile.inputStream))
 
         val measures = mutableListOf<String>()
 
@@ -217,6 +225,18 @@ class TestRunController {
                         delay(duration)
                     }
                     measure("UpdateTestResult") {
+                        val attachments = mutableListOf<TestResultAttachment>()
+                        if (status.status == TestStatus.FAILURE.status) {
+                            val attachment = attachmentService.saveImage(
+                                testRun.project,
+                                testRun.testRunId,
+                                nextTest.nextTest ?: "unknown",
+                                bufferedImage,
+                                "png"
+                            )
+                            attachments.add(attachment)
+                        }
+
                         testResultsService.updateTestResult(
                             TestResult(
                                 testRunId = testRun.testRunId,
@@ -231,10 +251,10 @@ class TestRunController {
                                 duration = duration.toDouble() / 1000,
                                 message = if (status.status == TestStatus.FAILURE.status) {
                                     logText.take(Random.nextInt(20, 500))
-                                } else null
+                                } else null,
+                                attachments = attachments
                             )
                         )
-
 
                         testLogsService.insertTestLog(
                             testRun.testRunId,
