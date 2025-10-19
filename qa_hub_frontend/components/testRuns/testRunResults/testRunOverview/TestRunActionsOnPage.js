@@ -74,7 +74,10 @@ const TestRunActionsOnPage = observer (({testRun, updateTestRunInfo, ...props}) 
             size="small"
             style={{
               height: '25px',
-              backgroundColor: cicdType === 'GitHub' ? customTheme.palette.integrations.gitHub : customTheme.palette.primary.main
+              backgroundColor:
+               cicdType === 'GitHub' ? customTheme.palette.integrations.gitHub :
+               cicdType === 'Teamcity' ? customTheme.palette.integrations.teamcity :
+               customTheme.palette.primary.main
             }}
             startIcon={ cicdType === 'GitHub' && <GitHubIcon />}
           >{ cicdType }</Button>

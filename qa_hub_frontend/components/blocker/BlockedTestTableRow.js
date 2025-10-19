@@ -54,6 +54,10 @@ const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, 
         handleTestcaseFieldChange("tmsTask", event)
     }
 
+    function handleBranchFilterChange() {
+        handleTestcaseFieldChange("branchFilter", event)
+    }
+
     function handleTestcaseEditFinish() {
         blockerState.editBlockedTest(blockedTest)
     }
@@ -78,6 +82,15 @@ const BlockedTestTableRow = observer(({ index, blockedTestForRow, showFullName, 
                 onChange={ handleSwitchTrial }
             />
         </StyledTableCell>
+
+        <EditableTableCell
+           align="left"
+           content={blockedTest.branchFilter}
+           contentStyle={{whiteSpace: 'pre-line'}}
+           onChangeCallback={ handleBranchFilterChange }
+           onBlurCallback={ handleTestcaseEditFinish }
+           textArea
+        />
 
         <TestcaseIdCell
           blockedTest={blockedTest}

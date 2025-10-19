@@ -69,7 +69,7 @@ const TestRunPage = observer(() => {
       } else {
         clearInterval(interval)
       }
-    }, 30000)
+    }, 120000)
     return () => clearInterval(interval)
   }, [testRun])
 

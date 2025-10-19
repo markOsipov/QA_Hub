@@ -96,7 +96,7 @@ const PushTestRunModal = observer(({reloadTestRuns}) => {
     open={isOpen}
     onClose={handleClose}
   >
-    <Box sx={{...modalStyle, minWidth: '650px'}}>
+    <Box sx={{...modalStyle, minWidth: '650px', maxHeight: "98vh", overflowY: "scroll"}}>
       <Typography id="modal-modal-title" variant="h6" component="h2" style={{marginBottom: "20px"}}>
         Start new testrun
       </Typography>

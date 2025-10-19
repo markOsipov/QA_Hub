@@ -18,7 +18,7 @@ function TestcaseUrl({blockedTest, testcaseUrl, ...props}) {
   const [hover, setHover] = useState(false)
 
   return <a
-    href={`${testcaseUrl}/${blockedTest.testcaseId}`}
+    href={`${testcaseUrl}${blockedTest.testcaseId}`}
     target={'_blank'}
     rel="noreferrer"
     style={{

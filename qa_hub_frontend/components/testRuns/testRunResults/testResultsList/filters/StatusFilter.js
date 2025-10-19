@@ -10,7 +10,7 @@ import {observer} from "mobx-react-lite";
 const StatusFilter = observer(({...props}) => {
   const {filter } = testResultsFilterState
   const separator = ", "
-  const options = ["WAITING", "PROCESSING", "SUCCESS", "FAILURE"]
+  const options = ["WAITING", "PROCESSING", "SUCCESS", "FAILURE", "SKIPPED"]
 
   const [statuses, setStatuses] = useState(filter.statuses || [])
 

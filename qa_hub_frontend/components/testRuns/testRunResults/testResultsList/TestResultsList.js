@@ -84,7 +84,7 @@ const TestResultsList = observer(({  testRun, ...props}) => {
       } else {
         clearInterval(interval)
       }
-    }, 30000)
+    }, 120000)
 
     return () => clearInterval(interval)
   }, [testRunId, filter])

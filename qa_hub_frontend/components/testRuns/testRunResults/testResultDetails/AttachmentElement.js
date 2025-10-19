@@ -9,15 +9,16 @@ const AttachmentElement = ({attachment, ...props}) => {
   const [hovered, setHovered] = useState(false)
 
   const handleHover = () => {
-    setHovered(true)
-    // imagePopupState.open(`${process.env.NEXT_PUBLIC_QA_HUB_BACKEND}/${attachment.path}`)
+    setHovered(true)    
   }
 
   const handleBlur = () => {
     setHovered(false)
-    // imagePopupState.close()
   }
 
+  if (attachment.type != 'image') {
+    return <></>
+  }
 
   return <>
     <div
@@ -37,7 +38,7 @@ const AttachmentElement = ({attachment, ...props}) => {
       onBlur={handleBlur}
       rel="noreferrer">
       {
-        attachment.type === 'image' ?   <ImageIcon /> : <ArticleIcon />
+        attachment.type === 'image' ? <ImageIcon /> : <ArticleIcon />
       }
       <label style={{marginLeft: '5px'}}>{attachment.type === 'image' ? 'Screenshot' : 'Attachment'}</label>
     </div>

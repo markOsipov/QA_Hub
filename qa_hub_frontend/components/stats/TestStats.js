@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {getCookie, QaHubCookies, setCookie} from "../../utils/CookieHelper";
 import projectState from "../../state/ProjectState";
 import {observer} from "mobx-react-lite";
-import {getTestStats} from "../../requests/TestStatsRequests";
+import {getTestStats, getGeneralStats} from "../../requests/TestStatsRequests";
 import TestStatsTable from "./TestStatsTable";
 import StyledTextField from "../primitives/StyledTextField";
 import LoadMoreTestStatsButton from "./LoadMoreTestStatsButton";
@@ -16,6 +16,7 @@ const TestStats = observer (({...props}) => {
 
   const [testHistoryModalOpen, setTestHistoryModalOpen] = useState(router.query.testHistory != null)
   const [selectedTestId, setSelectedTestId] = useState(router.query.testHistory || null)
+  const [generalStats, setGeneralStats] = useState(null)
 
   const openTestHistoryModal = (fullName) => {
     setSelectedTestId(fullName)
@@ -66,6 +67,14 @@ const TestStats = observer (({...props}) => {
     })
   }
 
+    const loadGeneralTestStats = async () => {
+      await getGeneralStats(project, filter, testStats.length, loadMoreSize, sort).then((response) => {
+        if (response.data) {
+          setGeneralStats(response.data)
+        }
+      })
+    }
+
   function sortTestStats(fieldName, isAscending) {
     const newSort = { fieldName: fieldName, isAscending: isAscending }
     setSort(newSort)
@@ -83,6 +92,7 @@ const TestStats = observer (({...props}) => {
     setSort(sortValue)
 
     setLastTestStatsLoaded(false)
+    setGeneralStats(null)
 
     getTestStats(project, filterValue, initialSkip, loadMoreSize, sortValue).then(response => {
       setLoading(false)
@@ -90,10 +100,17 @@ const TestStats = observer (({...props}) => {
         setTestStats(response.data)
       }
     })
+
+    getGeneralStats(project, filter, testStats.length, loadMoreSize, sort).then((response) => {
+      if (response.data) {
+        setGeneralStats(response.data)
+      }
+    })
   }
 
   useEffect(() => {
     loadTestStats()
+    loadGeneralTestStats()
   }, [project])
 
   const updateLoadMoreCount = (event) => {
@@ -106,7 +123,7 @@ const TestStats = observer (({...props}) => {
 
   return <div>
     <TestHistoryModal isOpen={testHistoryModalOpen} onClose={closeTestHistoryModal} testcaseId={selectedTestId} />
-    <StatsTestRunsFilter filter={filter} setFilter={setFilter} filterAndLoad={filterAndLoad} loading={loading} style={{margin: '10px'}}/>
+    <StatsTestRunsFilter filter={filter} setFilter={setFilter} filterAndLoad={filterAndLoad} loading={loading} generalStats={generalStats} style={{margin: '10px'}}/>
 
     <div style={{maxHeight: 'calc(100vh - 165px)', overflowY: 'auto', marginLeft: '10px'}}>
       <TestStatsTable testStats={testStats} sort={sort} sortTestStats={sortTestStats} openTestHistoryModal={openTestHistoryModal}/>

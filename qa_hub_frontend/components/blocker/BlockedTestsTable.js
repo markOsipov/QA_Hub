@@ -26,7 +26,7 @@ const BlockedTestsTable = observer(() => {
     const project = router.query.project
     let {blockedTests} = blockerState
 
-    const [showFullName, setShowFullName] = useState(true)
+    const [showFullName, setShowFullName] = useState(false)
     const [addBlockedTestModalOpen, setAddBlockedTestModalOpen] = useState(false)
 
     const [page, setPage] = useState(0)
@@ -70,7 +70,7 @@ const BlockedTestsTable = observer(() => {
     }
 
     return <div>
-        <Paper elevation={3} style={{margin: "15px", maxHeight: "calc(100vh - 165px)", overflowY: "auto", minWidth: "35vw" }}>
+        <Paper elevation={3} style={{margin: "15px", maxHeight: "calc(100vh - 95px)", overflowY: "auto", minWidth: "35vw" }}>
             <AddBlockedTestModal isOpen={addBlockedTestModalOpen} setIsOpen={setAddBlockedTestModalOpen} />
             <TestHistoryModal isOpen={testHistoryModalOpen} onClose={closeTestHistoryModal} testcaseId={selectedTestId} />
             <TableContainer style={{}}>
@@ -80,6 +80,7 @@ const BlockedTestsTable = observer(() => {
                             <StyledTableCell align='center' style={{width: "50px"}}>№</StyledTableCell>
                             <StyledTableCell style={{width: "50px"}}/>
                             <StyledTableCell style={{width: "120px"}} align='center'>Trial</StyledTableCell>
+                            <StyledTableCell style={{minWidth: "200px", maxWidth:'400px'}} align='left'>Branches</StyledTableCell>
                             <StyledTableCell style={{width: "200px"}} align='left'>TestcaseId</StyledTableCell>
                             <StyledTableCell style={{width: "200px"}} align='center'><label style={{position: "relative", left: "-25px"}}>Team</label></StyledTableCell>
                             <FullNameTableHeaderCell style={{width: "600px"}} showFullName={showFullName} setShowFullName={setShowFullName}/>

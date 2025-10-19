@@ -40,7 +40,11 @@ export default function FullNameTableCell({ showFullName, setShowFullName, block
             style={{
                 cursor: 'pointer',
                 padding: '3px 7px',
-                backgroundColor: hovered && 'rgba(255, 255, 255, 0.07)'
+                backgroundColor: hovered && 'rgba(255, 255, 255, 0.07)',
+                maxWidth: "600px",
+                width: "max-content",
+                lineBreak: "anywhere"
+                // overflowX: "hidden"
             }}
         > {
             showFullName ? blockedTest.fullName : blockedTest.shortName

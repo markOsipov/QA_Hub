@@ -1,38 +1,21 @@
 import StatusBadge from "../../../../primitives/StatusBadge";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import TextWithLabel from "../../../../primitives/TextWithLabel";
 import {getTimeSeconds} from "../../../../../utils/DateTimeUtils";
 import ComputerIcon from "@mui/icons-material/Computer";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 import {useState} from "react";
 import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
+import RotatingArrowRight from "../../../../primitives/RotatingArrowRight";
 
 export default function StatusHistory({ retry, ...props}) {
   const [showStatusHistory, setShowStatusHistory] = useState(false)
-  const [hovered, setHovered] = useState(false)
+
   let lastResult = retry.statusHistory[retry.statusHistory.length - 1]
 
   return <div style={{ ...props.style }}>
     <div style={{display: 'flex', alignItems: 'center'}}>
       <StatusBadge label={lastResult.status} />
-      <div
-        style={{
-          backgroundColor: hovered ? 'rgba(255, 255, 255, 0.07)' : '',
-          marginLeft: '5px',
-          height: '21px',
-          width: '21px'
-        }}
-        onClick={() => { setShowStatusHistory(!showStatusHistory) }}
-        onMouseEnter={() => { setHovered(true)}}
-        onMouseLeave={() => { setHovered(false)}}
-      >
-        <KeyboardArrowRightIcon
-          style={{
-            transform: showStatusHistory && 'rotate(90deg)',
-            transition: 'all 0.1s linear',
-          }}
-        />
-      </div>
+      <RotatingArrowRight value={showStatusHistory} setValue={setShowStatusHistory} />
     </div>
     {
       showStatusHistory &&

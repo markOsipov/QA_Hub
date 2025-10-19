@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import StepsPanel from "./steps/StepsPanel";
 import LogsPanel from "./logs/LogPanel";
+import AttachmentsPanel from "./AttachmentsPanel";
 import StyledAccordionSummary from "../../../../primitives/StyledAccordeonSummary";
 import Typography from "@mui/material/Typography";
 import {Accordion, AccordionDetails} from "@mui/material";
@@ -17,10 +18,26 @@ import testResultsState from "../../../../../state/testResults/TestResultsState"
 import AttachmentElement from "../AttachmentElement";
 import ComputerIcon from "@mui/icons-material/Computer";
 import TextWithLabel from "../../../../primitives/TextWithLabel";
+import RotatingArrowRight from "../../../../primitives/RotatingArrowRight";
+import { getCookie, setCookie, QaHubCookies } from "../../../../../utils/CookieHelper";
+import Checkbox from '@mui/material/Checkbox';
 
 const RetryTab = observer(({retry, isLastRetry, ...props}) => {
   const {selectedTest} = testResultsState
   const [selectedStep, setSelectedStep] = useState(null)
+
+  const [alwaysShowMoreDetails, setAlwaysShowMoreDetails] = useState(getCookie(QaHubCookies.alwaysShowMoreDetailsTestResult))
+  const [showMoreDetails, setShowMoreDetails] = useState(alwaysShowMoreDetails)
+
+  const handleCheckboxClick = (e) => {
+    const newValue =!(String(alwaysShowMoreDetails) == "true")
+    setAlwaysShowMoreDetails(String(newValue))
+    setCookie(QaHubCookies.alwaysShowMoreDetailsTestResult, String(newValue))
+  }
+
+  useEffect(() => {
+    setShowMoreDetails(String(alwaysShowMoreDetails) == "true")
+  }, [selectedTest])
 
   let lastResult = retry.statusHistory[retry.statusHistory.length - 1]
 
@@ -89,21 +106,36 @@ const RetryTab = observer(({retry, isLastRetry, ...props}) => {
         })
       }
     </div>
+    <div style={{display: 'flex', alignItems: 'center', marginTop: "25px"}}>    
+      <Typography variant="h5">More details</Typography>        
+      <RotatingArrowRight value={showMoreDetails} setValue={setShowMoreDetails} />
 
-    <div style={{display: 'flex', marginTop: '35px'}}>
-      <StepsPanel
-        style={{width: 'max-content', minWidth: '200px', width: 'max-content'}}
-        retry={retry}
-        selectedStep={selectedStep}
-        setSelectedStep={setSelectedStep}
-      />
-      <LogsPanel
-        style={{width: 'min-content', flexGrow: '1.1', marginLeft: '15px'}}
-        retry={retry}
-        selectedStep={selectedStep}
-        setSelectedStep={setSelectedStep}
-      />
     </div>
+    <div style={{display: 'flex', opacity:'0.7', alignItems: 'center'}}>
+          <Checkbox
+            style={{padding: '0'}}
+            checked={alwaysShowMoreDetails == "true"}
+            onChange={handleCheckboxClick}
+          />
+          <Typography variant="h10" style={{marginLeft:'5px'}}>Always show more details</Typography>
+        </div>
+    {
+      String(showMoreDetails) == "true" && 
+      <div style={{display: 'flex', marginTop: '35px'}}>        
+        <StepsPanel
+          style={{width: 'max-content', minWidth: '400px', width: 'max-content'}}
+          retry={retry}
+          selectedStep={selectedStep}
+          setSelectedStep={setSelectedStep}
+        />
+        <AttachmentsPanel
+          style={{width: 'min-content', flexGrow: '1.1', marginLeft: '15px'}}
+          retry={retry}
+          selectedStep={selectedStep}
+          setSelectedStep={setSelectedStep}
+        />
+      </div>
+    }
   </div>
 })
 

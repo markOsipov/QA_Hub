@@ -1,7 +1,10 @@
 import LogRow from "./LogRow";
+import Loader from "../../../../../common/Loader";
 
-export default function TestLogsArea({ testLogs, selectedLogRow, ...props }) {
-  if (!testLogs) {
+export default function TestLogsArea({ testLogs, selectedLogRow, testLogsLoading, ...props }) {
+  if (testLogsLoading) {
+    return <></>
+  } else if (!testLogs) {
     return <div style={{...props.style}}>{ "Can't find test logs for current retry" }</div>
   }
 
@@ -17,7 +20,7 @@ export default function TestLogsArea({ testLogs, selectedLogRow, ...props }) {
     }}
   >
     {
-      testLogs.log.split("\n").map((line, index) => {
+      testLogs.split("\n").map((line, index) => {
         return <LogRow key={index} line={line} index={index} selectedLogRow={selectedLogRow} />
       })
     }

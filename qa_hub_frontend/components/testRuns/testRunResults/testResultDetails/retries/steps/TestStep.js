@@ -3,6 +3,7 @@ import {customTheme} from "../../../../../../styles/CustomTheme";
 import CheckIcon from "@mui/icons-material/Check";
 import TestSteps from "./TestSteps";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import ClearIcon from '@mui/icons-material/Clear';
 export default function TestStep({step, margin, setSelectedStep, ...props}) {
   const iconSize = '18px'
@@ -64,13 +65,25 @@ export default function TestStep({step, margin, setSelectedStep, ...props}) {
         style={{
           marginLeft: '10px',
           backgroundColor: hovered ? 'rgba(255, 255, 255, 0.03)' : 'unset',
-          padding: '6px'
+          padding: '6px',
+          width: '100%',
+          display: 'flex',
+          cursor: 'pointer'
         }}
         onClick={() => { selectStep(step.id) }}
         onMouseEnter={() => {setHovered(true)}}
         onMouseLeave={() => {setHovered(false)}}
       >
-        <label>{ step.name }</label>
+        <label style={{cursor: 'pointer'}}>{ step.name }</label>
+
+        <div style={{flexGrow: "1.1"}}></div>
+        {
+          step.duration !== null &&
+          <div style={{display: "flex", alignItems: "center", marginLeft: "29px", opacity: step.duration == 0 ? "0.15" : "0.7", cursor: 'pointer'}}>
+            <AccessTimeFilledIcon />
+            <label style={{marginLeft: "3px", cursor: 'pointer', minWidth: '37px'}}>{step.duration}s</label>
+          </div>
+        }
       </div>
 
     </div>

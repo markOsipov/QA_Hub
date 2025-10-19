@@ -1,7 +1,7 @@
 import {customTheme} from "../../styles/CustomTheme";
 
 export default function StatusBadge({label, variant, ...props}) {
-  const neutralLabels = ['created', 'waiting']
+  const neutralLabels = ['created', 'waiting', 'skipped']
   const successLabels = ['success', 'finished']
   const processingLabels = ['processing']
   const errorLabels = ['error', 'failure']

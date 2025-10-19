@@ -1,27 +1,18 @@
-import {useEffect, useRef, useState} from "react";
-import {getAppLogs, getTestLogs} from "../../../../../../requests/testResults/TestLogsRequests";
-import LogRow from "./LogRow";
+import {useEffect, useState} from "react";
 import TestLogsArea from "./TestLogsArea";
-import AppLogsArea from "./AppLogsArea";
 import {customTheme} from "../../../../../../styles/CustomTheme";
+import { getAttachment } from "../../../../../../requests/testResults/TestAttachmentsRequests";
+import { Typography } from "@mui/material";
 
-export default function LogsPanel({ retry, selectedStep, setSelectedStep, ...props }) {
+export default function LogsPanel({ retry, selectedStep, setSelectedStep, attachment, ...props }) {
   const [testLogs, setTestLogs] = useState(null)
-  const [appLogs, setAppLogs] = useState(null)
   const [selectedLogRow, setSelectedLogRow] = useState(null)
-
-  const currentLogsOptions = {
-    testLogs: "TestLogs",
-    appLogs: "AppLogs"
-  }
-  const [currentLogs, setCurrentLogs] = useState(currentLogsOptions.testLogs)
-  const [testLogsHovered, setTestLogsHovered] = useState(false)
-  const [appLogsHovered, setAppLogsHovered] = useState(false)
+  const [testLogsLoading, setTestLogsLoading] = useState(false)
 
   useEffect(() => {
     if (testLogs && selectedStep) {
       const stepLines = []
-      testLogs.log.split("\n").forEach((line, index) => {
+      testLogs.split("\n").forEach((line, index) => {
         if (line.includes(`Starting step ${selectedStep.id}:`)) {
           stepLines.push(index)
         }
@@ -40,56 +31,51 @@ export default function LogsPanel({ retry, selectedStep, setSelectedStep, ...pro
 
 
   useEffect(() => {
-    getTestLogs(retry.testRunId, retry.fullName, retry.retry).then((data) => {
-      setTestLogs(data.data)
-      setSelectedStep(null)
-    })
-    getAppLogs(retry.testRunId, retry.fullName, retry.retry).then((data) => {
-      setAppLogs(data.data)
-    })
-  }, [retry.testRunId, retry.fullName, retry.retry])
+    setTestLogsLoading(true)
 
-  if (!testLogs) {
-    return <div style={{...props.style}}>{ "Can't find test logs for current retry" }</div>
-  }
+    const testRunId = retry.testRunId
+    const fullName = retry.fullName 
+    const currentRetry = retry.retry
+
+    function currentTestHasNotChanged() {
+      return testRunId == retry.testRunId && fullName == retry.fullName &&  currentRetry == retry.retry
+    }
+
+    getAttachment(attachment.path).then((data) => {
+      if (currentTestHasNotChanged()) {
+        if (data.data instanceof Object) {
+          const json = JSON.stringify(data.data, null, 2)
+          setTestLogs(json)
+        } else {
+           setTestLogs(String(data.data))
+        }
+       
+        setSelectedStep(null)
+        setTestLogsLoading(false)
+      }      
+    })
+  }, [retry.testRunId, retry.fullName, retry.retry, attachment])
 
   return <div style={{...props.style}}>
     <div style={{display: 'flex'}}>
-      <label
-        style={{
-          cursor: 'pointer',
-          padding: '5px 10px',
-          color: currentLogs === currentLogsOptions.testLogs ? 'white' : customTheme.palette.text.disabled,
-          backgroundColor: testLogsHovered ? 'rgba(255, 255, 255, 0.07)' : 'unset'
-        }}
-        onClick={() => { setCurrentLogs(currentLogsOptions.testLogs) }}
-        onMouseOver={() => { setTestLogsHovered(true) }}
-        onMouseLeave={() => { setTestLogsHovered(false) }}
-      >Test logs</label>
-      <label
-        style={{
-          marginLeft: '5px',
-          cursor: 'pointer',
-          padding: '5px 10px',
-          color: currentLogs === currentLogsOptions.appLogs ? 'white' : customTheme.palette.text.disabled,
-          backgroundColor: appLogsHovered ? 'rgba(255, 255, 255, 0.07)' : 'unset'
-        }}
-        onClick={() => {
-          setCurrentLogs(currentLogsOptions.appLogs)
-          setSelectedStep(null)
-        }}
-        onMouseOver={() => { setAppLogsHovered(true) }}
-        onMouseLeave={() => { setAppLogsHovered(false) }}
-      >App logs</label>
+
+      { 
+        testLogsLoading &&
+         <div
+                style={{
+                    width: "100%",
+                    height: "400px",
+                    display: 'grid',
+                    placeItems: 'center',              
+                    backgroundColor: customTheme.palette.background.paper
+                }}
+            >
+            <Typography variant="h5">Loading...</Typography>
+          </div>
+      }
     </div>
     {
-      currentLogs === currentLogsOptions.testLogs &&
-      <TestLogsArea testLogs={testLogs} selectedLogRow={selectedLogRow} style={{marginTop: '10px', maxHeight: 'calc(100vh - 140px)',}} />
+      <TestLogsArea testLogs={testLogs} testLogsLoading={testLogsLoading} selectedLogRow={selectedLogRow} style={{marginTop: '10px', maxHeight: 'calc(100vh - 140px)',}} />
     }
-    {
-      currentLogs === currentLogsOptions.appLogs &&
-      <AppLogsArea appLogs={appLogs} style={{marginTop: '10px', maxHeight: '85vh',}} />
-    }
-
   </div>
 }

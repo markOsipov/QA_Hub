@@ -26,7 +26,7 @@ export default function TestRunCard({testRunData, filter, setFilter, filterAndLo
   }, [testRunData])
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const interval = setInterval(() => {      
       if ([TestRunStatuses.created, TestRunStatuses.processing].includes(testRun.status)) {
         getTestRun(testRun.testRunId).then((response) => {
           if (response.data != null) {
@@ -36,7 +36,7 @@ export default function TestRunCard({testRunData, filter, setFilter, filterAndLo
       } else {
         clearInterval(interval)
       }
-    }, 5000);
+    }, 120000);
     return () => clearInterval(interval);
   }, [testRun])
 

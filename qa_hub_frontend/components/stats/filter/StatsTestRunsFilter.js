@@ -9,17 +9,21 @@ import Button from "@mui/material/Button";
 import SearchIcon from "@mui/icons-material/Search";
 import TakeLastFilter from "./TakeLastFilter";
 import SearchFilter from "./SearchFilter";
+import GeneralStatsPanel from "./GeneralStatsPanel";
 
-export default function StatsTestRunsFilter({ filter, setFilter, loadTestRuns, filterAndLoad, loading, ...props }) {
+export default function StatsTestRunsFilter({ filter, setFilter, loadTestRuns, filterAndLoad, loading, generalStats, ...props }) {
 
   return <Paper style={{padding: "15px", ...props.style}}>
     <div style={{display: 'flex', alignItems: 'center'}}>
       <Typography variant={'h5'}>{"Test stats by testruns"}</Typography>
       <div style={{flexGrow: '1.1'}}></div>
+
       {
         loading &&
         <Loader style={{alignSelf: 'center', color: customTheme.palette.text.disabled}}/>
       }
+
+      <GeneralStatsPanel generalStats={generalStats} />
 
       <SearchFilter filter={filter} setFilter={setFilter} filterAndLoad={filterAndLoad} style={{marginLeft: '15px', width: '250px'}}/>
       <TagFilter filter={filter} setFilter={setFilter} filterAndLoad={filterAndLoad} style={{marginLeft: '15px', width: '120px'}}/>

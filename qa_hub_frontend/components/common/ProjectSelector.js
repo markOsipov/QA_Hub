@@ -101,11 +101,15 @@ const ProjectSelector = observer(({style}) => {
     let jobUrl = cicdInt?.cicdInfo?.baseUrl
     const project = cicdInt?.projectCicdInfo?.project
     const path = cicdInt?.projectCicdInfo?.path
+    const jobId = cicdInt?.projectCicdInfo?.jobId
 
     if (cicdInt?.projectCicdInfo?.type === "GitHub") {
       jobUrl = `${jobUrl}/${path}/${project}/actions/runs`
 
       jobUrl = jobUrl.replace(`//${project}`, `/${project}`)
+    } else if (cicdInt?.projectCicdInfo?.type === "Teamcity") {
+       jobUrl = `${jobUrl}/buildConfiguration/${jobId}`
+       jobUrl = jobUrl.replace(`//${project}`, `/${project}`)
     }
 
     return jobUrl

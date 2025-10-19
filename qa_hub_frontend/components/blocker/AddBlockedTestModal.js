@@ -13,6 +13,7 @@ const AddBlockedTestModal = observer(({isOpen, setIsOpen}) => {
         testcaseId: "",
         tmsTask: "",
         comment: "",
+        branchFilter: "",
         project: projectState.selectedProject
     }
 
@@ -95,6 +96,19 @@ const AddBlockedTestModal = observer(({isOpen, setIsOpen}) => {
                                  setNewBlockedTest({
                                      ...newBlockedTest,
                                      tmsTask: event.target.value
+                                 })
+                             }}
+            />
+
+            <StyledTextField value={newBlockedTest.branchFilter}
+                             size="small"
+                             label="Branches"
+                             style={{minWidth: "530px", color: "white", margin: "8px"}}
+                             autoComplete='off'
+                             onChange={(event) => {
+                                 setNewBlockedTest({
+                                     ...newBlockedTest,
+                                     branchFilter: event.target.value
                                  })
                              }}
             />
